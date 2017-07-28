@@ -1191,26 +1191,26 @@
 				padding: 0
 			});
 
-			$(".login a").fancybox({
-				maxWidth: 450,
-				maxHeight: 450,
-				fitToView: false,
-				width: '90%',
-				height: '90%',
-				padding: 0,
-				autoSize: false,
-				closeClick: false,
-				openMethod: 'dropIn',
-				openSpeed: 150,
-				closeMethod: 'dropOut',
-				closeSpeed: 150,
-				beforeShow: function () {
-					$("#main-container").addClass("bluring");
-				},
-				afterClose: function () {
-					$("#main-container").removeClass("bluring");
-				}
-			});
+			// $(".login a").fancybox({
+			// 	maxWidth: 450,
+			// 	maxHeight: 450,
+			// 	fitToView: false,
+			// 	width: '90%',
+			// 	height: '90%',
+			// 	padding: 0,
+			// 	autoSize: false,
+			// 	closeClick: false,
+			// 	openMethod: 'dropIn',
+			// 	openSpeed: 150,
+			// 	closeMethod: 'dropOut',
+			// 	closeSpeed: 150,
+			// 	beforeShow: function () {
+			// 		$("#main-container").addClass("bluring");
+			// 	},
+			// 	afterClose: function () {
+			// 		$("#main-container").removeClass("bluring");
+			// 	}
+			// });
 
 			$(".search a").fancybox({
 				maxWidth: 1140,

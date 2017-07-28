@@ -1,0 +1,137 @@
+<div class="page page-ui pull-to-header">
+  <ol class="breadcrumb bg-white" ng-if="!pac.modoFicha">
+    <li><a ui-sref="dashboard">Inicio</a></li>
+    <li class="active">Paciente</li>
+
+  </ol>
+  <ol class="breadcrumb bg-white" ng-if="pac.modoFicha">
+    <li><a ui-sref="dashboard">Inicio</a></li>
+    <li ng-click="pac.btnRegresar();"><a>Paciente</a></li>
+    <li class="active">{{pac.mySelectionGrid[0].nombre}} {{pac.mySelectionGrid[0].apellidos}}</li>
+
+  </ol>
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
+          ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
+
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
+          ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
+
+  <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
+          ng-click="goToUrl('/app/citas');">NUEVA CITA</button>
+
+  <!-- LISTADO -->
+  <div class="row" ng-show="!pac.modoFicha">
+    <div class="col-lg-12 col-md-12">
+      <div class="tile">
+        <!-- CABECERA -->
+        <section class="tile-header">
+          <h1 class="heading">Pacientes</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click="pac.getPaginationServerSide()"></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- PANEL PRINCIPAL -->
+        <section class="tile-body col-sm-8 pr-0">
+          <div>
+            <ul class="form-group demo-btns list-unstyled">
+              <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
+            </ul>
+          </div>
+          <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
+        </section>
+        <!-- PANEL DE VISTA PREVIA - LATERAL DERECHO -->
+        <section class="tile-body col-sm-4">
+          <div class="tile profile-widget">
+
+            <!-- tile widget -->
+            <section class="tile-widget bg-info" style="min-height: 145px;">
+              <img class="img-circle profile-avatar" src="assets/images/sin-imagen.png" alt="" ng-if="pac.mySelectionGrid.length < 1">
+              <img class="img-circle profile-avatar" src="assets/images/dinamic/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-show="pac.mySelectionGrid.length >= 1">
+              <div class="row mt-30">
+                <div class="col-md-12 text-center">
+                  <h4 class="text-uppercase m-0">{{pac.mySelectionGrid[0].nombre}}</h4>
+                  <small class="uppercase-bold text-strong text-transparent-black">{{pac.mySelectionGrid[0].apellidos}}</small>
+                </div>
+                <div class="col-md-12 text-center" ng-if = "pac.mySelectionGrid.length == 1">
+                  <small class="text-transparent-black">Ultima visita : {{pac.mySelectionGrid[0].ultima_visita}}</small>
+                </div>
+              </div>
+              <div class="divider mt-10"></div>
+            </section>
+            <!-- /tile widget -->
+
+            <!-- tile body -->
+            <section class="tile-body bg-info" style="min-height: 166px;">
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo0">
+                <dt style="width: 80px; padding: 3px 0;">Edad: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].edad}}</dd>
+                <!-- <dt style="width: 80px; padding: 3px 0;">Sexo: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].sexo_desc}}</dd> -->
+                <dt style="width: 80px; padding: 3px 0;">Cargo Lab.: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].cargo_laboral}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Celular: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].celular}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Nacimiento: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].fecha_nacimiento_st}}</dd>
+              </dl>
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo1">
+                <dt style="width: 80px; padding: 3px 0;">Peso: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].peso}} Kg.</dd>
+                <dt style="width: 80px; padding: 3px 0;">IMC: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].imc}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Objetivo: </dt>
+              </dl>
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo2">
+                <dd style="margin-left: 25px; padding: 3px 0;" ng-repeat="item in pac.listaUltAntecedentes">{{item.antecedente}}</dd>
+
+              </dl>
+              <div class="f-24 text-center" ng-if="pac.mySelectionGrid.length < 1">Seleccione un paciente</div>
+            </section>
+            <!-- /tile body -->
+
+            <!-- tile footer -->
+            <section class="tile-footer p-0">
+              <uib-tabset class="minotaur-tab minotaur-tab-info">
+                <uib-tab index="0" heading="Datos Gen." ng-click="pac.verPrevio(0)">
+                </uib-tab>
+                <uib-tab index="1" heading="Evolución" ng-click="pac.verPrevio(1)">
+                </uib-tab>
+                <uib-tab index="2" heading="Ult.Antec." ng-click="pac.verPrevio(2)">
+
+                </uib-tab>
+              </uib-tabset>
+            </section>
+            <!-- /tile footer -->
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- FICHA DEL PACIENTE -->
+  <div class="row" ng-if="pac.modoFicha">
+    <div class="col-lg-12 col-md-12">
+      <div class="tile">
+
+        <!-- CABECERA -->
+        <section class="tile-header p-0">
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
+            <uib-tab heading="{{item.tab}}" ng-repeat="item in pac.templates">
+              <div ng-include="item.url"></div>
+            </uib-tab>
+          </uib-tabset>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

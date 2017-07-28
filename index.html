@@ -7,7 +7,7 @@
 	<meta name="keywords" content="fotos">
 	<meta name="description" content="">
 	<!-- <base href="http://www.unaisangamer.com/"> -->
-	<!-- <base href="http://localhost/caribbean.com/"> -->
+	<base href="{{dirWebRoot}}">
 	<title>Caribbean Photo Studio</title>
 	<!-- FAVICON AND APPLE TOUCH -->
 	<link rel="shortcut icon" href="favicon.png">
@@ -52,7 +52,7 @@
 
 
 </head>
-<body class="sticky-header header-white">
+<body class="sticky-header header-white" ng-controller="MainController as main">
 	<div id="main-container">
 		<!-- HEADER -->
 		<header id="header">
@@ -126,41 +126,8 @@
 
 								</li>
 								<li class="login">
+									<a class="btn btn-default-2 waves" href="" fancybox ng-click="openFancybox('popups/login_view.html')">Acceso a tu cuenta</a>
 
-									<a class="btn btn-default-2 waves" href="#login-form-container">Sign In</a>
-
-									<div id="login-form-container">
-
-										<h4>Login Form</h4>
-
-										<form class="login-form" name="login" novalidate method="post" action="#">
-											<fieldset>
-
-												<p>
-													<input class="col-xs-12" id="email" type="email" placeholder="" required>
-													<label for="email">E-mail address</label>
-												</p>
-
-												<p>
-													<input class="col-xs-12" id="password" type="password" placeholder="" required>
-													<label for="password">Password</label>
-												</p>
-
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Remember me
-													</label>
-												</div>
-
-												<button type="submit" class="btn btn-default-1 waves">Log in</button>
-
-											</fieldset>
-										</form>
-
-										<a href="#">Don't have an account?</a> <br class="visible-xs-block">
-										<a href="#">Forgotten password?</a>
-
-									</div><!-- login-form-container -->
 
 								</li>
 							</ul>
@@ -740,9 +707,12 @@
 	<script src="assets/plugins/animations/wow.min.js"></script>
 
 	<!-- CUSTOM JS -->
-	<script src="assets/js/custom.js"></script>
 
-	<script src="assets/js/app.js"></script>
+	<script src="assets/js/custom.js"></script>
+	<script src="assets/js/config.js"></script>
+	<script src="assets/js/index.module.js"></script>
+	<script src="assets/js/index.config.js"></script>
+	<script src="assets/js/index.controller.js"></script>
 	<script>
 	  // window.fbAsyncInit = function() {
 	  //   FB.init({
