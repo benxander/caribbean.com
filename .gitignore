@@ -13,8 +13,6 @@ user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
-# Ignorar el contenido config
-assets/js/config.js
 
 # IDE Files
 #-------------------------
@@ -27,3 +25,5 @@ assets/js/config.js
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+assets/js/config.js
