@@ -29,3 +29,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 assets/js/config.js
 admin/app/config.js
+/admin/app/components/
