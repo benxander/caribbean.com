@@ -67,32 +67,36 @@
     });
 
   /** @ngInject */
-  function MainController($scope, rootServices, $location) {
+  function MainController($scope, $location, $window, rootServices) {
     var vm = this;
     // console.log('$translate',$translate);
-
+    $scope.fSessionCI = {};
 
     $scope.goToUrl = function ( path ) {
       $location.path( path );
     };
-    $scope.getValidateSession = function () {
+    /*$scope.getValidateSession = function () {
       rootServices.sGetSessionCI().then(function (response) {
-        //console.log(response);
         if(response.flag == 1){
           $scope.fSessionCI = response.datos;
-          // $scope.logIn();
-          // if( $location.path() == '/app/pages/login' ){
-          //   $scope.goToUrl('/admin/');
-          // }
         }else{
           $scope.fSessionCI = {};
         }
+        console.log('sesion ',$scope.fSessionCI);
       });
+      console.log($scope.fSessionCI);
 
+    }*/
+    // $scope.getValidateSession();
+    $scope.openAdmin = function(){
+      $window.open("admin/", "_blank")
+      /*if($scope.fSessionCI.logged){
+        $window.open("admin/", "_blank")
+      }else{
+
+      }*/
     }
-    $scope.getValidateSession();
-    $scope.login = function(){
-      console.log('$scope.fLogin',$scope.fLogin);
+    /*$scope.login = function(){
       rootServices.sLoginToSystem($scope.fLogin).then(function (response) {
         $scope.fAlert = {};
         if( response.flag == 1 ){ // SE LOGEO CORRECTAMENTE
@@ -119,7 +123,7 @@
         console.log('scope.fAlert',$scope.fAlert);
 
       });
-    }
+    }*/
   }
   function rootServices($http, $q) {
     return({
