@@ -5,7 +5,7 @@ application/cache/*
 !application/cache/.htaccess
 
 application/logs/*
-application/config/database.php
+#application/config/database.php
 !application/logs/index.html
 !application/logs/.htaccess
 
@@ -29,4 +29,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 assets/js/config.js
 admin/app/config.js
-/admin/app/components/
+admin/app/components
