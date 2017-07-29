@@ -27,6 +27,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
 					$arrPerfilUsuario['key_grupo'] = $loggedUser['key_grupo'];
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
+					$arrPerfilUsuario['logged'] = true;
 
 					/*$arrPerfilUsuario = $this->model_profesional->m_cargar_perfil($loggedUser['idusuario']);
 					$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];*/

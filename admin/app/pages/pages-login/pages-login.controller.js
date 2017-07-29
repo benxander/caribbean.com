@@ -6,16 +6,6 @@
     .controller('LoginController', LoginController)
     .service('loginServices', loginServices);
 
-    function handleError( response ) {
-      if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-          return( $q.reject( "An unknown error occurred." ) );
-      }
-      return( $q.reject( response.data.message ) );
-  }
-  function handleSuccess( response ) {
-      return( response.data );
-  }
-
   /** @ngInject */
   function LoginController($scope,loginServices) {
   	$scope.getValidateSession();
@@ -29,16 +19,16 @@
         return;
       }
 
-      loginServices.sLoginToSystem($scope.fLogin).then(function (response) { 
+      loginServices.sLoginToSystem($scope.fLogin).then(function (response) {
         $scope.fAlert = {};
-        if( response.flag == 1 ){ // SE LOGEO CORRECTAMENTE 
+        if( response.flag == 1 ){ // SE LOGEO CORRECTAMENTE
           $scope.fAlert.type= 'success';
           $scope.fAlert.msg= response.message;
           $scope.fAlert.strStrong = 'OK.';
           $scope.getValidateSession();
           $scope.logIn();
           // $scope.getNotificaciones();
-        }else if( response.flag == 0 ){ // NO PUDO INICIAR SESION 
+        }else if( response.flag == 0 ){ // NO PUDO INICIAR SESION
           $scope.fAlert.type= 'danger';
           $scope.fAlert.msg= response.message;
           $scope.fAlert.strStrong = 'Error.';
@@ -58,12 +48,12 @@
     return({
         sLoginToSystem: sLoginToSystem
     });
-    function sLoginToSystem(pDatos) { 
+    function sLoginToSystem(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "acceso/", 
-            data : datos          
+            url :  angular.patchURLCI + "acceso/",
+            data : datos
       });
       return (request.then( handleSuccess,handleError ));
     }

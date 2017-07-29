@@ -2,7 +2,7 @@
 	AQUÍ IRÁ EL CÓDIGO CSS PERSONALIZADO
 	Antes de crear algún estilo, verificar que no haya uno con la misma funcionalidad en el tema.
 */
-/* CUSTOM by Ruben Guevara luisls1717@gmail.com */
+/* CUSTOM by Ruben Guevara rguevarac@hotmail.es */
 /*
 * { outline: 2px dotted red }
 * * { outline: 2px dotted green }
@@ -393,7 +393,7 @@ section.tile-body{
 
 /* PNOTIFY */
 .ui-pnotify .alert.ui-pnotify-container{
-    padding: .8em; 
+    padding: .8em;
     font-size: 12px;
 }
 .ui-pnotify .alert.ui-pnotify-container .ui-pnotify-icon, .ui-pnotify .alert.ui-pnotify-container h4 {
@@ -411,7 +411,7 @@ section.tile-body{
     color:#fff;
     position:absolute;
     z-index:10001;
-    padding:4px; 
-    border-radius: 8px; 
+    padding:4px;
+    border-radius: 8px;
     font-size: 11px;
 }

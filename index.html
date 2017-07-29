@@ -125,10 +125,11 @@
 									</div><!-- search-form-container -->
 
 								</li>
-								<li class="login">
+								<!-- <li class="login" ng-if="!fSessionCI">
 									<a class="btn btn-default-2 waves" href="" fancybox ng-click="openFancybox('popups/login_view.html')">Acceso a tu cuenta</a>
-
-
+								</li> -->
+								<li class="login" ng-if="fSessionCI">
+									<a class="btn btn-default-2 waves" href="" ng-click="openAdmin();" >Acceso a tu cuenta!</a>
 								</li>
 							</ul>
 

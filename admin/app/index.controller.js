@@ -54,8 +54,8 @@
     $scope.btnLogoutToSystem = function () {
       rootServices.sLogoutSessionCI().then(function () {
         $scope.fSessionCI = {};
-        $scope.listaUnidadesNegocio = {};
-        $scope.listaModulos = {};
+        // $scope.listaUnidadesNegocio = {};
+        // $scope.listaModulos = {};
         $scope.logOut();
         $scope.goToUrl('/app/pages/login');
       });
@@ -68,22 +68,24 @@
 
     $scope.getValidateSession = function () {
       rootServices.sGetSessionCI().then(function (response) {
-        //console.log(response);
         if(response.flag == 1){
           $scope.fSessionCI = response.datos;
           $scope.logIn();
+          console.log('logIn ->',response);
           if( $location.path() == '/app/pages/login' ){
-            $scope.goToUrl('/admin/');
+            $scope.goToUrl('/');
           }
         }else{
           $scope.fSessionCI = {};
           $scope.logOut();
-          $scope.goToUrl('/admin/app/pages/login');
+          console.log('logOut ->',response);
+          //alert('Saliendo del admin');
+          $scope.goToUrl('/app/pages/login');
         }
       });
 
     }
-    //$scope.getValidateSession();
+    $scope.getValidateSession();
     $scope.CargaMenu = function() {
       var opciones = ['opDashboard','opClientes','opBanners','opMantenimiento','opSeguridad'];
       if($scope.fSessionCI.idgrupo == 1){
