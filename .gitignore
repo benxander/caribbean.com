@@ -5,9 +5,14 @@ application/cache/*
 !application/cache/.htaccess
 
 application/logs/*
-application/config/database.php
 !application/logs/index.html
 !application/logs/.htaccess
+
+application/config/database.php
+
+assets/js/config.js
+admin/app/config.js
+admin/app/components
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
@@ -26,7 +31,3 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
-
-assets/js/config.js
-admin/app/config.js
-admin/app/components

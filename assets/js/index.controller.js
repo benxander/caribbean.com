@@ -24,49 +24,47 @@
 
           }
       };
-  })
-  .directive('fancybox', function ($compile, $http) {
-    return {
+    })
+    .directive('fancybox', function ($compile, $http) {
+      return {
         restrict: 'A',
-
         controller: function($scope) {
-             $scope.openFancybox = function (url) {
+          $scope.openFancybox = function (url) {
+            $http.get(url).then(function(response) {
+                if (response.status == 200) {
 
-                $http.get(url).then(function(response) {
-                    if (response.status == 200) {
+                    var template = angular.element(response.data);
+                    var compiledTemplate = $compile(template);
+                    compiledTemplate($scope);
 
-                        var template = angular.element(response.data);
-                        var compiledTemplate = $compile(template);
-                        compiledTemplate($scope);
-
-                        $.fancybox.open({
-                          content: template,
-                          type: 'html',
-                          maxWidth: 450,
-                           maxHeight: 350,
-                           fitToView: false,
-                           width: '90%',
-                           height: '90%',
-                           padding: 0,
-                           autoSize: false,
-                           closeClick: false,
-                           openMethod: 'dropIn',
-                           openSpeed: 150,
-                           closeMethod: 'dropOut',
-                           closeSpeed: 150,
-                           beforeShow: function () {
-                             $("#main-container").addClass("bluring");
-                           },
-                           afterClose: function () {
-                             $("#main-container").removeClass("bluring");
-                           }
-                        });
-                    }
-                });
-            };
+                    $.fancybox.open({
+                      content: template,
+                      type: 'html',
+                      maxWidth: 450,
+                      maxHeight: 350,
+                      fitToView: false,
+                      width: '90%',
+                      height: '90%',
+                      padding: 0,
+                      autoSize: false,
+                      closeClick: false,
+                      openMethod: 'dropIn',
+                      openSpeed: 150,
+                      closeMethod: 'dropOut',
+                      closeSpeed: 150,
+                      beforeShow: function () {
+                        $("#main-container").addClass("bluring");
+                      },
+                      afterClose: function () {
+                        $("#main-container").removeClass("bluring");
+                      }
+                    });
+                }
+            });
+          };
         }
-    };
-  });
+      };
+    });
 
   /** @ngInject */
   function MainController($scope, rootServices, $location) {
@@ -77,7 +75,22 @@
     $scope.goToUrl = function ( path ) {
       $location.path( path );
     };
+    $scope.getValidateSession = function () {
+      rootServices.sGetSessionCI().then(function (response) {
+        //console.log(response);
+        if(response.flag == 1){
+          $scope.fSessionCI = response.datos;
+          // $scope.logIn();
+          // if( $location.path() == '/app/pages/login' ){
+          //   $scope.goToUrl('/admin/');
+          // }
+        }else{
+          $scope.fSessionCI = {};
+        }
+      });
 
+    }
+    $scope.getValidateSession();
     $scope.login = function(){
       console.log('$scope.fLogin',$scope.fLogin);
       rootServices.sLoginToSystem($scope.fLogin).then(function (response) {
@@ -107,8 +120,6 @@
 
       });
     }
-
-
   }
   function rootServices($http, $q) {
     return({
