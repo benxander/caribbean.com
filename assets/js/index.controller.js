@@ -78,18 +78,53 @@
       $location.path( path );
     };
 
-    vm.login = function(){
-      vm.verLogin = true;
-      console.log('formLogin.$invalid',formLogin.$invalid);
+    $scope.login = function(){
+      console.log('$scope.fLogin',$scope.fLogin);
+      rootServices.sLoginToSystem($scope.fLogin).then(function (response) {
+        $scope.fAlert = {};
+        if( response.flag == 1 ){ // SE LOGEO CORRECTAMENTE
+          $scope.fAlert.type= 'success';
+          $scope.fAlert.msg= response.message;
+          $scope.fAlert.strStrong = 'OK.';
+          //$scope.getValidateSession();
+          //$scope.logIn();
+          // $scope.getNotificaciones();
+        }else if( response.flag == 0 ){ // NO PUDO INICIAR SESION
+          $scope.fAlert.type= 'danger';
+          $scope.fAlert.msg= response.message;
+          $scope.fAlert.strStrong = 'Error.';
+        }else if( response.flag == 2 ){  // CUENTA INACTIVA
+          $scope.fAlert.type= 'orange';
+          $scope.fAlert.msg= response.message;
+          $scope.fAlert.strStrong = 'Aviso.';
+          //$scope.listaSedes = response.datos;
+        }else{
+          alert('Error inesperaado');
+        }
+        $scope.fAlert.flag = response.flag;
+        //$scope.fLogin = {};
+        console.log('scope.fAlert',$scope.fAlert);
+
+      });
     }
 
 
   }
   function rootServices($http, $q) {
     return({
+        sLoginToSystem: sLoginToSystem,
         sLogoutSessionCI: sLogoutSessionCI,
         sGetSessionCI: sGetSessionCI,
     });
+    function sLoginToSystem(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Acceso/",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sLogoutSessionCI(pDatos) {
       var datos = pDatos || {};
       var request = $http({

@@ -1,0 +1,15 @@
+{
+  "Menu": {
+    "DASHBOARD": "Inicio",
+    "CLIENTES": "Clientes",
+    "BANNERS": "Banners",
+    "MANTENIMIENTO": "Mantenimiento",
+    "IDIOMAS": "Idiomas",
+    "SITIOS": "Sitios",
+    "SEGURIDAD": "Seguridad",
+    "USUARIOS": "Usuarios",
+    "GRUPOS": "Grupos",
+    "ROLES": "Roles"
+  }
+}
+

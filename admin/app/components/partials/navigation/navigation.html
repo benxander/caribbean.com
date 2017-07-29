@@ -1,0 +1,78 @@
+<div class="nav-heading">
+  <h3 class="text-center">MENÚ PRINCIPAL</h3>
+</div>
+
+<div slimscroll="{
+      height: '100%',
+      size: '4px',
+      borderRadius: '0px',
+      opacity: .2
+     }">
+
+  <ul class="nav nav-sidebar">
+    <li ng-class="{'active':$state.includes('dashboard')}" ng-if="valores[0]">
+      <a ng-click="$state.reload();" ui-sref="dashboard">
+        <span class="nav-text">{{ 'Menu.DASHBOARD' | translate }}</span>
+        <i class="fa fa-home"></i>
+      </a>
+    </li>
+    <li ng-class="{'open active':$state.includes('cliente')}" ng-if="valores[1]">
+      <a ng-click="$state.reload();" ui-sref="cliente">
+        <span class="nav-text">{{ 'Menu.CLIENTES' | translate }}</span>
+        <i class="fa fa-user-md"></i>
+      </a>
+    </li>
+    <li ng-class="{'active':$state.includes('banner')}" ng-if="valores[2]">
+      <a ng-click="$state.reload();" ui-sref="banner">
+        <span class="nav-text">{{ 'Menu.BANNERS' | translate }}  </span>
+        <i class="fa fa-users"></i>
+      </a>
+    </li>
+    <li ng-if="valores[3]">
+      <a href="javascript:;">
+        <span class="nav-text">{{ 'Menu.MANTENIMIENTO' | translate }}</span>
+        <i class="fa fa-clock-o"></i>
+      </a>
+      <ul>
+        <li ui-sref-active="active">
+          <a ng-click="$state.reload();" ui-sref="idioma">
+            <span class="nav-text">{{ 'Menu.IDIOMAS' | translate }}</span>
+            <i>{{ 'Menu.IDIOMAS' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="sitio">
+            <span class="nav-text">{{ 'Menu.SITIOS' | translate }}</span>
+            <i>{{ 'Menu.SITIOS' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li ng-if="valores[4]">
+      <a href="javascript:;">
+        <span class="nav-text">{{ 'Menu.SEGURIDAD' | translate }}</span>
+        <i class="fa fa-clock-o"></i>
+      </a>
+      <ul>
+        <li ui-sref-active="active">
+          <a ui-sref="usuario">
+            <span class="nav-text">{{ 'Menu.USUARIOS' | translate }}</span>
+            <i>{{ 'Menu.USUARIOS' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="grupo">
+            <span class="nav-text">{{ 'Menu.GRUPOS' | translate }}</span>
+            <i>{{ 'Menu.GRUPOS' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a  ui-sref="rol">
+            <span class="nav-text">{{ 'Menu.ROLES' | translate }}</span>
+            <i>{{ 'Menu.ROLES' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
