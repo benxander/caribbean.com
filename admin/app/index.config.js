@@ -1,11 +1,9 @@
 (function() {
   'use strict';
-
-  var directoryApp = 'caribbean.com';
   if (!window.location.origin) {
     window.location.origin = window.location.protocol+"//"+window.location.host;
   }
-  var dirWebRoot =  window.location.origin + '/'+directoryApp+'/';
+  var dirWebRoot =  window.location.origin + directoryApp+'/';
   angular.patchURLCI = dirWebRoot+'ci.php/';
 
   angular
