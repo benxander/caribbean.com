@@ -14,7 +14,7 @@ class Acceso extends CI_Controller {
 	public function index(){
 		//$this->load->library('encrypt');
 		$allInputs = json_decode(trim(file_get_contents('php://input')),true);
-		var_dump($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]); exit();
+		// var_dump($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]); exit();
 		$arrData['flag'] = 0;
     	$arrData['message'] = 'No se encontraron datos.';
 		if(!empty($allInputs['usuario']) && !empty($allInputs['clave']) ){
