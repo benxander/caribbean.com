@@ -1,1 +1,1 @@
-var directoryApp = 'unaisangamer.com';
+var directoryApp = '';
