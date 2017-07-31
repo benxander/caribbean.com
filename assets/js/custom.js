@@ -1293,8 +1293,8 @@
 					}
 				},
                 autoHeight:"on",
-                gridwidth:1040,
-                gridheight:600
+                gridwidth:1000,
+                gridheight:470
 				// gridwidth: 1170,
 				// gridheight: 1000
 			});
