@@ -9,6 +9,7 @@ application/logs/*
 !application/logs/.htaccess
 
 application/config/database.php
+application/config/config.php
 
 assets/js/config.js
 admin/app/config.js

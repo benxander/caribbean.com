@@ -29,6 +29,7 @@
   /** @ngInject */
   function MainController($translate,$scope,$state,$location, rootServices, empresaNombre) {
     var vm = this;
+    $scope.dirImages = angular.patchURL+'uploads/';
     // console.log('$translate',$translate);
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
