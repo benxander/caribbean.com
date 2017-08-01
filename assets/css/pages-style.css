@@ -315,17 +315,17 @@
 	.menu li.active > a,
 	.menu li.sfHover > a {
 		text-decoration: none;
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.menu ul li > a:hover,
 	.menu ul li.sfHover > a {
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
 	.menu ul li > a.waves .waves-ripple {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	#menu-right {
@@ -350,7 +350,7 @@
 	}
 
 	.menu-style-3 .menu-button:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.header-hidden .menu-button {
@@ -405,7 +405,7 @@
 	}
 
 	.menu-slide-container .close-menu:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.menu-slide,
@@ -476,7 +476,7 @@
 
 	.menu-slide li a:hover,
 	.menu-slide li.active > a {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.header-style-2 .menu {
@@ -541,7 +541,7 @@
 		width: 42px;
 		height: 42px;
 		border-radius: 5px;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 		font-size: 24px;
 		line-height: 46px;
@@ -554,7 +554,7 @@
 		list-style: none;
 		display: none;
 		margin: 0;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -649,7 +649,7 @@
 
 	#mobile-menu li a.waves .waves-ripple,
 	#mobile-menu-button.waves .waves-ripple {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	@media (min-width: 768px) and (max-width: 991px) {
@@ -872,7 +872,7 @@
 	#login-form-container h4 {
 		padding: 20px 0;
 		margin: 0 -20px 40px;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -1043,7 +1043,7 @@
 		overflow: hidden;
 		padding: 200px 0 150px;
 		margin-bottom: 100px;
-		background: #8a1a4a no-repeat center center;
+		background: #1574a6 no-repeat center center;
 		background-size: cover;
 		color: #fff;
 		text-align: center;
@@ -1130,7 +1130,7 @@
 	#footer.default-color {
 		padding-top: 30px;
 		padding-bottom: 0;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -1185,7 +1185,7 @@
 	}
 
 	#footer .widget-pages ul li a:hover:after {
-		border-bottom-color: #8a1a4a;
+		border-bottom-color: #1574a6;
 	}
 
 	#footer.default-color .widget-social .social-media a {
@@ -1282,7 +1282,7 @@
 	}
 
 	#footer-top a:hover {
-		color: #8a1a4a;;
+		color: #1574a6;;
 	}
 
 	#footer-top h1,
@@ -1305,7 +1305,7 @@
 	}
 
 	#footer-top .widget-latest-posts .post-date {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	#footer-top .widget-latest-posts .post-date:hover {
@@ -1320,7 +1320,7 @@
 		width: auto;
 		height: auto;
 		background-color: transparent;
-		color: #8a1a4a;
+		color: #1574a6;
 		font-size: 18px;
 	}
 
@@ -1346,12 +1346,12 @@
 
 	#footer-middle {
 		padding: 30px 0;
-		background-color: #b12c65;
+		background-color: #1294d8;
 		color: #fff;
 	}
 
 	#footer-top + #footer-middle {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	#footer-middle a,
@@ -1399,11 +1399,11 @@
 	}
 
 	#footer-middle + #footer-bottom {
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 	}
 
 	#footer-top + #footer-middle + #footer-bottom {
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 	}
 
 	#footer.default-color + #footer-bottom {
@@ -1453,7 +1453,7 @@
 		width: auto;
 		height: auto;
 		background-color: transparent;
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	#footer-bottom .widget-social .social-media {
@@ -1506,7 +1506,7 @@
  ***********************************************************************************/
 
 	.about-me {
-		border-top: 3px solid #8a1a4a;
+		border-top: 3px solid #1574a6;
 		margin-bottom: 50px;
 	}
 
@@ -1531,7 +1531,7 @@
 		height: 54px;
 		font-size: 26px;
 		line-height: 54px;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 		text-align: center;
 		text-decoration: none;
@@ -1583,15 +1583,15 @@
 	}
 
 	.about-me:hover .about-me-details h4 {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.about-me:hover .about-me-details > a {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.about-me:hover .about-me-details > a:after {
-		border-bottom-color: #8a1a4a;
+		border-bottom-color: #1574a6;
 	}
 
 	.about-me:hover .about-me-details > a:hover {
@@ -1659,7 +1659,7 @@
 	}
 
 	.about-me.style-2:hover {
-		border-top-color: #8a1a4a;
+		border-top-color: #1574a6;
 	}
 
 	.about-me.style-2:hover .about-me-thumbnail:after {
@@ -1707,11 +1707,11 @@
 	}
 
 	.service-box-content > a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.service-box-content > a:hover:after {
-		border-color: #8a1a4a;
+		border-color: #1574a6;
 	}
 
 
@@ -1720,7 +1720,7 @@
 		position: relative;
 		overflow: hidden;
 		border: 1px solid #e1e1e1;
-		border-top: 3px solid #8a1a4a;
+		border-top: 3px solid #1574a6;
 		margin-bottom: 30px;
 		-webkit-transform: translateZ(0);
 			-ms-transform: translateZ(0);
@@ -1734,7 +1734,7 @@
 		z-index: -1;
 		top: -100%;
 		left: -100%;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		content: "";
 		-webkit-transition: all 0.35s;
 				transition: all 0.35s;
@@ -1751,7 +1751,7 @@
 	}
 
 	.service-box.style-1 > a.waves .waves-ripple {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	.service-box.style-1 .service-box-content h6 {
@@ -1785,8 +1785,8 @@
 	}
 
 	.service-box.style-1:hover {
-		border-color: #8a1a4a;
-		background-color: #8a1a4a;
+		border-color: #1574a6;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -1830,7 +1830,7 @@
 		height: 48px;
 		border-radius: 50%;
 		margin: 0 auto 20px;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 		font-size: 26px;
 		line-height: 48px;
@@ -1856,7 +1856,7 @@
 		width: 48px;
 		height: 48px;
 		border-radius: 50%;
-		background-color: #b12c65;
+		background-color: #1294d8;
 		content: "";
 		-webkit-transform: scale(0);
 			-ms-transform: scale(0);
@@ -1918,14 +1918,14 @@
 	.service-box.style-3 .service-box-content {}
 
 	.service-box.style-3:hover > i {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 
 	/* STYLE 4 */
 	.service-box.style-4 {
 		padding: 20px;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -1974,7 +1974,7 @@
 	}
 
 	.service-box.style-4:hover {
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 	}
 
 
@@ -2014,12 +2014,12 @@
 	}
 
 	.service-box.style-5 a.waves .waves-ripple {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	.service-box.style-5 a:hover {
-		border-color: #8a1a4a;
-		background-color: #8a1a4a;
+		border-color: #1574a6;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -2039,9 +2039,9 @@
 		display: block;
 		width: 68px;
 		height: 68px;
-		border: 2px dotted #8a1a4a;
+		border: 2px dotted #1574a6;
 		border-radius: 50%;
-		color: #8a1a4a;
+		color: #1574a6;
 		font-size: 36px;
 		line-height: 68px;
 		text-align: center;
@@ -2077,8 +2077,8 @@
 	}
 
 	.service-box.style-6:hover > i {
-		border-color: #8a1a4a;
-		color: #8a1a4a;
+		border-color: #1574a6;
+		color: #1574a6;
 	}
 
 
@@ -2132,7 +2132,7 @@
 	}
 
 	.service-box.style-7:hover > i {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 
@@ -2157,7 +2157,7 @@
 		height: 100px;
 		border-radius: 50%;
 		background-color: #fff;
-		color: #8a1a4a;
+		color: #1574a6;
 		font-size: 48px;
 		line-height: 100px;
 		text-align: center;
@@ -2201,7 +2201,7 @@
 	}
 
 	.service-box.style-8.small-icon:hover > i {
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		color: #fff;
 	}
 
@@ -2246,7 +2246,7 @@
 		width: 100px;
 		height: 100px;
 		border-radius: 50%;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		content: "";
 		-webkit-transform: scale(0);
 			-ms-transform: scale(0);
@@ -2284,7 +2284,7 @@
 	}
 
 	.service-box.style-10:hover > i {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 
@@ -2304,17 +2304,17 @@
 	}
 
 	.service-box.style-11:hover > i {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.service-box.style-11 .service-box-content h6 {
-		color: #8a1a4a;
+		color: #1574a6;
 		font: 14px/27px "Montserrat", sans-serif;
 		text-transform: uppercase;
 	}
 
 	.service-box.style-11 .service-box-content h6 a {
-		color: #8a1a4a;
+		color: #1574a6;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
 	}
@@ -2465,7 +2465,7 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		background-color: #8a1a4a;
+		background-color: #1574a6;
 		content: "";
 		-webkit-transform: scale(0.7);
 			-ms-transform: scale(0.7);
@@ -2602,11 +2602,11 @@
 	}
 
 	.portfolio-item.portfolio-classic .portfolio-item-description > a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.portfolio-item.portfolio-classic .portfolio-item-description > a:hover:after {
-		border-color: #8a1a4a;
+		border-color: #1574a6;
 	}
 
 	.portfolio-item.portfolio-classic:after {
@@ -2665,11 +2665,11 @@
 	}
 
 	.portfolio-navigation a:hover {
-		color: #b12c65;
+		color: #1294d8;
 	}
 
 	.portfolio-navigation a:hover i {
-		background-color: #b12c65;
+		background-color: #1294d8;
 	}
 
 	@media (max-width: 767px) {
@@ -2758,7 +2758,7 @@
 	}
 
 	.blog-article-subtitle a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 		text-decoration: none;
 	}
 
@@ -2801,7 +2801,7 @@
 	}
 
 	.blog-article-details a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 		text-decoration: none;
 	}
 
@@ -2829,11 +2829,11 @@
 	}
 
 	.blog-article-content > a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.blog-article-content > a:hover:after {
-		border-color: #8a1a4a;
+		border-color: #1574a6;
 	}
 
 	.blog-article:hover .blog-article-thumbnail a > img {
@@ -2931,7 +2931,7 @@
 	}
 
 	.comment-author .fn:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 	}
 
 	.comment-author .says {
@@ -2950,7 +2950,7 @@
 	}
 
 	.comment-metadata a:hover {
-		color: #8a1a4a;
+		color: #1574a6;
 		text-decoration: none;
 	}
 
@@ -2968,7 +2968,7 @@
 
 	.reply a:after {
 		display: block;
-		border-bottom: 1px solid #8a1a4a;
+		border-bottom: 1px solid #1574a6;
 		content: "";
 	}
 
@@ -3212,7 +3212,7 @@
 
 	.contact-box h6 {
 		margin-bottom: 15px;
-		color: #8a1a4a;
+		color: #1574a6;
 		font: 14px/27px "Montserrat", sans-serif;
 		text-transform: uppercase;
 	}
@@ -3222,7 +3222,7 @@
 	}
 
 	.contact-box:hover {
-		border-color: #8a1a4a;
+		border-color: #1574a6;
 	}
 
 /***********************************************************************************

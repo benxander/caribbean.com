@@ -818,13 +818,13 @@
 							{
 								fill: "true",
 								label: "Revenue",
-								backgroundColor: "#8a1a4a",
+								backgroundColor: "#1574a6",
 								borderWidth: 1,
-								borderColor: "#8a1a4a",
-								pointBorderColor: "#8a1a4a",
+								borderColor: "#1574a6",
+								pointBorderColor: "#1574a6",
 								pointBackgroundColor: "#fff",
 								pointHoverBackgroundColor: "#fff",
-								pointHoverBorderColor: "#8a1a4a",
+								pointHoverBorderColor: "#1574a6",
 								pointBorderWidth: 1,
 								pointHoverBorderWidth: 1,
 								tension: 0.4,
@@ -957,11 +957,11 @@
 						datasets : [
 							{
 								label: "Revenue",
-								backgroundColor: "#8a1a4a",
+								backgroundColor: "#1574a6",
 								borderColor: "#fff",
 								borderWidth: 3,
 								hoverBorderWidth: 3,
-								hoverBackgroundColor: "#8a1a4a",
+								hoverBackgroundColor: "#1574a6",
 								hoverBorderColor: "#fff",
 								data : [35, 30, 60, 65, 100, 65, 40, 90, 70, 60, 65, 70, 120, 85, 55, 70, 120, 180, 100, 70, 60, 70, 100, 60, 75]
 							}
@@ -1019,13 +1019,13 @@
 							data: [20, 10, 70],
 							borderWidth: 0,
 							backgroundColor: [
-								"#8a1a4a",
-								"#b12c65",
+								"#1574a6",
+								"#1294d8",
 								"#d7d7d7"
 							],
 							hoverBackgroundColor: [
-								"#8a1a4a",
-								"#b12c65",
+								"#1574a6",
+								"#1294d8",
 								"#d7d7d7"
 							]
 						}]
@@ -1078,13 +1078,13 @@
 							data: [20, 10, 70],
 							borderWidth: 0,
 							backgroundColor: [
-								"#8a1a4a",
-								"#b12c65",
+								"#1574a6",
+								"#1294d8",
 								"#d7d7d7"
 							],
 							hoverBackgroundColor: [
-								"#8a1a4a",
-								"#b12c65",
+								"#1574a6",
+								"#1294d8",
 								"#d7d7d7"
 							]
 						}]
