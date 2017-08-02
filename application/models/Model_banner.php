@@ -45,27 +45,8 @@ class Model_banner extends CI_Model {
 		return $fData;
 	}
 
-	public function m_registrar($datos)
+	public function m_registrar($data)
 	{
-		$data = array(
-			'idgrupo1' => $datos['idgrupo1']['id'],
-			'idgrupo2' => $datos['idgrupo2']['id'],
-			'nombre' => strtoupper_total($datos['nombre']),
-			'calorias' => empty($datos['calorias']) ? NULL : $datos['calorias'],
-			'proteinas' => empty($datos['proteinas']) ? NULL : $datos['proteinas'],
-			'grasas' => empty($datos['grasas']) ? NULL : $datos['grasas'],
-			'carbohidratos' => empty($datos['carbohidratos']) ? NULL : $datos['carbohidratos'],
-			'medida_casera' => empty($datos['medida_casera']) ? NULL : $datos['medida_casera'],
-			'gramo' => empty($datos['gramo']) ? NULL : $datos['gramo'],
-			'fibra' => empty($datos['fibra']) ? NULL : $datos['fibra'],
-			'ceniza' => empty($datos['ceniza']) ? NULL : $datos['ceniza'],
-			'calcio' => empty($datos['calcio']) ? NULL : $datos['calcio'],
-			'fosforo' => empty($datos['fosforo']) ? NULL : $datos['fosforo'],
-			'zinc' => empty($datos['zinc']) ? NULL : $datos['zinc'],
-			'hierro' => empty($datos['hierro']) ? NULL : $datos['hierro'],
-			'createdAt' => date('Y-m-d H:i:s'),
-			'updatedAt' => date('Y-m-d H:i:s')
-		);
 		return $this->db->insert('banner', $data);
 	}
 

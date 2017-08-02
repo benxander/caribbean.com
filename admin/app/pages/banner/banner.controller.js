@@ -6,9 +6,10 @@
     .service('BannerServices', BannerServices);
 
   /** @ngInject */
-  function BannerController($scope, $uibModal, uiGridConstants, FileUploader,
+  function BannerController($scope, $uibModal, uiGridConstants,
     BannerServices, TipobannerServices, SeccionServices) {
     var vm = this;
+    //$scope.image = "";
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -78,14 +79,15 @@
         });
       }
       vm.getPaginationServerSide();
-      // MANTENIMIENTO
+    // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/banner/banner_formview.html',
+          templateUrl: 'app/pages/banner/banner_formview.php',
           controllerAs: 'mb',
           size: 'md',
           backdropClass: 'splash splash-2 splash-ef-14',
           windowClass: 'splash splash-2 splash-ef-14',
+          scope: $scope,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -107,29 +109,15 @@
               vm.fData.tipoBanner = vm.listaTipoBanner[0];
             });
             // subida de imagen
-              var uploader = vm.uploader = new FileUploader({
-                //url: 'app/components/modules/fileupload/upload.php' //enable this option to get f
-              });
 
-              // FILTERS
-
-              uploader.filters.push({
-                name: 'customFilter',
-                fn: function() {
-                  var vm = this;
-                  return vm.queue.length < 10;
-                }
-              });
-
-              uploader.filters.push({
-                name: 'imageFilter',
-                fn: function(item /*{File|FileLikeObject}, options*/) {
-                  var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-                  return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-                }
-              });
             // botones
               vm.aceptar = function () {
+                vm.fData.imagen = $scope.image;
+                vm.fData.size = $scope.file.size;
+                vm.fData.nombre_imagen = $scope.file.name;
+                vm.fData.tipo_imagen = $scope.file.type;
+                console.log('scope',$scope);
+                console.log('vm.fData',vm.fData);
                 BannerServices.sRegistrarBanner(vm.fData).then(function (rpta) {
                   var openedToasts = [];
                   vm.options = {

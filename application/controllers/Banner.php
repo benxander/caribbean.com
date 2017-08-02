@@ -6,10 +6,9 @@ class Banner extends CI_Controller {
     {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
-        $this->load->helper(array('fechas','otros_helper'));
+        // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_banner'));
-
     }
 
 	public function listar_banners()
@@ -50,11 +49,38 @@ class Banner extends CI_Controller {
 	// MANTENIMIENTO
 	public function registrar_banner()
 	{
+		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	var_dump($allInputs); exit();
-		if($this->model_banner->m_registrar($allInputs)){
+    	// validaciones
+    	if(empty($allInputs['imagen'])){
+    		$arrData['message'] = 'Debe subir una imagen';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	// preparacion y subida de imagen
+		$extension = strrchr($allInputs['nombre_imagen'], ".");
+		$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
+		$nombre .= '-'. date('YmdHis') . $extension;
+		$ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
+		$allInputs['imagen_ba'] = $nombre;
+		subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
+		// data
+    	$data = array(
+    		'idtipobanner' => $allInputs['tipoBanner']['id'],
+    		'idseccion' => $allInputs['seccion']['id'],
+    		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
+    		'imagen_ba' => $nombre,
+    		'idusuario' => $this->sessionCP['idusuario'],
+    		'size' => $allInputs['size'],
+    		'tipo_imagen' => $allInputs['tipo_imagen'],
+    		'createdAt' => date('Y-m-d H:i:s'),
+			'updatedAt' => date('Y-m-d H:i:s')
+    	);
+		if($this->model_banner->m_registrar($data)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
 		}

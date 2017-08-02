@@ -16,6 +16,7 @@ admin/app/config.js
 /admin/app/components/
 
 /bower_components/
+/uploads/
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*

@@ -281,6 +281,17 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder);
+/*
+|---------------------------------------------------------------
+| TimeZone
+|---------------------------------------------------------------
+|
+| default Time Zone
+|
+
+*/
+	if ( function_exists( 'date_default_timezone_set' ) )
+	date_default_timezone_set('Europe/Madrid');
 
 /*
  * --------------------------------------------------------------------

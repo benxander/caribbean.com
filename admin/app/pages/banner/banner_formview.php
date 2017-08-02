@@ -24,19 +24,15 @@
 
 	            <div class="form-group col-md-12">
 	              	<label for="titulo" class="control-label minotaur-label">Título </label>
-	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.titulo" placeholder="Registre titulo del alimento" >
+	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.titulo" placeholder="Registre titulo del banner" >
 	              	<div ng-messages="formBanner.titulo.$error" ng-if="formBanner.titulo.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
 	            <div class="form-group col-md-12">
-		            <div class="form-group">
-			          <label class="control-label minotaur-label">Imagen</label>
-			          <input type="file" class="filestyle" filestyle="{
-			            buttonText: 'Select file',
-			            iconName: 'fa fa-inbox'
-			          }" nv-file-select="" uploader="mb.uploader">
-			        </div>
+	            	<label class="control-label minotaur-label">Imagen</label>
+			        <input upload-me type="file" name="upload" accept=".gif, .jpg, .png, .jpeg">
+					<img ng-if="image" ng-src="{{image}}" alt="" style="width: 100%">
 	            </div>
 		    </div>
 
