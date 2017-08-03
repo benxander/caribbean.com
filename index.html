@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="caribbean">
+<html ng-app="caribbean" ng-controller="MainController as main">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
 	<meta name="keywords" content="fotos">
 	<meta name="description" content="">
 	<!-- <base href="http://www.unaisangamer.com/"> -->
-	<base href="{{dirWebRoot}}">
+	<base href="{{dirWeb}}">
 	<title>Caribbean Photo Studio</title>
 	<!-- FAVICON AND APPLE TOUCH -->
 	<link rel="shortcut icon" href="favicon.png">
@@ -52,7 +52,7 @@
 
 
 </head>
-<body class="sticky-header header-white" ng-controller="MainController as main">
+<body class="sticky-header header-white">
 	<div id="main-container">
 		<!-- HEADER -->
 		<header id="header">
@@ -129,7 +129,7 @@
 									<a class="btn btn-default-2 waves" href="" fancybox ng-click="openFancybox('popups/login_view.html')">Acceso a tu cuenta</a>
 								</li> -->
 								<li class="login" ng-if="fSessionCI">
-									<a class="btn btn-default-2 waves" href="" ng-click="openAdmin();" >Acceso a tu cuenta!</a>
+									<a class="btn btn-default-2 waves" href="{{dirWeb}}admin" target="_blank">Acceso a tu cuenta!</a>
 								</li>
 							</ul>
 

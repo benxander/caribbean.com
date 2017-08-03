@@ -70,6 +70,7 @@
   function MainController($scope, $location, $window, rootServices) {
     var vm = this;
     // console.log('$translate',$translate);
+    $scope.dirWeb = angular.patchURL;
     $scope.fSessionCI = {};
 
     $scope.goToUrl = function ( path ) {
