@@ -50,33 +50,15 @@ class Model_banner extends CI_Model {
 		return $this->db->insert('banner', $data);
 	}
 
-	public function m_editar($datos)
+	public function m_editar($data,$id)
 	{
-		$data = array(
-			'idgrupo1' => $datos['idgrupo1']['id'],
-			'idgrupo2' => $datos['idgrupo2']['id'],
-			'nombre' => strtoupper($datos['nombre']),
-			'calorias' => empty($datos['calorias']) ? NULL : $datos['calorias'],
-			'proteinas' => empty($datos['proteinas']) ? NULL : $datos['proteinas'],
-			'grasas' => empty($datos['grasas']) ? NULL : $datos['grasas'],
-			'carbohidratos' => empty($datos['carbohidratos']) ? NULL : $datos['carbohidratos'],
-			'medida_casera' => empty($datos['medida_casera']) ? NULL : $datos['medida_casera'],
-			'gramo' => empty($datos['gramo']) ? NULL : $datos['gramo'],
-			'fibra' => empty($datos['fibra']) ? NULL : $datos['fibra'],
-			'ceniza' => empty($datos['ceniza']) ? NULL : $datos['ceniza'],
-			'calcio' => empty($datos['calcio']) ? NULL : $datos['calcio'],
-			'fosforo' => empty($datos['fosforo']) ? NULL : $datos['fosforo'],
-			'zinc' => empty($datos['zinc']) ? NULL : $datos['zinc'],
-			'hierro' => empty($datos['hierro']) ? NULL : $datos['hierro'],
-			'updatedAt' => date('Y-m-d H:i:s')
-		);
-		$this->db->where('idbanner',$datos['idbanner']);
+		$this->db->where('idbanner',$id);
 		return $this->db->update('banner', $data);
 	}
 	public function m_anular($datos)
 	{
 		$data = array(
-			'estado_ali' => 0,
+			'estado_ba' => 0,
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idbanner',$datos['idbanner']);

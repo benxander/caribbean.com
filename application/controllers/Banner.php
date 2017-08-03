@@ -23,8 +23,8 @@ class Banner extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idbanner' 		=> $row['idbanner'],
-					'titulo_ba' 	=> $row['titulo_ba'],
-					'imagen_ba' 	=> $row['imagen_ba'],
+					'titulo' 		=> $row['titulo_ba'],
+					'imagen' 		=> $row['imagen_ba'],
 					'tipo_banner' 	=> $row['tipo_banner'],
 					'seccion'		=> $row['seccion'],
 					'ancho_defecto' => $row['ancho_defecto'],
@@ -88,21 +88,56 @@ class Banner extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function editar_alimento()
+	public function editar_banner()
 	{
+		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
-		if($this->model_banner->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+    	// data
+    	$data = array(
+    		'idtipobanner' => $allInputs['tipoBanner']['id'],
+    		'idseccion' => $allInputs['seccion']['id'],
+    		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
+    		'idusuario' => $this->sessionCP['idusuario'],
+			'updatedAt' => date('Y-m-d H:i:s')
+    	);
+
+    	// VALIDACIONES
+    	if( $allInputs['canvas']){
+    		if( empty($allInputs['imagen']) ){
+	    		$arrData['message'] = 'Debe subir una imagen';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+	    	}
+
+	    	// preparacion y subida de imagen
+			$extension = strrchr($allInputs['nombre_imagen'], ".");
+			$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
+			$nombre .= '-'. date('YmdHis') . $extension;
+			$ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
+			$allInputs['imagen_ba'] = $nombre;
+			subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
+			$data_imagen = array(
+				'imagen_ba' => $nombre,
+	    		'size' => $allInputs['size'],
+	    		'tipo_imagen' => $allInputs['tipo_imagen'],
+			);
+			$data = array_merge($data,$data_imagen);
+    	}
+
+    	// var_dump($data); exit();
+		if( $this->model_banner->m_editar($data,$allInputs['idbanner']) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function anular_alimento()
+	public function anular_banner()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';

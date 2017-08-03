@@ -6,7 +6,7 @@
     .service('BannerServices', BannerServices);
 
   /** @ngInject */
-  function BannerController($scope, $uibModal, uiGridConstants,
+  function BannerController($scope, $uibModal, uiGridConstants, toastr,
     BannerServices, TipobannerServices, SeccionServices) {
     var vm = this;
     //$scope.image = "";
@@ -20,7 +20,6 @@
         search: null
       };
       vm.dirImagesBanner = $scope.dirImages + "banners/";
-      console.log('vm.dirImagesBanner',vm.dirImagesBanner);
       vm.mySelectionGrid = [];
       vm.gridOptions = {
         paginationPageSizes: [10, 50, 100, 500, 1000],
@@ -38,10 +37,17 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idbanner', name:'idbanner', displayName: 'ID', minWidth: 50, width:80, visble:false, sort: { direction: uiGridConstants.DESC} },
-        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 160 },
-        { field: 'tipo_banner', name:'tipo_banner', displayName: 'TIPO BANNER', minWidth: 160 },
-        { field: 'titulo_ba', name:'titulo_ba', displayName: 'TITULO BANNER', minWidth: 180 },
-        { field: 'imagen_ba', name: 'imagen_ba', displayName: '',width: 180, enableFiltering: false, enableSorting: false, cellTemplate:'<img style="height:inherit;" class="center-block" ng-src="{{ grid.appScope.dirImagesBanner + row.entity.tipo_banner + \'/\' + COL_FIELD }}" /> </div>' },
+        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100 },
+        { field: 'tipo_banner', name:'tipo_banner', displayName: 'TIPO BANNER', minWidth: 100 },
+        { field: 'titulo', name:'titulo_ba', displayName: 'TITULO BANNER', minWidth: 180 },
+        { field: 'imagen', name: 'imagen_ba', displayName: 'IMAGEN',width: 120, enableFiltering: false, enableSorting: false, cellTemplate:'<img style="height:inherit;" class="center-block" ng-src="{{ grid.appScope.dirImagesBanner + row.entity.tipo_banner + \'/\' + COL_FIELD }}" /> </div>' },
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
+          cellTemplate: '<div class="text-center">' +
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+          '</div>'
+        }
+
       ];
       vm.gridOptions.onRegisterApi = function(gridApi) {
         vm.gridApi = gridApi;
@@ -79,35 +85,40 @@
         });
       }
       vm.getPaginationServerSide();
+    // SECCION
+      SeccionServices.sListarSeccionCbo().then(function (rpta) {
+        vm.listaSeccion = rpta.datos;
+        vm.listaSeccion.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+        // vm.fData.seccion = vm.listaSeccion[0];
+      });
+    // TIPO DE BANNER
+      TipobannerServices.sListarTipobannerCbo().then(function (rpta) {
+        vm.listaTipoBanner = angular.copy(rpta.datos);
+        vm.listaTipoBanner.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+        // vm.fData.tipoBanner = vm.listaTipoBanner[0];
+      });
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/banner/banner_formview.php',
           controllerAs: 'mb',
           size: 'md',
-          backdropClass: 'splash splash-2 splash-ef-14',
-          windowClass: 'splash splash-2 splash-ef-14',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
           scope: $scope,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Registro de banners';
-            vm.activeStep = 0;
-            // SECCION
-            SeccionServices.sListarSeccionCbo().then(function (rpta) {
-              console.log('rpta',rpta);
-              vm.listaSeccion = rpta.datos;
-              vm.listaSeccion.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
-              vm.fData.seccion = vm.listaSeccion[0];
-            });
-            // TIPO DE BANNER
-            TipobannerServices.sListarTipobannerCbo().then(function (rpta) {
-              vm.listaTipoBanner = angular.copy(rpta.datos);
-              vm.listaTipoBanner.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
-              vm.fData.tipoBanner = vm.listaTipoBanner[0];
-            });
+            vm.modalTitle = 'Registro de banner';
+            vm.fData.canvas = true;
+
+            vm.listaSeccion = arrToModal.scope.listaSeccion;
+            vm.listaTipoBanner = arrToModal.scope.listaTipoBanner;
+
+            vm.fData.seccion = vm.listaSeccion[0];
+            vm.fData.tipoBanner = vm.listaTipoBanner[0];
             // subida de imagen
 
             // botones
@@ -116,8 +127,7 @@
                 vm.fData.size = $scope.file.size;
                 vm.fData.nombre_imagen = $scope.file.name;
                 vm.fData.tipo_imagen = $scope.file.type;
-                console.log('scope',$scope);
-                console.log('vm.fData',vm.fData);
+
                 BannerServices.sRegistrarBanner(vm.fData).then(function (rpta) {
                   var openedToasts = [];
                   vm.options = {
@@ -150,6 +160,7 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
+                scope : vm,
               }
             }
           }
@@ -157,11 +168,11 @@
       }
       vm.btnEditar = function(row){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/alimento/alimento_formview.html',
-          controllerAs: 'modalAli',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-14',
-          windowClass: 'splash splash-2 splash-ef-14',
+          templateUrl: 'app/pages/banner/banner_formview.php',
+          controllerAs: 'mb',
+          size: 'md',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             var openedToasts = [];
@@ -169,41 +180,34 @@
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Edición de Alimentos';
-            vm.activeStep = 0;
-
-            TipobannerServices.sListarGrupoAlimento1().then(function (rpta) {
-              vm.listaGrupo1 = {};
-              vm.listaGrupo1 = angular.copy(rpta.datos);
-              vm.listaGrupo1.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
-              angular.forEach(vm.listaGrupo1, function(value, key){
-                if(value.id == vm.fData.idgrupo1){
-                  vm.fData.idgrupo1 = vm.listaGrupo1[key];
-                  TipobannerServices.sListarGrupoAlimento2(value.id).then(function (rpta) {
-                    vm.listaGrupo2 = {};
-                    vm.listaGrupo2 = angular.copy(rpta.datos);
-                    vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
-                    angular.forEach(vm.listaGrupo2, function(value2, key2){
-                      if(value2.id == vm.fData.idgrupo2){
-                        vm.fData.idgrupo2 = vm.listaGrupo2[key2];
-                      }
-                    });
-                  });
-                }
-              });
-            });
-
-            vm.cambiogrupo = function(){
-              TipobannerServices.sListarGrupoAlimento2(vm.fData.idgrupo1.id).then(function (rpta) {
-                vm.listaGrupo2 = angular.copy(rpta.datos);
-                vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
-                vm.fData.idgrupo2 = vm.listaGrupo2[0];
-              });
-            }
-
+            vm.modalTitle = 'Edición de Banner';
+            vm.fData.canvas = false;
+            vm.listaSeccion = arrToModal.scope.listaSeccion;
+            vm.listaTipoBanner = arrToModal.scope.listaTipoBanner;
+            var objIndex = vm.listaSeccion.filter(function(obj) {
+              return obj.descripcion == vm.fData.seccion;
+            }).shift();
+            vm.fData.seccion = objIndex;
+            vm.fData.tipoBanner = vm.listaTipoBanner.filter(function(obj) {
+              return obj.descripcion == vm.fData.tipo_banner;
+            }).shift();
+            vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
+            console.log('sel',arrToModal.seleccion);
+            console.log('data',vm.fData);
             vm.aceptar = function () {
-              $uibModalInstance.close(vm.fData);
-              AlimentoServices.sEditarAlimento(vm.fData).then(function (rpta) {
+              if(vm.fData.canvas){
+                if(angular.isUndefined($scope.image)){
+                  alert('Debe seleccionar una imagen');
+                  return false;
+                }
+                vm.fData.imagen = $scope.image;
+                console.log('imagen',vm.fData.imagen);
+                vm.fData.size = $scope.file.size;
+                vm.fData.nombre_imagen = $scope.file.name;
+                vm.fData.tipo_imagen = $scope.file.type;
+              }
+
+              BannerServices.sEditarBanner(vm.fData).then(function (rpta) {
                 vm.options = {
                   timeout: '3000',
                   extendedTimeout: '1000',
@@ -226,7 +230,7 @@
                 var toast = toastr[iconClass](rpta.message, title, vm.options);
                 openedToasts.push(toast);
               });
-
+              $uibModalInstance.close(vm.fData);
             };
             vm.cancel = function () {
               $uibModalInstance.dismiss('cancel');
@@ -236,7 +240,9 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
-                seleccion : row.entity
+                seleccion : row.entity,
+                scope : vm,
+                // seleccion : vm.mySelectionGrid[0]
               }
             }
           }
@@ -275,7 +281,8 @@
   function BannerServices($http, $q) {
     return({
         sListarBanner: sListarBanner,
-        sRegistrarBanner: sRegistrarBanner
+        sRegistrarBanner: sRegistrarBanner,
+        sEditarBanner: sEditarBanner,
     });
     function sListarBanner(pDatos) {
       var datos = pDatos || {};
@@ -291,6 +298,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Banner/registrar_banner",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarBanner(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Banner/editar_banner",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

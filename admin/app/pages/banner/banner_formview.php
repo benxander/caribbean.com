@@ -29,10 +29,15 @@
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
-	            <div class="form-group col-md-12">
+	            <div class="form-group col-md-12" ng-show="mb.fData.canvas">
 	            	<label class="control-label minotaur-label">Imagen</label>
 			        <input upload-me type="file" name="upload" accept=".gif, .jpg, .png, .jpeg">
 					<img ng-if="image" ng-src="{{image}}" alt="" style="width: 100%">
+	            </div>
+	            <div class="form-group col-md-12" ng-show="!mb.fData.canvas">
+	            	<label class="control-label minotaur-label">Imagen</label>
+			        <img ng-src="{{mb.rutaImagen}}{{mb.fData.imagen}}" alt="" style="width: 100%">
+			        <a href="" ng-click="mb.fData.canvas=true">Cambiar Imagen</a>
 	            </div>
 		    </div>
 
