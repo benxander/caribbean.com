@@ -17,7 +17,7 @@
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;"ng-click="b.getPaginationServerSide()" minotaur-tile-refresh></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
@@ -30,11 +30,8 @@
         <section class="tile-body">
           <div class="row">
             <div class="col-md-12 col-sm-12">
-              <div class="form-group pull-right">
+              <div class="form-group pull-right" style="position: relative;z-index: 10">
                 <button class="btn btn-success" ng-click='b.btnNuevo()'>Nuevo</button>
-              </div>
-              <div class="form-group pull-right">
-                <!-- <button ng-show="b.mySelectionGrid.length == 1" type="button" class="btn btn-warning mr-sm" ng-click='b.btnEditar()'>Editar</button> -->
               </div>
             </div>
             <div class="col-md-12 col-sm-12">

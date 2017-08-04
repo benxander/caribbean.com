@@ -76,27 +76,18 @@
     $scope.goToUrl = function ( path ) {
       $location.path( path );
     };
-    /*$scope.getValidateSession = function () {
-      rootServices.sGetSessionCI().then(function (response) {
-        if(response.flag == 1){
-          $scope.fSessionCI = response.datos;
-        }else{
-          $scope.fSessionCI = {};
-        }
-        console.log('sesion ',$scope.fSessionCI);
-      });
-      console.log($scope.fSessionCI);
 
-    }*/
-    // $scope.getValidateSession();
-    $scope.openAdmin = function(){
-      $window.open("admin/", "_blank")
-      /*if($scope.fSessionCI.logged){
-        $window.open("admin/", "_blank")
+    rootServices.sCargarBanners().then(function (response) {
+      if(response.flag == 1){
+        $scope.listaSliders = response.datos;
+        console.log('SLIDER ',$scope.listaSliders);
       }else{
+        console.log('no data');
+      }
+    });
 
-      }*/
-    }
+
+
     /*$scope.login = function(){
       rootServices.sLoginToSystem($scope.fLogin).then(function (response) {
         $scope.fAlert = {};
@@ -128,36 +119,36 @@
   }
   function rootServices($http, $q) {
     return({
-        sLoginToSystem: sLoginToSystem,
-        sLogoutSessionCI: sLogoutSessionCI,
-        sGetSessionCI: sGetSessionCI,
+        sCargarBanners: sCargarBanners,
+        // sLogoutSessionCI: sLogoutSessionCI,
+        // sGetSessionCI: sGetSessionCI,
     });
-    function sLoginToSystem(pDatos) {
+    function sCargarBanners(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Acceso/",
+            url :  angular.patchURLCI + "Banner/cargar_banners_web",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sLogoutSessionCI(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Acceso/logoutSessionCI",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
-    function sGetSessionCI(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Acceso/getSessionCI",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
+    // function sLogoutSessionCI(pDatos) {
+    //   var datos = pDatos || {};
+    //   var request = $http({
+    //         method : "post",
+    //         url :  angular.patchURLCI + "Acceso/logoutSessionCI",
+    //         data : datos
+    //   });
+    //   return (request.then( handleSuccess,handleError ));
+    // }
+    // function sGetSessionCI(pDatos) {
+    //   var datos = pDatos || {};
+    //   var request = $http({
+    //         method : "post",
+    //         url :  angular.patchURLCI + "Acceso/getSessionCI",
+    //         data : datos
+    //   });
+    //   return (request.then( handleSuccess,handleError ));
+    // }
   }
 })();

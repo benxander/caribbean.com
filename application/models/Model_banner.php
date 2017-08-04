@@ -12,20 +12,22 @@ class Model_banner extends CI_Model {
 		$this->db->join('tipo_banner tb','ba.idtipobanner = tb.idtipobanner');
 		$this->db->join('seccion se','ba.idseccion = se.idseccion');
 		$this->db->where('ba.estado_ba', 1);
-		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
-			foreach ($paramPaginate['searchColumn'] as $key => $value) {
-				if(! empty($value)){
-					$this->db->like($key ,strtoupper($value) ,FALSE);
+		if($paramPaginate){
+			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
+				foreach ($paramPaginate['searchColumn'] as $key => $value) {
+					if(! empty($value)){
+						$this->db->like($key ,strtoupper($value) ,FALSE);
+					}
 				}
 			}
-		}
 
-		if( $paramPaginate['sortName'] ){
-			$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
-		}
-		if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
-			$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
-		}
+			if( $paramPaginate['sortName'] ){
+				$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
+			}
+			if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
+				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
+			}
+			}
 		return $this->db->get()->result_array();
 	}
 	public function m_count_banner($paramPaginate=FALSE){

@@ -6,9 +6,10 @@
     .service('BannerServices', BannerServices);
 
   /** @ngInject */
-  function BannerController($scope, $uibModal, uiGridConstants, toastr,
+  function BannerController($scope, $uibModal, uiGridConstants, toastr, alertify,
     BannerServices, TipobannerServices, SeccionServices) {
     var vm = this;
+    var openedToasts = [];
     //$scope.image = "";
     // GRILLA PRINCIPAL
       var paginationOptions = {
@@ -129,26 +130,19 @@
                 vm.fData.tipo_imagen = $scope.file.type;
 
                 BannerServices.sRegistrarBanner(vm.fData).then(function (rpta) {
-                  var openedToasts = [];
-                  vm.options = {
-                    timeout: '3000',
-                    extendedTimeout: '1000',
-                    preventDuplicates: false,
-                    preventOpenDuplicates: false
-                  };
+
                   if(rpta.flag == 1){
                     $uibModalInstance.close(vm.fData);
                     vm.getPaginationServerSide();
                     var title = 'OK';
-                    var iconClass = 'success';
+                    var type = 'success';
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
-                    var iconClass = 'warning';
+                    var type = 'warning';
                   }else{
                     alert('Ocurrió un error');
                   }
-                  // var toast = toastr[iconClass](rpta.message, title, vm.options);
-                  // openedToasts.push(toast);
+                  openedToasts.push(toastr[type](rpta.message, title));
                 });
 
               };
@@ -175,7 +169,6 @@
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
@@ -208,27 +201,18 @@
               }
 
               BannerServices.sEditarBanner(vm.fData).then(function (rpta) {
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  progressBar: true,
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
                 if(rpta.flag == 1){
-                  //$uibModalInstance.close(vm.fData);
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
                   var title = 'OK';
-                  var iconClass = 'success';
+                  var type = 'success';
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var type = 'warning';
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                openedToasts.push(toastr[type](rpta.message, title));
               });
               $uibModalInstance.close(vm.fData);
             };
@@ -242,39 +226,33 @@
                 getPaginationServerSide : vm.getPaginationServerSide,
                 seleccion : row.entity,
                 scope : vm,
-                // seleccion : vm.mySelectionGrid[0]
               }
             }
           }
         });
       }
       vm.btnAnular = function(row){
-        alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
-          ev.preventDefault();
-          AlimentoServices.sAnularAlimento(row.entity).then(function (rpta) {
-            var openedToasts = [];
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
-            if(rpta.flag == 1){
-              vm.getPaginationServerSide();
-              var title = 'OK';
-              var iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
-            }else{
-              alert('Ocurrió un error');
-            }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
-          });
-        }, function(ev) {
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
+            BannerServices.sAnularBanner(row.entity).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+              }else{
+                alert('Ocurrió un error');
+              }
+              openedToasts.push(toastr[type](rpta.message, title));
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+            // alertify.error('Cancel');
         });
+
       }
   }
 
@@ -283,6 +261,7 @@
         sListarBanner: sListarBanner,
         sRegistrarBanner: sRegistrarBanner,
         sEditarBanner: sEditarBanner,
+        sAnularBanner: sAnularBanner,
     });
     function sListarBanner(pDatos) {
       var datos = pDatos || {};
@@ -307,6 +286,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Banner/editar_banner",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sAnularBanner(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Banner/anular_banner",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

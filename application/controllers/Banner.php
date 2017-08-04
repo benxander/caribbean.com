@@ -45,6 +45,44 @@ class Banner extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function cargar_banners_web()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+
+		$lista = $this->model_banner->m_cargar_banner();
+
+		$arrListado = array();
+		$arrSlider = array();
+		$arrFondo = array();
+		$arrLateral = array();
+		$ruta = 'uploads/banners/';
+		foreach ($lista as $row) {
+			$arrAux = array(
+				'idbanner' 		=> $row['idbanner'],
+				'titulo' 		=> $row['titulo_ba'],
+				'imagen' 		=> $ruta . $row['tipo_banner'].'/'.$row['imagen_ba'],
+				'tipo_banner' 	=> $row['tipo_banner'],
+				'seccion'		=> $row['seccion'],
+				'ancho_defecto' => $row['ancho_defecto'],
+				'alto_defecto' 	=> $row['alto_defecto'],
+				'estado_ba' 	=> $row['estado_ba'],
+			);
+			// $arrListado[$row['tipo_banner']][] = $arrAux;
+			array_push($arrListado, $arrAux);
+		}
+
+		// var_dump($arrListado); exit();
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 	// MANTENIMIENTO
 	public function registrar_banner()
