@@ -3,7 +3,8 @@
 	angular.module('caribbean', [
 		'ngRoute',
 		'ngCookies',
-		'oc.lazyLoad'
+		'oc.lazyLoad',
+		'rev.slider'
 		//'ngFacebook'
 	]);
 

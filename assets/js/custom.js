@@ -1236,7 +1236,7 @@
 		}
 
 		// REVOLUTION SLIDER //
-		if (typeof $.fn.revolution !== 'undefined') {
+		/*if (typeof $.fn.revolution !== 'undefined') {
             console.log('revolution');
 			$(".rev_slider").revolution({
 				sliderType: "standard",
@@ -1301,7 +1301,7 @@
 
 		}else{
             console.log('no revolution');
-        }
+        }*/
 
 
 		// OWL Carousel //
