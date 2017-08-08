@@ -30,6 +30,7 @@
   function MainController($translate,$scope,$state,$location, rootServices, empresaNombre) {
     var vm = this;
     $scope.dirImages = angular.patchURL+'uploads/';
+     // $scope.valores = [true,true,true,true,true,true];
     // console.log('$translate',$translate);
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
@@ -67,6 +68,29 @@
       $location.path( path );
     };
 
+    $scope.CargaMenu = function() {
+      var opciones = [
+        'opDashboard',
+        'opClientes',
+        'opBanners',
+        'opMantenimiento',
+        'opConfig',
+        'opSeguridad'
+      ];
+      if($scope.fSessionCI.idgrupo == 1){
+        $scope.valores = [true,true,true,true,true,true];
+      }
+      else if($scope.fSessionCI.idgrupo == 2){
+        $scope.valores = [true,true,true,true,true,true];
+      }
+      else if($scope.fSessionCI.idgrupo == 3){
+        $scope.valores = [true,true,false,false,false,false];
+      }
+      else{
+        console.log('No tiene grupo');
+        $scope.valores = [false,false,false,false,false,false];
+      }
+    }
     $scope.getValidateSession = function () {
       rootServices.sGetSessionCI().then(function (response) {
         if(response.flag == 1){
@@ -76,6 +100,7 @@
           if( $location.path() == '/app/pages/login' ){
             $scope.goToUrl('/');
           }
+          $scope.CargaMenu();
         }else{
           $scope.fSessionCI = {};
           $scope.logOut();
@@ -87,22 +112,7 @@
 
     }
     $scope.getValidateSession();
-    $scope.CargaMenu = function() {
-      var opciones = ['opDashboard','opClientes','opBanners','opMantenimiento','opSeguridad'];
-      if($scope.fSessionCI.idgrupo == 1){
-        $scope.valores = [true,true,true,true,true];
-      }
-      else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true];
-      }
-      else if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [true,true,true,true,true];
-      }
-      else{
-        $scope.valores = [true,true,true,true,true];
-      }
-    }
-    $scope.CargaMenu();
+
 
   }
   function rootServices($http, $q) {

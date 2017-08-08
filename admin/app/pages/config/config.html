@@ -1,0 +1,162 @@
+<div class="page page-ui pull-to-header">
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Dashboard</a></li>
+    <li class="active">Configuración</li>
+  </ol>
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-12">
+      <!-- tile -->
+      <div class="tile">
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Configuración Web</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <!-- <minotaur-tile-close></minotaur-tile-close> -->
+          </div>
+        </section>
+        <!-- /tile header -->
+        <!-- tile body -->
+        <section class="tile-body">
+          <form class="form-horizontal" role="form">
+            <uib-tabset active="forms.activeStep" justified="true" class="tab-wizard padded">
+              <uib-tab index="0">
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step1.$valid"></i>
+                  Datos Principales
+                  <span class="pull-right wizard-step">1</span>
+                </uib-tab-heading>
+                <ng-form name="step1">
+                  <div class="row">
+                    <div class="form-group col-sm-12">
+                      <label for="titulo" class="col-sm-2 control-label minotaur-label">Título : </label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control  text-center underline-input" id="titulo" placeholder="Título" ng-model="co.fData.titulo" required="true">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12">
+                      <label for="descripcion" class="col-sm-2 control-label minotaur-label">Descripción : </label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control  text-center underline-input" id="descripcion" placeholder="descripción" ng-model="co.fData.descripcion">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12">
+                      <label for="keywords" class="col-sm-2 control-label minotaur-label">Palabras claves : </label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control text-center underline-input" id="keywords" placeholder="Palabras claves" ng-model="co.fData.keywords">
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn minotaur-btn pull-right"
+                  ng-class="{'btn-default': step1.$invalid, 'btn-info': !step1.$invalid}" ng-click="forms.activeStep = 1">{{ 'Form.NEXT' | translate }}</button>
+                </ng-form>
+              </uib-tab>
+              <uib-tab index="1">
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step2.$valid"></i>
+                  Imágenes
+                  <span class="pull-right wizard-step">2</span>
+                </uib-tab-heading>
+                <ng-form name="step2">
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="street" class="control-label minotaur-label">Logo (154x22)<span class="text-red">*</span>:</label>
+                      <input type="file" image="logo" accept=".gif, .jpg, .png, .jpeg">
+                      <img ng-show="logo" ng-src="{{logo.url}}" alt="logo" style="width: 154px">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="street" class="control-label minotaur-label">Logo Footer (124x19)<span class="text-red">*</span>:</label>
+                      <input type="file" image="logoFooter" accept=".gif, .jpg, .png, .jpeg">
+                      <img ng-if="logoFooter" ng-src="{{logoFooter.url}}" alt="logoFooter" style="width: 124px">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="street" class="control-label minotaur-label">Favicon (32x32)<span class="text-red">*</span>: </label>
+                      <input type="file" image="favicon" accept=".gif, .jpg, .png, .jpeg">
+                      <img ng-if="favicon" ng-src="{{favicon.url}}" alt="favicon" style="width: 32px">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="street" class="control-label minotaur-label">Apple Icon (180x180)<span class="text-red">*</span>: </label>
+                      <input type="file" image="appleIcon" accept=".gif, .jpg, .png, .jpeg">
+                      <img ng-if="appleIcon" ng-src="{{appleIcon.url}}" alt="appleIcon" style="width: 180px">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="street" class="control-label minotaur-label">Marca de Agua (215x50)<span class="text-red">*</span>: </label>
+                      <input type="file" image="waterMark" accept=".gif, .jpg, .png, .jpeg">
+                      <img ng-if="waterMark" ng-src="{{waterMark.url}}" alt="waterMark" style="width: 215px">
+                    </div>
+                  </div>
+                  <button class="btn btn-info minotaur-btn pull-left"
+                   ng-click="forms.activeStep = 0">{{ 'Form.PREVIOUS' | translate }}</button>
+                  <button class="btn minotaur-btn pull-right"
+                  ng-class="{'btn-default': step1.$invalid, 'btn-info': !step1.$invalid}" ng-click="forms.activeStep = 2">{{ 'Form.NEXT' | translate }}</button>
+                </ng-form>
+              </uib-tab>
+              <uib-tab index="2">
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step3.$valid"></i>
+                  Datos de Contacto
+                  <span class="pull-right wizard-step">3</span>
+                </uib-tab-heading>
+                <ng-form name="step3">
+
+                  <div class="row">
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="telefono" class="col-sm-3 control-label minotaur-label">Teléfono : </label>
+                      <div class="col-sm-9">
+                        <input type="tel" class="form-control  text-center underline-input" id="telefono" placeholder="Teléfono" ng-model="co.fData.telefono">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="telefono" class="col-sm-3 control-label minotaur-label">Whatsapp : </label>
+                      <div class="col-sm-9">
+                        <input type="tel" class="form-control  text-center underline-input" id="telefono" placeholder="WhatsApp" ng-model="co.fData.telefono">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="email" class="col-sm-3 control-label minotaur-label">E-mail : </label>
+                      <div class="col-sm-9">
+                        <input type="email" class="form-control  text-center underline-input" id="email" placeholder="E-mail" ng-model="co.fData.email">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="direccion" class="col-sm-3 control-label minotaur-label">Dirección : </label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control  text-center underline-input" id="direccion" placeholder="Dirección" ng-model="co.fData.direccion">
+                      </div>
+
+                    </div>
+                  </div>
+                  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c pull-right" ng-click="co.aceptar()"><i class="fa fa-arrow-right"></i> {{ 'Form.SAVE' | translate }}</button>
+                </ng-form>
+              </uib-tab>
+            </uib-tabset>
+          </form>
+        </section>
+        <!-- /tile body -->
+      </div>
+      <!-- /tile -->
+    </div>
+    <!-- /col -->
+  </div>
+  <!-- /row -->
+</div>

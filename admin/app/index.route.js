@@ -43,6 +43,13 @@
         controller: 'BannerController',
         controllerAs: 'b'
       })
+      //banner
+      .state('config', {
+        url: '/app/config',
+        templateUrl: 'app/pages/config/config.html',
+        controller: 'ConfigController',
+        controllerAs: 'cg'
+      })
       //idioma
       .state('idioma', {
         url: '/app/idioma',

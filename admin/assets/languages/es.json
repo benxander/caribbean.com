@@ -6,10 +6,16 @@
     "MANTENIMIENTO": "Mantenimiento",
     "IDIOMAS": "Idiomas",
     "SITIOS": "Sitios",
+    "CONFIG": "Configuración",
     "SEGURIDAD": "Seguridad",
     "USUARIOS": "Usuarios",
     "GRUPOS": "Grupos",
     "ROLES": "Roles"
+  },
+  "Form": {
+    "PREVIOUS":"Atras",
+    "NEXT":"Siguiente",
+    "SAVE":"Guardar"
   }
 }
 
