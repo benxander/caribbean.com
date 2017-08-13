@@ -86,13 +86,13 @@ class Config extends CI_Controller {
 		// preparacion y subida de favicon
     	if(!empty($allInputs['newFavicon']) && $allInputs['cFavicon']){
 			$nombre = 'favicon.png';
-			$ruta = '/';
+			$ruta = 'assets/images/';
 			subir_imagen_Base64($allInputs['newFavicon']['dataURL'], $ruta , $nombre);
 		}
 		// preparacion y subida de apple icon
     	if(!empty($allInputs['newAppleIcon']) && $allInputs['cAppleIcon']){
 			$nombre = 'apple-touch-180x180.png';
-			$ruta = '/';
+			$ruta = 'assets/images/';
 			subir_imagen_Base64($allInputs['newAppleIcon']['dataURL'], $ruta , $nombre);
 		}
 		// preparacion y subida de watermark
