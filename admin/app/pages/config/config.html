@@ -1,6 +1,6 @@
 <div class="page page-ui pull-to-header">
   <ol class="breadcrumb bg-white">
-    <li><a ui-sref="dashboard">Dashboard</a></li>
+    <li><a ui-sref="dashboard">{{'Menu.DASHBOARD' | translate}}</a></li>
     <li class="active">Configuración</li>
   </ol>
   <!-- row -->
@@ -41,7 +41,7 @@
                     <div class="form-group col-sm-12">
                       <label for="titulo" class="col-sm-2 control-label minotaur-label">Título : </label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control  text-center underline-input" id="titulo" placeholder="Título" ng-model="co.fData.titulo" required="true">
+                        <input type="text" class="form-control  text-center underline-input" id="titulo" placeholder="Título" ng-model="cg.fData.titulo_we" required="true">
                       </div>
                     </div>
                   </div>
@@ -49,7 +49,7 @@
                     <div class="form-group col-sm-12">
                       <label for="descripcion" class="col-sm-2 control-label minotaur-label">Descripción : </label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control  text-center underline-input" id="descripcion" placeholder="descripción" ng-model="co.fData.descripcion">
+                        <input type="text" class="form-control  text-center underline-input" id="descripcion" placeholder="descripción" ng-model="cg.fData.descripcion_we">
                       </div>
                     </div>
                   </div>
@@ -57,7 +57,15 @@
                     <div class="form-group col-sm-12">
                       <label for="keywords" class="col-sm-2 control-label minotaur-label">Palabras claves : </label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control text-center underline-input" id="keywords" placeholder="Palabras claves" ng-model="co.fData.keywords">
+                        <input type="text" class="form-control text-center underline-input" id="keywords" placeholder="Palabras claves" ng-model="cg.fData.keywords">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12">
+                      <label for="autor" class="col-sm-2 control-label minotaur-label">Autor : </label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control text-center underline-input" id="autor" placeholder="Autor" ng-model="cg.fData.autor">
                       </div>
                     </div>
                   </div>
@@ -74,33 +82,68 @@
                 <ng-form name="step2">
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label for="street" class="control-label minotaur-label">Logo (154x22)<span class="text-red">*</span>:</label>
-                      <input type="file" image="logo" accept=".gif, .jpg, .png, .jpeg">
-                      <img ng-show="logo" ng-src="{{logo.url}}" alt="logo" style="width: 154px">
+                      <label class="control-label minotaur-label">Logo (154 x 22)<span class="text-red">*</span>: </label>
+                      <div ng-show="cg.fData.logo && !cg.fData.cLogo" >
+                        <img class="mt-md" ng-src="../assets/images/{{cg.fData.logo}}" alt="logo" style="width: 154px">
+                         <a href="" class="block" style="width: 110px" ng-click="cg.fData.cLogo=true">Cambiar Imagen</a>
+                      </div>
+                      <div ng-show="cg.fData.cLogo">
+                        <input type="file" image="cg.fData.newLogo" accept=".gif, .jpg, .png, .jpeg">
+                        <img class="mt-md" ng-if="cg.fData.newLogo.url" ng-src="{{cg.fData.newLogo.dataURL}}" alt="logo" style="width: 154px">
+                        <a href="" class="block text-red" style="width: 60px" ng-click="cg.fData.cLogo=false;">Cancelar</a>
+                      </div>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="street" class="control-label minotaur-label">Logo Footer (124x19)<span class="text-red">*</span>:</label>
-                      <input type="file" image="logoFooter" accept=".gif, .jpg, .png, .jpeg">
-                      <img ng-if="logoFooter" ng-src="{{logoFooter.url}}" alt="logoFooter" style="width: 124px">
+                      <label class="control-label minotaur-label">Footer Logo (124 x 19)<span class="text-red">*</span>:</label>
+                      <div ng-show="cg.fData.footer_logo && !cg.fData.cLogoFooter" >
+                        <img class="mt-md" ng-src="../assets/images/{{cg.fData.footer_logo}}" alt="footer logo" style="width: 124px">
+                         <a href="" class="block" style="width: 110px" ng-click="cg.fData.cLogoFooter=true">Cambiar Imagen</a>
+                      </div>
+                      <div ng-show="!cg.fData.footer_logo || cg.fData.cLogoFooter">
+                        <input type="file" image="cg.fData.newLogoFooter" accept=".gif, .jpg, .png, .jpeg">
+                        <img class="mt-md" ng-if="cg.fData.newLogoFooter.url" ng-src="{{cg.fData.newLogoFooter.dataURL}}" alt="logoFooter" style="width: 124px">
+                        <a href="" class="block text-red" style="width: 60px" ng-click="cg.fData.cLogoFooter=false;" ng-show="cg.fData.footer_logo">Cancelar</a>
+                      </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label for="street" class="control-label minotaur-label">Favicon (32x32)<span class="text-red">*</span>: </label>
-                      <input type="file" image="favicon" accept=".gif, .jpg, .png, .jpeg">
-                      <img ng-if="favicon" ng-src="{{favicon.url}}" alt="favicon" style="width: 32px">
+                      <label class="control-label minotaur-label">Favicon (32 x 32)<span class="text-red">*</span>: </label>
+                      <div ng-show="cg.fData.favicon && !cg.fData.cFavicon" >
+                        <img class="mt-md" ng-src="../{{cg.fData.favicon}}" alt="favicon" style="width: 32px">
+                         <a href="" class="block" style="width: 110px" ng-click="cg.fData.cFavicon=true">Cambiar Imagen</a>
+                      </div>
+                      <div ng-show="cg.fData.cFavicon">
+                        <input type="file" image="cg.fData.newFavicon" accept=".gif, .jpg, .png, .jpeg">
+                        <img class="mt-md" ng-if="cg.fData.newFavicon.url" ng-src="{{cg.fData.newFavicon.dataURL}}" alt="favicon" style="width: 32px">
+                        <a href="" class="block text-red" style="width: 60px" ng-click="cg.fData.cFavicon=false;">Cancelar</a>
+                      </div>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="street" class="control-label minotaur-label">Apple Icon (180x180)<span class="text-red">*</span>: </label>
-                      <input type="file" image="appleIcon" accept=".gif, .jpg, .png, .jpeg">
-                      <img ng-if="appleIcon" ng-src="{{appleIcon.url}}" alt="appleIcon" style="width: 180px">
+                      <label class="control-label minotaur-label">Marca de Agua (215 x 50)<span class="text-red">*</span>: </label>
+                      <div ng-show="cg.fData.marca_agua && !cg.fData.cWaterMark" >
+                        <img class="mt-md" ng-src="../assets/images/{{cg.fData.marca_agua}}" alt="WaterMark" style="width: 215px">
+                         <a href="" class="block" style="width: 110px" ng-click="cg.fData.cWaterMark=true">Cambiar Imagen</a>
+                      </div>
+                      <div ng-show="!cg.fData.marca_agua || cg.fData.cWaterMark">
+                        <input type="file" image="cg.fData.newWaterMark" accept=".gif, .jpg, .png, .jpeg">
+                        <img class="mt-md" ng-if="cg.fData.newWaterMark.url" ng-src="{{cg.fData.newWaterMark.dataURL}}" alt="WaterMark" style="width: 215px">
+                        <a href="" class="block text-red" style="width: 60px" ng-click="cg.fData.cWaterMark=false;" ng-show="cg.fData.marca_agua">Cancelar</a>
+                      </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label for="street" class="control-label minotaur-label">Marca de Agua (215x50)<span class="text-red">*</span>: </label>
-                      <input type="file" image="waterMark" accept=".gif, .jpg, .png, .jpeg">
-                      <img ng-if="waterMark" ng-src="{{waterMark.url}}" alt="waterMark" style="width: 215px">
+                      <label class="control-label minotaur-label">Apple Icon (180 x 180)<span class="text-red">*</span>: </label>
+                      <div ng-show="cg.fData.apple_icon && !cg.fData.cAppleIcon" >
+                        <img class="mt-md" ng-src="../{{cg.fData.apple_icon}}" alt="appleIcon" style="width: 180px">
+                         <a href="" class="block" style="width: 110px" ng-click="cg.fData.cappleIcon=true">Cambiar Imagen</a>
+                      </div>
+                      <div ng-show="cg.fData.cAppleIcon">
+                        <input type="file" image="cg.fData.newAppleIcon" accept=".gif, .jpg, .png, .jpeg">
+                        <img class="mt-md" ng-if="cg.fData.newAppleIcon.url" ng-src="{{cg.fData.newAppleIcon.dataURL}}" alt="appleIcon" style="width: 180px">
+                        <a href="" class="block text-red" style="width: 60px" ng-click="cg.fData.cAppleIcon=false;">Cancelar</a>
+                      </div>
                     </div>
                   </div>
                   <button class="btn btn-info minotaur-btn pull-left"
@@ -121,32 +164,42 @@
                     <div class="form-group col-md-6 col-sm-12">
                       <label for="telefono" class="col-sm-3 control-label minotaur-label">Teléfono : </label>
                       <div class="col-sm-9">
-                        <input type="tel" class="form-control  text-center underline-input" id="telefono" placeholder="Teléfono" ng-model="co.fData.telefono">
+                        <input type="tel" class="form-control  text-center underline-input" id="telefono" placeholder="Teléfono" ng-model="cg.fData.telefono">
                       </div>
                     </div>
                     <div class="form-group col-md-6 col-sm-12">
                       <label for="telefono" class="col-sm-3 control-label minotaur-label">Whatsapp : </label>
                       <div class="col-sm-9">
-                        <input type="tel" class="form-control  text-center underline-input" id="telefono" placeholder="WhatsApp" ng-model="co.fData.telefono">
+                        <input type="text" class="form-control  text-center underline-input" id="telefono" placeholder="WhatsApp" ng-model="cg.fData.whatsapp">
                       </div>
                     </div>
                   </div>
                   <div class="row">
+
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="skype" class="col-sm-3 control-label minotaur-label">Skype : </label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control  text-center underline-input" id="skype" placeholder="WhatsApp" ng-model="cg.fData.whatsapp">
+                      </div>
+                    </div>
                     <div class="form-group col-md-6 col-sm-12">
                       <label for="email" class="col-sm-3 control-label minotaur-label">E-mail : </label>
                       <div class="col-sm-9">
-                        <input type="email" class="form-control  text-center underline-input" id="email" placeholder="E-mail" ng-model="co.fData.email">
+                        <input type="email" class="form-control  text-center underline-input" id="email" placeholder="E-mail" ng-model="cg.fData.correo">
                       </div>
                     </div>
+                  </div>
+                  <div class="row">
                     <div class="form-group col-md-6">
                       <label for="direccion" class="col-sm-3 control-label minotaur-label">Dirección : </label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center underline-input" id="direccion" placeholder="Dirección" ng-model="co.fData.direccion">
+                        <input type="text" class="form-control  text-center underline-input" id="direccion" placeholder="Dirección" ng-model="cg.fData.direccion">
                       </div>
-
                     </div>
                   </div>
-                  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c pull-right" ng-click="co.aceptar()"><i class="fa fa-arrow-right"></i> {{ 'Form.SAVE' | translate }}</button>
+                  <button class="btn btn-info minotaur-btn pull-left"
+                   ng-click="forms.activeStep = 1">{{ 'Form.PREVIOUS' | translate }}</button>
+                  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c pull-right" ng-click="cg.aceptar()"><i class="fa fa-arrow-right"></i> {{ 'Form.SAVE' | translate }}</button>
                 </ng-form>
               </uib-tab>
             </uib-tabset>

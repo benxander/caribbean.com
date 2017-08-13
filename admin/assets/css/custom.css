@@ -42,7 +42,9 @@
         padding: 5px;
         display: inline-block;
     }
-
+.appWrap.core #content{
+    background:#62a3a5;
+}
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}
 
