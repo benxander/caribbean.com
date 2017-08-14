@@ -4,11 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
-	<meta name="keywords" content="fotos">
-	<meta name="description" content="">
-	<!-- <base href="http://www.unaisangamer.com/"> -->
+	<meta name="keywords" content="{{dataWeb.keywords}}">
+	<meta name="description" content="{{dataWeb.descripcion_we}}">
 	<base href="{{dirWeb}}">
-	<title>Caribbean Photo Studio</title>
+	<title>{{dataWeb.titulo_we}}</title>
 	<!-- FAVICON AND APPLE TOUCH -->
 	<link rel="shortcut icon" href="assets/images/favicon.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-180x180.png">
@@ -602,15 +601,15 @@
 								<ul>
 									<li>
 										<i class="fa fa-map-marker"></i>
-										4124 Barnes Street, Sanford, <br class="visible-lg-block"> FL 32771
+										{{dataWeb.direccion}}
 									</li>
 									<li>
 										<i class="fa fa-phone"></i>
-										407-322-2171
+										{{dataWeb.telefono}}
 									</li>
 									<li>
 										<i class="fa fa-envelope"></i>
-										<a href="mailto:hello@milothemes.com">hello@milothemes.com</a>
+										<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
 									</li>
 								</ul>
 

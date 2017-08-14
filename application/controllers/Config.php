@@ -15,31 +15,8 @@ class Config extends CI_Controller {
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_config->m_cargar_configuracion();
+		$lista['email_cifrado'] = safe_mailto($lista['correo']);
 		$arrListado = array();
-		// var_dump($lista); exit();
-		// foreach ($lista as $row) {
-		// 	array_push($arrListado,
-		// 		array(
-		// 			'idweb' 		=> $row['idweb'],
-		// 			'titulo_we' 	=> $row['titulo_we'],
-		// 			'descripcion_we'=> $row['descripcion_we'],
-		// 			'keywords' 		=> $row['keywords'],
-		// 			'autor_we' 		=> $row['autor_we'],
-		// 			'logo' 			=> $row['logo'],
-		// 			'footer_logo' 	=> $row['footer_logo'],
-		// 			'favicon' 		=> $row['favicon'],
-		// 			'apple_icon' 	=> $row['apple_icon'],
-		// 			'marca_agua' 	=> $row['marca_agua'],
-		// 			'correo' 		=> $row['correo'],
-		// 			'telefono' 		=> $row['telefono'],
-		// 			'whatsapp' 		=> $row['whatsapp'],
-		// 			'skype' 		=> $row['skype'],
-		// 			'direccion' 	=> $row['direccion'],
-
-		// 		)
-		// 	);
-		// }
-
     	$arrData['datos'] = $lista;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

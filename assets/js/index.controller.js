@@ -77,25 +77,25 @@
       $location.path( path );
     };
 
-    rootServices.sCargarBanners().then(function (response) {
+    rootServices.sCargarDatosWeb().then(function (response) {
       if(response.flag == 1){
-        vm.slides = response.datos;
-        $scope.slides = vm.slides;
-        console.log('SLIDER ',vm.slides);
+        $scope.dataWeb = response.datos;
+        console.log($scope.dataWeb );
       }else{
         console.log('no data');
       }
     });
-    // $timeout(function() {
-    //   console.log('SLIDES ',$scope.slides);
-    // }, 3000 );
-    // $scope.slides = [{
-    //   imagen: 'uploads/banners/SLIDER/bg-slide-1.jpg',
-    //   titulo: 'Pic 1'
-    // }, {
-    //   imagen: 'uploads/banners/SLIDER/bg-slide-2.jpg',
-    //   titulo: 'Pic 2'
-    // }];
+
+    rootServices.sCargarBanners().then(function (response) {
+      if(response.flag == 1){
+        // vm.slides = response.datos;
+        $scope.slides = response.datos;
+        // console.log('SLIDER ',vm.slides);
+      }else{
+        console.log('no data');
+      }
+    });
+
 
     // slider settings object set to scope.
       $scope.slider = {
@@ -183,7 +183,7 @@
   function rootServices($http, $q) {
     return({
         sCargarBanners: sCargarBanners,
-        // sLogoutSessionCI: sLogoutSessionCI,
+        sCargarDatosWeb: sCargarDatosWeb,
         // sGetSessionCI: sGetSessionCI,
     });
     function sCargarBanners(pDatos) {
@@ -195,23 +195,14 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    // function sLogoutSessionCI(pDatos) {
-    //   var datos = pDatos || {};
-    //   var request = $http({
-    //         method : "post",
-    //         url :  angular.patchURLCI + "Acceso/logoutSessionCI",
-    //         data : datos
-    //   });
-    //   return (request.then( handleSuccess,handleError ));
-    // }
-    // function sGetSessionCI(pDatos) {
-    //   var datos = pDatos || {};
-    //   var request = $http({
-    //         method : "post",
-    //         url :  angular.patchURLCI + "Acceso/getSessionCI",
-    //         data : datos
-    //   });
-    //   return (request.then( handleSuccess,handleError ));
-    // }
+    function sCargarDatosWeb(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Config/listar_configuracion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
   }
 })();
