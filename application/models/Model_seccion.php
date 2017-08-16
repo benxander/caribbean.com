@@ -14,9 +14,11 @@ class Model_seccion extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_secciones($paramPaginate=FALSE){
-		$this->db->select('idseccion, descripcion_se, se.contenido');
-		$this->db->select('se.idseccion, se.descripcion_se AS seccion');
+		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
+		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
+		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg');
 		$this->db->from('seccion se');
+		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
 		$this->db->where("se.estado_se",1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -49,5 +51,10 @@ class Model_seccion extends CI_Model {
 		}
 		$fData = $this->db->get()->row_array();
 		return $fData;
+	}
+	public function m_editar_contenido($data,$id)
+	{
+		$this->db->where('idseccioncontenido',$id);
+		return $this->db->update('seccion_contenido', $data);
 	}
 }

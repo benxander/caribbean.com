@@ -417,3 +417,11 @@ section.tile-body{
     border-radius: 8px;
     font-size: 11px;
 }
+
+/*TEXTAREA*/
+.ta-editor.ta-html, .ta-scroll-window.form-control {
+    min-height: 210px;
+}
+.ta-scroll-window > .ta-bind {
+    min-height: 210px;
+}
