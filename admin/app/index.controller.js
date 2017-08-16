@@ -78,10 +78,10 @@
         'opSeguridad'
       ];
       if($scope.fSessionCI.idgrupo == 1){
-        $scope.valores = [true,true,true,true,true,true];
+        $scope.valores = [true,true,true,true,true,true,true];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true,true];
+        $scope.valores = [true,true,true,true,true,true,true];
       }
       else if($scope.fSessionCI.idgrupo == 3){
         $scope.valores = [true,true,false,false,false,false];

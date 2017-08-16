@@ -30,4 +30,34 @@ class Seccion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_secciones()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$paramPaginate = $allInputs['paginate'];
+		$lista = $this->model_seccion->m_cargar_secciones($paramPaginate);
+		$totalRows = $this->model_seccion->m_count_secciones($paramPaginate);
+		$arrListado = array();
+		// var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idseccion' 		=> $row['idseccion'],
+					'seccion' 			=> $row['descripcion_se'],
+					'contenido' 		=> $row['contenido'],
+
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['paginate']['totalRows'] = $totalRows['contador'];
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

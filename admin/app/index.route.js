@@ -43,7 +43,14 @@
         controller: 'BannerController',
         controllerAs: 'b'
       })
-      //banner
+      //seccion
+      .state('seccion', {
+        url: '/app/seccion',
+        templateUrl: 'app/pages/seccion/seccion.html',
+        controller: 'SeccionController',
+        controllerAs: 'se'
+      })
+      //config
       .state('config', {
         url: '/app/config',
         templateUrl: 'app/pages/config/config.html',
