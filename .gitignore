@@ -16,6 +16,7 @@ admin/app/config.js
 /admin/app/components/
 
 /bower_components/
+assets/images/*
 /uploads/
 
 user_guide_src/build/*
