@@ -80,7 +80,15 @@
     rootServices.sCargarDatosWeb().then(function (response) {
       if(response.flag == 1){
         $scope.dataWeb = response.datos;
-        console.log($scope.dataWeb );
+        // console.log($scope.dataWeb );
+      }else{
+        console.log('no data');
+      }
+    });
+    rootServices.sCargarSecciones().then(function (response) {
+      if(response.flag == 1){
+        $scope.seccionWeb = response.datos;
+        console.log($scope.seccionWeb );
       }else{
         console.log('no data');
       }
@@ -184,7 +192,7 @@
     return({
         sCargarBanners: sCargarBanners,
         sCargarDatosWeb: sCargarDatosWeb,
-        // sGetSessionCI: sGetSessionCI,
+        sCargarSecciones: sCargarSecciones,
     });
     function sCargarBanners(pDatos) {
       var datos = pDatos || {};
@@ -200,6 +208,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Config/listar_configuracion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sCargarSecciones(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_secciones_web",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

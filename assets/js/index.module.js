@@ -4,7 +4,8 @@
 		'ngRoute',
 		'ngCookies',
 		'oc.lazyLoad',
-		'rev.slider'
+		'rev.slider',
+		'ngSanitize'
 		//'ngFacebook'
 	]);
 

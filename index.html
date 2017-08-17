@@ -192,36 +192,20 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-9">
-
-						<h3>A huge number of demos to choose from</h3>
-
-						<h5><strong>All you need is Halcyon , modern and simple. <br class="visible-sm-block">
-						Equipted with all the elements you need.</strong></h5>
-
+						<h3>{{seccionWeb[1].contenedor[0].titulo}}</h3>
+						<h5><strong>{{seccionWeb[1].contenedor[0].subtitulo}}</strong></h5>
 						<br>
-
-						<p>Feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet. Curabitur ultrices dolor magna,
-						at vene natis lacus rutrum nec. Quisque elit velit, lacinia sit amet tellus at, auctor suscipit
-						metus. Duis congue nibh at tortor ornare, sed commo do ipsum mattis. Phasellus lacinia sed purus eget
-						rhoncus.</p>
-
+						<div ng-bind-html="seccionWeb[1].contenedor[0].contenido"></div>
 						<br>
-
 						<p><a class="btn btn-default-1 waves" href="#">Discover</a></p>
-
 					</div><!-- col -->
-					<div class="col-md-3">
-
+					<div class="col-md-3" ng-if="seccionWeb[1].contenedor[0].acepta_imagen">
 						<div class="row">
 							<div class="col-sm-12">
-
-								<p><img class="wow fadeInRight" src="uploads/banners/LATERAL/image-21.jpg" alt=""></p>
-
+								<p><img class="wow fadeInRight" ng-src="uploads/banners/LATERAL/{{seccionWeb[1].contenedor[0].imagen}}" alt=""></p>
 							</div><!-- col -->
 							<!-- <div class="col-sm-6">
-
 								<p><img class="wow fadeInRight" src="images/index/image-21.jpg" alt="" data-wow-delay="0.1s"></p>
-
 							</div> --><!-- col -->
 						</div><!-- row -->
 
@@ -236,10 +220,8 @@
 						<div class="row">
 							<div class="col-md-offset-5 col-sm-offset-1 col-md-7 col-sm-10">
 
-								<h2>After years of constant research we came up with Halcyon. A new Experience.</h2>
-
-								<p>designed and developed by <strong>Hementxe</strong>. <br>
-								Sold <strong>exclusively</strong> on Hementxe</p>
+								<h2>{{seccionWeb[2].contenedor[0].titulo}}</h2>
+								<div ng-bind-html="seccionWeb[2].contenedor[0].contenido"></div>
 
 								<br>
 
@@ -258,16 +240,8 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-sm-offset-1 col-lg-4 col-md-6 col-sm-10">
-
-								<h2>A new way of doing business has come to town. Try iy now!</h2>
-
-								<p>Feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet. Curabitur ultrices
-								dolor magna, at vene natis lacus rutrum nec. Quisque elit velit, lacinia sit amet tellus at,
-								auctor suscipit metus. Duis congue nibh at tortor ornare, sed com mo do ipsum mattis.
-								Phasellus lacinia sed purus eget rhoncus. Feugiat consequat eu sed eros. Cras suscipit eu est
-								sed imperdiet. Curabitur ultrices dolor magna, at vene natis lacus rutrum nec. Quisque elit
-								velit, lacinia sit amet tellus at, auctor suscipit metus.</p>
-
+								<h2>{{seccionWeb[2].contenedor[1].titulo}}</h2>
+								<div ng-bind-html="seccionWeb[2].contenedor[1].contenido"></div>
 							</div><!-- col -->
 						</div><!-- row -->
 					</div><!-- container-fluid -->
@@ -281,7 +255,7 @@
 
                         <div class="title">
 
-							<h3>Practical Solutions</h3>
+							<h3>{{seccionWeb[3].contenedor[0].titulo}}</h3>
 
 						</div><!-- headline -->
 
@@ -291,25 +265,15 @@
 
 			<div class="container">
                 <div class="row">
-                    <div class="col-md-4">
-
-                        <h5><strong>Modern and simple. Equipted with all the elements you need.</strong></h5>
-
+                    <div class="col-md-12">
+                        <h5><strong>{{seccionWeb[3].contenedor[0].subtitulo}}</strong></h5>
 						<br>
-
-						<p>Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet.
-						Curabitur ultrices dolor magna, at vene natis lacus rutrum nec. Quisque elit velit, lacinia sit amet
-						tellus at, auctor sus cipit metus. Duis congue nibh at tortor ornare, sed commo do ipsum mattis.
-						Phasellus lacinia sed purus eget rhoncus. Mauris ut tortor efficitur.</p>
-
+						<div ng-bind-html="seccionWeb[3].contenedor[0].contenido"></div>
 						<br>
-
 						<p><a class="btn btn-default-1 waves" href="#">Discover</a></p>
-
 						<br class="hidden-lg hidden-md">
-
                     </div><!-- col -->
-					<div class="col-md-8">
+					<div class="col-md-8" ng-show="false">
 
                         <div class="row">
 							<div class="col-sm-6">
@@ -403,7 +367,7 @@
 
 								<div class="title text-center" style="margin-bottom:15px;">
 
-									<h3>Work process</h3>
+									<h3>{{seccionWeb[4].contenedor[0].titulo}}</h3>
 
 								</div><!-- headline -->
 
@@ -415,7 +379,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 
-								<h5 class="text-center"><strong>Modern and simple. Equipted with all the elements you need.</strong></h5>
+								<h5 class="text-center"><strong>{{seccionWeb[4].contenedor[0].subtitulo}}</strong></h5>
 
 							</div><!-- col -->
 						</div><!-- row -->
@@ -425,98 +389,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 
-								<div class="owl-carousel process-slider">
-									<div class="item">
-
-										<div class="service-box style-7">
-
-											<i class="halcyon-icon-eyeglasses"></i>
-
-											<div class="service-box-content">
-
-												<h6><a href="single-service.html">Responsive</a></h6>
-
-												<p>Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit
-												eu est sed imperdiet luctus.</p>
-
-											</div><!-- service-box-content -->
-
-										</div><!-- service-box -->
-
-									</div><!-- item -->
-									<div class="item">
-
-										<div class="service-box style-7">
-
-											<i class="halcyon-icon-settings-4"></i>
-
-											<div class="service-box-content">
-
-												<h6><a href="single-service.html">More gear power</a></h6>
-
-												<p>Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est
-												sed imperdiet. Aenean mdiet.</p>
-
-											</div><!-- service-box-content -->
-
-										</div><!-- service-box -->
-
-									</div><!-- item -->
-									<div class="item">
-
-										<div class="service-box style-7">
-
-											<i class="halcyon-icon-database-3"></i>
-
-											<div class="service-box-content">
-
-												<h6><a href="single-service.html">Money well spend</a></h6>
-
-												<p>Enean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit
-												eu est sed imperdiet. Aenean luctus.</p>
-
-											</div><!-- service-box-content -->
-
-										</div><!-- service-box -->
-
-									</div><!-- item -->
-									<div class="item">
-
-										<div class="service-box style-7">
-
-											<i class="halcyon-icon-notebook-4"></i>
-
-											<div class="service-box-content">
-
-												<h6><a href="single-service.html">Well documented</a></h6>
-
-												<p>Cras tristique felis sed nulla ullamcorper laoreet. Donec sed porta augue,
-												ornare maximus nisi est.</p>
-
-											</div><!-- service-box-content -->
-
-										</div><!-- service-box -->
-
-									</div><!-- item -->
-									<div class="item">
-
-										<div class="service-box style-7">
-
-											<i class="halcyon-icon-star"></i>
-
-											<div class="service-box-content">
-
-												<h6><a href="single-service.html">Fast response</a></h6>
-
-												<p>Vivamus mollis nisi purus, id euismod magna finibus ut. Nullam bibendum
-												neque vitae lectus dapibus.</p>
-
-											</div><!-- service-box-content -->
-
-										</div><!-- service-box -->
-
-									</div><!-- item -->
-								</div><!-- process-slider -->
+								<div ng-bind-html="seccionWeb[4].contenedor[0].contenido"></div>
 
 							</div><!-- col -->
 						</div><!-- row -->
@@ -671,6 +544,7 @@
 	<script src="bower_components/angular-route/angular-route.js"></script>
 	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
 	<script src="bower_components/ng-facebook/ngFacebook.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
 
 	<!-- VIEWPORT -->

@@ -72,6 +72,56 @@ class Seccion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_secciones_web()
+	{
+		ini_set('xdebug.var_display_max_depth', 5);
+	    ini_set('xdebug.var_display_max_children', 256);
+	    ini_set('xdebug.var_display_max_data', 1024);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_seccion->m_cargar_secciones();
+		$arrSeccion = array();
+		foreach ($lista as $row) {
+			$arrSeccion[$row['idseccion']] = array(
+				'idseccion' 	=> $row['idseccion'],
+				'seccion' 		=> $row['seccion'],
+				'contenedor' => array()
+			);
+		}
+		foreach ($arrSeccion as $key => $rowSec) {
+			$arrAux = array();
+			foreach ($lista as $key2 => $row) {
+				if($rowSec['idseccion'] == $row['idseccion']){
+					array_push($arrAux,
+						array(
+							'idseccioncontenido' 	=> $row['idseccioncontenido'],
+							'titulo' 		=> $row['titulo'],
+							'subtitulo' 	=> $row['subtitulo'],
+							'contenido' 	=> $row['contenido'],
+							'tiene_boton' 	=> $row['tiene_boton'] == 'NO' ? FALSE: TRUE,
+							'acepta_imagen' => $row['acepta_imagen'] == 'NO' ? FALSE: TRUE,
+							'acepta_background' => $row['acepta_background'] == 'NO' ? FALSE: TRUE,
+							'nombre_boton' 	=> $row['nombre_boton'],
+							'enlace_boton' 	=> $row['enlace_boton'],
+							'imagen' 		=> $row['imagen'],
+							'imagen_bg' 		=> $row['imagen_bg'],
+						)
+					);
+
+				}
+			}
+			$arrSeccion[$key]['contenedor'] = $arrAux;
+		}
+		// var_dump($arrSeccion); exit();
+    	$arrData['datos'] = $arrSeccion;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function editar_contenido()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -84,15 +134,21 @@ class Seccion extends CI_Controller {
     	);
     	// preparacion y subida de banner lateral
     	if(!empty($allInputs['newImagen']) && $allInputs['cImagen']){
-			$nombre = $allInputs['imagen'];
+			$extension = strrchr($allInputs['imagen'], ".");
+			$nombre = substr($allInputs['imagen'], 0, -strlen($extension));
+			$nombre .= '-'. date('YmdHis') . $extension;
 			$ruta = 'uploads/banners/LATERAL/';
 			subir_imagen_Base64($allInputs['newImagen']['dataURL'], $ruta , $nombre);
+			$data['imagen'] = $nombre;
     	}
     	// preparacion y subida de logo footer
     	if(!empty($allInputs['newImagenBg']) && $allInputs['cImagen']){
-			$nombre = $allInputs['imagen_bg'];
+    		$extension = strrchr($allInputs['imagen_bgimagen_bg'], ".");
+			$nombre = substr($allInputs['imagen_bg'], 0, -strlen($extension));
+			$nombre .= '-'. date('YmdHis') . $extension;
 			$ruta = 'uploads/banners/FONDO/';
 			subir_imagen_Base64($allInputs['newImagenBg']['dataURL'], $ruta , $nombre);
+			$data['imagen_bg'] = $nombre;
 		}
 
     	// var_dump($data); exit();
