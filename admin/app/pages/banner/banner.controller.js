@@ -38,8 +38,8 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idbanner', name:'idbanner', displayName: 'ID', minWidth: 50, width:80, visble:false, sort: { direction: uiGridConstants.DESC} },
-        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100 },
-        { field: 'tipo_banner', name:'tipo_banner', displayName: 'TIPO BANNER', minWidth: 100 },
+        // { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100 },
+        // { field: 'tipo_banner', name:'tipo_banner', displayName: 'TIPO BANNER', minWidth: 100 },
         { field: 'titulo', name:'titulo_ba', displayName: 'TITULO BANNER', minWidth: 180 },
         { field: 'imagen', name: 'imagen_ba', displayName: 'IMAGEN',width: 120, enableFiltering: false, enableSorting: false, cellTemplate:'<img style="height:inherit;" class="center-block" ng-src="{{ grid.appScope.dirImagesBanner + row.entity.tipo_banner + \'/\' + COL_FIELD }}" /> </div>' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,

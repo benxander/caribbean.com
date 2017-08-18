@@ -108,8 +108,10 @@ class Banner extends CI_Controller {
 		subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
 		// data
     	$data = array(
-    		'idtipobanner' => $allInputs['tipoBanner']['id'],
-    		'idseccion' => $allInputs['seccion']['id'],
+    		'idtipobanner' => 1,
+    		'idseccion' => 1,
+    		// 'idtipobanner' => $allInputs['tipoBanner']['id'],
+    		// 'idseccion' => $allInputs['seccion']['id'],
     		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'imagen_ba' => $nombre,
     		'idusuario' => $this->sessionCP['idusuario'],
@@ -134,8 +136,8 @@ class Banner extends CI_Controller {
     	$arrData['flag'] = 0;
     	// data
     	$data = array(
-    		'idtipobanner' => $allInputs['tipoBanner']['id'],
-    		'idseccion' => $allInputs['seccion']['id'],
+    		// 'idtipobanner' => $allInputs['tipoBanner']['id'],
+    		// 'idseccion' => $allInputs['seccion']['id'],
     		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'idusuario' => $this->sessionCP['idusuario'],
 			'updatedAt' => date('Y-m-d H:i:s')

@@ -5,7 +5,7 @@
 	<section class="tile-body">
 		<form name="formBanner" role="form" novalidate class="form-validation">
 		    <div class="row">
-				<div class="form-group col-md-6">
+				<!-- <div class="form-group col-md-6">
 	                <label for="seccion" class="control-label minotaur-label"> Sección <small class="text-red">(*)</small> </label>
 	                <select class="form-control" id="seccion" ng-model="mb.fData.seccion" ng-options="item as item.descripcion for item in mb.listaSeccion" required >
 	                </select>
@@ -20,7 +20,7 @@
 	                <div ng-messages="formBanner.tipoBanner.$error" ng-if="formBanner.tipoBanner.$dirty" role="alert" class="help-block text-red">
 	                 	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	                </div>
-        		</div>
+        		</div> -->
 
 	            <div class="form-group col-md-12">
 	              	<label for="titulo" class="control-label minotaur-label">Título </label>
