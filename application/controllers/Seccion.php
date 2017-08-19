@@ -134,18 +134,20 @@ class Seccion extends CI_Controller {
     	);
     	// preparacion y subida de banner lateral
     	if(!empty($allInputs['newImagen']) && $allInputs['cImagen']){
-			$extension = strrchr($allInputs['imagen'], ".");
+			/*$extension = strrchr($allInputs['imagen'], ".");
 			$nombre = substr($allInputs['imagen'], 0, -strlen($extension));
-			$nombre .= '-'. date('YmdHis') . $extension;
+			$nombre .= '-'. date('YmdHis') . $extension;*/
+			$nombre = 'lat-'.$allInputs['idseccion'] .'-' . date('YmdHis') . 'jpg';
 			$ruta = 'uploads/banners/LATERAL/';
 			subir_imagen_Base64($allInputs['newImagen']['dataURL'], $ruta , $nombre);
 			$data['imagen'] = $nombre;
     	}
     	// preparacion y subida de logo footer
     	if(!empty($allInputs['newImagenBg']) && $allInputs['cImagen']){
-    		$extension = strrchr($allInputs['imagen_bgimagen_bg'], ".");
+    		/*$extension = strrchr($allInputs['imagen_bgimagen_bg'], ".");
 			$nombre = substr($allInputs['imagen_bg'], 0, -strlen($extension));
-			$nombre .= '-'. date('YmdHis') . $extension;
+			$nombre .= '-'. date('YmdHis') . $extension;*/
+			$nombre = 'bg-'.$allInputs['idseccion'] .'-' . date('YmdHis') . 'jpg';
 			$ruta = 'uploads/banners/FONDO/';
 			subir_imagen_Base64($allInputs['newImagenBg']['dataURL'], $ruta , $nombre);
 			$data['imagen_bg'] = $nombre;
