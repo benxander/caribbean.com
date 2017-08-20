@@ -1,11 +1,11 @@
 <ul data-ng-style="{'max-width':'1920px'}">
   <!-- SLIDE  -->
   <li ng-repeat="slide in slides"
-    data-index="rs-1255"
+    data-index="rs-{{slide.idbanner}}"
     data-transition="fade"
     data-easein="default"
     data-easeout="default"
-    data-thumb="uploads/banners/SLIDER/bg-slide-1.jpg"
+    data-thumb=""
     data-title="{{slide.titulo}}"
     data-description="">
 
@@ -28,7 +28,7 @@
     <!-- LAYER NR. 1 -->
     <a class="tp-caption News-Title tp-resizeme rs-parallaxlevel-0"
       data-ui-sref="frontPage.services.spc"
-      id="slide-1255-layer-1"
+      id="slide-{{slide.idbanner}}-layer-1"
       data-x="['left','left','left','left']"
       data-hoffset="['80','80','40','40']"
       data-y="['top','top','top','top']"
@@ -70,7 +70,7 @@
     <!-- LAYER NR. 3 -->
     <a class="tp-caption News-Subtitle tp-resizeme rs-parallaxlevel-0"
       data-ui-sref="frontPage.services.spc"
-      id="slide-1255-layer-3"
+      id="slide-{{slide.idbanner}}-layer-3"
       data-x="['left','left','left','left']"
       data-hoffset="['81','81','41','41']"
       data-y="['top','top','top','top']"
@@ -110,7 +110,7 @@
 
     <!-- LAYER NR. 4 -->
     <div class="tp-caption - tp-resizeme rs-parallaxlevel-0"
-      id="slide-1255-layer-4"
+      id="slide-{{slide.idbanner}}-layer-4"
       data-x="['left','left','left','left']"
       data-hoffset="['463','463','443','443']"
       data-y="['top','top','top','top']"
