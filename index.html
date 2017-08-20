@@ -197,7 +197,7 @@
 						<br>
 						<div ng-bind-html="seccionWeb[1].contenedor[0].contenido"></div>
 						<br>
-						<p><a class="btn btn-default-1 waves" href="#">Discover</a></p>
+						<p ng-show="seccionWeb[1].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
 					</div><!-- col -->
 					<div class="col-md-3" ng-if="seccionWeb[1].contenedor[0].acepta_imagen">
 						<div class="row">
@@ -270,7 +270,7 @@
 						<br>
 						<div ng-bind-html="seccionWeb[3].contenedor[0].contenido"></div>
 						<br>
-						<p><a class="btn btn-default-1 waves" href="#">Discover</a></p>
+						<p ng-show="seccionWeb[3].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
 						<br class="hidden-lg hidden-md">
                     </div><!-- col -->
 					<div class="col-md-8" ng-show="false">
