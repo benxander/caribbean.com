@@ -27,13 +27,13 @@
 
     <!-- LAYER NR. 1 -->
     <a class="tp-caption News-Title tp-resizeme rs-parallaxlevel-0"
-      data-ui-sref="frontPage.services.spc"
+      data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-1"
       data-x="['left','left','left','left']"
       data-hoffset="['80','80','40','40']"
       data-y="['top','top','top','top']"
       data-voffset="['450','450','250','150']"
-      data-width="364"
+      data-width="564"
       data-height="133"
       data-whitespace="normal"
       data-transform_idle="o:1;"
@@ -50,18 +50,17 @@
       'min-width':'364px',
       'min-height':'133px',
       'white-space':'normal',
-      'max-width':'364px',
+      'max-width':'564px',
       'max-height':'133px',
-      'font-size':'70px',
+      'font-size':'{{slide.size_titulo}}px',
       'line-height':'60px',
       'font-weight':'400',
-      'color':'rgba(255, 255, 255, 1.00)',
+      'color':'{{slide.color_titulo}}',
       'font-family':'Roboto Slab',
       'padding':'0 0 0 0',
       'border-radius':'0 0 0 0'
       }">
-      Caribbean
-      PhotoStudio
+      {{slide.titulo}}
     </a>
 
     <!-- LAYER NR. 2 -->
@@ -96,20 +95,20 @@
       'white-space':'nowrap',
       'max-width':'auto',
       'max-height':'auto',
-      'font-size':'15px',
+      'font-size':'{{slide.size_subtitulo}}px',
       'line-height':'24px',
       'font-weight':'300',
-      'color':'rgba(255, 255, 255, 1.00)',
+      'color':'{{slide.color_subtitulo}}',
       'font-family':'Roboto Slab',
       'background-color':'rgba(255, 255, 255, 0)',
       'padding':'0 0 0 0',
       'border-radius':'0 0 0 0'
       }">
-      Balance SharePoint & Your Business to reach new heights
+      {{slide.subtitulo}}
     </a>
 
     <!-- LAYER NR. 4 -->
-    <div class="tp-caption - tp-resizeme rs-parallaxlevel-0"
+    <div ng-show="false" class="tp-caption - tp-resizeme rs-parallaxlevel-0"
       id="slide-{{slide.idbanner}}-layer-4"
       data-x="['left','left','left','left']"
       data-hoffset="['463','463','443','443']"

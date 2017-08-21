@@ -23,12 +23,18 @@ class Banner extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idbanner' 		=> $row['idbanner'],
-					'titulo' 		=> $row['titulo_ba'],
 					'imagen' 		=> $row['imagen_ba'],
 					'tipo_banner' 	=> $row['tipo_banner'],
 					'seccion'		=> $row['seccion'],
 					'ancho_defecto' => $row['ancho_defecto'],
 					'alto_defecto' 	=> $row['alto_defecto'],
+					'titulo' 		=> $row['titulo_texto'],
+					'size_titulo' 	=> floatval($row['size_titulo']),
+					'color_titulo' 	=> $row['color_titulo'],
+					'subtitulo' 	=> $row['subtitulo_texto'],
+					'size_subtitulo'=> floatval($row['size_subtitulo']),
+					'color_subtitulo'=> $row['color_subtitulo'],
+					'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
 					'estado_ba' 	=> $row['estado_ba'],
 				)
 			);
@@ -59,12 +65,18 @@ class Banner extends CI_Controller {
 		foreach ($lista as $row) {
 			$arrAux = array(
 				'idbanner' 		=> $row['idbanner'],
-				'titulo' 		=> $row['titulo_ba'],
 				'imagen' 		=> $ruta . $row['tipo_banner'].'/'.$row['imagen_ba'],
 				'tipo_banner' 	=> $row['tipo_banner'],
 				'seccion'		=> $row['seccion'],
 				'ancho_defecto' => $row['ancho_defecto'],
 				'alto_defecto' 	=> $row['alto_defecto'],
+				'titulo' 		=> $row['titulo_texto'],
+				'size_titulo' 	=> floatval($row['size_titulo']),
+				'color_titulo' 	=> $row['color_titulo'],
+				'subtitulo' 	=> $row['subtitulo_texto'],
+				'size_subtitulo'=> floatval($row['size_subtitulo']),
+				'color_subtitulo'=> $row['color_subtitulo'],
+				'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
 				'estado_ba' 	=> $row['estado_ba'],
 			);
 			// $arrListado[$row['tipo_banner']][] = $arrAux;
@@ -103,7 +115,8 @@ class Banner extends CI_Controller {
 		$extension = strrchr($allInputs['nombre_imagen'], ".");
 		$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
 		$nombre .= '-'. date('YmdHis') . $extension;
-		$ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
+		// $ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
+		$ruta = 'uploads/banners/SLIDER/';
 		$allInputs['imagen_ba'] = $nombre;
 		subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
 		// data
@@ -112,7 +125,6 @@ class Banner extends CI_Controller {
     		'idseccion' => 1,
     		// 'idtipobanner' => $allInputs['tipoBanner']['id'],
     		// 'idseccion' => $allInputs['seccion']['id'],
-    		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'imagen_ba' => $nombre,
     		'idusuario' => $this->sessionCP['idusuario'],
     		'size' => $allInputs['size'],
@@ -120,6 +132,18 @@ class Banner extends CI_Controller {
     		'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
     	);
+    	if($allInputs['acepta_texto'] == 1 ){
+    		$data['titulo_texto'] = trim($allInputs['titulo']);
+    		$data['size_titulo'] = empty($allInputs['size_titulo'])? 70 : $allInputs['size_titulo'];
+    		$data['color_titulo'] = empty($allInputs['color_titulo'])? 'rgba(255,255,255,1)' : $allInputs['color_titulo'];
+    		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
+    		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
+    		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
+    		$data['acepta_texto'] = 'SI';
+    	}else{
+    		$data['acepta_texto'] = 'NO';
+    	}
+    	// var_dump($data); exit();
 		if($this->model_banner->m_registrar($data)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
@@ -157,7 +181,7 @@ class Banner extends CI_Controller {
 			$extension = strrchr($allInputs['nombre_imagen'], ".");
 			$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
 			$nombre .= '-'. date('YmdHis') . $extension;
-			$ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
+			$ruta = 'uploads/banners/SLIDER/';
 			$allInputs['imagen_ba'] = $nombre;
 			subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
 			$data_imagen = array(
@@ -167,7 +191,14 @@ class Banner extends CI_Controller {
 			);
 			$data = array_merge($data,$data_imagen);
     	}
-
+    	if($allInputs['acepta_texto'] == 1 ){
+    		$data['titulo_texto'] = trim($allInputs['titulo']);
+    		$data['size_titulo'] = empty($allInputs['size_titulo'])? 70 : $allInputs['size_titulo'];
+    		$data['color_titulo'] = empty($allInputs['color_titulo'])? 'rgba(255,255,255,1)' : $allInputs['color_titulo'];
+    		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
+    		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
+    		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
+    	}
     	// var_dump($data); exit();
 		if( $this->model_banner->m_editar($data,$allInputs['idbanner']) ){
 			$arrData['message'] = 'Se editaron los datos correctamente ';

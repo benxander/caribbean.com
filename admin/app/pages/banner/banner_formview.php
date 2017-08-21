@@ -22,23 +22,64 @@
 	                </div>
         		</div> -->
 
-	            <div class="form-group col-md-12">
-	              	<label for="titulo" class="control-label minotaur-label">Título </label>
-	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.titulo" placeholder="Registre titulo del banner" >
-	              	<div ng-messages="formBanner.titulo.$error" ng-if="formBanner.titulo.$dirty" role="alert" class="help-block text-red">
-	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-	              	</div>
-	            </div>
-	            <div class="form-group col-md-12" ng-show="mb.fData.canvas">
+
+	            <div class="form-group col-md-7" ng-show="mb.fData.canvas">
 	            	<label class="control-label minotaur-label">Imagen</label>
-			        <input upload-me type="file" name="upload" accept=".gif, .jpg, .png, .jpeg">
+			        <img src="../images/index/revolution-slider/bg-slide-1.jpg" ng-if="!image" style="width:100%">
 					<img ng-if="image" ng-src="{{image}}" alt="" style="width: 100%">
+			        <input upload-me type="file" name="upload" accept=".gif, .jpg, .png, .jpeg">
+			        <a href="" class="block text-red" style="width: 60px" ng-click="mb.fData.canvas=false;">Cancelar</a>
 	            </div>
-	            <div class="form-group col-md-12" ng-show="!mb.fData.canvas">
+	            <div class="form-group col-md-7" ng-show="!mb.fData.canvas">
 	            	<label class="control-label minotaur-label">Imagen</label>
 			        <img ng-src="{{mb.rutaImagen}}{{mb.fData.imagen}}" alt="" style="width: 100%">
 			        <a href="" ng-click="mb.fData.canvas=true">Cambiar Imagen</a>
 	            </div>
+	            <div class="form-group col-md-5">
+	            	<label class="control-label minotaur-label">Incluye Texto sobre el slide?</label>
+	            	<label class="radio ml-lg" >
+						<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" ng-model="mb.fData.acepta_texto">
+						Si, con texto.
+					</label>
+
+					<label class="radio ml-lg" >
+						<input type="radio" name="optionsRadios" id="optionsRadios2" value="0" ng-model="mb.fData.acepta_texto" >
+						No, sin texto.
+					</label>
+
+	              	<label for="titulo" class="control-label minotaur-label">Título </label>
+	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.titulo" placeholder="Registre titulo del banner" ng-disabled="mb.fData.acepta_texto == '0'" >
+	              	<div class="row" ng-show="mb.fData.acepta_texto == '1'">
+	              		<div class="form-group col-sm-6">
+		              		<label class="control-label minotaur-label">Tamaño Letra </label>
+		              		<div touch-spin ng-model="mb.fData.size_titulo" options="{postfix: 'px'}" ></div>
+	              		</div>
+	              		<div class="form-group col-sm-6 mr-0">
+			              	<label class="control-label minotaur-label">Color Texto</label>
+			         		<input colorpicker="rgba" colorpicker-position="right" ng-model="mb.fData.color_titulo" type="text" class="form-control">
+			            </div>
+	              	</div>
+
+	            	<label for="titulo" class="control-label minotaur-label">Subtítulo </label>
+	              	<input type="text" name="subtitulo" id="subtitulo" class="form-control" ng-model="mb.fData.subtitulo" placeholder="Registre subtitulo del banner" ng-disabled="mb.fData.acepta_texto == '0'" >
+	              	<div class="row" ng-show="mb.fData.acepta_texto == '1'">
+	              		<div class="form-group col-sm-6">
+		              		<label class="control-label minotaur-label">Tamaño Letra </label>
+		              		<div touch-spin ng-model="mb.fData.size_subtitulo" options="{postfix: 'px'}" ></div>
+	              		</div>
+	              		<div class="form-group col-sm-6 mr-0">
+			              	<label class="control-label minotaur-label">Color Texto</label>
+			         		<input colorpicker="rgba" colorpicker-position="right" ng-model="mb.fData.color_subtitulo" type="text" class="form-control">
+			            </div>
+	              	</div>
+
+	            </div>
+	            <div class="form-group col-md-12">
+	              	<div ng-messages="formBanner.titulo.$error" ng-if="formBanner.titulo.$dirty" role="alert" class="help-block text-red">
+	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+	              	</div>
+	            </div>
+
 		    </div>
 
 		</form>

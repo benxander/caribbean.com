@@ -103,7 +103,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/banner/banner_formview.php',
           controllerAs: 'mb',
-          size: 'md',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           scope: $scope,
@@ -114,6 +114,11 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de banner';
             vm.fData.canvas = true;
+            vm.fData.acepta_texto = '1';
+            vm.fData.size_titulo = 70;
+            vm.fData.size_subtitulo = 15;
+            vm.fData.color_titulo = 'rgba(255,255,255,1)';
+            vm.fData.color_subtitulo = 'rgba(255,255,255,1)';
 
             vm.listaSeccion = arrToModal.scope.listaSeccion;
             vm.listaTipoBanner = arrToModal.scope.listaTipoBanner;
@@ -124,6 +129,10 @@
 
             // botones
               vm.aceptar = function () {
+                if(angular.isUndefined($scope.image)){
+                  alert('Debe seleccionar una imagen');
+                  return false;
+                }
                 vm.fData.imagen = $scope.image;
                 vm.fData.size = $scope.file.size;
                 vm.fData.nombre_imagen = $scope.file.name;
@@ -164,7 +173,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/banner/banner_formview.php',
           controllerAs: 'mb',
-          size: 'md',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
