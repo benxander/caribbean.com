@@ -249,13 +249,13 @@
 				</div><!-- full-section-container -->
 			</section><!-- full-section -->
 
-			<div class="container" ng-if="seccionWeb" id="noticias">
+			<div class="container" ng-if="seccionWeb" id="trabaja-con-nosotros">
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <div class="title">
+                        <div class="title text-center">
 
-							<h3>{{seccionWeb[3].contenedor[0].titulo}}</h3>
+							<h3>{{seccionWeb[4].contenedor[0].titulo}}</h3>
 
 						</div><!-- headline -->
 
@@ -263,14 +263,14 @@
                 </div><!-- row -->
             </div><!-- container -->
 
-			<div class="container" ng-if="seccionWeb">
+			<div class="container text-center" ng-if="seccionWeb">
                 <div class="row">
                     <div class="col-md-12">
-                        <h5><strong>{{seccionWeb[3].contenedor[0].subtitulo}}</strong></h5>
+                        <h5><strong>{{seccionWeb[4].contenedor[0].subtitulo}}</strong></h5>
 						<br>
-						<div ng-bind-html="seccionWeb[3].contenedor[0].contenido"></div>
+						<div ng-bind-html="seccionWeb[4].contenedor[0].contenido"></div>
 						<br>
-						<p ng-show="seccionWeb[3].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
+						<p ng-show="seccionWeb[4].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
 						<br class="hidden-lg hidden-md">
                     </div><!-- col -->
 					<div class="col-md-8" ng-show="false">
@@ -354,7 +354,7 @@
                     </div><!-- col -->
                 </div><!-- row -->
             </div><!-- container -->
-            <a id="trabaja-con-nosotros"></a>
+
 			<section class="full-section dark-section parallax" id="section-28" data-stellar-background-ratio="0.1" ng-if="seccionWeb"style="background-image: url(uploads/banners/FONDO/{{seccionWeb[4].contenedor[0].imagen_bg}});">
 
 				<div class="full-section-overlay-color"></div>
@@ -367,7 +367,7 @@
 
 								<div class="title text-center" style="margin-bottom:15px;">
 
-									<h3>{{seccionWeb[4].contenedor[0].titulo}}</h3>
+									<h3>{{seccionWeb[3].contenedor[0].titulo}}</h3>
 
 								</div><!-- headline -->
 
@@ -379,7 +379,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 
-								<h5 class="text-center"><strong>{{seccionWeb[4].contenedor[0].subtitulo}}</strong></h5>
+								<h5 class="text-center"><strong>{{seccionWeb[3].contenedor[0].subtitulo}}</strong></h5>
 
 							</div><!-- col -->
 						</div><!-- row -->
@@ -389,7 +389,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 
-								<div class="text-center" ng-bind-html="seccionWeb[4].contenedor[0].contenido"></div>
+								<div class="text-center" ng-bind-html="seccionWeb[3].contenedor[0].contenido"></div>
 
 							</div><!-- col -->
 						</div><!-- row -->
