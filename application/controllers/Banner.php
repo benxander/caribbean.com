@@ -35,6 +35,8 @@ class Banner extends CI_Controller {
 					'size_subtitulo'=> floatval($row['size_subtitulo']),
 					'color_subtitulo'=> $row['color_subtitulo'],
 					'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
+					'position_x' 	=> $row['position_x'],
+					'position_y' 	=> $row['position_y'],
 					'estado_ba' 	=> $row['estado_ba'],
 				)
 			);
@@ -63,6 +65,19 @@ class Banner extends CI_Controller {
 		$arrLateral = array();
 		$ruta = 'uploads/banners/';
 		foreach ($lista as $row) {
+			$tit = floatval($row['size_titulo']);
+			$sub = floatval($row['size_subtitulo']);
+			if($row['position_y'] == 'T'){
+				$voffset = array(100,100,100,50);
+			}elseif($row['position_y'] == 'M'){
+				$voffset = array(250,250,250,150);
+			}else{
+				$voffset = array(500,500,350,150);
+			}
+			$voffset_sub = array();
+			foreach ($voffset as $v) {
+				$voffset_sub[] = (int)$v + ($tit * 3);
+			}
 			$arrAux = array(
 				'idbanner' 		=> $row['idbanner'],
 				'imagen' 		=> $ruta . $row['tipo_banner'].'/'.$row['imagen_ba'],
@@ -71,10 +86,14 @@ class Banner extends CI_Controller {
 				'ancho_defecto' => $row['ancho_defecto'],
 				'alto_defecto' 	=> $row['alto_defecto'],
 				'titulo' 		=> $row['titulo_texto'],
-				'size_titulo' 	=> floatval($row['size_titulo']),
+				'size_titulo' 	=> $tit,
+				'lineheight_tit'=> $tit*0.9,
+				'voffset_tit'	=> $voffset,
 				'color_titulo' 	=> $row['color_titulo'],
 				'subtitulo' 	=> $row['subtitulo_texto'],
-				'size_subtitulo'=> floatval($row['size_subtitulo']),
+				'size_subtitulo'=> $sub,
+				'lineheight_sub'=> $sub*0.9,
+				'voffset_sub'	=> $voffset_sub,
 				'color_subtitulo'=> $row['color_subtitulo'],
 				'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
 				'estado_ba' 	=> $row['estado_ba'],
@@ -139,6 +158,8 @@ class Banner extends CI_Controller {
     		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
     		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
     		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
+    		$data['position_x'] = $allInputs['position_x'];
+    		$data['position_y'] = $allInputs['position_y'];
     		$data['acepta_texto'] = 'SI';
     	}else{
     		$data['acepta_texto'] = 'NO';
@@ -198,6 +219,11 @@ class Banner extends CI_Controller {
     		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
     		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
     		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
+    		$data['position_x'] = $allInputs['position_x'];
+    		$data['position_y'] = $allInputs['position_y'];
+    		$data['acepta_texto'] = 'SI';
+    	}else{
+    		$data['acepta_texto'] = 'NO';
     	}
     	// var_dump($data); exit();
 		if( $this->model_banner->m_editar($data,$allInputs['idbanner']) ){

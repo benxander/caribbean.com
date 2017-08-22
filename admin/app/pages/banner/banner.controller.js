@@ -122,9 +122,22 @@
 
             vm.listaSeccion = arrToModal.scope.listaSeccion;
             vm.listaTipoBanner = arrToModal.scope.listaTipoBanner;
-
             vm.fData.seccion = vm.listaSeccion[0];
             vm.fData.tipoBanner = vm.listaTipoBanner[0];
+
+            vm.listaVertical = [
+              {'id':'B', 'descripcion': 'ABAJO'},
+              {'id':'M', 'descripcion': 'MEDIO'},
+              {'id':'T', 'descripcion': 'ARRIBA'},
+            ];
+            vm.fData.position_y = vm.listaVertical[0].id;
+            vm.listaHorizontal = [
+              {'id':'L', 'descripcion': 'IZQUIERDA'},
+              {'id':'R', 'descripcion': 'DERECHA'},
+              {'id':'C', 'descripcion': 'CENTRO'},
+            ];
+            vm.fData.position_x = vm.listaHorizontal[0].id;
+
             // subida de imagen
 
             // botones
@@ -193,6 +206,21 @@
             vm.fData.tipoBanner = vm.listaTipoBanner.filter(function(obj) {
               return obj.descripcion == vm.fData.tipo_banner;
             }).shift();
+
+            vm.listaVertical = [
+              {'id':'B', 'descripcion': 'ABAJO'},
+              {'id':'M', 'descripcion': 'MEDIO'},
+              {'id':'T', 'descripcion': 'ARRIBA'},
+            ];
+            // vm.fData.position_y = 'B';
+            vm.listaHorizontal = [
+              {'id':'L', 'descripcion': 'IZQUIERDA'},
+              {'id':'R', 'descripcion': 'DERECHA'},
+              {'id':'C', 'descripcion': 'CENTRO'},
+            ];
+            // vm.fData.position_x = vm.listaHorizontal[0].id;
+
+
             vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
             console.log('sel',arrToModal.seleccion);
             console.log('data',vm.fData);

@@ -37,7 +37,7 @@
 	            </div>
 	            <div class="form-group col-md-5">
 	            	<label class="control-label minotaur-label">Incluye Texto sobre el slide?</label>
-	            	<label class="radio ml-lg" >
+	            	<label class="radio ml-lg mt-n" >
 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="1" ng-model="mb.fData.acepta_texto">
 						Si, con texto.
 					</label>
@@ -72,14 +72,18 @@
 			         		<input colorpicker="rgba" colorpicker-position="right" ng-model="mb.fData.color_subtitulo" type="text" class="form-control">
 			            </div>
 	              	</div>
-
-	            </div>
-	            <div class="form-group col-md-12">
-	              	<div ng-messages="formBanner.titulo.$error" ng-if="formBanner.titulo.$dirty" role="alert" class="help-block text-red">
-	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+	              	<div class="row" ng-show="mb.fData.acepta_texto == '1'">
+	              		<div class="form-group col-sm-6">
+		              		<label class="control-label minotaur-label">Posición Vertical </label>
+		              		<select class="form-control" ng-model="mb.fData.position_y" ng-options="item.id as item.descripcion for item in mb.listaVertical" > </select>
+	              		</div>
+	              		<div class="form-group col-sm-6 mr-0">
+			              	<label class="control-label minotaur-label">Posición Horizontal</label>
+			         		<select class="form-control" ng-model="mb.fData.position_x" ng-options="item.id as item.descripcion for item in mb.listaHorizontal" > </select>
+			            </div>
 	              	</div>
-	            </div>
 
+	            </div>
 		    </div>
 
 		</form>

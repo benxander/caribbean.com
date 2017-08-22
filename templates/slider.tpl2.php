@@ -32,9 +32,9 @@
       data-x="['left','left','left','left']"
       data-hoffset="['80','80','40','40']"
       data-y="['top','top','top','top']"
-      data-voffset="['450','450','250','150']"
-      data-width="564"
-      data-height="133"
+      data-voffset="[{{slide.voffset_tit}}]"
+      data-width="none"
+      data-height="none"
       data-whitespace="normal"
       data-transform_idle="o:1;"
       data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1500;e:Power3.easeInOut;"
@@ -47,13 +47,13 @@
       data-responsive_offset="on"
       data-ng-style="{
       'z-index':'5',
-      'min-width':'364px',
-      'min-height':'133px',
+      'min-width':'auto',
+      'min-height':'auto',
       'white-space':'normal',
-      'max-width':'564px',
-      'max-height':'133px',
+      'max-width':'auto',
+      'max-height':'auto',
       'font-size':'{{slide.size_titulo}}px',
-      'line-height':'60px',
+      'line-height':'{{slide.lineheight_tit}}px',
       'font-weight':'400',
       'color':'{{slide.color_titulo}}',
       'font-family':'Roboto Slab',
@@ -73,7 +73,7 @@
       data-x="['left','left','left','left']"
       data-hoffset="['81','81','41','41']"
       data-y="['top','top','top','top']"
-      data-voffset="['605','605','401','301']"
+      data-voffset="[{{slide.voffset_sub}}]"
       data-width="none"
       data-height="none"
       data-whitespace="nowrap"
@@ -96,7 +96,7 @@
       'max-width':'auto',
       'max-height':'auto',
       'font-size':'{{slide.size_subtitulo}}px',
-      'line-height':'24px',
+      'line-height':'{{slide.lineheight_sub}}px',
       'font-weight':'300',
       'color':'{{slide.color_subtitulo}}',
       'font-family':'Roboto Slab',

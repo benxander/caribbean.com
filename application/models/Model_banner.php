@@ -6,7 +6,7 @@ class Model_banner extends CI_Model {
 	}
 	public function m_cargar_banner($paramPaginate=FALSE){
 		$this->db->select('ba.idbanner, ba.titulo_ba, ba.imagen_ba, ba.estado_ba, ba.acepta_texto');
-		$this->db->select('ba.titulo_texto, ba.size_titulo, ba.color_titulo');
+		$this->db->select('ba.titulo_texto, ba.size_titulo, ba.color_titulo,ba.position_x,position_y');
 		$this->db->select('ba.subtitulo_texto, ba.size_subtitulo, ba.color_subtitulo');
 		$this->db->select('tb.idtipobanner, tb.descripcion_tb AS tipo_banner, tb.ancho_defecto, tb.alto_defecto');
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion');
