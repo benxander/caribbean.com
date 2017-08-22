@@ -208,15 +208,15 @@
             }).shift();
 
             vm.listaVertical = [
-              {'id':'B', 'descripcion': 'ABAJO'},
-              {'id':'M', 'descripcion': 'MEDIO'},
               {'id':'T', 'descripcion': 'ARRIBA'},
+              {'id':'M', 'descripcion': 'MEDIO'},
+              {'id':'B', 'descripcion': 'ABAJO'},
             ];
             // vm.fData.position_y = 'B';
             vm.listaHorizontal = [
               {'id':'L', 'descripcion': 'IZQUIERDA'},
-              {'id':'R', 'descripcion': 'DERECHA'},
               {'id':'C', 'descripcion': 'CENTRO'},
+              {'id':'R', 'descripcion': 'DERECHA'},
             ];
             // vm.fData.position_x = vm.listaHorizontal[0].id;
 
