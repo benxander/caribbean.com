@@ -78,6 +78,13 @@ class Banner extends CI_Controller {
 			foreach ($voffset as $v) {
 				$voffset_sub[] = (int)$v + ($tit * 3);
 			}
+			if($row['position_x'] == 'L'){
+				$pos_x = 'left';
+			}elseif($row['position_x'] == 'C'){
+				$pos_x = 'center';
+			}else{
+				$pos_x = 'right';
+			}
 			$arrAux = array(
 				'idbanner' 		=> $row['idbanner'],
 				'imagen' 		=> $ruta . $row['tipo_banner'].'/'.$row['imagen_ba'],
@@ -89,6 +96,8 @@ class Banner extends CI_Controller {
 				'size_titulo' 	=> $tit,
 				'lineheight_tit'=> $tit*0.9,
 				'voffset_tit'	=> $voffset,
+				'hoffset'		=> $row['position_x']=='C'? array(0,0,0,0): array(80,80,40,40),
+				'pos_x'	=> $pos_x,
 				'color_titulo' 	=> $row['color_titulo'],
 				'subtitulo' 	=> $row['subtitulo_texto'],
 				'size_subtitulo'=> $sub,

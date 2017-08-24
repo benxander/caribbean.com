@@ -1,0 +1,105 @@
+<div class="container" ng-if="seccionWeb" id="trabaja-con-nosotros">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="title text-center">
+
+				<h3>{{seccionWeb[4].contenedor[0].titulo}}</h3>
+
+			</div><!-- headline -->
+
+        </div><!-- col -->
+    </div><!-- row -->
+</div><!-- container -->
+
+<div class="container text-center" ng-if="seccionWeb">
+    <div class="row">
+        <div class="col-md-12">
+            <h5><strong>{{seccionWeb[4].contenedor[0].subtitulo}}</strong></h5>
+			<br>
+			<div ng-bind-html="seccionWeb[4].contenedor[0].contenido"></div>
+			<br>
+			<p ng-show="seccionWeb[4].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
+			<br class="hidden-lg hidden-md">
+        </div><!-- col -->
+		<div class="col-md-8" ng-show="false">
+
+            <div class="row">
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn">
+
+						<i class="halcyon-icon-worldwide-1"></i>
+
+						<h6><a href="single-service.html">World recognicion</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Pellentesque vitae dui.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
+
+						<i class="halcyon-icon-network"></i>
+
+						<h6><a href="single-service.html">Test our products</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Etiam turpis tortor, finibus quis urna eu, venenatis dapibus leo. Etiam sit amet
+							fringilla.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+			</div><!-- row -->
+
+			<div class="row">
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn">
+
+						<i class="halcyon-icon-database-3"></i>
+
+						<h6><a href="single-service.html">Profit's on the way</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Aliquam pretium diam a elit dignissim, sit amet sodales neque tristique. Duis non.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
+
+						<i class="halcyon-icon-paper-plane-1"></i>
+
+						<h6><a href="single-service.html">Contact us</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Praesent et laoreet tortor. Ut molestie ac dolor ut maximus. Vestibulum vestibulum
+							enim.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+			</div><!-- row -->
+
+        </div><!-- col -->
+    </div><!-- row -->
+</div><!-- container -->

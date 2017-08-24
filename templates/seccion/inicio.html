@@ -1,0 +1,20 @@
+<div class="container" ng-if="seccionWeb" id="inicio">
+	<div class="row">
+		<div class="col-md-9">
+			<h3>{{seccionWeb[1].contenedor[0].titulo}}</h3>
+			<h5><strong>{{seccionWeb[1].contenedor[0].subtitulo}}</strong></h5>
+			<br>
+			<div ng-bind-html="seccionWeb[1].contenedor[0].contenido"></div>
+			<br>
+			<p ng-show="seccionWeb[1].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
+		</div><!-- col -->
+		<div class="col-md-3" ng-if="seccionWeb[1].contenedor[0].acepta_imagen">
+			<div class="row">
+				<div class="col-sm-12">
+					<p><img class="wow fadeInRight" ng-src="uploads/banners/LATERAL/{{seccionWeb[1].contenedor[0].imagen}}" alt="" data-wow-delay="0.1s"></p>
+				</div><!-- col -->
+			</div><!-- row -->
+
+		</div><!-- col -->
+	</div><!-- row -->
+</div><!-- container -->

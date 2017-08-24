@@ -64,7 +64,38 @@
           };
         }
       };
-    });
+    }).directive("owlCarousel", function() {
+      return {
+        restrict: 'E',
+        transclude: false,
+        link: function (scope) {
+          scope.initCarousel = function(element) {
+            // provide any default options you want
+            var defaultOptions = {
+            };
+            var customOptions = scope.$eval($(element).attr('data-options'));
+            // combine the two options objects
+            for(var key in customOptions) {
+              defaultOptions[key] = customOptions[key];
+            }
+            // init carousel
+            $(element).owlCarousel(defaultOptions);
+          };
+        }
+      };
+    })
+    .directive('owlCarouselItem', [function() {
+      return {
+        restrict: 'A',
+        transclude: false,
+        link: function(scope, element) {
+          // wait for the last item in the ng-repeat then call init
+          if(scope.$last) {
+            scope.initCarousel(element.parent());
+          }
+        }
+      };
+    }]);
 
   /** @ngInject */
   function MainController($scope,$timeout, $location, $window, rootServices) {
@@ -72,6 +103,23 @@
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
     // $scope.fSessionCI = {};
+    $scope.items1 = [
+      {
+        'titulo': 'Responsive',
+        'descripcion' : 'Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet luctus.',
+        'clase' : 'eyeglasses'
+      },
+      {
+        'titulo': 'Seleccione sus fotos',
+        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+        'clase' : 'photo-camera'
+      },
+      {
+        'titulo': 'Pagos con Paypal y Tarjeta',
+        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+        'clase' : 'id-card-5'
+      }
+    ];
 
     $scope.goToUrl = function ( path ) {
       $location.path( path );
