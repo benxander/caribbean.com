@@ -37,7 +37,7 @@
 					<data-owl-carousel class="owl-carousel process-slider" data-options="{navigation: true, pagination: false, rewindNav : false}">
 				      	<div owl-carousel-item="" ng-repeat="item in ::items1" class="item">
 							<div class="service-box style-7">
-								<i class="halcyon-icon-{{::item.clase}}"></i>
+								<i class="{{::item.clase}}"></i>
 								<div class="service-box-content">
 									<h6><a href="">{{::item.titulo}}</a></h6>
 									<p>{{::item.descripcion}}</p>

@@ -107,17 +107,17 @@
       {
         'titulo': 'Responsive',
         'descripcion' : 'Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet luctus.',
-        'clase' : 'eyeglasses'
+        'clase' : 'halcyon-icon-eyeglasses'
       },
       {
         'titulo': 'Seleccione sus fotos',
         'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
-        'clase' : 'photo-camera'
+        'clase' : 'halcyon-icon-photo-camera'
       },
       {
         'titulo': 'Pagos con Paypal y Tarjeta',
         'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
-        'clase' : 'id-card-5'
+        'clase' : 'halcyon-interface-icon-credit-card'
       }
     ];
 
@@ -146,7 +146,7 @@
       if(response.flag == 1){
         // vm.slides = response.datos;
         $scope.slides = response.datos;
-        // console.log('SLIDER ',vm.slides);
+        console.log('SLIDER ',$scope.slides);
       }else{
         console.log('no data');
       }
@@ -173,7 +173,7 @@
         lazyType: "none",
         dottedOverlay: "none",
         shadow: 0,
-        spinner: "off",
+        spinner: "spinner2",
         hideAllCaptionAtLilmit: 0,
         hideCaptionAtLimit: 0,
         hideSliderAtLimit: 0,

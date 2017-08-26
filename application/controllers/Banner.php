@@ -2,8 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Banner extends CI_Controller {
-	public function __construct()
-    {
+	public function __construct(){
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
@@ -11,8 +10,7 @@ class Banner extends CI_Controller {
         $this->load->model(array('model_banner'));
     }
 
-	public function listar_banners()
-	{
+	public function listar_banners(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
 		$lista = $this->model_banner->m_cargar_banner($paramPaginate);
@@ -28,15 +26,8 @@ class Banner extends CI_Controller {
 					'seccion'		=> $row['seccion'],
 					'ancho_defecto' => $row['ancho_defecto'],
 					'alto_defecto' 	=> $row['alto_defecto'],
-					'titulo' 		=> $row['titulo_texto'],
-					'size_titulo' 	=> floatval($row['size_titulo']),
-					'color_titulo' 	=> $row['color_titulo'],
-					'subtitulo' 	=> $row['subtitulo_texto'],
-					'size_subtitulo'=> floatval($row['size_subtitulo']),
-					'color_subtitulo'=> $row['color_subtitulo'],
+					'titulo' 		=> $row['titulo_ba'],
 					'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
-					'position_x' 	=> $row['position_x'],
-					'position_y' 	=> $row['position_y'],
 					'estado_ba' 	=> $row['estado_ba'],
 				)
 			);
@@ -53,66 +44,56 @@ class Banner extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function cargar_banners_web()
-	{
+	public function cargar_banners_web(){
+		ini_set('xdebug.var_display_max_depth', 5);
+	    ini_set('xdebug.var_display_max_children', 256);
+	    ini_set('xdebug.var_display_max_data', 1024);
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 
-		$lista = $this->model_banner->m_cargar_banner();
+		$lista = $this->model_banner->m_cargar_banner_web();
 
 		$arrListado = array();
-		$arrSlider = array();
-		$arrFondo = array();
-		$arrLateral = array();
+
 		$ruta = 'uploads/banners/';
 		foreach ($lista as $row) {
-			$tit = floatval($row['size_titulo']);
-			$sub = floatval($row['size_subtitulo']);
-			if($row['position_y'] == 'T'){
-				$voffset = array(100,100,100,50);
-			}elseif($row['position_y'] == 'M'){
-				$voffset = array(250,250,250,150);
-			}else{
-				$voffset = array(500,500,350,150);
-			}
-			$voffset_sub = array();
-			foreach ($voffset as $v) {
-				$voffset_sub[] = (int)$v + ($tit * 3);
-			}
-			if($row['position_x'] == 'L'){
-				$pos_x = 'left';
-			}elseif($row['position_x'] == 'C'){
-				$pos_x = 'center';
-			}else{
-				$pos_x = 'right';
-			}
-			$arrAux = array(
+
+			$arrListado[$row['idbanner']] = array(
 				'idbanner' 		=> $row['idbanner'],
 				'imagen' 		=> $ruta . $row['tipo_banner'].'/'.$row['imagen_ba'],
 				'tipo_banner' 	=> $row['tipo_banner'],
 				'seccion'		=> $row['seccion'],
 				'ancho_defecto' => $row['ancho_defecto'],
 				'alto_defecto' 	=> $row['alto_defecto'],
-				'titulo' 		=> $row['titulo_texto'],
-				'size_titulo' 	=> $tit,
-				'lineheight_tit'=> $tit*0.9,
-				'voffset_tit'	=> $voffset,
-				'hoffset'		=> $row['position_x']=='C'? array(0,0,0,0): array(80,80,40,40),
-				'pos_x'	=> $pos_x,
-				'color_titulo' 	=> $row['color_titulo'],
-				'subtitulo' 	=> $row['subtitulo_texto'],
-				'size_subtitulo'=> $sub,
-				'lineheight_sub'=> $sub*0.9,
-				'voffset_sub'	=> $voffset_sub,
-				'color_subtitulo'=> $row['color_subtitulo'],
+				'titulo' 		=> $row['titulo_ba'],
 				'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
-				'estado_ba' 	=> $row['estado_ba'],
+				'capas'			=> array()
+
 			);
-			// $arrListado[$row['tipo_banner']][] = $arrAux;
-			array_push($arrListado, $arrAux);
+		}
+		foreach ($arrListado as $key => $value) {
+			$arrAux = array();
+			foreach ($lista as $row) {
+				if($key == $row['idbanner']){
+					array_push($arrAux,
+						array(
+							'idcapaslider' 	=> $row['idcapaslider'],
+							'texto' 		=> $row['texto'],
+							'color' 		=> $row['color'],
+							'fontsize'		=> floatval($row['fontsize']),
+							'data_x' 		=> $row['data_x'],
+							'data_y' 		=> $row['data_y'],
+							'offset_horizontal'	=> floatval($row['offset_horizontal']),
+							'offset_vertical'	=> floatval($row['offset_vertical']),
+							'data_width'	=> floatval($row['data_width']),
+							'line_height'	=> floatval($row['line_height']),
+						)
+					);
+				}
+			}
+			$arrListado[$key]['capas'] = $arrAux;
 		}
 
-		// var_dump($arrListado); exit();
-
+		$arrListado = array_values($arrListado);
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
@@ -123,7 +104,37 @@ class Banner extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function cargar_capas_banner(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_banner->m_cargar_capas_banner($allInputs);
+		$arrListado = array();
 
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idcapaslider' 	=> $row['idcapaslider'],
+					'texto' 		=> $row['texto'],
+					'color' 		=> $row['color'],
+					'fontsize'		=> floatval($row['fontsize']),
+					'data_x' 		=> $row['data_x'],
+					'data_y' 		=> $row['data_y'],
+					'offset_horizontal' 		=> floatval($row['offset_horizontal']),
+					'offset_vertical'	=> floatval($row['offset_vertical']),
+					'data_width'	=> floatval($row['data_width']),
+					'line_height'	=> floatval($row['line_height']),
+				)
+			);
+		}
+		$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	// MANTENIMIENTO
 	public function registrar_banner()
 	{
@@ -153,6 +164,7 @@ class Banner extends CI_Controller {
     		'idseccion' => 1,
     		// 'idtipobanner' => $allInputs['tipoBanner']['id'],
     		// 'idseccion' => $allInputs['seccion']['id'],
+    		'titulo_ba' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'imagen_ba' => $nombre,
     		'idusuario' => $this->sessionCP['idusuario'],
     		'size' => $allInputs['size'],
@@ -161,20 +173,30 @@ class Banner extends CI_Controller {
 			'updatedAt' => date('Y-m-d H:i:s')
     	);
     	if($allInputs['acepta_texto'] == 1 ){
-    		$data['titulo_texto'] = trim($allInputs['titulo']);
-    		$data['size_titulo'] = empty($allInputs['size_titulo'])? 70 : $allInputs['size_titulo'];
-    		$data['color_titulo'] = empty($allInputs['color_titulo'])? 'rgba(255,255,255,1)' : $allInputs['color_titulo'];
-    		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
-    		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
-    		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
-    		$data['position_x'] = $allInputs['position_x'];
-    		$data['position_y'] = $allInputs['position_y'];
     		$data['acepta_texto'] = 'SI';
     	}else{
     		$data['acepta_texto'] = 'NO';
     	}
-    	// var_dump($data); exit();
-		if($this->model_banner->m_registrar($data)){
+
+    	$idbanner = $this->model_banner->m_registrar($data);
+    	// var_dump($idbanner); exit();
+		if($idbanner){
+			if($allInputs['acepta_texto'] == 1 ){
+	    		foreach ($allInputs['capas'] as $row) {
+	    			$data_c['idbanner'] = $idbanner;
+		    		$data_c['texto'] = trim($row['texto']);
+		    		$data_c['fontsize'] = empty($row['fontsize'])? 70 : $row['fontsize'];
+		    		$data_c['color'] = empty($row['color'])? 'rgba(255,255,255,1)' : $row['color'];
+
+		    		$data_c['data_x'] = $row['data_x'];
+		    		$data_c['data_y'] = $row['data_y'];
+		    		$data_c['offset_vertical'] = $row['offset_vertical'];
+		    		$data_c['offset_horizontal'] = $row['offset_horizontal'];
+		    		$data_c['line_height'] = $row['line_height'];
+		    		$data_c['data_width'] = $row['data_width'];
+	    			$this->model_banner->m_registrar_capa_slider($data_c);
+	    		}
+	    	}
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
@@ -222,15 +244,20 @@ class Banner extends CI_Controller {
 			$data = array_merge($data,$data_imagen);
     	}
     	if($allInputs['acepta_texto'] == 1 ){
-    		$data['titulo_texto'] = trim($allInputs['titulo']);
-    		$data['size_titulo'] = empty($allInputs['size_titulo'])? 70 : $allInputs['size_titulo'];
-    		$data['color_titulo'] = empty($allInputs['color_titulo'])? 'rgba(255,255,255,1)' : $allInputs['color_titulo'];
-    		$data['subtitulo_texto'] = trim($allInputs['subtitulo']);
-    		$data['size_subtitulo'] = empty($allInputs['size_subtitulo'])? 12 : $allInputs['size_subtitulo'];
-    		$data['color_subtitulo'] = empty($allInputs['color_subtitulo'])? 'rgba(255,255,255,1)' : $allInputs['color_subtitulo'];
-    		$data['position_x'] = $allInputs['position_x'];
-    		$data['position_y'] = $allInputs['position_y'];
     		$data['acepta_texto'] = 'SI';
+    		foreach ($allInputs['capas'] as $row) {
+	    		$data_c['texto'] = trim($row['texto']);
+	    		$data_c['fontsize'] = empty($row['fontsize'])? 70 : $row['fontsize'];
+	    		$data_c['color'] = empty($row['color'])? 'rgba(255,255,255,1)' : $row['color'];
+
+	    		$data_c['data_x'] = $row['data_x'];
+	    		$data_c['data_y'] = $row['data_y'];
+	    		$data_c['offset_vertical'] = $row['offset_vertical'];
+	    		$data_c['offset_horizontal'] = $row['offset_horizontal'];
+	    		$data_c['line_height'] = $row['line_height'];
+	    		$data_c['data_width'] = $row['data_width'];
+    			$this->model_banner->m_editar_capa_slider($data_c,$row['idcapaslider']);
+    		}
     	}else{
     		$data['acepta_texto'] = 'NO';
     	}

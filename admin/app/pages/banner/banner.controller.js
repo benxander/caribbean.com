@@ -124,19 +124,41 @@
             vm.listaTipoBanner = arrToModal.scope.listaTipoBanner;
             vm.fData.seccion = vm.listaSeccion[0];
             vm.fData.tipoBanner = vm.listaTipoBanner[0];
+            vm.fData.capas = {}
 
             vm.listaVertical = [
-              {'id':'B', 'descripcion': 'ABAJO'},
-              {'id':'M', 'descripcion': 'MEDIO'},
-              {'id':'T', 'descripcion': 'ARRIBA'},
+              {'id':'top', 'descripcion': 'ARRIBA'},
+              {'id':'middle', 'descripcion': 'MEDIO'},
+              {'id':'bottom', 'descripcion': 'ABAJO'},
             ];
-            vm.fData.position_y = vm.listaVertical[0].id;
             vm.listaHorizontal = [
-              {'id':'L', 'descripcion': 'IZQUIERDA'},
-              {'id':'R', 'descripcion': 'DERECHA'},
-              {'id':'C', 'descripcion': 'CENTRO'},
+              {'id':'left', 'descripcion': 'IZQUIERDA'},
+              {'id':'center', 'descripcion': 'CENTRO'},
+              {'id':'right', 'descripcion': 'DERECHA'},
             ];
-            vm.fData.position_x = vm.listaHorizontal[0].id;
+            vm.fData.capas = [
+              {
+                'color' : 'rgba(255,255,255,1)',
+                'fontsize' : 70,
+                'line_height' : 70,
+                'data_width' : 300,
+                'data_y' : vm.listaVertical[2].id,
+                'data_x' : vm.listaHorizontal[0].id,
+                'offset_vertical' : 140,
+                'offset_horizontal' : 80,
+              },
+              {
+                'color' : 'rgba(255,255,255,1)',
+                'fontsize' : 35,
+                'line_height' : 35,
+                'data_width' : 200,
+                'data_y' : vm.listaVertical[2].id,
+                'data_x' : vm.listaHorizontal[0].id,
+                'offset_vertical' : 100,
+                'offset_horizontal' : 80,
+              },
+            ];
+
 
             // subida de imagen
 
@@ -206,20 +228,20 @@
             vm.fData.tipoBanner = vm.listaTipoBanner.filter(function(obj) {
               return obj.descripcion == vm.fData.tipo_banner;
             }).shift();
+            BannerServices.slistarCapasBanner(vm.fData).then(function (rpta) {
+              vm.fData.capas = rpta.datos;
 
+            });
             vm.listaVertical = [
-              {'id':'T', 'descripcion': 'ARRIBA'},
-              {'id':'M', 'descripcion': 'MEDIO'},
-              {'id':'B', 'descripcion': 'ABAJO'},
+              {'id':'top', 'descripcion': 'ARRIBA'},
+              {'id':'middle', 'descripcion': 'MEDIO'},
+              {'id':'bottom', 'descripcion': 'ABAJO'},
             ];
-            // vm.fData.position_y = 'B';
             vm.listaHorizontal = [
-              {'id':'L', 'descripcion': 'IZQUIERDA'},
-              {'id':'C', 'descripcion': 'CENTRO'},
-              {'id':'R', 'descripcion': 'DERECHA'},
+              {'id':'left', 'descripcion': 'IZQUIERDA'},
+              {'id':'center', 'descripcion': 'CENTRO'},
+              {'id':'right', 'descripcion': 'DERECHA'},
             ];
-            // vm.fData.position_x = vm.listaHorizontal[0].id;
-
 
             vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
             console.log('sel',arrToModal.seleccion);
@@ -296,6 +318,7 @@
   function BannerServices($http, $q) {
     return({
         sListarBanner: sListarBanner,
+        slistarCapasBanner: slistarCapasBanner,
         sRegistrarBanner: sRegistrarBanner,
         sEditarBanner: sEditarBanner,
         sAnularBanner: sAnularBanner,
@@ -305,6 +328,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Banner/listar_banners",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function slistarCapasBanner(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Banner/cargar_capas_banner",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

@@ -15,11 +15,15 @@
       alt=""
       width="1920"
       height="1280"
-      data-bgposition="center top"
+      data-bgposition="center center"
       data-bgfit="cover"
+
       data-bgrepeat="no-repeat"
       data-kenburns="on"
       data-duration="10000" data-scalestart="100" data-scaleend="120"
+      data-offsetstart = "250 -100"
+      data-offsetend = "-250 100"
+
       data-ease="Power4.easeInOut"
       data-bgparallax="10"
       class="rev-slidebg"
@@ -29,13 +33,15 @@
     <a class="tp-caption News-Title tp-resizeme rs-parallaxlevel-0"
       data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-1"
-      data-x="['{{slide.pos_x}}','{{slide.pos_x}}','{{slide.pos_x}}','{{slide.pos_x}}']"
-      data-hoffset="[{{slide.hoffset}}]"
-      data-y="['top','top','top','top']"
-      data-voffset="[{{slide.voffset_tit}}]"
-      data-width="none"
-      data-height="none"
+      data-x="['{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}']"
+      data-hoffset="[{{slide.capas[0].offset_horizontal}}]"
+      data-y="['{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}']"
+      data-voffset="[{{slide.capas[0].offset_vertical}}]"
+      data-width="{{slide.capas[0].data_width}}px"
+      data-height="['auto']"
       data-whitespace="normal"
+      data-fontsize="['{{slide.capas[0].fontsize}}', '{{slide.capas[0].fontsize}}', '{{slide.capas[0].fontsize}}', '{{slide.capas[0].fontsize}}']"
+      data-lineheight="['{{slide.capas[0].line_height}}', '{{slide.capas[0].line_height}}', '{{slide.capas[0].line_height}}', '{{slide.capas[0].line_height}}']"
       data-transform_idle="o:1;"
       data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1500;e:Power3.easeInOut;"
       data-transform_out="y:[100%];s:1000;s:1000;"
@@ -52,15 +58,15 @@
       'white-space':'normal',
       'max-width':'auto',
       'max-height':'auto',
-      'font-size':'{{slide.size_titulo}}px',
-      'line-height':'{{slide.lineheight_tit}}px',
+      'font-size':'{{slide.capas[0].fontsize}}px',
+      'line-height':'{{slide.capas[0].line_height}}px',
       'font-weight':'400',
-      'color':'{{slide.color_titulo}}',
+      'color':'{{slide.capas[0].color}}',
       'font-family':'Roboto Slab',
       'padding':'0 0 0 0',
       'border-radius':'0 0 0 0'
       }">
-      {{slide.titulo}}
+      {{slide.capas[0].texto}}
     </a>
 
     <!-- LAYER NR. 2 -->
@@ -68,15 +74,15 @@
 
     <!-- LAYER NR. 3 -->
     <a class="tp-caption News-Subtitle tp-resizeme rs-parallaxlevel-0"
-      data-ui-sref="frontPage.services.spc"
+      data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-3"
-      data-x="['{{slide.pos_x}}','{{slide.pos_x}}','{{slide.pos_x}}','{{slide.pos_x}}']"
-      data-hoffset="[{{slide.hoffset}}]"
-      data-y="['top','top','top','top']"
-      data-voffset="[{{slide.voffset_sub}}]"
-      data-width="none"
+      data-x="['{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}']"
+      data-hoffset="[{{slide.capas[1].offset_horizontal}}]"
+      data-y="['{{slide.capas[1].data_y}}','{{slide.capas[1].data_y}}','{{slide.capas[1].data_y}}','{{slide.capas[1].data_y}}']"
+      data-voffset="[{{slide.capas[1].offset_vertical}}]"
+      data-width="{{slide.capas[1].data_width}}px"
       data-height="none"
-      data-whitespace="nowrap"
+      data-whitespace="normal"
       data-transform_idle="o:1;"
       data-transform_hover="o:1;rX:0;rY:0;rZ:0;z:0;s:300;e:Power3.easeInOut;"
       data-style_hover="c:rgba(255, 255, 255, 0.65);br:0 0 0px 0;cursor:pointer;"
@@ -92,19 +98,19 @@
       'z-index':'7',
       'min-width':'auto',
       'min-height':'auto',
-      'white-space':'nowrap',
+      'white-space':'normal',
       'max-width':'auto',
       'max-height':'auto',
-      'font-size':'{{slide.size_subtitulo}}px',
-      'line-height':'{{slide.lineheight_sub}}px',
+      'font-size':'{{slide.capas[1].fontsize}}px',
+      'line-height':'{{slide.capas[1].line_height}}px',
       'font-weight':'300',
-      'color':'{{slide.color_subtitulo}}',
+      'color':'{{slide.capas[1].color}}',
       'font-family':'Roboto Slab',
       'background-color':'rgba(255, 255, 255, 0)',
       'padding':'0 0 0 0',
       'border-radius':'0 0 0 0'
       }">
-      {{slide.subtitulo}}
+      {{slide.capas[1].texto}}
     </a>
 
     <!-- LAYER NR. 4 -->
