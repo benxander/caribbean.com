@@ -34,7 +34,7 @@
       data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-1"
       data-x="['{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}']"
-      data-hoffset="[{{slide.capas[0].offset_horizontal}}]"
+      data-hoffset="['{{slide.capas[0].offset_horizontal}}','{{slide.capas[0].offset_horizontal}}','{{slide.capas[0].offset_horizontal}}','{{slide.capas[0].offset_horizontal}}']"
       data-y="['{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}','{{slide.capas[0].data_y}}']"
       data-voffset="['{{slide.capas[0].offset_vertical}}','{{slide.capas[0].offset_vertical2}}','{{slide.capas[0].offset_vertical3}}','{{slide.capas[0].offset_vertical4}}']"
       data-width="['{{slide.capas[0].data_width}}px','{{slide.capas[0].data_width2}}px','{{slide.capas[0].data_width3}}px','{{slide.capas[0].data_width4}}px']"
