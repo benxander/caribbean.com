@@ -22,14 +22,19 @@
 				<div class="col-sm-12">
 
 					<data-owl-carousel class="owl-carousel process-slider"
-						data-options="{navigation: true, pagination: false, rewindNav : false,
+						data-options="{navigation: true, pagination: false, rewindNav : true,
 							responsive: {
-				              0: {items: 1 },
-				              600: {items: 2},
-				              960: {items: 2},
-				              1200:{items: 3},
-				              1600:{items: 3}
-				            }
+								0:{
+									items: 1
+								},
+								768:{
+									items: 2
+								},
+								991:{
+									items: 3
+								}
+							},
+				            autoplay: true,loop: true
 			            }"
 			            >
 				      	<div owl-carousel-item="" ng-repeat="item in ::items1" class="item">

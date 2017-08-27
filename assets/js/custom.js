@@ -1399,27 +1399,27 @@
 
 
 			// PROCESS SLIDER //
-			$(".owl-carousel.process-slider").owlCarousel({
-				autoplay: false,
-				smartSpeed: 1200,
-				loop: false,
-				nav: false,
-				navText: false,
-				dots: false,
-				mouseDrag: true,
-				touchDrag: true,
-				responsive: {
-					0:{
-						items: 1
-					},
-					768:{
-						items: 2
-					},
-					991:{
-						items: 3
-					}
-				}
-			});
+			// $(".owl-carousel.process-slider").owlCarousel({
+			// 	autoplay: false,
+			// 	smartSpeed: 1200,
+			// 	loop: false,
+			// 	nav: false,
+			// 	navText: false,
+			// 	dots: false,
+			// 	mouseDrag: true,
+			// 	touchDrag: true,
+			// 	responsive: {
+			// 		0:{
+			// 			items: 1
+			// 		},
+			// 		768:{
+			// 			items: 2
+			// 		},
+			// 		991:{
+			// 			items: 3
+			// 		}
+			// 	}
+			// });
 
 
 			// ROUNDED IMAGES SLIDER //

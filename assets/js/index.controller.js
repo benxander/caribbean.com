@@ -25,46 +25,28 @@
           }
       };
     })
-    .directive('fancybox', function ($compile, $http) {
+    .directive('fancybox', function(){
       return {
         restrict: 'A',
-        controller: function($scope) {
-          $scope.openFancybox = function (url) {
-            $http.get(url).then(function(response) {
-                if (response.status == 200) {
 
-                    var template = angular.element(response.data);
-                    var compiledTemplate = $compile(template);
-                    compiledTemplate($scope);
-
-                    $.fancybox.open({
-                      content: template,
-                      type: 'html',
-                      maxWidth: 450,
-                      maxHeight: 350,
-                      fitToView: false,
-                      width: '90%',
-                      height: '90%',
-                      padding: 0,
-                      autoSize: false,
-                      closeClick: false,
-                      openMethod: 'dropIn',
-                      openSpeed: 150,
-                      closeMethod: 'dropOut',
-                      closeSpeed: 150,
-                      beforeShow: function () {
-                        $("#main-container").addClass("bluring");
-                      },
-                      afterClose: function () {
-                        $("#main-container").removeClass("bluring");
-                      }
-                    });
-                }
-            });
-          };
+        link: function(scope, element, attrs){
+          $(element).fancybox({
+            type        :'iframe',
+            scrolling   : 'no',
+            maxWidth    : 800,
+            maxHeight   : 400,
+            fitToView   : true,
+            width       : '70%',
+            height      : '70%',
+            autoSize    : false,
+            closeClick  : true,
+            openEffect  : 'none',
+            closeEffect : 'none'
+          });
         }
-      };
-    }).directive("owlCarousel", function() {
+      }
+    })
+    .directive("owlCarousel", function() {
       return {
         restrict: 'E',
         transclude: false,
@@ -238,7 +220,10 @@
         hideThumbsOnMobile: "off",
       };
 
-
+    $scope.verMapa = function(template_path){
+      console.log(template_path);
+      $.fancybox({"href":template_path})
+    }
 
   }
   function rootServices($http, $q) {
