@@ -118,6 +118,11 @@
         'titulo': 'Pagos con Paypal y Tarjeta',
         'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
         'clase' : 'halcyon-icon-id-card-4'
+      },
+      {
+        'titulo': 'Otro item',
+        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+        'clase' : 'halcyon-icon-id-card-2'
       }
     ];
 

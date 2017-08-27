@@ -64,6 +64,8 @@ class Banner extends CI_Controller {
 				'seccion'		=> $row['seccion'],
 				'ancho_defecto' => $row['ancho_defecto'],
 				'alto_defecto' 	=> $row['alto_defecto'],
+				'data_offset_start'	=> $row['data_offset_start'],
+				'data_offset_end' 	=> $row['data_offset_end'],
 				'titulo' 		=> $row['titulo_ba'],
 				'acepta_texto'	=> $row['acepta_texto'] == 'SI'? '1': '0',
 				'capas'			=> array()
@@ -80,12 +82,24 @@ class Banner extends CI_Controller {
 							'texto' 		=> $row['texto'],
 							'color' 		=> $row['color'],
 							'fontsize'		=> floatval($row['fontsize']),
+							'fontsize2'		=> floatval($row['fontsize']),
+							'fontsize3'		=> floatval($row['fontsize'])*0.8,
+							'fontsize4'		=> floatval($row['fontsize'])*0.6,
 							'data_x' 		=> $row['data_x'],
 							'data_y' 		=> $row['data_y'],
 							'offset_horizontal'	=> floatval($row['offset_horizontal']),
 							'offset_vertical'	=> floatval($row['offset_vertical']),
+							'offset_vertical2'	=> floatval($row['offset_vertical'])*0.9,
+							'offset_vertical3'	=> floatval($row['offset_vertical'])*0.8,
+							'offset_vertical4'	=> floatval($row['offset_vertical'])*0.6,
 							'data_width'	=> floatval($row['data_width']),
+							'data_width2'	=> floatval($row['data_width'])*0.8,
+							'data_width3'	=> floatval($row['data_width'])*0.7,
+							'data_width4'	=> floatval($row['data_width'])*0.6,
 							'line_height'	=> floatval($row['line_height']),
+							'line_height2'	=> floatval($row['line_height']),
+							'line_height3'	=> floatval($row['line_height'])*0.8,
+							'line_height4'	=> floatval($row['line_height'])*0.7,
 						)
 					);
 				}

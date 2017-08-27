@@ -56,6 +56,7 @@ class Model_banner extends CI_Model {
 	}
 	public function m_cargar_banner_web(){
 		$this->db->select('ba.idbanner, ba.titulo_ba, ba.imagen_ba, ba.estado_ba, ba.acepta_texto');
+		$this->db->select('ba.data_offset_start,ba.data_offset_end');
 		$this->db->select('cs.idcapaslider, cs.texto, cs.color, cs.fontsize, cs.data_x,cs.data_y');
 		$this->db->select('cs.offset_horizontal, cs.offset_vertical, cs.data_width, cs.line_height');
 		$this->db->select('tb.idtipobanner, tb.descripcion_tb AS tipo_banner, tb.ancho_defecto, tb.alto_defecto');
