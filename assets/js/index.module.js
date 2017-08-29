@@ -6,6 +6,7 @@
 		'oc.lazyLoad',
 		'rev.slider',
 		'ngSanitize'
+		// 'ngMap'
 		//'ngFacebook'
 	]);
 

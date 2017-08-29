@@ -8,7 +8,7 @@ class Model_config extends CI_Model {
 		$this->db->select('we.idweb, we.titulo_we, we.descripcion_we, we.keywords');
 		$this->db->select('we.autor_we, we.logo, we.footer_logo, we.favicon');
 		$this->db->select('we.apple_icon, we.marca_agua, we.correo, we.telefono');
-		$this->db->select('we.whatsapp, we.skype, we.direccion');
+		$this->db->select('we.whatsapp, we.skype, we.direccion,we.latitud_gm, we.longitud_gm');
 
 		$this->db->from('web we');
 		$this->db->where('we.estado_we', 1);

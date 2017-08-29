@@ -34,7 +34,7 @@
 									items: 3
 								}
 							},
-				            autoplay: true,loop: true
+				            autoplay: true,loop: false
 			            }"
 			            >
 				      	<div owl-carousel-item="" ng-repeat="item in ::items1" class="item">

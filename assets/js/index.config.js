@@ -7,20 +7,44 @@
   var dirWebRoot =  window.location.origin + directoryApp;
   angular.patchURL = dirWebRoot+'/';
   angular.patchURLCI = dirWebRoot+'/ci.php/';
+  angular.dirViews = angular.patchURL+'templates/';
 
   angular
     .module('caribbean')
     .config(config);
 
   /** @ngInject */
-  function config($logProvider, $locationProvider) {
+  function config($logProvider,$routeProvider, $locationProvider) {
     // Enable log
     $logProvider.debugEnabled(true);
 
     $locationProvider.html5Mode(true);
     // remove ! hash prefix
     $locationProvider.hashPrefix('');
+    $routeProvider
+    .when('/', {
+      templateUrl: 'templates/seccion/servicios.html',
+      controller: 'MainController'
 
+      // resolve:{
+      //   loadAsset: ['$ocLazyLoad', function($ocLazyLoad){
+      //     return $ocLazyLoad.load(['assets/js/controllers/Inicio.js'])
+      //   }]
+      // }
+    }).when('/servicios', {
+      templateUrl: 'templates/seccion/servicios.html',
+      controller: 'MainController'
+
+      // resolve:{
+      //   loadAsset: ['$ocLazyLoad', function($ocLazyLoad){
+      //     return $ocLazyLoad.load(['assets/js/controllers/Inicio.js'])
+      //   }]
+      // }
+    })
+   /* .otherwise({
+        redirectTo: '/'
+      })*/;
+      console.log('route', $routeProvider);
   }
 
 })();

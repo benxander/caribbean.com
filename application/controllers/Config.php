@@ -16,7 +16,9 @@ class Config extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_config->m_cargar_configuracion();
 		$lista['email_cifrado'] = safe_mailto($lista['correo']);
-		$arrListado = array();
+		// $arrListado = array();
+		$lista['lat'] = floatval($lista['latitud_gm']);
+		$lista['lng'] = floatval($lista['longitud_gm']);
     	$arrData['datos'] = $lista;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

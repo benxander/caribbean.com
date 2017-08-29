@@ -73,36 +73,14 @@
 
 							<ul class="menu clearfix" id="menu">
 								<li class="active">
-									<a href="#inicio">Inicio</a>
-								</li>
-								<li class="dropdown">
-									<a href="#servicios">Servicios</a>
-									<ul ng-if="false">
-										<li class="dropdown">
-											<a class="waves" href="#">Servicios 1</a>
-											<ul>
-												<li><a class="waves" href="">ABC</a></li>
-												<li><a class="waves" href="">XYZ</a></li>
-											</ul>
-										</li>
-										<li class="dropdown">
-											<a class="waves" href="#">Servicios 2</a>
-											<ul>
-												<li><a class="waves" href="">ABC</a></li>
-												<li><a class="waves" href="">XYZ</a></li>
-											</ul>
-										</li>
-										<li class="dropdown">
-											<a class="waves" href="#">Servicios 3</a>
-											<ul>
-												<li><a class="waves" href="">ABC</a></li>
-												<li><a class="waves" href="">XYZ</a></li>
-											</ul>
-										</li>
-									</ul>
+									<a href="{{dirWeb}}/">Inicio</a>
 								</li>
 								<li class="">
-									<a href="#noticias">Noticias</a>
+									<a href="#servicios">Servicios</a>
+
+								</li>
+								<li class="">
+									<a href="" ng-click="verBlog()">Noticias</a>
 								</li>
 								<li class="">
 									<a href="#trabaja-con-nosotros">Trabaja con nosotros</a>
@@ -110,23 +88,7 @@
 								<li class="">
 									<a href="#">Contacto</a>
 								</li>
-								<li class="search" ng-show="false">
 
-									<a href="#search-form-container"><i class="halcyon-icon-search-1"></i></a>
-
-									<div id="search-form-container">
-
-										<form id="search-form" action="#">
-											<input id="search" type="search" name="search" placeholder="Enter keywords...">
-											<input id="search-submit" type="submit" value="">
-										</form>
-
-									</div><!-- search-form-container -->
-
-								</li>
-								<!-- <li class="login" ng-if="!fSessionCI">
-									<a class="btn btn-default-2 waves" href="" fancybox ng-click="openFancybox('popups/login_view.html')">Acceso a tu cuenta</a>
-								</li> -->
 							</ul>
 
 
@@ -134,7 +96,7 @@
 					</div>
 					<div class="col-sm-2">
 						<div class="login">
-							<a class="btn btn-default-2 waves" href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
+							<a class="btn btn-default-2 waves" ng-href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
 						</div>
 
 					</div>
@@ -142,7 +104,7 @@
 			</div>
 		</header>
 		<!-- PAGE CONTENT -->
-		<div id="page-content">
+		<div id="page-content" ng-show="inicio">
 			<div class="container-fluid" data-ng-style="{'max-width':'1920px'}">
 			    <!-- slider parent container -->
 			    <section class="content-section" data-ng-style="{'max-width':'1920px', 'margin':'0 auto'}">
@@ -199,6 +161,7 @@
 			<div ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></div>
 			<div ng-include="'templates/seccion/fotos-online.php'" ></div>
 		</div><!-- PAGE CONTENT -->
+		<div ng-show="!inicio" ng-include="ruta"></div>
 		<!-- FOOTER -->
 		<footer id="footer-container">
 
@@ -397,6 +360,8 @@
 	<!-- GOOGLE MAPS -->
 	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyD3E-0gEeAoazgA2D7W0DAmPv1pYA5hPJ4"></script>
 	<script src="assets/plugins/googlemaps/gmap3.min.js"></script>
+    <!-- <script src="admin/bower_components/ngmap/build/scripts/ng-map.js"></script> -->
+
 
 	<!-- CHARTS -->
 	<script src="assets/plugins/charts/jquery.easypiechart.min.js"></script>

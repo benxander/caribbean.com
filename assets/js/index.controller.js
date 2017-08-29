@@ -33,11 +33,11 @@
           $(element).fancybox({
             type        :'iframe',
             scrolling   : 'no',
-            maxWidth    : 800,
-            maxHeight   : 400,
+            maxWidth    : 1000,
+            maxHeight   : 600,
             fitToView   : true,
-            width       : '70%',
-            height      : '70%',
+            width       : '80%',
+            height      : '90%',
             autoSize    : false,
             closeClick  : true,
             openEffect  : 'none',
@@ -219,10 +219,11 @@
         visibilityLevels: [1240, 1024, 778, 480],
         hideThumbsOnMobile: "off",
       };
+    $scope.inicio = true;
+    $scope.verBlog = function(){
+      $scope.inicio = false;
+      $scope.ruta = 'templates/blog.html';
 
-    $scope.verMapa = function(template_path){
-      console.log(template_path);
-      $.fancybox({"href":template_path})
     }
 
   }

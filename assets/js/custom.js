@@ -1523,14 +1523,21 @@
 			$(".map").each(function() {
 
 				var data_zoom = 15,
+                    data_width,
 					data_height,
-					data_popup = false;
+					data_popup = false,
+                    data_lat,
+                    data_lng;
+                var center = [$(this).attr("data-lat"), $(this).attr("data-lng")];
 
 				if ($(this).attr("data-zoom") !== undefined) {
 					data_zoom = parseInt($(this).attr("data-zoom"),10);
 				}
 
-				if ($(this).attr("data-height") !== undefined) {
+				if ($(this).attr("data-width") !== undefined) {
+                    data_width = parseInt($(this).attr("data-width"),10);
+                }
+                if ($(this).attr("data-height") !== undefined) {
 					data_height = parseInt($(this).attr("data-height"),10);
 				}
 
@@ -1547,13 +1554,19 @@
 
 				$(this)
 				.gmap3({
-					address: $(this).attr("data-address"),
+					// address: $(this).attr("data-address"),
+                    center: center,
 					zoom: data_zoom,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					scrollwheel: false
 				})
 				.marker([
-					{address: $(this).attr("data-address")}
+					{
+                        // address: $(this).attr("data-address")
+                        position:center,
+                        animation:  google.maps.Animation.BOUNCE
+                        // icon: ''
+                    }
 				])
 				.on({
 					click: function(marker, event){
@@ -1563,7 +1576,8 @@
 					}
 				});
 
-				$(this).css("height", data_height + "px");
+                $(this).css("height", data_height + "px");
+				$(this).css("width", data_width + "px");
 
 			});
 
