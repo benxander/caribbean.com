@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
 	<meta name="keywords" content="{{dataWeb.keywords}}">
 	<meta name="description" content="{{dataWeb.descripcion_we}}">
-	<base href="{{dirWeb}}">
+	<!-- <base href="{{dirWeb}}"> -->
 	<title ng-bind="dataWeb.titulo_we"></title>
 	<!-- FAVICON AND APPLE TOUCH -->
 	<link rel="shortcut icon" href="assets/images/favicon.png">
@@ -48,10 +48,15 @@
 	<!-- CUSTOM & PAGES STYLE -->
 	<link rel="stylesheet" href="assets/css/custom.css">
 	<link rel="stylesheet" href="assets/css/pages-style.css">
-
+	<script>
+      document.write('<base href="' + document.location + '" />');
+    </script>
 
 </head>
-<body class="sticky-header header-white">
+<body  id="home" class="sticky-header header-white" data-spy="scroll" data-target=".navbar_cp" data-offset="80" >
+	<div class="preloader-wrapper">
+      <div class="loader"></div>
+    </div>
 	<div id="main-container">
 		<!-- HEADER -->
 		<header id="header">
@@ -60,108 +65,41 @@
 					<div class="col-sm-3">
 						<!-- LOGO -->
 						<div id="logo">
-							<a href="{{dirWeb}}">
+							<a href="" ng-click="scrollTo('inicio');">
 								<img src="assets/images/logo-dark.png" alt="">
 							</a>
 						</div><!-- LOGO -->
 					</div><!-- col -->
 					<div class="col-sm-7">
 						<!-- MENU -->
-						<nav>
-
+						<nav class="navbar_cp" data-offset-top="80">
 							<a id="mobile-menu-button" class="waves" href="#"><i class="halcyon-icon-menu"></i></a>
-
-							<ul class="menu clearfix" id="menu">
-								<li class="active">
-									<a href="{{dirWeb}}/">Inicio</a>
-								</li>
-								<li class="">
-									<a href="#servicios">Servicios</a>
-
-								</li>
-								<li class="">
-									<a href="" ng-click="verBlog()">Noticias</a>
-								</li>
-								<li class="">
-									<a href="#trabaja-con-nosotros">Trabaja con nosotros</a>
-								</li>
-								<li class="">
-									<a href="#">Contacto</a>
-								</li>
-
+							<ul class="menu clearfix nav navbar-nav" id="menu">
+								<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
+								<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
+								<li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
+								<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
+								<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
 							</ul>
-
-
 						</nav>
 					</div>
 					<div class="col-sm-2">
 						<div class="login">
 							<a class="btn btn-default-2 waves" ng-href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
 						</div>
-
 					</div>
 				</div>
 			</div>
 		</header>
 		<!-- PAGE CONTENT -->
-		<div id="page-content" ng-show="inicio">
-			<div class="container-fluid" data-ng-style="{'max-width':'1920px'}">
-			    <!-- slider parent container -->
-			    <section class="content-section" data-ng-style="{'max-width':'1920px', 'margin':'0 auto'}">
-			      <!-- slider container -->
-					<div class="rev_slider_wrapper" style="background-color:#ddd;margin:0px auto;padding:0px;margin-top:50px;margin-bottom:80px;">
-			        	<!-- angular-revolution as attribute in div -->
-				        <div rev-slider ng-if="slides"
-				          id="rev_slider"
-				          class="rev_slider"
-				          data-version="5.1.1RC"
-				          slider-Type="{{slider.sliderType}}"
-				          slider-Layout="{{slider.sliderLayout}}"
-				          responsive-Levels="{{slider.responsiveLevels}}"
-				          gridwidth="{{slider.gridwidth}}"
-				          gridheight="{{slider.gridheight}}"
-				          auto-Height="{{slider.autoHeight}}"
-				          min-Height="{{slider.minHeight}}"
-				          full-Screen-Offset-Container="{{slider.fullScreenOffsetContainer}}"
-				          full-Screen-Offset="{{slider.fullScreenOffset}}"
-				          delay="{{slider.delay}}"
-				          disable-Progress-Bar="{{slider.disableProgressBar}}"
-				          start-Delay="{{slider.startDelay}}"
-				          stop-After-Loops="{{slider.stopAfterLoops}}"
-				          stop-At-Slide="{{slider.stopAtSlide}}"
-				          view-Port="{{slider.viewPort}}"
-				          lazy-Type="{{slider.lazyType}}"
-				          dotted-Overlay="{{slider.dottedOverlay}}"
-				          shadow="{{slider.shadow}}"
-				          spinner="{{slider.spinner}}"
-				          hide-All-Caption-At-Lilmit="{{slider.hideAllCaptionAtLilmit}}"
-				          hide-Caption-At-Limit="{{slider.hideCaptionAtLimit}}"
-				          hide-Slider-At-Limit="{{slider.hideSliderAtLimit}}"
-				          debug-Mode="{{slider.debugMode}}"
-				          extensions="{{slider.extensions}}"
-				          extensionssuffix="{{slider.extensions_suffix}}"
-				          fallbacks="{{slider.fallbacks}}"
-				          parallax="{{slider.parallax}}"
-				          rev-Carousel="{{slider.carousel}}"
-				          navigation="{{slider.navigation}}"
-				          js-File-Location="{{slider.jsFileLocation}}"
-				          visibility-Levels="{{slider.visibilityLevels}}"
-				          hide-Thumbs-On-Mobile="{{slider.hideThumbsOnMobile}}"
-				          slides="slides"
-				          slider-Template-Url="templates/slider.tpl2.php"
-				        >
-				        </div>
-			      	</div>
-			    </section>
-			</div>
-
-			<div ng-include="'templates/seccion/inicio.html'" autoscroll></div>
-			<a id="servicios"></a>
-			<div ng-include="'templates/seccion/servicios.html'" ></div>
-			<div ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></div>
-			<div ng-include="'templates/seccion/fotos-online.php'" ></div>
+		<div ng-show="!pageInicio" ng-include="ruta"></div>
+		<div id="page-content" ng-show="pageInicio">
+			<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
+			<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
+			<section class="block" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
+			<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
+			<section ng-include="'templates/seccion/fotos-online.php'" ></section>
 		</div><!-- PAGE CONTENT -->
-		<div ng-show="!inicio" ng-include="ruta"></div>
 		<!-- FOOTER -->
 		<footer id="footer-container">
 
@@ -301,17 +239,17 @@
 	</div><!-- MAIN CONTAINER -->
 	<!-- SCROLL UP -->
 	<a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>
-	<!-- THEME OPTIONS -->
-	<div id="theme-options"></div>
+
 	<!-- jQUERY -->
 	<script src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 	<!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
 	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
 	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/angular-route/angular-route.js"></script>
-	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
-	<script src="bower_components/ng-facebook/ngFacebook.js"></script>
+
+	<!-- <script src="bower_components/angular-route/angular-route.js"></script> -->
+	<!-- <script src="bower_components/angular-cookies/angular-cookies.js"></script> -->
+	<!-- <script src="bower_components/ng-facebook/ngFacebook.js"></script> -->
 	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
 
@@ -348,7 +286,7 @@
 
 	<!-- ISOTOPE -->
 	<script src="assets/plugins/isotope/imagesloaded.pkgd.min.js"></script>
-	<script src="assets/plugins/isotope/isotope.pkgd.min.js"></script>
+	<!-- <script src="assets/plugins/isotope/isotope.pkgd.min.js"></script> -->
 
 	<!-- PLACEHOLDER -->
 	<script src="assets/plugins/placeholders/jquery.placeholder.min.js"></script>
@@ -364,26 +302,26 @@
 
 
 	<!-- CHARTS -->
-	<script src="assets/plugins/charts/jquery.easypiechart.min.js"></script>
+	<!-- <script src="assets/plugins/charts/jquery.easypiechart.min.js"></script> -->
 
 	<!-- COUNTER -->
 	<script src="assets/plugins/counters/jquerysimplecounter.js"></script>
-	<script src="assets/plugins/counters/odometer.min.js"></script>
+	<!-- <script src="assets/plugins/counters/odometer.min.js"></script> -->
 
 	<!-- STATISTICS -->
-	<script src="assets/plugins/statistics/chart.min.js"></script>
+	<!-- <script src="assets/plugins/statistics/chart.min.js"></script> -->
 
 	<!-- INSTAFEED -->
-	<script src="assets/plugins/instafeed/instafeed.min.js"></script>
+	<!-- <script src="assets/plugins/instafeed/instafeed.min.js"></script> -->
 
 	<!-- TWITTER -->
-	<script src="assets/plugins/twitter/twitterfetcher.min.js"></script>
+	<!-- <script src="assets/plugins/twitter/twitterfetcher.min.js"></script> -->
 
 	<!-- YOUTUBE PLAYER -->
 	<script src="assets/plugins/ytplayer/jquery.mb.ytplayer.min.js"></script>
 
 	<!-- COUNTDOWN -->
-	<script src="assets/plugins/countdown/jquery.countdown.min.js"></script>
+	<!-- <script src="assets/plugins/countdown/jquery.countdown.min.js"></script> -->
 
 	<!-- ANIMATIONS -->
 	<script src="assets/plugins/animations/wow.min.js"></script>
@@ -395,24 +333,6 @@
 	<script src="assets/js/index.module.js"></script>
 	<script src="assets/js/index.config.js"></script>
 	<script src="assets/js/index.controller.js"></script>
-	<script>
-	  // window.fbAsyncInit = function() {
-	  //   FB.init({
-	  //     appId      : '197123207485024',
-	  //     xfbml      : true,
-	  //     version    : 'v2.9'
-	  //   });
-	  //   FB.AppEvents.logPageView();
-	  // };
-
-	  // (function(d, s, id){
-	  //    var js, fjs = d.getElementsByTagName(s)[0];
-	  //    if (d.getElementById(id)) {return;}
-	  //    js = d.createElement(s); js.id = id;
-	  //    js.src = "//connect.facebook.net/en_US/sdk.js";
-	  //    fjs.parentNode.insertBefore(js, fjs);
-	  //  }(document, 'script', 'facebook-jssdk'));
-	</script>
 
 </body>
 </html>

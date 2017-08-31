@@ -12,13 +12,16 @@
   angular
     .module('caribbean')
     .config(config);
-
   /** @ngInject */
-  function config($logProvider,$routeProvider, $locationProvider) {
+  function config($locationProvider){
+    $locationProvider.html5Mode(true);
+
+  }
+  /*function config($logProvider,$routeProvider, $locationProvider) {
     // Enable log
     $logProvider.debugEnabled(true);
 
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
     // remove ! hash prefix
     $locationProvider.hashPrefix('');
     $routeProvider
@@ -41,13 +44,33 @@
       //   }]
       // }
     })
-   /* .otherwise({
+   .otherwise({
         redirectTo: '/'
-      })*/;
+      });
       console.log('route', $routeProvider);
-  }
+  }*/
 
 })();
+// DOCUMENT LOAD //
+    (function($) {
+      $(window).load(function() {
+        /* Remove preloader */
+        $(".preloader-wrapper").fadeOut(1000, function() {
+          $(this).remove();
+        });
+        /* page scroll */
+        // var offset = $("body").data("offset");
+        // $(document).on('click', 'a.page-scroll', function(event) {
+        //   var $anchor = $(this);
+        //   console.log('anchor',$($anchor.attr('href')).offset().top);
+        //   $('html, body').stop().animate({
+        //     scrollTop: $($anchor.attr('href')).offset().top - (offset - 1)
+        //   }, 500, 'linear');
+        //   event.preventDefault();
+        // });
+
+      });
+    })(jQuery);
 
 function handleError(error) {
   return function () {

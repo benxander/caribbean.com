@@ -84,6 +84,7 @@
     var vm = this;
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
+    $scope.pageInicio = true;
     // $scope.fSessionCI = {};
     $scope.items1 = [
       {
@@ -110,6 +111,30 @@
 
     $scope.goToUrl = function ( path ) {
       $location.path( path );
+    };
+    $scope.scrollTo = function(id) {
+      var delay = 0;
+      if($scope.pageInicio === false){
+        delay = 200;
+        $scope.pageInicio = true;
+      }
+      // $("ul.menu li").removeClass("active");
+      //   $("ul.menu li[id = 'm_" + id +"']").addClass("active");
+      $timeout(function() {
+        if(id == 'inicio'){
+          $("html, body").animate({
+              scrollTop: 0
+          }, 800, 'linear');
+        }else{
+          var offset = $("body").data("offset");
+          $("html, body").animate({
+              scrollTop: $('#'+id).offset().top - offset
+          }, 800, 'linear');
+          console.log('offset',$('#'+id).offset().top);
+        }
+
+      },delay);
+      return false;
     };
 
     rootServices.sCargarDatosWeb().then(function (response) {
@@ -219,11 +244,13 @@
         visibilityLevels: [1240, 1024, 778, 480],
         hideThumbsOnMobile: "off",
       };
-    $scope.inicio = true;
-    $scope.verBlog = function(){
-      $scope.inicio = false;
-      $scope.ruta = 'templates/blog.html';
 
+    $scope.verBlog = function(){
+      $scope.pageInicio = false;
+      $scope.ruta = 'templates/blog.html';
+      $("html, body").animate({
+            scrollTop: 0
+        }, 800, 'linear');
     }
 
   }
