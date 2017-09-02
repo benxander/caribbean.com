@@ -96,82 +96,71 @@
 		<div id="page-content" ng-show="pageInicio">
 			<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
 			<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
-			<section class="block" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
+			<section class="block mt-xxl" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
 			<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
-			<section ng-include="'templates/seccion/fotos-online.php'" ></section>
 		</div><!-- PAGE CONTENT -->
 		<!-- FOOTER -->
 		<footer id="footer-container">
 
-			<div id="footer">
+			<div id="footer-top">
 
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-2">
-
-							<div class="widget widget-text">
-
-								<div>
-
-									<img src="assets/images/footer-logo.png" alt="">
-
-								</div>
-
-							</div><!-- widget-text -->
-
-						</div><!-- col -->
-						<div class="col-sm-7">
-
-							<div class="widget widget-pages last">
-
-								<h6 class="widget-title">Learn More</h6>
-
-								<ul>
-									<li><a href="#">Home</a></li>
-									<li><a href="#">Our Customers</a></li>
-									<li><a href="#">Pricing and Plans</a></li>
-									<li><a href="#">New Features</a></li>
-									<li><a href="#">Jobs</a></li>
-								</ul>
-
-							</div><!-- widget-pages -->
-
-							<div class="widget widget-pages last">
-
-								<h6 class="widget-title">Support</h6>
-
-								<ul>
-									<li><a href="#">Company</a></li>
-									<li><a href="#">The Blog</a></li>
-									<li><a href="#">Testimonials</a></li>
-									<li><a href="#">Pricing and Plans</a></li>
-									<li><a href="#">New Features</a></li>
-									<li><a href="#">Terms of service</a></li>
-								</ul>
-
-							</div><!-- widget-pages -->
+						<div class="col-sm-3">
 
 							<div class="widget widget-pages">
 
-								<h6 class="widget-title">About us</h6>
+								<h6 class="widget-title">Secciones</h6>
 
 								<ul>
-									<li><a href="#">About us</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Memebers</a></li>
-									<li><a href="#">Company History</a></li>
-									<li><a href="#">Why choose us</a></li>
-									<li><a href="#">Faq</a></li>
+									<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
+									<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
+									<li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
+									<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
+									<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
 								</ul>
 
 							</div><!-- widget-pages -->
+
+						</div><!-- col -->
+						<div class="col-sm-6">
+
+							<div class="widget widget-latest-posts">
+
+								<h6 class="widget-title">Blog Posts</h6>
+
+								<ul>
+									<li>
+										<a class="post-date" href="#">22 <small>Ago</small></a>
+										<a class="post-category" href="#">Lifestyle</a>
+										<a class="post-title" href="#">The true story about company</a>
+									</li>
+									<li>
+										<a class="post-date" href="#">20 <small>Ago</small></a>
+										<a class="post-category" href="#">Banking </a>
+										<a class="post-title" href="#">5 ways to get rid of your headeach</a>
+									</li>
+								</ul>
+
+							</div><!-- widget-recent-posts -->
+
+						</div><!-- col -->
+						<div class="col-sm-3" ng-show="false">
+
+							<div class="widget widget-instagram">
+
+								<h6 class="widget-title">Instagram</h6>
+
+								<div id="instafeed" data-user="2000086078" data-number="6" data-accesstoken="2000086078.1677ed0.bd2c323b815b445fa0027cb85c99918d"></div>
+
+							</div><!-- widget-instagram -->
 
 						</div><!-- col -->
 						<div class="col-sm-3">
 
 							<div class="widget widget-contact">
 
-								<h6 class="widget-title">Contact</h6>
+								<h6 class="widget-title">Contacto</h6>
 
 								<ul>
 									<li ng-if="dataWeb.direccion">
@@ -198,13 +187,17 @@
 					</div><!-- row -->
 				</div><!-- container -->
 
+			</div><!-- footer-top -->
+
+			<div id="footer-middle">
+
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-push-9 col-sm-3">
+						<div class="col-sm-12">
 
 							<div class="widget widget-social">
 
-								<div class="social-media">
+								<div class="social-media text-center">
 
 									<a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a>
 									<a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
@@ -217,13 +210,23 @@
 							</div><!-- widget-social -->
 
 						</div><!-- col -->
-						<div class="col-sm-pull-3 col-sm-9">
+					</div><!-- row -->
+				</div><!-- container -->
+
+			</div><!-- footer-middle -->
+
+			<div id="footer-bottom">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
 
 							<div class="widget widget-text">
 
-								<div>
+								<div class="text-center">
 
-									<p><small>Hementxe &copy; 2017. All Rights Reserved.</small></p>
+									<img src="assets/images/footer-logo.png" alt="">
+									<p><small>Hementxe 2017 &copy; All rights reserved</small></p>
 
 								</div>
 
@@ -233,9 +236,10 @@
 					</div><!-- row -->
 				</div><!-- container -->
 
-			</div><!-- footer -->
+			</div><!-- footer-bottom -->
 
 		</footer><!-- FOOTER CONTAINER -->
+
 	</div><!-- MAIN CONTAINER -->
 	<!-- SCROLL UP -->
 	<a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>

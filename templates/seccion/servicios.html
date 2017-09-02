@@ -4,11 +4,184 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-offset-1 col-lg-4 col-md-6 col-sm-10">
-					<h2>{{seccionWeb[2].contenedor[1].titulo}}</h2>
-					<div ng-bind-html="seccionWeb[2].contenedor[1].contenido"></div>
+					<h2>{{seccionWeb[2].contenedor[0].titulo}}</h2>
+					<div ng-bind-html="seccionWeb[2].contenedor[0].contenido"></div>
 				</div><!-- col -->
 			</div><!-- row -->
 		</div><!-- container-fluid -->
 
+	</div><!-- full-section-container -->
+</section><!-- full-section -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="title">
+
+				<h3>{{seccionWeb[2].contenedor[1].titulo}}</h3>
+
+			</div><!-- headline -->
+
+        </div><!-- col -->
+    </div><!-- row -->
+</div><!-- container -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+            <h5><strong>{{seccionWeb[2].contenedor[1].subtitulo}}</strong></h5>
+
+			<br>
+
+			<p>Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet.
+			Curabitur ultrices dolor magna, at vene natis lacus rutrum nec. Quisque elit velit, lacinia sit amet
+			tellus at, auctor sus cipit metus. Duis congue nibh at tortor ornare, sed commo do ipsum mattis.
+			Phasellus lacinia sed purus eget rhoncus. Mauris ut tortor efficitur.</p>
+
+			<br>
+
+			<p><a ng-show="seccionWeb[2].contenedor[1].tiene_boton" class="btn btn-default-1 waves" href="#">Discover</a></p>
+
+			<br class="hidden-lg hidden-md">
+
+        </div><!-- col -->
+		<div class="col-md-8">
+
+            <div class="row">
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn">
+
+						<i class="halcyon-icon-worldwide-1"></i>
+
+						<h6><a href="single-service.html">World recognicion</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Pellentesque vitae dui.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
+
+						<i class="halcyon-icon-network"></i>
+
+						<h6><a href="single-service.html">Test our products</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Etiam turpis tortor, finibus quis urna eu, venenatis dapibus leo. Etiam sit amet
+							fringilla.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+			</div><!-- row -->
+
+			<div class="row">
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn">
+
+						<i class="halcyon-icon-database-3"></i>
+
+						<h6><a href="single-service.html">Profit's on the way</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Aliquam pretium diam a elit dignissim, sit amet sodales neque tristique. Duis non.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+				<div class="col-sm-6">
+
+					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
+
+						<i class="halcyon-icon-paper-plane-1"></i>
+
+						<h6><a href="single-service.html">Contact us</a></h6>
+
+						<div class="service-box-content">
+
+							<p>Praesent et laoreet tortor. Ut molestie ac dolor ut maximus. Vestibulum vestibulum
+							enim.</p>
+
+						</div><!-- service-box-content -->
+
+					</div><!-- service-box -->
+
+				</div><!-- col -->
+			</div><!-- row -->
+
+        </div><!-- col -->
+    </div><!-- row -->
+</div>
+<section class="full-section dark-section parallax" id="section-28" data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[2].imagen_bg}});">
+	<div class="full-section-overlay-color"></div>
+	<div class="full-section-container">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="title text-center" style="margin-bottom:15px;">
+						<h3>{{seccionWeb[2].contenedor[2].titulo}}</h3>
+					</div><!-- headline -->
+				</div><!-- col -->
+			</div><!-- row -->
+		</div><!-- container -->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h5 class="text-center"><strong>{{seccionWeb[2].contenedor[2].subtitulo}}</strong></h5>
+				</div><!-- col -->
+			</div><!-- row -->
+		</div><!-- container -->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+
+					<data-owl-carousel class="owl-carousel process-slider"
+						data-options="{navigation: true, pagination: false, rewindNav : true,
+							responsive: {
+								0:{
+									items: 1
+								},
+								768:{
+									items: 2
+								},
+								991:{
+									items: 3
+								}
+							},
+				            autoplay: true,loop: false
+			            }"
+			            >
+				      	<div owl-carousel-item="" ng-repeat="item in ::items1" class="item">
+							<div class="service-box style-7">
+								<i class="{{::item.clase}}"></i>
+								<div class="service-box-content">
+									<h6><a href="">{{::item.titulo}}</a></h6>
+									<p>{{::item.descripcion}}</p>
+								</div><!-- service-box-content -->
+							</div><!-- service-box -->
+						</div><!-- item -->
+
+				    </data-owl-carousel>
+
+
+
+				</div><!-- col -->
+			</div><!-- row -->
+		</div><!-- container -->
 	</div><!-- full-section-container -->
 </section><!-- full-section -->

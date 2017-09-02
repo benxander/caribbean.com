@@ -1,11 +1,9 @@
 <style>
 	#section-26 {
-		padding:  50px 0 10px;
-		background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[0].imagen_bg}});
+		background-image: url(uploads/banners/FONDO/{{seccionWeb[1].contenedor[1].imagen_bg}});
 	}
 	#section-27 {
-		padding:  50px 0 10px;
-		background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[1].imagen_bg}});
+		background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[0].imagen_bg}});
 	}
 	@media (max-width: 767px) {
 		#section-26,#section-27 {
@@ -93,12 +91,49 @@
 			<div class="row">
 				<div class="col-md-offset-5 col-sm-offset-1 col-md-7 col-sm-10">
 
-					<h2>{{seccionWeb[2].contenedor[0].titulo}}</h2>
-					<div ng-bind-html="seccionWeb[2].contenedor[0].contenido"></div>
+					<h2>{{seccionWeb[1].contenedor[1].titulo}}</h2>
+					<div ng-bind-html="seccionWeb[1].contenedor[1].contenido"></div>
 
 					<br>
+					<div id="inline" style="display:none;width:500px;">
+						<h2>Donde Estamos</h2>
+					    <div class="container">
+							<div class="row">
+								<div class="col-sm-7">
+								<iframe src="templates/popups/donde-estamos.php" width="600" height="400"></iframe>
 
-					<a href="templates/popups/donde-estamos.php" fancybox ng-show="seccionWeb[2].contenedor[0].tiene_boton" class="btn btn-default-1 waves"  >Donde estamos <i class="fa fa-angle-right"></i></a>
+
+
+								</div><!-- col -->
+								<div class="col-sm-5">
+									<h5 class="text-uppercase"><strong>Información de Contacto</strong></h5>
+									<br>
+									<div class="widget widget-contact no-margin-bottom">
+										<ul>
+											<li ng-if="dataWeb.direccion">
+														<i class="fa fa-map-marker"></i>
+														{{dataWeb.direccion}}
+													</li>
+													<li ng-if="dataWeb.telefono">
+														<i class="fa fa-phone"></i>
+														{{dataWeb.telefono}}
+													</li>
+													<li ng-if="dataWeb.skype">
+														<i class="fa fa-skype"></i>
+														{{dataWeb.skype}}
+													</li>
+													<li ng-if="dataWeb.correo">
+														<i class="fa fa-envelope"></i>
+														<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
+													</li>
+										</ul>
+									</div><!-- widget-contact -->
+								</div>
+							</div><!-- row -->
+						</div><!-- container -->
+					</div>
+					<!-- <a href="templates/popups/donde-estamos.php" fancybox ng-show="seccionWeb[1].contenedor[1].tiene_boton" class="btn btn-default-1 waves"  >Donde estamos <i class="fa fa-angle-right"></i></a> -->
+					<a href="#inline" fancybox ng-show="seccionWeb[1].contenedor[1].tiene_boton" class="btn btn-default-1 waves"  >Donde estamos <i class="fa fa-angle-right"></i></a>
 
 				</div><!-- col -->
 			</div><!-- row -->

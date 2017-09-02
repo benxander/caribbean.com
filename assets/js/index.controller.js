@@ -31,7 +31,7 @@
 
         link: function(scope, element, attrs){
           $(element).fancybox({
-            type        :'iframe',
+            type        :'inline',
             scrolling   : 'no',
             maxWidth    : 1000,
             maxHeight   : 600,

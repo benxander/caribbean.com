@@ -111,7 +111,7 @@ class Seccion extends CI_Controller {
 			}
 			$arrSeccion[$key]['contenedor'] = $arrAux;
 		}
-		// var_dump($arrSeccion); exit();
+		// print_r($arrSeccion); exit();
     	$arrData['datos'] = $arrSeccion;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

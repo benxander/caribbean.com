@@ -1216,9 +1216,13 @@
 				}
 				if ($(this).attr("data-width") !== undefined) {
                     data_width = parseInt($(this).attr("data-width"),10);
+                    data_width = data_width + "px";
+                }else{
+                    data_width = "100%";
                 }
                 if ($(this).attr("data-height") !== undefined) {
 					data_height = parseInt($(this).attr("data-height"),10);
+                    data_height = data_height + "px";
 				}
 				if ($(this).attr("data-address-details") !== undefined) {
 					data_popup = true;
@@ -1249,8 +1253,8 @@
 						}
 					}
 				});
-                $(this).css("height", data_height + "px");
-				$(this).css("width", data_width + "px");
+                $(this).css("height", data_height);
+				$(this).css("width", data_width);
 			});
 		}
 		// ISOTOPE //
