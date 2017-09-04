@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <title>Paunin reCaptcha Directive Example</title>
 
@@ -45,10 +45,10 @@
 <body>
     <div class="container" ng-controller="testCtrl as testCtl">
         <h1>G reCaptcha Directive Example</h1>
-        <form>
+        <form name="formCatpcha">
             <div g-recaptcha id="captcha_img" ng-model="model.response" theme="clean" key="model.key"></div>
             <!-- Call a method in the scope of your controller to handle data submit -->
-            <button class="btn" ng-click="submit()">Submit</button>
+            <button class="btn" ng-click="submit()" ng-disabled="formCatpcha.$invalid" >Submit</button>
         </form>
     </div>
 </body>
