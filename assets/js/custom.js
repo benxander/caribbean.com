@@ -1469,29 +1469,29 @@
 		full_screen();
 	});
 })(window.jQuery);
-(function ($, F) {
-    // Opening animation - fly from the top
-    F.transitions.dropIn = function() {
-        var endPos = F._getPosition(true);
-        endPos.top = (parseInt(endPos.top, 10) - 200) + 'px';
-        endPos.opacity = 0;
-        F.wrap.css(endPos).show().animate({
-            top: '+=200px',
-            opacity: 1
-        }, {
-            duration: F.current.openSpeed,
-            complete: F._afterZoomIn
-        });
-    };
-    // Closing animation - fly to the top
-    F.transitions.dropOut = function() {
-        F.wrap.removeClass('fancybox-opened').animate({
-            top: '-=200px',
-            opacity: 0
-        }, {
-            duration: F.current.closeSpeed,
-            complete: F._afterZoomOut
-        });
-    };
-}(jQuery, jQuery.fancybox));
+// (function ($, F) {
+//     // Opening animation - fly from the top
+//     F.transitions.dropIn = function() {
+//         var endPos = F._getPosition(true);
+//         endPos.top = (parseInt(endPos.top, 10) - 200) + 'px';
+//         endPos.opacity = 0;
+//         F.wrap.css(endPos).show().animate({
+//             top: '+=200px',
+//             opacity: 1
+//         }, {
+//             duration: F.current.openSpeed,
+//             complete: F._afterZoomIn
+//         });
+//     };
+//     // Closing animation - fly to the top
+//     F.transitions.dropOut = function() {
+//         F.wrap.removeClass('fancybox-opened').animate({
+//             top: '-=200px',
+//             opacity: 0
+//         }, {
+//             duration: F.current.closeSpeed,
+//             complete: F._afterZoomOut
+//         });
+//     };
+// }(jQuery, jQuery.fancybox));
 

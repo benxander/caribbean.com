@@ -85,6 +85,8 @@
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
     $scope.pageInicio = true;
+
+
     // $scope.fSessionCI = {};
     $scope.items1 = [
       {
@@ -118,8 +120,6 @@
         delay = 200;
         $scope.pageInicio = true;
       }
-      // $("ul.menu li").removeClass("active");
-      //   $("ul.menu li[id = 'm_" + id +"']").addClass("active");
       $timeout(function() {
         if(id == 'inicio'){
           $("html, body").animate({
@@ -140,7 +140,6 @@
     rootServices.sCargarDatosWeb().then(function (response) {
       if(response.flag == 1){
         $scope.dataWeb = response.datos;
-        // console.log($scope.dataWeb );
       }else{
         console.log('no data');
       }
@@ -148,7 +147,6 @@
     rootServices.sCargarSecciones().then(function (response) {
       if(response.flag == 1){
         $scope.seccionWeb = response.datos;
-        console.log($scope.seccionWeb );
       }else{
         console.log('no data');
       }
@@ -156,16 +154,17 @@
 
     rootServices.sCargarBanners().then(function (response) {
       if(response.flag == 1){
-        // vm.slides = response.datos;
         $scope.slides = response.datos;
-        console.log('SLIDER ',$scope.slides);
       }else{
         console.log('no data');
       }
     });
-
-
-    // slider settings object set to scope.
+    $scope.fData = {}
+    $scope.fData.rc = {
+        response: '',
+        key: '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_'
+    };
+    // SECCION SLIDER DE CABECERA.
       $scope.slider = {
         sliderType: "standard",
         sliderLayout: "fullwidth",
@@ -244,14 +243,20 @@
         visibilityLevels: [1240, 1024, 778, 480],
         hideThumbsOnMobile: "off",
       };
-
-    $scope.verBlog = function(){
-      $scope.pageInicio = false;
-      $scope.ruta = 'templates/blog.html';
-      $("html, body").animate({
-            scrollTop: 0
-        }, 800, 'linear');
-    }
+    // SECCION BLOG
+      $scope.verBlog = function(){
+        $scope.pageInicio = false;
+        $scope.ruta = 'templates/blog.html';
+        $("html, body").animate({
+              scrollTop: 0
+          }, 800, 'linear');
+      }
+    // SECCION CONTACTO
+      $scope.enviar = function(){
+        console.log('enviando...', $scope.fData);
+        // $("#contact-form").clearForm();
+        $scope.fData = {}
+      }
 
   }
   function rootServices($http, $q) {

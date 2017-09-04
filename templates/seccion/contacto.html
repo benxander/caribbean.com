@@ -1,76 +1,68 @@
 <section class="full-section" id="contacto">
-	<!-- <div class="row">
-		<div class="col-sm-12">
-			<div class="map" data-zoom="17" data-height="400" data-width="450" data-lat="18.692750472835026" data-lng="-68.45741600351715" data-address-details="Aqui estamos"></div>
-		</div>
-	</div> -->
 	<div class="full-section-container">
 		<div class="container">
+			<div class="title">
+				<h3>Contacto</h3>
+			</div><!-- headline -->
+		</div>
+		<div class="container">
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-8">
 
-					<h5 class="text-uppercase"><strong>Contactanos</strong></h5>
-					<form id="contact-form" name="contact-form" method="post" action="assets/php/send.php">
+					<form id="contact-form" name="formContact" role="form"  >
 						<fieldset>
 							<div id="alert-area"></div>
 							<div class="row">
 								<div class="col-sm-6">
 									<p>
-										<input class="col-xs-12" id="name" type="text" name="name" placeholder="" required>
-										<label for="name">Nombre</label>
+										<input class="col-xs-12" id="name" type="text" name="name" placeholder="" required ng-model="fData.nombre">
+										<label for="name">Nombre <small class="text-red">*</small></label>
 									</p>
 								</div><!-- col -->
 								<div class="col-sm-6">
 									<p>
-										<input class="col-xs-12" id="email" type="text" name="email" placeholder="" required>
-										<label for="email">E-mail</label>
+										<input class="col-xs-12" id="email" type="email" name="email" placeholder="" required ng-model="fData.email">
+										<label for="email">E-mail <small class="text-red">*</small></label>
 									</p>
 								</div><!-- col -->
 							</div><!-- row -->
 							<p>
-								<input class="col-xs-12" id="subject" type="text" name="subject" placeholder="" required>
-								<label for="subject">Asunto</label>
+								<input class="col-xs-12" id="subject" type="text" name="subject" placeholder="" required ng-model="fData.asunto">
+								<label for="subject">Asunto <small class="text-red">*</small></label>
 							</p>
 							<p>
-								<textarea class="col-xs-12" id="message" name="message" rows="3" cols="25" placeholder="" required></textarea>
-								<label for="message">Mensaje</label>
+								<textarea class="col-xs-12" id="message" name="message" rows="3" cols="25" placeholder="" required ng-model="fData.mensaje"></textarea>
+								<label for="message">Mensaje <small class="text-red">*</small></label>
 							</p>
-							<button class="btn btn-default-1 waves" id="submit" type="submit" name="submit" value="">Enviar</button>
+							<div g-recaptcha id="captcha_img" ng-model="fData.rc.response" theme="clean" key="fData.rc.key"></div>
+							<button class="btn btn-default-1 waves" id="submit" type="submit" name="submit" value="" ng-click="enviar();$event.preventDefault();" >Enviar</button>
 						</fieldset>
 					</form>
 
 				</div><!-- col -->
-				<div class="col-sm-6">
+				<div class="col-sm-4">
 					<h5 class="text-uppercase"><strong>Información de Contacto</strong></h5>
 					<br>
 					<div class="widget widget-contact no-margin-bottom">
 						<ul>
 							<li ng-if="dataWeb.direccion">
-										<i class="fa fa-map-marker"></i>
-										{{dataWeb.direccion}}
-									</li>
-									<li ng-if="dataWeb.telefono">
-										<i class="fa fa-phone"></i>
-										{{dataWeb.telefono}}
-									</li>
-									<li ng-if="dataWeb.skype">
-										<i class="fa fa-skype"></i>
-										{{dataWeb.skype}}
-									</li>
-									<li ng-if="dataWeb.correo">
-										<i class="fa fa-envelope"></i>
-										<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
-									</li>
+								<i class="fa fa-map-marker"></i>
+								{{dataWeb.direccion}}
+							</li>
+							<li ng-if="dataWeb.telefono">
+								<i class="fa fa-phone"></i>
+								{{dataWeb.telefono}}
+							</li>
+							<li ng-if="dataWeb.skype">
+								<i class="fa fa-skype"></i>
+								{{dataWeb.skype}}
+							</li>
+							<li ng-if="dataWeb.correo">
+								<i class="fa fa-envelope"></i>
+								<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
+							</li>
 						</ul>
 					</div><!-- widget-contact -->
-					<br>
-					<div class="social-media">
-						<a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a>
-						<a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
-						<a class="instagram" href="#"><i class="fa fa-instagram"></i></a>
-						<a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
-						<a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
-					</div><!-- social-media -->
 				</div>
 			</div><!-- row -->
 		</div><!-- container -->

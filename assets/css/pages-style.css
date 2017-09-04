@@ -3086,14 +3086,16 @@
 	}
 
 	#contact-form textarea,
-	#contact-form input[type="text"] {
+	#contact-form input[type="text"],
+	#contact-form input[type="email"] {
 		padding-left: 0;
 		border: none;
 		border-bottom: 1px solid #e1e1e1;
 	}
 
 	#contact-form textarea:focus,
-	#contact-form input[type="text"]:focus {
+	#contact-form input[type="text"]:focus,
+	#contact-form input[type="email"]:focus {
 		border-color: #8f8f8f;
 	}
 
