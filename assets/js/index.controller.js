@@ -85,7 +85,10 @@
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
     $scope.pageInicio = true;
-
+    $scope.model = {
+        response: '',
+        key: '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_'
+    };
 
     // $scope.fSessionCI = {};
     $scope.items1 = [
@@ -160,10 +163,7 @@
       }
     });
     $scope.fData = {}
-    $scope.fData.rc = {
-        response: '',
-        key: '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_'
-    };
+
     // SECCION SLIDER DE CABECERA.
       $scope.slider = {
         sliderType: "standard",

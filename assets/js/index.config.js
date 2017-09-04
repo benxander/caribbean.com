@@ -70,12 +70,7 @@
 
       });
     })(jQuery);
-var initApp = function(){
-    initGRecaptcha();
-    angular.element(document).ready(function () {
-        angular.bootstrap(document, ["caribbean"]);
-    });
-}
+
 function handleError(error) {
   return function () {
     return {success: false, message: Notification.warning({message: error})};

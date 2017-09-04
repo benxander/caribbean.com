@@ -34,7 +34,7 @@
 								<textarea class="col-xs-12" id="message" name="message" rows="3" cols="25" placeholder="" required ng-model="fData.mensaje"></textarea>
 								<label for="message">Mensaje <small class="text-red">*</small></label>
 							</p>
-							<div g-recaptcha id="captcha_img" ng-model="fData.rc.response" theme="clean" key="fData.rc.key"></div>
+							<div g-recaptcha id="captcha_img" ng-model="model.response" theme="clean" key="model.key"></div>
 							<button class="btn btn-default-1 waves" id="submit" type="submit" name="submit" value="" ng-click="enviar();$event.preventDefault();" >Enviar</button>
 						</fieldset>
 					</form>
@@ -68,3 +68,8 @@
 		</div><!-- container -->
 	</div><!-- full-section-container -->
 </section><!-- full-section -->
+<script>
+	var initApp = function(){
+    initGRecaptcha();
+	}
+</script>
