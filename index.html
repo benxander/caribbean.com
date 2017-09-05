@@ -257,7 +257,6 @@
 	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<script src="bower_components/angular-g-recaptcha/angular-g-recaptcha.js"></script>
 	<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
-	<script src="//www.google.com/recaptcha/api.js?render=explicit&onload=initGRecaptcha"></script>
 
 	<!-- VIEWPORT -->
 	<script src="assets/plugins/viewport/jquery.viewport.js"></script>
@@ -339,6 +338,9 @@
 	<script src="assets/js/index.module.js"></script>
 	<script src="assets/js/index.config.js"></script>
 	<script src="assets/js/index.controller.js"></script>
+
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer></script>
 
 </body>
 </html>

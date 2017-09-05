@@ -5,7 +5,6 @@
 		// 'ngCookies',
 		// 'oc.lazyLoad',
 		'rev.slider',
-		'angularGRecaptcha',
 		'ngSanitize'
 		// 'ngMap'
 		//'ngFacebook'

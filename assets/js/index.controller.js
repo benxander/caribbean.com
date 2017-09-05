@@ -85,10 +85,6 @@
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
     $scope.pageInicio = true;
-    $scope.model = {
-        response: '',
-        key: '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_'
-    };
 
     // $scope.fSessionCI = {};
     $scope.items1 = [
@@ -252,8 +248,35 @@
           }, 800, 'linear');
       }
     // SECCION CONTACTO
+      $scope.captchaValido = false;
+      window.recaptchaResponse = function(token) {
+        $scope.captchaValido = true;
+      };
+
+      $scope.keyRecaptcha='';
+      window.onloadCallback = function(){
+        if( $location.path() == '/' ){
+
+            $scope.keyRecaptcha =  '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_';
+            grecaptcha.render('recaptcha-contact', {
+              'sitekey' : $scope.keyRecaptcha,
+              'callback' : recaptchaResponse,
+            });
+
+        }
+      }
+
       $scope.enviar = function(){
         console.log('enviando...', $scope.fData);
+        console.log('captcha',$scope.captchaValido);
+        /*if(!$scope.captchaValido){
+          $scope.fAlert = {};
+          $scope.fAlert.type= 'danger';
+          $scope.fAlert.msg= 'Debe completar reCaptcha';
+          $scope.fAlert.strStrong = 'Error.';
+          console.log('msg',$scope.fAlert.msg);
+          return;
+        }*/
         // $("#contact-form").clearForm();
         $scope.fData = {}
       }
