@@ -5,6 +5,7 @@
 		// 'ngCookies',
 		// 'oc.lazyLoad',
 		'rev.slider',
+		'ui.bootstrap',
 		'ngSanitize'
 		// 'ngMap'
 		//'ngFacebook'

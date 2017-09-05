@@ -35,6 +35,9 @@
 								<label for="message">Mensaje <small class="text-red">*</small></label>
 							</p>
 							<div id="recaptcha-contact" class="g-recaptcha" data-sitekey="{{keyRecaptcha}}" data-callback="recaptchaResponse"></div>
+							<uib-alert type="{{fAlert.type}}" ng-show='fAlert.type' class="p-sm mt" >
+                                    <strong> {{ fAlert.strStrong }} </strong> <span ng-bind-html="fAlert.msg"></span>
+                                </uib-alert>
 							<button class="btn btn-default-1 waves mt" id="submit" type="submit" name="submit" value="" ng-click="enviar();$event.preventDefault();" >Enviar</button>
 						</fieldset>
 					</form>

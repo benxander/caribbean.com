@@ -267,18 +267,23 @@
       }
 
       $scope.enviar = function(){
-        console.log('enviando...', $scope.fData);
-        console.log('captcha',$scope.captchaValido);
-        /*if(!$scope.captchaValido){
+        if(!$scope.captchaValido){
           $scope.fAlert = {};
           $scope.fAlert.type= 'danger';
           $scope.fAlert.msg= 'Debe completar reCaptcha';
           $scope.fAlert.strStrong = 'Error.';
-          console.log('msg',$scope.fAlert.msg);
-          return;
-        }*/
-        // $("#contact-form").clearForm();
-        $scope.fData = {}
+        }else{
+          $scope.fAlert = {};
+          $scope.fAlert.type= 'success';
+          $scope.fAlert.msg= 'Mensaje enviado correctamente';
+          $scope.fAlert.strStrong = 'OK.';
+          $scope.captchaValido = false;
+          grecaptcha.reset();
+          $scope.fData = {}
+        }
+        $timeout(function() {
+          $scope.fAlert = {};
+        },4000);
       }
 
   }
