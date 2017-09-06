@@ -13,7 +13,12 @@ application/config/config.php
 
 assets/js/config.js
 admin/app/config.js
-/admin/app/components/
+/admin/app/components/jsons/*
+/admin/app/components/modules/*
+/admin/app/components/templates/*
+/admin/app/components/partials/customize/*
+/admin/app/components/partials/rightbar/*
+
 
 /bower_components/
 assets/images/*
