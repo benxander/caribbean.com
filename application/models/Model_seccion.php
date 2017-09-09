@@ -35,7 +35,7 @@ class Model_seccion extends CI_Model {
 			if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
-			}
+		}
 		return $this->db->get()->result_array();
 	}
 	public function m_count_secciones($paramPaginate=FALSE){

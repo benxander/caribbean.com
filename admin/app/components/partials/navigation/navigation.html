@@ -25,7 +25,7 @@
     <li ng-class="{'active':$state.includes('banner')}" ng-show="valores[2]">
       <a ng-click="$state.reload();" ui-sref="banner">
         <span class="nav-text">{{ 'Menu.BANNERS' | translate }}  </span>
-        <i class="fa fa-list-alt"></i>
+        <i class="icon-picture icons"></i>
       </a>
     </li>
     <li ng-class="{'active':$state.includes('seccion')}" ng-show="valores[3]">
@@ -34,7 +34,13 @@
         <i class="fa fa-list-alt"></i>
       </a>
     </li>
-    <li ng-show="valores[4]">
+    <li ng-class="{'active':$state.includes('blog')}" ng-show="valores[4]">
+      <a ng-click="$state.reload();" ui-sref="blog">
+        <span class="nav-text">{{ 'Menu.BLOG' | translate }}  </span>
+        <i class="icon-event icons"></i>
+      </a>
+    </li>
+    <li ng-show="valores[5]">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.MANTENIMIENTO' | translate }}</span>
         <i class="fa fa-columns"></i>
@@ -54,13 +60,13 @@
         </li>
       </ul>
     </li>
-    <li ng-class="{'open active':$state.includes('config')}" ng-show="valores[5]">
+    <li ng-class="{'open active':$state.includes('config')}" ng-show="valores[6]">
       <a ng-click="$state.reload();" ui-sref="config">
         <span class="nav-text">{{ 'Menu.CONFIG' | translate }}</span>
         <i class="fa fa-cogs"></i>
       </a>
     </li>
-    <li ng-show="valores[6]">
+    <li ng-show="valores[7]">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.SEGURIDAD' | translate }}</span>
         <i class="fa fa-key"></i>

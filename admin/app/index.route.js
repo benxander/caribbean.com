@@ -50,6 +50,13 @@
         controller: 'SeccionController',
         controllerAs: 'se'
       })
+      //blog
+      .state('blog', {
+        url: '/app/blog',
+        templateUrl: 'app/pages/blog/blog.html',
+        controller: 'BlogController',
+        controllerAs: 'bl'
+      })
       //config
       .state('config', {
         url: '/app/config',

@@ -242,7 +242,7 @@
     // SECCION BLOG
       $scope.verBlog = function(){
         $scope.pageInicio = false;
-        $scope.ruta = 'templates/blog.html';
+        $scope.ruta = 'templates/blog.php';
         $("html, body").animate({
               scrollTop: 0
           }, 800, 'linear');
