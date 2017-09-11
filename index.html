@@ -77,7 +77,7 @@
 							<ul class="menu clearfix nav navbar-nav" id="menu">
 								<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
 								<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
-								<li><a href="#blog" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
+								<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
 								<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
 								<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
 							</ul>
@@ -96,6 +96,7 @@
 		<div id="page-content" ng-show="pageInicio">
 			<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
 			<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
+			<section class="block mt-xxl" id="noticias" ng-include="'templates/seccion/noticias.php'" ></section>
 			<section class="block mt-xxl" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
 			<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
 		</div><!-- PAGE CONTENT -->
@@ -115,7 +116,9 @@
 								<ul>
 									<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
 									<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
-									<li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
+									<!-- <li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li> -->
+									<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
+
 									<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
 									<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
 								</ul>
@@ -145,17 +148,7 @@
 							</div><!-- widget-recent-posts -->
 
 						</div><!-- col -->
-						<div class="col-sm-3" ng-show="false">
 
-							<div class="widget widget-instagram">
-
-								<h6 class="widget-title">Instagram</h6>
-
-								<div id="instafeed" data-user="2000086078" data-number="6" data-accesstoken="2000086078.1677ed0.bd2c323b815b445fa0027cb85c99918d"></div>
-
-							</div><!-- widget-instagram -->
-
-						</div><!-- col -->
 						<div class="col-sm-3">
 
 							<div class="widget widget-contact">
