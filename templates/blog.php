@@ -1,4 +1,3 @@
-PAGE CONTENT -->
 	<div id="page-content" ng-controller="BlogController as vm">
 
 		<div id="page-header">

@@ -34,7 +34,7 @@
 								<textarea class="col-xs-12" id="message" name="message" rows="3" cols="25" placeholder="" required ng-model="fData.mensaje"></textarea>
 								<label for="message">Mensaje <small class="text-red">*</small></label>
 							</p>
-							<div id="recaptcha-contact" class="g-recaptcha" data-sitekey="{{keyRecaptcha}}" data-callback="recaptchaResponse"></div>
+							<div id="reCaptcha" class="g-recaptcha" data-sitekey="{{keyRecaptcha}}" data-callback="recaptchaResponse"></div>
 							<uib-alert type="{{fAlert.type}}" ng-show='fAlert.type' class="p-sm mt" >
                                     <strong> {{ fAlert.strStrong }} </strong> <span ng-bind-html="fAlert.msg"></span>
                                 </uib-alert>

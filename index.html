@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="caribbean" ng-controller="MainController as main">
+<html ng-app="caribbean" ng-controller="MainController as vm">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -134,15 +134,16 @@
 
 								<ul>
 									<li>
-										<a class="post-date" href="#">22 <small>Ago</small></a>
-										<a class="post-category" href="#">Lifestyle</a>
-										<a class="post-title" href="#">The true story about company</a>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[0].dia}} <small>{{vm.listaNoticiasSec[0].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[0].titulo}}</a>
 									</li>
 									<li>
-										<a class="post-date" href="#">20 <small>Ago</small></a>
-										<a class="post-category" href="#">Banking </a>
-										<a class="post-title" href="#">5 ways to get rid of your headeach</a>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[1].dia}} <small>{{vm.listaNoticiasSec[1].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[1].titulo}}</a>
 									</li>
+
 								</ul>
 
 							</div><!-- widget-recent-posts -->

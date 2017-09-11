@@ -142,8 +142,11 @@
 	p {
 		margin-bottom: 20px;
 	}
-
-
+	@media (min-width:1200px){
+		.container {
+		    width: 90%;
+		}
+	}
 	/* LINKS */
 	a {
 		color: #1574a6;
@@ -5632,6 +5635,7 @@
 	.rev_slider_wrapper {
 		margin-bottom: 100px;
 		height: 1000px;
+		width: 100%;
 	}
 
 
@@ -7210,16 +7214,8 @@
   padding-top: -40px!important;
 }
 /* blog */
-.homepage-community-wrapper{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px}
-@media (min-width:768px){
-	.homepage-community-wrapper{width:750px}
-}
-@media (min-width:992px){
-	.homepage-community-wrapper{width:970px}
-}
-@media (min-width:1200px){
-	.homepage-community-wrapper{width:1170px}
-}
+.homepage-community-wrapper{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px; width: 100%}
+
 .homepage-community-items-footer{width:100%;text-align:center;margin-top:40px}
 .homepage-community-items-wrapper{
 	position:fixed;left:-9999px;margin-top:70px;
@@ -7231,12 +7227,12 @@
 	.homepage-community-items-wrapper{-ms-flex-wrap:wrap;flex-wrap:wrap}
 }
 .homepage-community-item{position:relative;min-height:1px;padding-left:15px;padding-right:15px;padding:0 15px;max-width:100%;display:-ms-flexbox;display:flex}
-@media (min-width:992px){
+/*@media (min-width:992px){
  	.homepage-community-item{float:left;width:33.33333333%}
 }
 @media (min-width:768px){
  	.homepage-community-item{width:33.33333333%}
-}
+}*/
 @media (max-width:767px){
  	.homepage-community-item{width:100%;margin-bottom:30px}
  	.homepage-community-item:last-child{margin-bottom:0}
@@ -7245,11 +7241,14 @@
 @media (min-width:768px){.homepage-community-item-interior{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;-ms-flex-pack:justify;justify-content:space-between}
 }
  .homepage-community-item-interior a{font-style:italic;color:#31a1b9}
- .homepage-community-item-date{color:#7258a3;font-weight:600;font-size:2.592rem}
+ .homepage-community-item-date{color:#1574a6;font-weight:600;font-size:2.592rem}
  a.homepage-community-item-title{font-style:italic;color:#415970}
  a.homepage-community-item-title:hover{text-decoration:none}
  .homepage-community p,.homepage-community h2,.homepage-community h3,.homepage-community-item-interior{max-width:100%}
 
  .home-toggle-area-active{position:relative;left:auto;display:-ms-flexbox;display:flex;width:auto}
- @media (min-width:768px){.homepage-community-items-interior{display:-ms-flexbox;display:flex;width:100%}
+ @media (min-width:768px){
+ 	.homepage-community-items-interior{display:-ms-flexbox;display:flex;width: 90%;
+		margin-left: auto;
+		margin-right: auto;}
 }
