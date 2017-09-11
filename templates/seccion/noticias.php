@@ -1,4 +1,4 @@
-<section class="full-section parallax"  data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[2].imagen_bg}});">
+<section class="full-section ">
   <div class="full-section-container">
     <div class="container">
       <div class="row">
@@ -10,9 +10,9 @@
       </div><!-- row -->
     </div><!-- container -->
 
-    <div class="homepage-community-wrapper">
-      <div class="homepage-community-items-wrapper home-toggle-area-active" id="js-home-blog-wrapper" style="height: 628px;">
-        <div class="homepage-community-items-interior">
+    <div class="homepage-community-wrapper parallax"  data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[2].imagen_bg}});">
+      <div class="homepage-community-items-wrapper home-toggle-area-active" id="js-home-blog-wrapper" style="height: 450px;">
+        <div class="homepage-community-items-interior mt-xl">
                 <div class="homepage-community-item">
               <div class="homepage-community-item-interior">
                 <div class="homepage-community-item-interior-top">
