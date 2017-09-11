@@ -9,6 +9,23 @@ class Model_usuario extends CI_Model {
 		parent::__construct();
 
 	}
+
+	public function m_cargar_grupo_cbo(){
+		$this->db->select("idgrupo, nombre_gr");
+		$this->db->from('grupo');
+		$this->db->where("estado_gr",1);
+		
+		return $this->db->get()->result_array();
+	}
+
+	public function m_cargar_idioma_cbo(){
+		$this->db->select("ididioma, nombre_id");
+		$this->db->from('idioma');
+		$this->db->where("estado_id",1);
+
+		return $this->db->get()->result_array();
+	}
+
 	public function m_registrar_usuario($data){
 		return $this->db->insert('users', $data);
 	}
