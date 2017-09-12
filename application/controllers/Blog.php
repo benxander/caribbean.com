@@ -23,8 +23,11 @@ class Blog extends CI_Controller {
 				'idblog' => $row['idblog'],
 				'titulo' => $row['titulo'],
 				'descripcion' => $row['descripcion'],
+				'descripcion_f' => strip_tags($row['descripcion']),
 				'autor' => $row['autor'],
-				'fecha' => $row['fecha'],
+				'fecha' => date('Y-m-d',strtotime($row['fecha'])),
+				// 'fecha' => $row['fecha'],
+				'fecha_f' => darFormatoDMY2($row['fecha']),
 				'imagen' => $row['imagen'],
 				)
 			);
@@ -152,9 +155,9 @@ class Blog extends CI_Controller {
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
     		'imagen' => $nombre,
-    		'fecha' => date('Y-m-d H:i:s'),
+    		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
-
+    	// print_r($data); exit();
     	if($this->model_blog->m_registrar($data)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
@@ -175,8 +178,8 @@ class Blog extends CI_Controller {
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
-
-    		'fecha' => date('Y-m-d H:i:s'),
+    		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
+    		// 'fecha' => date('Y-m-d H:i:s'),
     	);
 
     	// VALIDACIONES

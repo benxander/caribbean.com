@@ -38,8 +38,10 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idblog', name:'idblog', displayName: 'ID', minWidth: 50, width:80, visible:false, sort: { direction: uiGridConstants.DESC} },
+
+        { field: 'fecha_f', name:'fecha', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
         { field: 'titulo', name:'titulo', displayName: 'TITULO', minWidth: 100 },
-        { field: 'descripcion', name:'descripcion', displayName: 'DESCRIPCION', minWidth: 100 },
+        { field: 'descripcion_f', name:'descripcion', displayName: 'DESCRIPCION', minWidth: 100 },
 
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
@@ -68,9 +70,9 @@
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
             'idblog' : grid.columns[1].filters[0].term,
-            'bl.titulo' : grid.columns[2].filters[0].term,
-            'bl.descripcion' : grid.columns[3].filters[0].term,
-            'bl.autor' : grid.columns[3].filters[0].term,
+            'bl.titulo' : grid.columns[3].filters[0].term,
+            'bl.descripcion' : grid.columns[4].filters[0].term,
+            'bl.autor' : grid.columns[5].filters[0].term,
           }
           vm.getPaginationServerSide();
         });
@@ -88,6 +90,7 @@
         });
       }
       vm.getPaginationServerSide();
+
     // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
@@ -107,8 +110,107 @@
 
 
             // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
-            console.log('sel',arrToModal.seleccion);
-            console.log('data',vm.fData);
+            // DATEPICKER
+              vm.today = function() {
+                var y = moment().format('YYYY');
+                var m = moment().format('M');
+                var d = moment().format('DD');
+                vm.fData.fecha = new Date(y, (m-1), d);
+              };
+              vm.today();
+
+              vm.clear = function() {
+                vm.fData.fecha = null;
+              };
+
+              vm.inlineOptions = {
+                customClass: getDayClass,
+                minDate: new Date(),
+                showWeeks: true
+              };
+
+              vm.dateOptions = {
+                dateDisabled: false,
+                formatYear: 'yy',
+                maxDate: new Date(2020, 5, 22),
+                minDate: new Date(),
+                startingDay: 1,
+                showWeeks: false,
+                ngModelOptions: {
+                  timezone: 'UTC'
+                }
+              };
+
+              // Disable weekend selection
+              // function disabled(data) {
+              //   var date = data.date,
+              //     mode = data.mode;
+              //   return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+              // }
+
+              vm.toggleMin = function() {
+                vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
+                vm.dateOptions.minDate = vm.inlineOptions.minDate;
+              };
+
+              vm.toggleMin();
+
+              vm.open1 = function() {
+                vm.popup1.opened = true;
+              };
+
+              vm.open2 = function() {
+                vm.popup2.opened = true;
+              };
+
+              // vm.setDate = function(year, month, day) {
+              //   vm.fData.fecha = new Date(year, month, day);
+              // };
+
+              vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+              vm.format = vm.formats[0];
+              vm.altInputFormats = ['M!/d!/yyyy'];
+
+              vm.popup1 = {
+                opened: false
+              };
+
+              vm.popup2 = {
+                opened: false
+              };
+
+              // var tomorrow = new Date();
+              // tomorrow.setDate(tomorrow.getDate() + 1);
+              // var afterTomorrow = new Date();
+              // afterTomorrow.setDate(tomorrow.getDate() + 1);
+              // vm.events = [
+              //   {
+              //     date: tomorrow,
+              //     status: 'full'
+              //   },
+              //   {
+              //     date: afterTomorrow,
+              //     status: 'partially'
+              //   }
+              // ];
+
+              function getDayClass(data) {
+                var date = data.date,
+                  mode = data.mode;
+                if (mode === 'day') {
+                  var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+                  for (var i = 0; i < vm.events.length; i++) {
+                    var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
+
+                    if (dayToCheck === currentDay) {
+                      return vm.events[i].status;
+                    }
+                  }
+                }
+
+                return '';
+              }
             vm.aceptar = function () {
               // if(vm.fData.cImagen){
               //   if(angular.isUndefined($scope.image)){
@@ -171,6 +273,78 @@
             vm.rutaImagen = arrToModal.scope.dirImagesBlog;
             console.log('sel',arrToModal.seleccion);
             console.log('data',vm.fData);
+            // DATEPICKER
+              vm.fData.fecha = moment(vm.fData.fecha).toDate();
+              vm.today = function() {
+                vm.fData.fecha = new Date();
+              };
+              // vm.today();
+
+              vm.clear = function() {
+                vm.fData.fecha = null;
+              };
+
+              vm.inlineOptions = {
+                customClass: getDayClass,
+                minDate: new Date(),
+                showWeeks: true
+              };
+
+              vm.dateOptions = {
+                dateDisabled: false,
+                formatYear: 'yy',
+                maxDate: new Date(2020, 5, 22),
+                minDate: new Date(),
+                startingDay: 1,
+                showWeeks: false,
+                ngModelOptions: {
+                  timezone: 'UTC'
+                }
+              };
+              vm.toggleMin = function() {
+                vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
+                vm.dateOptions.minDate = vm.inlineOptions.minDate;
+              };
+
+              vm.toggleMin();
+
+              vm.open1 = function() {
+                vm.popup1.opened = true;
+              };
+
+              vm.open2 = function() {
+                vm.popup2.opened = true;
+              };
+
+              vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+              vm.format = vm.formats[0];
+              vm.altInputFormats = ['M!/d!/yyyy'];
+
+              vm.popup1 = {
+                opened: false
+              };
+
+              vm.popup2 = {
+                opened: false
+              };
+
+              function getDayClass(data) {
+                var date = data.date,
+                  mode = data.mode;
+                if (mode === 'day') {
+                  var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+                  for (var i = 0; i < vm.events.length; i++) {
+                    var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
+
+                    if (dayToCheck === currentDay) {
+                      return vm.events[i].status;
+                    }
+                  }
+                }
+
+                return '';
+              }
             vm.aceptar = function () {
               if(vm.fData.canvas){
                 if(angular.isUndefined($scope.image)){
