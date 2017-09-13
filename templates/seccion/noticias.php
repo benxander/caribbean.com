@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="homepage-community-items-footer">
-          <p><a class="btn btn-default-1 waves" href="#">Ver todas las Noticias</a></p>
+          <p><a class="btn btn-default-1 waves" ng-href="{{dirWeb}}blog.html" target="_blank">Ver todas las Noticias</a></p>
         </div>
       </div>
     </div>

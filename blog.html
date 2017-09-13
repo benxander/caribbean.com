@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html ng-app="caribbean" ng-controller="MainController as vm">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
+	<meta name="keywords" content="{{dataWeb.keywords}}">
+	<meta name="description" content="{{dataWeb.descripcion_we}}">
+	<!-- <base href="{{dirWeb}}"> -->
+	<title ng-bind="dataWeb.titulo_we"></title>
+	<!-- FAVICON AND APPLE TOUCH -->
+	<link rel="shortcut icon" href="assets/images/favicon.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-180x180.png">
+	<meta name="msapplication-TileImage" content="assets/images/mstile.png">
+	<meta name="msapplication-TileColor" content="#1574a6">
+	<meta name="theme-color" content="#1574a6">
+
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.css">
+
+	<!-- FONTS -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7C;Open+Sans:300,300i,400,400i,700,700i%7C;Playfair+Display:400,400i,900,900i">
+	<!-- HALCYON ICONS -->
+	<link rel="stylesheet" href="assets/fonts/halcyon-icons/css/halcyon-icons.min.css">
+	<link rel="stylesheet" href="assets/fonts/halcyon-school-icons/css/halcyon-school-icons.min.css">
+	<link rel="stylesheet" href="assets/fonts/halcyon-interface-icons/css/halcyon-interface-icons.min.css">
+	<link rel="stylesheet" href="assets/fonts/halcyon-office-icons/css/halcyon-office-icons.min.css">
+	<!-- FANCYBOX -->
+	<link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.css">
+
+	<!-- REVOLUTION SLIDER -->
+	<link rel="stylesheet" href="assets/plugins/revolutionslider/css/settings.css">
+	<link rel="stylesheet" href="assets/plugins/revolutionslider/css/layers.css">
+	<link rel="stylesheet" href="assets/plugins/revolutionslider/css/navigation.css">
+
+	<!-- OWL Carousel -->
+	<link rel="stylesheet" href="assets/plugins/owl-carousel/owl.carousel.css">
+
+	<!-- COUNTERS -->
+	<link rel="stylesheet" href="assets/plugins/counters/odometer-theme-default.css">
+
+	<!-- YOUTUBE PLAYER -->
+	<link rel="stylesheet" href="assets/plugins/ytplayer/css/jquery.mb.ytplayer.min.css">
+
+	<!-- ANIMATIONS -->
+	<link rel="stylesheet" href="assets/plugins/animations/animate.min.css">
+
+	<!-- CUSTOM & PAGES STYLE -->
+	<link rel="stylesheet" href="assets/css/custom.css">
+	<link rel="stylesheet" href="assets/css/pages-style.css">
+	<script>
+      document.write('<base href="' + document.location + '" />');
+    </script>
+
+</head>
+<body  class="sticky-header header-white" >
+	<div class="preloader-wrapper">
+      <div class="loader"></div>
+    </div>
+	<div id="main-container">
+		<!-- HEADER -->
+		<header id="header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-3">
+						<!-- LOGO -->
+						<div id="logo">
+							<a href="{{dirWeb}}">
+								<img src="assets/images/logo-dark.png" alt="">
+							</a>
+						</div><!-- LOGO -->
+					</div><!-- col -->
+					<div class="col-sm-7">
+						<!-- MENU -->
+						<nav class="navbar_cp" data-offset-top="80">
+							<a id="mobile-menu-button" class="waves" href="#"><i class="halcyon-icon-menu"></i></a>
+							<ul class="menu clearfix nav navbar-nav" id="menu">
+								<li><a href="{{dirWeb}}" >Inicio</a></li>
+								<li><a href="{{dirWeb}}#servicios">Servicios</a></li>
+								<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
+								<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
+								<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
+							</ul>
+						</nav>
+					</div>
+					<div class="col-sm-2">
+						<div class="login">
+							<a class="btn btn-default-2 waves" ng-href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div id="blog" ng-include="'templates/blog.php'" ></section>
+		<!-- FOOTER -->
+		<footer id="footer-container">
+
+			<div id="footer-top">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-3">
+
+							<div class="widget widget-pages">
+
+								<h6 class="widget-title">Secciones</h6>
+
+								<ul>
+									<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
+									<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
+									<!-- <li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li> -->
+									<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
+
+									<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
+									<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
+								</ul>
+
+							</div><!-- widget-pages -->
+
+						</div><!-- col -->
+						<div class="col-sm-6">
+
+							<div class="widget widget-latest-posts">
+
+								<h6 class="widget-title">Blog Posts</h6>
+
+								<ul>
+									<li>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[0].dia}} <small>{{vm.listaNoticiasSec[0].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[0].titulo}}</a>
+									</li>
+									<li>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[1].dia}} <small>{{vm.listaNoticiasSec[1].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[1].titulo}}</a>
+									</li>
+
+								</ul>
+
+							</div><!-- widget-recent-posts -->
+
+						</div><!-- col -->
+
+						<div class="col-sm-3">
+
+							<div class="widget widget-contact">
+
+								<h6 class="widget-title">Contacto</h6>
+
+								<ul>
+									<li ng-if="dataWeb.direccion">
+										<i class="fa fa-map-marker"></i>
+										{{dataWeb.direccion}}
+									</li>
+									<li ng-if="dataWeb.telefono">
+										<i class="fa fa-phone"></i>
+										{{dataWeb.telefono}}
+									</li>
+									<li ng-if="dataWeb.skype">
+										<i class="fa fa-skype"></i>
+										{{dataWeb.skype}}
+									</li>
+									<li ng-if="dataWeb.correo">
+										<i class="fa fa-envelope"></i>
+										<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
+									</li>
+								</ul>
+
+							</div><!-- widget-contact -->
+
+						</div><!-- col -->
+					</div><!-- row -->
+				</div><!-- container -->
+
+			</div><!-- footer-top -->
+
+			<div id="footer-middle">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+
+							<div class="widget widget-social">
+
+								<div class="social-media text-center">
+
+									<a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a>
+									<a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
+									<a class="instagram" href="#"><i class="fa fa-instagram"></i></a>
+									<a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+									<a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+
+								</div><!-- social-media -->
+
+							</div><!-- widget-social -->
+
+						</div><!-- col -->
+					</div><!-- row -->
+				</div><!-- container -->
+
+			</div><!-- footer-middle -->
+
+			<div id="footer-bottom">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+
+							<div class="widget widget-text">
+
+								<div class="text-center">
+
+									<img src="assets/images/footer-logo.png" alt="">
+									<p><small>Hementxe 2017 &copy; All rights reserved</small></p>
+
+								</div>
+
+							</div><!-- widget-text -->
+
+						</div><!-- col -->
+					</div><!-- row -->
+				</div><!-- container -->
+
+			</div><!-- footer-bottom -->
+
+		</footer><!-- FOOTER CONTAINER -->
+
+	</div><!-- MAIN CONTAINER -->
+	<!-- SCROLL UP -->
+	<a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>
+
+	<!-- jQUERY -->
+	<script src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+	<!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.1.min.js"></script>
+	<!-- <script src="bower_components/angular-route/angular-route.js"></script> -->
+	<!-- <script src="bower_components/angular-cookies/angular-cookies.js"></script> -->
+	<!-- <script src="bower_components/ng-facebook/ngFacebook.js"></script> -->
+	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+	<script src="bower_components/angular-g-recaptcha/angular-g-recaptcha.js"></script>
+	<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
+
+	<!-- VIEWPORT -->
+	<script src="assets/plugins/viewport/jquery.viewport.js"></script>
+
+	<!-- MENU -->
+	<script src="assets/plugins/menu/hoverIntent.js"></script>
+	<script src="assets/plugins/menu/superfish.js"></script>
+
+	<!-- FANCYBOX -->
+	<script src="assets/plugins/fancybox/jquery.fancybox.pack.js"></script>
+
+	<!-- REVOLUTION SLIDER  -->
+	<script src="bower_components/angular-revolution/release/angular-revolution.js"></script>
+
+	<script src="assets/plugins/revolutionslider/js/jquery.themepunch.tools.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/jquery.themepunch.revolution.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.actions.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.carousel.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.kenburn.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.layeranimation.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.migration.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.navigation.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.parallax.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.slideanims.min.js"></script>
+	<script src="assets/plugins/revolutionslider/js/extensions/revolution.extension.video.min.js"></script>
+
+	<!-- OWL Carousel -->
+	<script src="assets/plugins/owl-carousel/owl.carousel.min.js"></script>
+
+	<!-- PARALLAX -->
+	<script src="assets/plugins/parallax/jquery.stellar.min.js"></script>
+
+	<!-- ISOTOPE -->
+	<script src="assets/plugins/isotope/imagesloaded.pkgd.min.js"></script>
+	<!-- <script src="assets/plugins/isotope/isotope.pkgd.min.js"></script> -->
+
+	<!-- PLACEHOLDER -->
+	<script src="assets/plugins/placeholders/jquery.placeholder.min.js"></script>
+
+	<!-- CONTACT FORM VALIDATE & SUBMIT -->
+	<script src="assets/plugins/validate/jquery.validate.min.js"></script>
+	<script src="assets/plugins/submit/jquery.form.min.js"></script>
+
+	<!-- GOOGLE MAPS -->
+	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyD3E-0gEeAoazgA2D7W0DAmPv1pYA5hPJ4"></script>
+	<script src="assets/plugins/googlemaps/gmap3.min.js"></script>
+    <!-- <script src="admin/bower_components/ngmap/build/scripts/ng-map.js"></script> -->
+
+
+	<!-- CHARTS -->
+	<!-- <script src="assets/plugins/charts/jquery.easypiechart.min.js"></script> -->
+
+	<!-- COUNTER -->
+	<script src="assets/plugins/counters/jquerysimplecounter.js"></script>
+	<!-- <script src="assets/plugins/counters/odometer.min.js"></script> -->
+
+	<!-- STATISTICS -->
+	<!-- <script src="assets/plugins/statistics/chart.min.js"></script> -->
+
+	<!-- INSTAFEED -->
+	<!-- <script src="assets/plugins/instafeed/instafeed.min.js"></script> -->
+
+	<!-- TWITTER -->
+	<!-- <script src="assets/plugins/twitter/twitterfetcher.min.js"></script> -->
+
+	<!-- YOUTUBE PLAYER -->
+	<script src="assets/plugins/ytplayer/jquery.mb.ytplayer.min.js"></script>
+
+	<!-- COUNTDOWN -->
+	<!-- <script src="assets/plugins/countdown/jquery.countdown.min.js"></script> -->
+
+	<!-- ANIMATIONS -->
+	<script src="assets/plugins/animations/wow.min.js"></script>
+
+	<!-- CUSTOM JS -->
+
+	<script src="assets/js/custom.js"></script>
+	<script src="assets/js/config.js"></script>
+	<script src="assets/js/index.module.js"></script>
+	<script src="assets/js/index.config.js"></script>
+	<script src="assets/js/index.controller.js"></script>
+
+	<script src="assets/js/controllers/Blog.js"></script>
+
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer></script>
+
+</body>
+</html>

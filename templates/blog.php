@@ -4,20 +4,20 @@
 
 			<div class="ken-burn" ng-style="vm.headerStyle"></div>
 
-			<!-- <div class="container">
+			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
 
 						<h1>Blog</h1>
 
 						<ol class="breadcrumb">
-							<li><a href="#">Home</a></li>
-							<li class="active">Blog right sidebar</li>
+							<li><a href="">Home</a></li>
+							<li class="active">Blog </li>
 						</ol>
 
 					</div>
 				</div>
-			</div> -->
+			</div>
 
 		</div><!-- page-header -->
 
