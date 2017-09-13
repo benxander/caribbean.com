@@ -43,68 +43,12 @@ class Cliente extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	public function listar_idioma_cbo(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_usuario->m_cargar_idioma_cbo();
-		$arrListado = array();
-		foreach ($lista as $row) {
-			array_push($arrListado,
-				array(
-					'id' => $row['ididioma'],
-					'descripcion' => $row['nombre_id']
-				)
-			);
-		}
-
-    	$arrData['datos'] = $arrListado;
-    	$arrData['message'] = '';
-    	$arrData['flag'] = 1;
-		if(empty($lista)){
-			$arrData['flag'] = 0;
-		}
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-	}
-
-	public function listar_grupo_cbo(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_usuario->m_cargar_grupo_cbo();
-		$arrListado = array();
-		foreach ($lista as $row) {
-			array_push($arrListado,
-				array(
-					'id' => $row['idgrupo'],
-					'descripcion' => $row['nombre_gr']
-				)
-			);
-		}
-
-    	$arrData['datos'] = $arrListado;
-    	$arrData['message'] = '';
-    	$arrData['flag'] = 1;
-		if(empty($lista)){
-			$arrData['flag'] = 0;
-		}
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-	}
-
 	// MANTENIMIENTO
 	public function registrar_cliente(){
 		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	
-    	/*if(empty($allInputs['imagen'])){
-    		$arrData['message'] = 'Debe subir una imagen';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}*/
 
 		if($this->model_cliente->m_registrar_cliente($allInputs)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
@@ -134,7 +78,18 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
+    	
+
+    	if(!empty($allInputs['idusuario'])){
+    		if($this->model_usuario->m_consultar_usuario($allInputs)){
+    			$arrData['message'] = 'Este cliente tiene un usuario asociado';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;	
+    		}		
+    	}
+
 		if($this->model_cliente->m_anular_cliente($allInputs)){
 			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
@@ -143,6 +98,5 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 
 }

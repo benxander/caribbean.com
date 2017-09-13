@@ -42,6 +42,7 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 
+	// MANTENIMIENTO
 	public function m_registrar_cliente($data){
 		$datos = array(			
 			'nombres' => strtoupper($data['nombres']),
@@ -78,4 +79,13 @@ class Model_cliente extends CI_Model {
 		return $this->db->update('cliente', $datos);
 	}
 
+	public function m_actualizar_cliente_usuario($data){
+		$datos = array(			
+			'idusuario' => $data['idusuario'],
+			'updatedat' => date('Y-m-d H:i:s'),
+		 );
+		$this->db->where('idcliente',$data['idcliente']);
+
+		return $this->db->update('cliente', $datos);	
+	}
 }
