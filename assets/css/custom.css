@@ -374,11 +374,11 @@
 		.text-gray	{color: #ccc;}
 
 	/* FONT SIZE´s */
-		.f-12{font-size: 12px;}
-		.f-14{font-size: 14px;}
-		.f-16{font-size: 16px;}
-		.f-18{font-size: 18px;}
-		.f-24{font-size: 24px;}
+		.f-12{font-size: 0.75em;}
+		.f-14{font-size: 0.875em;}
+		.f-16{font-size: 1em;}
+		.f-18{font-size: 1.125em;}
+		.f-24{font-size: 1.5em;}
 	/* OTHERS */
 		.clear {clear: both;}
 	@media (min-width: 768px) and (max-width: 991px) {
@@ -672,7 +672,10 @@
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
 	}
-
+	.btn-mini{
+		padding: 8px 10px;
+		font: 0.7em/1.1em "Montserrat", sans-serif;
+	}
 	.btn:last-child {
 		margin-right: 0;
 	}
@@ -7252,3 +7255,7 @@
 		margin-left: auto;
 		margin-right: auto;}
 }
+/* traductor */
+.skiptranslate .goog-te-banner-frame{display:none!important;}
+body{top:0px!important;}
+.traductor{margin-top: 12px;}

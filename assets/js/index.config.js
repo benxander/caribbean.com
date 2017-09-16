@@ -13,8 +13,32 @@
     .module('caribbean')
     .config(config);
   /** @ngInject */
-  function config($locationProvider){
+  function config($routeProvider, $locationProvider){
     $locationProvider.html5Mode(true);
+    // remove ! hash prefix
+    $locationProvider.hashPrefix('');
+    $routeProvider
+    .when('/', {
+      // templateUrl: angular.dirViews . '/main.php',
+      templateUrl: function(param) {
+          return angular.dirViews + 'main.php';
+        },
+      controller: 'MainController',
+      // resolve:{
+      //   loadAsset: ['$ocLazyLoad', function($ocLazyLoad){
+      //     return $ocLazyLoad.load(['assets/js/controllers/HomeCtrl.js'])
+      //   }]
+      // }
+    })
+    .when('/:templateFile', {
+      // templateUrl: 'templates/blog.php',
+      templateUrl: function(param) {
+      console.log('param',param);
+          return angular.dirViews + param.templateFile + '.php';
+        },
+      controller: 'BlogController',
+
+    });
   }
   /*function config($logProvider,$routeProvider, $locationProvider) {
     // Enable log
@@ -70,7 +94,9 @@
 
       });
     })(jQuery);
-
+function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en,es,ca,fr,it,de,ja,pt,ru,zh-TW', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
 function handleError(error) {
   return function () {
     return {success: false, message: Notification.warning({message: error})};

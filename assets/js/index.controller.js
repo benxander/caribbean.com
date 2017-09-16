@@ -271,13 +271,13 @@
       $scope.keyRecaptcha='';
       window.onloadCallback = function(){
         if( $location.path() == '/' ){
-
+          $timeout(function() {
             $scope.keyRecaptcha =  '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_';
             grecaptcha.render('reCaptcha', {
               'sitekey' : $scope.keyRecaptcha,
               'callback' : recaptchaResponse,
             });
-
+          },500);
         }
       }
 

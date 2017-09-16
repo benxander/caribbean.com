@@ -10,7 +10,6 @@ class Blog extends CI_Controller {
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_blog'));
     }
-
 	public function listar_noticias()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
