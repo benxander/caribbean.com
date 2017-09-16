@@ -98,6 +98,13 @@
         templateUrl: 'app/pages/rol/rol.html',
         controller: 'RolController',
         controllerAs: 'r'
+      })
+      //perfil
+      .state('perfil', {
+        url: '/app/perfil',
+        templateUrl: 'app/pages/perfil/perfil.html',
+        controller: 'PerfilController',
+        controllerAs: 'p'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

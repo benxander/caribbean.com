@@ -75,20 +75,23 @@
         'opBanners',
         'opMantenimiento',
         'opConfig',
-        'opSeguridad'
+        'opSeguridad',
+        'opPerfil',
+        'opGaleria',
+        'opMiGaleria'
       ];
       if($scope.fSessionCI.idgrupo == 1){
-        $scope.valores = [true,true,true,true,true,true,true,true];
+        $scope.valores = [true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true,true,true,true];
+        $scope.valores = [true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [true,true,false,false,false,false,false];
+        $scope.valores = [true,false,false,false,false,false,false,false,true,true,true];
       }
       else{
         console.log('No tiene grupo');
-        $scope.valores = [false,false,false,false,false,false,false];
+        $scope.valores = [false,false,false,false,false,false,false,false,false,false];
       }
     }
     $scope.getValidateSession = function () {

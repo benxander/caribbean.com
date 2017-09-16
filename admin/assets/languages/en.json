@@ -12,7 +12,10 @@
     "SEGURIDAD": "Security",
     "USUARIOS": "Users",
     "GRUPOS": "Groups",
-    "ROLES": "Roles"
+    "ROLES": "Roles",
+    "PERFIL": "My Profile",
+    "GALERIA": "My Galery",
+    "DESCARGAR": "Downloads"
   },
   "Form": {
     "PREVIOUS":"Back",
