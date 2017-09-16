@@ -62,7 +62,7 @@ class Model_banner extends CI_Model {
 		$this->db->select('tb.idtipobanner, tb.descripcion_tb AS tipo_banner, tb.ancho_defecto, tb.alto_defecto');
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion');
 		$this->db->from('banner ba');
-		$this->db->join('capa_slider cs','ba.idbanner = cs.idbanner');
+		$this->db->join('capa_slider cs','ba.idbanner = cs.idbanner','left');
 		$this->db->join('tipo_banner tb','ba.idtipobanner = tb.idtipobanner');
 		$this->db->join('seccion se','ba.idseccion = se.idseccion');
 		$this->db->where('ba.estado_ba', 1);

@@ -26,12 +26,22 @@
 	function BlogServices($http, $q) {
 	    return({
 	    	sCargarNoticiasWeb: sCargarNoticiasWeb,
+	    	sCargarNoticiasSeccion: sCargarNoticiasSeccion,
 	    });
 	    function sCargarNoticiasWeb(pDatos) {
 	      var datos = pDatos || {};
 	      var request = $http({
 	            method : "post",
 	            url :  angular.patchURLCI + "Blog/cargar_noticias_web",
+	            data : datos
+	      });
+	      return (request.then( handleSuccess,handleError ));
+	    }
+	    function sCargarNoticiasSeccion(pDatos) {
+	      var datos = pDatos || {};
+	      var request = $http({
+	            method : "post",
+	            url :  angular.patchURLCI + "Blog/cargar_noticias_seccion",
 	            data : datos
 	      });
 	      return (request.then( handleSuccess,handleError ));

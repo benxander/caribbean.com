@@ -1,4 +1,4 @@
-<ul data-ng-style="{'max-width':'1920px'}">
+<ul data-ng-style="{'max-width':'5120px'}">
   <!-- SLIDE  -->
   <li ng-repeat="slide in slides"
     data-index="rs-{{slide.idbanner}}"
@@ -13,7 +13,7 @@
     <img
       ng-src="{{slide.imagen}}"
       alt=""
-      width="1920"
+      width="5120"
       height="1280"
       data-bgposition="center center"
       data-bgfit="cover"
@@ -30,7 +30,7 @@
       data-no-retina>
 
     <!-- LAYER NR. 1 -->
-    <a class="tp-caption News-Title tp-resizeme rs-parallaxlevel-0"
+    <a ng-if="slide.acepta_texto == 1 " class="tp-caption News-Title tp-resizeme rs-parallaxlevel-0"
       data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-1"
       data-x="['{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}','{{slide.capas[0].data_x}}']"
@@ -73,7 +73,7 @@
 
 
     <!-- LAYER NR. 3 -->
-    <a class="tp-caption News-Subtitle tp-resizeme rs-parallaxlevel-0"
+    <a ng-if="slide.acepta_texto == 1 " class="tp-caption News-Subtitle tp-resizeme rs-parallaxlevel-0"
       data-ui-sref=""
       id="slide-{{slide.idbanner}}-layer-3"
       data-x="['{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}','{{slide.capas[1].data_x}}']"

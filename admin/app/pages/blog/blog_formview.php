@@ -38,10 +38,13 @@
 			            </div>
 			            <div class="form-group col-md-12">
 			              	<label for="fecha" class="control-label minotaur-label">Fecha <small class="text-red">(*)</small> </label>
-			              	<input type="text" name="fecha" id="fecha" class="form-control" ng-model="mb.fData.fecha" placeholder="Registre fecha" required>
-			              	<div ng-messages="formBlog.fecha.$error" ng-if="formBlog.fecha.$dirty" role="alert" class="help-block text-red">
-			                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-			              	</div>
+			                <div class="input-group w-md">
+			                  <input type="text" class="form-control" uib-datepicker-popup="{{mb.format}}" ng-model="mb.fData.fecha" ng-model-options="{ timezone: 'UTC' }" is-open="mb.popup1.opened" datepicker-options="mb.dateOptions" ng-required="true" close-text="Close" ng-click="mb.open1($event)" />
+			                  <span class="input-group-btn">
+			                      <button type="button" class="btn btn-default" ng-click="mb.open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+			                    </span>
+			                </div>
+			                <!-- <span>{{mb.fData.fecha | date:'fullDate':'UTC'}}</span> -->
 			            </div>
                 	</div>
                 </div>

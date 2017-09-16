@@ -53,7 +53,7 @@
     </script>
 
 </head>
-<body  id="home" class="sticky-header header-white" data-spy="scroll" data-target=".navbar_cp" data-offset="80" >
+<body  class="sticky-header header-white" >
 	<div class="preloader-wrapper">
       <div class="loader"></div>
     </div>
@@ -65,7 +65,7 @@
 					<div class="col-sm-3">
 						<!-- LOGO -->
 						<div id="logo">
-							<a href="" ng-click="scrollTo('inicio');">
+							<a href="{{dirWeb}}">
 								<img src="assets/images/logo-dark.png" alt="">
 							</a>
 						</div><!-- LOGO -->
@@ -75,8 +75,8 @@
 						<nav class="navbar_cp" data-offset-top="80">
 							<a id="mobile-menu-button" class="waves" href="#"><i class="halcyon-icon-menu"></i></a>
 							<ul class="menu clearfix nav navbar-nav" id="menu">
-								<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
-								<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
+								<li><a href="{{dirWeb}}" >Inicio</a></li>
+								<li><a href="{{dirWeb}}#servicios">Servicios</a></li>
 								<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
 								<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
 								<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
@@ -91,15 +91,7 @@
 				</div>
 			</div>
 		</header>
-		<!-- PAGE CONTENT -->
-		<div ng-show="!pageInicio" ng-include="ruta"></div>
-		<div id="page-content" ng-show="pageInicio">
-			<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
-			<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
-			<section class="block mt-xxl" id="noticias" ng-include="'templates/seccion/noticias.php'" ></section>
-			<section class="block mt-xxl" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
-			<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
-		</div><!-- PAGE CONTENT -->
+		<div id="blog" ng-include="'templates/blog.php'" ></section>
 		<!-- FOOTER -->
 		<footer id="footer-container">
 

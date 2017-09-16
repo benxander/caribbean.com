@@ -23,8 +23,11 @@ class Blog extends CI_Controller {
 				'idblog' => $row['idblog'],
 				'titulo' => $row['titulo'],
 				'descripcion' => $row['descripcion'],
+				'descripcion_f' => strip_tags($row['descripcion']),
 				'autor' => $row['autor'],
-				'fecha' => $row['fecha'],
+				'fecha' => date('Y-m-d',strtotime($row['fecha'])),
+				// 'fecha' => $row['fecha'],
+				'fecha_f' => darFormatoDMY2($row['fecha']),
 				'imagen' => $row['imagen'],
 				)
 			);
@@ -79,6 +82,50 @@ class Blog extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function cargar_noticias_seccion(){
+		ini_set('xdebug.var_display_max_depth', 5);
+	    ini_set('xdebug.var_display_max_children', 256);
+	    ini_set('xdebug.var_display_max_data', 1024);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$paramPaginate = array(
+			'sortName' => $allInputs['sortName'],
+			'sort' => $allInputs['sort'],
+			'pageSize' => $allInputs['limit'],
+			'firstRow' => 0,
+		);
+		$lista = $this->model_blog->m_cargar_noticias($paramPaginate);
+
+		$arrListado = array();
+
+		$ruta = 'uploads/blog/';
+		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
+		foreach ($lista as $row) {
+
+			array_push($arrListado, array(
+				'idblog' => $row['idblog'],
+				'titulo' => $row['titulo'],
+				'descripcion' => $row['descripcion'],
+				'autor' => $row['autor'],
+				'fecha' => formatoFechaReporte3($row['fecha']),
+				'dia' => date('d', strtotime($row['fecha'])),
+				'mes' => $shortMonthArray[(int)date('m',strtotime($row['fecha']))],
+				'imagen' => $ruta .$row['imagen'],
+				)
+			);
+		}
+
+
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	// MANTENIMIENTO
 	public function registrar_noticia()	{
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
@@ -108,9 +155,9 @@ class Blog extends CI_Controller {
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
     		'imagen' => $nombre,
-    		'fecha' => date('Y-m-d H:i:s'),
+    		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
-
+    	// print_r($data); exit();
     	if($this->model_blog->m_registrar($data)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
@@ -131,8 +178,8 @@ class Blog extends CI_Controller {
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
-
-    		'fecha' => date('Y-m-d H:i:s'),
+    		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
+    		// 'fecha' => date('Y-m-d H:i:s'),
     	);
 
     	// VALIDACIONES

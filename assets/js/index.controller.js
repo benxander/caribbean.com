@@ -80,7 +80,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($scope,$timeout, $location, $window, rootServices) {
+  function MainController($scope,$timeout, $location, $window, rootServices,BlogServices) {
     var vm = this;
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
@@ -164,9 +164,9 @@
       $scope.slider = {
         sliderType: "standard",
         sliderLayout: "fullwidth",
-        responsiveLevels: [1920, 1024, 778, 480],
-        gridwidth: [1930, 1240, 778, 480],
-        gridheight: [850, 768, 960, 720],
+        responsiveLevels: [5120,1920, 1024, 778, 480],
+        gridwidth: [5120,1930, 1240, 778, 480],
+        gridheight: [2250, 850, 768, 960, 720],
         autoHeight: "on",
         minHeight: "",
         fullScreenOffsetContainer: "",
@@ -240,13 +240,28 @@
         hideThumbsOnMobile: "off",
       };
     // SECCION BLOG
-      $scope.verBlog = function(){
-        $scope.pageInicio = false;
-        $scope.ruta = 'templates/blog.php';
-        $("html, body").animate({
-              scrollTop: 0
-          }, 800, 'linear');
+      // $scope.verBlog = function(){
+      //   $scope.pageInicio = false;
+      //   $scope.ruta = 'templates/blog.php';
+      //   $("html, body").animate({
+      //         scrollTop: 0
+      //     }, 800, 'linear');
+      // }
+      var paramDatos = {
+        'limit': 3,
+        'sortName': 'fecha',
+        'sort' : 'DESC'
+
       }
+      BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
+        if(rpta.flag == 1){
+          vm.listaNoticiasSec = rpta.datos;
+          console.log(vm.listaNoticiasSec);
+
+        }else{
+          console.log('no data');
+        }
+      });
     // SECCION CONTACTO
       $scope.captchaValido = false;
       window.recaptchaResponse = function(token) {
@@ -258,7 +273,7 @@
         if( $location.path() == '/' ){
 
             $scope.keyRecaptcha =  '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_';
-            grecaptcha.render('recaptcha-contact', {
+            grecaptcha.render('reCaptcha', {
               'sitekey' : $scope.keyRecaptcha,
               'callback' : recaptchaResponse,
             });
