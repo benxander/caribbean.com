@@ -6042,8 +6042,16 @@
 		background: rgba(0, 0, 0, 0.85);
 	}
 
-	.fancybox-inner {
-		overflow: hidden!important;
+	@media (max-width:767px){
+		.fancybox-inner {
+			overflow-x: hidden!important;
+			overflow-y: scroll!important;
+			width: 98%!important;
+		}
+		.fancybox-opened{
+			width: 95%!important;
+			left: 10px!important;
+		}
 	}
 
 /***********************************************************************************

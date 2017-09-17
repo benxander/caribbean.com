@@ -8,7 +8,7 @@
     <!-- col -->
     <div class="col-md-12">
       <!-- tile -->
-      <div class="tile">
+      <div class="tile pb-xl">
         <!-- tile header -->
         <section class="tile-header">
           <h1 class="heading">Configuración Web</h1>
@@ -82,7 +82,7 @@
                 <ng-form name="step2">
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label class="control-label minotaur-label">Logo (154 x 22)<span class="text-red">*</span>: </label>
+                      <label class="control-label minotaur-label">Logo (250 x 50)<span class="text-red">*</span>: </label>
                       <div ng-show="cg.fData.logo && !cg.fData.cLogo" >
                         <img class="mt-md" ng-src="../assets/images/{{cg.fData.logo}}" alt="logo" style="width: 154px">
                          <a href="" class="block" style="width: 110px" ng-click="cg.fData.cLogo=true">Cambiar Imagen</a>
@@ -94,7 +94,7 @@
                       </div>
                     </div>
                     <div class="form-group col-md-6">
-                      <label class="control-label minotaur-label">Footer Logo (124 x 19)<span class="text-red">*</span>:</label>
+                      <label class="control-label minotaur-label">Footer Logo (212 x 110)<span class="text-red">*</span>:</label>
                       <div ng-show="cg.fData.footer_logo && !cg.fData.cLogoFooter" >
                         <img class="mt-md" ng-src="../assets/images/{{cg.fData.footer_logo}}" alt="footer logo" style="width: 124px">
                          <a href="" class="block" style="width: 110px" ng-click="cg.fData.cLogoFooter=true">Cambiar Imagen</a>
@@ -190,12 +190,31 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="direccion" class="col-sm-3 control-label minotaur-label">Dirección : </label>
-                      <div class="col-sm-9">
+                    <div class="form-group col-md-9">
+                      <label for="direccion" class="col-sm-2 control-label minotaur-label">Dirección : </label>
+                      <div class="col-sm-10">
                         <input type="text" class="form-control  text-center underline-input" id="direccion" placeholder="Dirección" ng-model="cg.fData.direccion">
                       </div>
                     </div>
+                  </div>
+                  <hr class="line-dashed line-full"/>
+                  <div class="row" ng-show="false">
+                    <label class="col-sm-12 control-label minotaur-label">Redes Sociales : </label>
+                  </div>
+                  <div class="row" ng-show="false">
+
+                    <label class="col-sm-2 control-label minotaur-label">Youtube : </label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control text-center underline-input" id="redes1" placeholder="Youtube" ng-model="cg.fData.redes">
+                      <div class="onoffswitch labeled blue inline-block">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch10" checked="">
+                        <label class="onoffswitch-label" for="switch10">
+                          <span class="onoffswitch-inner"></span>
+                          <span class="onoffswitch-switch"></span>
+                        </label>
+                      </div>
+                    </div>
+
                   </div>
                   <button class="btn btn-info minotaur-btn pull-left"
                    ng-click="forms.activeStep = 1">{{ 'Form.PREVIOUS' | translate }}</button>

@@ -5,26 +5,6 @@
     .module('caribbean')
     .controller('MainController', MainController)
     .service('rootServices', rootServices)
-    .directive('hcChart', function () {
-      return {
-          restrict: 'E',
-          template: '<div></div>',
-          scope: {
-              options: '='
-          },
-          link: function (scope, element) {
-            // scope.$watch(function () {
-            //   return attrs.chart;
-            // }, function () {
-            //     if (!attrs.chart) return;
-            //     var charts = JSON.parse(attrs.chart);
-            //     $(element[0]).highcharts(charts);
-                Highcharts.chart(element[0], scope.options);
-            // });
-
-          }
-      };
-    })
     .directive('fancybox', function(){
       return {
         restrict: 'A',
@@ -270,15 +250,16 @@
 
       $scope.keyRecaptcha='';
       window.onloadCallback = function(){
-        if( $location.path() == '/' ){
+        console.log('location.path()',$location.path());
+        // if( $location.path() == '/' ){
           $timeout(function() {
             $scope.keyRecaptcha =  '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_';
             grecaptcha.render('reCaptcha', {
               'sitekey' : $scope.keyRecaptcha,
               'callback' : recaptchaResponse,
             });
-          },500);
-        }
+          },1500);
+        // }
       }
 
       $scope.enviar = function(){

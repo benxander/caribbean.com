@@ -616,7 +616,8 @@
       return true;
     };
 
-    AbstractChosen.default_multiple_text = "Select Some Options";
+    AbstractChosen.default_multiple_text = "Selecciona 1 o mas opciones";
+    // AbstractChosen.default_multiple_text = "Select Some Options";
 
     AbstractChosen.default_single_text = "Select an Option";
 
