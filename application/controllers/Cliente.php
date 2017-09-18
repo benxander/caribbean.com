@@ -148,36 +148,51 @@ class Cliente extends CI_Controller {
 					$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
 					$file_name = generateRandomString() .'.'. $file_ext ;
 					
-			        move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+			        
 
 			        //************ THUMBS *************//
 
-			        /*//Crear variable
-					$original = imagecreatefromjpeg($file_tmp);
+					$maxsize = 600;
 
-					//Ancho y alto máximo
-					$max_ancho = 600; $max_alto = 400;
-					 
-					//Medir la imagen
-					list($ancho,$alto)=getimagesize($rtOriginal);
+					// el archivo o imagen
+					$filename = $file_tmp;
 
-					//Ratio
-					$x_ratio = $max_ancho / $ancho;
-					$y_ratio = $max_alto / $alto;
+					// Asignar el ancho y alto maximos
+					$width = $maxsize;
+					$height = $maxsize;
 
-					//Proporciones
-					if(($ancho <= $max_ancho) && ($alto <= $max_alto) ){
-					    $ancho_final = $ancho;
-					    $alto_final = $alto;
+					// mandando las cabeceras correspondientes
+					header('Content-type: image/jpeg');
+
+					// obteniendo las dimensiones actuales
+					list($width_orig, $height_orig) = getimagesize($filename);
+					if ($width && ($width_orig < $height_orig)) {
+					$width = ($height / $height_orig) * $width_orig;
+					} else {
+					$height = ($width / $width_orig) * $height_orig;
 					}
-					else if(($x_ratio * $alto) < $max_alto){
-					    $alto_final = ceil($x_ratio * $alto);
-					    $ancho_final = $max_ancho;
-					}
-					else {
-					    $ancho_final = ceil($y_ratio * $ancho);
-					    $alto_final = $max_alto;
-					}*/
+
+					// Cambiando el tamano de la imagen o resample
+					$image_p = imagecreatetruecolor($width, $height);
+					$image = imagecreatefromjpeg($filename);
+					imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+					// Marca de Agua o Watermark
+					$watermark = imagecreatefrompng('uploads/Copyright.png');
+					$watermark_width = imagesx($watermark);
+					$watermark_height = imagesy($watermark);
+					$image = imagecreatetruecolor($watermark_width, $watermark_height);
+					$dest_x = 0; //$width - $watermark_width - 10;
+					$dest_y = 0; //$height - $watermark_height - 10;
+					imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 30);
+
+					// Salida
+					imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
+					imagedestroy($image);
+					imagedestroy($image_p);
+					imagedestroy($watermark);
+
+					move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
 
 			        $allInputs = array(
 						'idcliente' 	=> $idcliente,
