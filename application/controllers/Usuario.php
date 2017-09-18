@@ -125,7 +125,16 @@ class Usuario extends CI_Controller {
 			return;
     	}
 
-    	$this->db->trans_start();
+		$codigo = "";
+    	$band = true;
+    	while ($band) {
+    		$codigo = generateRandomString();
+    		if(!$this->model_usuario->m_verificar_codigo_usuario($codigo)){
+				$band = false;
+			}
+    	}
+    	
+    	$allInputs['codigo'] = $codigo;    	
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
@@ -135,7 +144,6 @@ class Usuario extends CI_Controller {
 			}
 		}
 
-		$this->db->trans_complete();
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

@@ -20,6 +20,7 @@
 	            <div class="form-group col-md-6">
 					<label for="password" class="control-label minotaur-label">Contraseña <small class="text-red">(*)</small> </label>
 	              	<input type="password" name="password" id="password" class="form-control" ng-model="mu.fData.password" placeholder="Registre Contraseña" required>
+	            	<input type="checkbox" name="newpassword" value="generar"> Generar nueva contraseña?
 	            </div>
 		    </div>
 		</form>

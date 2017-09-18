@@ -11,7 +11,7 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_cargar_usuario($paramPaginate=FALSE){
-		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us');
+		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us, u.codigo');
 		$this->db->select('gr.idgrupo, gr.nombre_gr');
 		$this->db->select('id.ididioma, id.nombre_id');
 		$this->db->join('grupo gr','gr.idgrupo = u.idgrupo');
@@ -78,6 +78,7 @@ class Model_usuario extends CI_Model {
 			'estado_us' => 1,
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s'),
+			'codigo' => $data['codigo']
 		);
 
 		$this->db->insert('usuario', $datos);
@@ -147,6 +148,19 @@ class Model_usuario extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	public function m_verificar_codigo_usuario($codigo){
+		$this->db->select('*');
+		$this->db->from('usuario');
+		$this->db->where('codigo', $codigo);
+		$this->db->where('estado_us', 1);
+		$this->db->limit(1);
+		if ( $this->db->get()->num_rows() > 0 ){
+			return TRUE;
+		}else{
+			return FALSE;
+		}	
 	}
 }
 

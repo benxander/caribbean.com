@@ -6,8 +6,9 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
 		$this->db->from('cliente c');
+		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -30,6 +31,7 @@ class Model_cliente extends CI_Model {
 	public function m_count_cliente($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('cliente c');
+		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -80,12 +82,14 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_actualizar_cliente_usuario($data){
+		
 		$datos = array(			
-			'idusuario' => $data['idusuario'],
+			'idusuario' => (int)$data['idusuario'],
 			'updatedat' => date('Y-m-d H:i:s'),
 		 );
 		$this->db->where('idcliente',$data['idcliente']);
 
 		return $this->db->update('cliente', $datos);	
 	}
+
 }

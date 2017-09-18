@@ -7,10 +7,14 @@
 
   /** @ngInject */
   function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,
-    ClienteServices, UsuarioServices) {
+    ClienteServices, UsuarioServices, FileUploader) {
     var vm = this;
     var openedToasts = [];
-
+    vm.gritdClientes = true;
+    var uploader = $scope.uploader = new FileUploader ({ 
+      url: angular.patchURLCI + 'cliente/upload_cliente' 
+      // url: '../application/controllers/upload.php' 
+    });
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -242,6 +246,18 @@
             vm.fData.idioma = vm.listaIdiomas[0].id;
             vm.fData.grupo = vm.listaGrupos[0].id;
             vm.fData.idcliente = row.entity.idcliente;
+            vm.fData.username = row.entity.email;
+
+            vm.generarPassword = function (longitud) {
+              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ2346789";
+              var pass = "";
+              for (i=0; i<longitud; i++){
+                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+              }
+              vm.fData.password = pass;
+              console.log(vm.fData.password);
+            }
+            vm.generarPassword(5);
             // botones
               vm.aceptar = function () {
                 UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
@@ -275,6 +291,111 @@
           }
         });
       }
+
+      vm.btnUpload = function(row){
+        vm.gritdClientes = false;
+        vm.fData = {};
+        vm.fDataUpload = {};
+        vm.fDataUpload = angular.copy(row.entity);
+        console.log(vm.fDataUpload);
+
+        // a sync filter
+        uploader.filters.push({
+            name: 'syncFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                console.log('syncFilter');
+                return this.queue.length < 10;
+            }
+        });
+      
+        // an async filter
+        uploader.filters.push({
+            name: 'asyncFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options, deferred) {
+                console.log('asyncFilter');
+                setTimeout(deferred.resolve, 1e3);
+            }
+        });
+        vm.subirTodo = function(){
+          console.log('aqui estoy');
+          uploader.uploadAll();
+        }
+
+        /*vm.subirTodo = function() {
+          var datos = {
+            data: vm.fDataUpload,
+            file: angular.copy(uploader)
+          };
+          console.log(datos);
+          ClienteServices.sUploadCliente(datos).then(function (rpta) {
+              if(rpta.flag == 1){
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });   
+        }*/
+     
+        vm.volver = function() {
+          vm.gritdClientes = true; 
+          vm.fDataUpload = {};
+        }
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            item.formData.push({
+              idcliente: vm.fDataUpload.idcliente,
+              idusuario: vm.fDataUpload.idusuario,
+              nombres: vm.fDataUpload.nombres,
+              apellidos: vm.fDataUpload.apellidos,
+              codigo: vm.fDataUpload.codigo,
+            });
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+        };
+
+        console.info('uploader', uploader);
+
+      }
+
+
+
   }
 
   function ClienteServices($http, $q) {
@@ -282,7 +403,8 @@
         sListarCliente: sListarCliente,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
-        sAnularCliente:sAnularCliente
+        sAnularCliente: sAnularCliente,
+        sUploadCliente: sUploadCliente
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -325,6 +447,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/anular_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sUploadCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/upload_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

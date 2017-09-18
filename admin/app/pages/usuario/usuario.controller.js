@@ -117,6 +117,22 @@
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            vm.listaGrupos = arrToModal.scope.listaGrupos;
+
+            vm.generarPassword = function (longitud) {
+              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ0123456789";
+              var pass = "";
+              for (i=0; i<longitud; i++){
+                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+              }
+              vm.fData.password = pass;
+              console.log(vm.fData.password);
+            }
+            
+            vm.generar = function () {
+              
+            }
             
             vm.aceptar = function () {
               UsuarioServices.sEditarUsuario(vm.fData).then(function (rpta) {
