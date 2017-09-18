@@ -5,7 +5,7 @@ class Usuario extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_usuario', 'model_cliente'));
     }
@@ -104,11 +104,11 @@ class Usuario extends CI_Controller {
 
 	// MANTENIMIENTO
 	public function registrar_usuario(){
-		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	
+
     	if(empty($allInputs['grupo'])){
     		$arrData['message'] = 'Debe seleccionar un grupo.';
     		$this->output
@@ -116,7 +116,7 @@ class Usuario extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-  
+
     	if(empty($allInputs['idioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
@@ -131,7 +131,7 @@ class Usuario extends CI_Controller {
 			$allInputs['idusuario'] = $idusuario;
 			if($this->model_cliente->m_actualizar_cliente_usuario($allInputs)){
 				$arrData['message'] = 'Se registraron los datos correctamente';
-    			$arrData['flag'] = 1;		
+    			$arrData['flag'] = 1;
 			}
 		}
 
@@ -142,7 +142,7 @@ class Usuario extends CI_Controller {
 	}
 
 	public function editar_usuario(){
-		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
