@@ -6,7 +6,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_archivo($paramPaginate=FALSE){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
+		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
 		$this->db->from('archivo a');
 		$this->db->where('a.estado_ar', 1);
 		if($paramPaginate){
@@ -44,12 +44,12 @@ class Model_archivo extends CI_Model {
 
 	// MANTENIMIENTO
 	public function m_registrar_archivo($data){
-		$datos = array(			
+		$datos = array(
 			'idcliente' => $data['idcliente'],
 			'idusuario' => $data['idusuario'],
 			'nombre_archivo' => $data['nombre_archivo'],
 			'size' => $data['size'],
-			'tipo_archivo' => $data['tipo_archivo'],
+			'idtipoproducto' => $data['idtipoproducto'],
 			'estado_arc' => 1,
 			'fecha_subida' => date('Y-m-d H:i:s')
 		 );

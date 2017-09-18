@@ -77,7 +77,7 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	
+
 
     	if(!empty($allInputs['idusuario'])){
     		if($this->model_usuario->m_consultar_usuario($allInputs)){
@@ -85,8 +85,8 @@ class Cliente extends CI_Controller {
 	    		$this->output
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
-				return;	
-    		}		
+				return;
+    		}
     	}
 
 		if($this->model_cliente->m_anular_cliente($allInputs)){
@@ -114,23 +114,23 @@ class Cliente extends CI_Controller {
 				$codigo = $_REQUEST['codigo'];
 				$idcliente = $_REQUEST['idcliente'];
 				$idusuario = $_REQUEST['idusuario'];
-				
-			    $errors= array();        
+
+			    $errors= array();
 			    $file_name = $_FILES['file']['name'];
 			    $file_size =$_FILES['file']['size'];
 			    $file_tmp =$_FILES['file']['tmp_name'];
-			    $file_type=$_FILES['file']['type'];   
+			    $file_type=$_FILES['file']['type'];
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-			    $extensions = array("jpeg","jpg","png");   
+			    $extensions = array("jpeg","jpg","png");
 
 			    if(in_array($file_ext,$extensions )=== false){
 			     $errors[]="imaagen extension not allowed, please choose a JPEG or PNG file.";
 			    }
 			    if($file_size > 2097152){
 			    $errors[]='File size cannot exceed 2 MB';
-			    }               
+			    }
 			    if(empty($errors)){
-			    	
+
 			    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 			    	if (!file_exists($carpeta)) {
 					    mkdir($carpeta, 0777, true);
@@ -147,8 +147,8 @@ class Cliente extends CI_Controller {
 
 					$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
 					$file_name = generateRandomString() .'.'. $file_ext ;
-					
-			        
+
+
 
 			        //************ THUMBS *************//
 
@@ -199,7 +199,7 @@ class Cliente extends CI_Controller {
 						'idusuario' 	=> $idusuario,
 						'nombre_archivo'=> $file_name,
 						'size'			=> $file_size,
-						'tipo_archivo'	=> 1
+						'idtipoproducto'	=> 1
 					);
 
 			        if($this->model_archivo->m_registrar_archivo($allInputs)){
@@ -207,7 +207,7 @@ class Cliente extends CI_Controller {
 			    		$arrData['flag'] = 1;
 					}
 			    }else{
-			        
+
 			        if(empty($allInputs['imagen'])){
 			    		$arrData['message'] = $errors;
 			    		$arrData['flag'] = 0;
@@ -220,7 +220,7 @@ class Cliente extends CI_Controller {
 			}
 		}
 
-		
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
