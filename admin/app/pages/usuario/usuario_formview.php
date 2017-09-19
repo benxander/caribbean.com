@@ -7,20 +7,25 @@
 		    <div class="row">
 	            <div class="form-group col-md-6">
 					<label for="grupo" class="control-label minotaur-label">Grupo</label>
-	            	<select class="form-control" ng-model="mu.fData.grupo" ng-options="item.id as item.descripcion for item in mu.listaGrupos" > </select>
+	            	<select class="form-control" ng-model="mu.fData.idgrupo" ng-options="item.id as item.descripcion for item in mu.listaGrupos" > </select>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="idioma" class="control-label minotaur-label">Idioma</label>
-	              	<select class="form-control" ng-model="mu.fData.idioma" ng-options="item.id as item.descripcion for item in mu.listaIdiomas" > </select>
+	              	<select class="form-control" ng-model="mu.fData.ididioma" ng-options="item.id as item.descripcion for item in mu.listaIdiomas" > </select>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="username" class="control-label minotaur-label">Nombre de Usuario <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="username" id="username" class="form-control" ng-model="mu.fData.username" placeholder="Registre Nombre de Usuario" required>
 	            </div>
-	            <div class="form-group col-md-6">
+	            <div class="form-group col-md-6" ng-if="!mu.modoEdicion">
 					<label for="password" class="control-label minotaur-label">Contraseña <small class="text-red">(*)</small> </label>
 	              	<input type="password" name="password" id="password" class="form-control" ng-model="mu.fData.password" placeholder="Registre Contraseña" required>
-	            	<input type="checkbox" name="newpassword" value="generar"> Generar nueva contraseña?
+	            </div>
+
+	            <div class="form-group col-md-6" ng-if="mu.modoEdicion">
+					<label for="password" class="control-label minotaur-label">Contraseña</label>
+	              	<input type="password" name="password" id="password" class="form-control" ng-model="mu.fData.password" placeholder="Registre Contraseña">
+	            	<input type="checkbox" name="newpassword" ng-model="mu.fData.newpassword" ng-change="mu.generar()" ng-if="mu.modoEdicion"> <label ng-if="mu.modoEdicion" >Generar nueva contraseña?</label>
 	            </div>
 		    </div>
 		</form>

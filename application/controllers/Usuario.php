@@ -19,24 +19,24 @@ class Usuario extends CI_Controller {
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
 			if( $row['estado_us'] == 1 ){
-				$estado = 'HABILITADO';
-				$clase = 'label-success';
+				$bool = true;
 			}
 			if( $row['estado_us'] == 2 ){
-				$estado = 'DESHABILITADO';
-				$clase = 'label-default';
+				$bool = false;
 			}
 			array_push($arrListado,
 				array(
 					'idusuario' => $row['idusuario'],
 					'username' => $row['username'],
+					'ididioma' => $row['ididioma'],
 					'idioma' => $row['nombre_id'],
+					'idgrupo' => $row['idgrupo'],
 					'grupo' => $row['nombre_gr'],
 					'solicita_bonificacion' => $row['solicita_bonificacion'],
 					'estado' => array(
-						'string' => $estado,
-						'clase' =>$clase,
-						'bool' =>$row['estado_us']
+						'id'	 =>$row['idusuario'],
+						'valor'  =>$row['estado_us'],
+						'bool'   =>$bool
 					)
 				)
 			);
@@ -109,7 +109,7 @@ class Usuario extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	
-    	if(empty($allInputs['grupo'])){
+    	if(empty($allInputs['idgrupo'])){
     		$arrData['message'] = 'Debe seleccionar un grupo.';
     		$this->output
 			    ->set_content_type('application/json')
@@ -117,7 +117,7 @@ class Usuario extends CI_Controller {
 			return;
     	}
   
-    	if(empty($allInputs['idioma'])){
+    	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
 			    ->set_content_type('application/json')
@@ -134,7 +134,8 @@ class Usuario extends CI_Controller {
 			}
     	}
     	
-    	$allInputs['codigo'] = $codigo;    	
+    	$allInputs['codigo'] = $codigo; 
+    	$this->db->trans_start();   	
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
@@ -143,7 +144,7 @@ class Usuario extends CI_Controller {
     			$arrData['flag'] = 1;		
 			}
 		}
-
+		$this->db->trans_complete();
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -177,4 +178,30 @@ class Usuario extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
+	public function habilitar_desabilitar_usuario()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	$this->db->trans_start();
+    	if( $allInputs['estado']['valor'] == 1 ){
+			if( $this->model_usuario->m_deshabilitar($allInputs['idusuario']) ){ 
+				$arrData['message'] = 'Se deshabilitaron los datos correctamente';
+				$arrData['flag'] = 1;
+			}
+    	}
+    	if( $allInputs['estado']['valor'] == 2 ){
+			if( $this->model_usuario->m_habilitar($allInputs['idusuario']) ){ 
+				$arrData['message'] = 'Se habilitaron los datos correctamente';
+				$arrData['flag'] = 1;
+			}
+    	}
+    	$this->db->trans_complete();
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	
 }
