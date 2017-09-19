@@ -3,11 +3,21 @@
 
   angular
     .module('minotaur')
-    .controller('PagesGalleryController', PagesGalleryController);
+    .controller('PagesGalleryController', PagesGalleryController)
+    .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController() {
+  function PagesGalleryController($scope, PagesGalleryServices) {
     var vm = this;
+
+    console.log('$scope.fSessionCI',$scope.fSessionCI);
+    vm.cargarGaleria = function(datos){
+      PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
+        console.log(rpta);
+      });
+    }
+
+    vm.cargarGaleria($scope.fSessionCI);
 
     vm.images = [
       {
@@ -102,7 +112,6 @@
     vm.isSelected = false;
 
     vm.selectAll = function () {
-
       if (vm.selectedAll) {
         vm.selectedAll = false;
         vm.isSelected = false;
@@ -117,7 +126,6 @@
     };
 
     vm.selectImage = function(index) {
-
       var i = 0;
 
       if (vm.images[index].selected) {
@@ -139,5 +147,19 @@
     };
   }
 
-
+  function PagesGalleryServices($http, $q) {
+    return({
+        sListarGaleriaDescargados: sListarGaleriaDescargados,
+    });
+    
+    function sListarGaleriaDescargados(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Archivo/listar_galeria_descargados",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+  }
 })();
