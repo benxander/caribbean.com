@@ -12,7 +12,7 @@ class Model_acceso extends CI_Model {
 		$this->db->join('cliente cli', 'us.idusuario = cli.idusuario','left');
 		$this->db->where('us.username', $data['usuario']);
 		// $this->db->where('us.password', $data['clave'] );
-		$this->db->where('us.password', do_hash($data['clave'] , 'md5'));
+		$this->db->where('us.password', hash('md5',$data['clave']));
 		$this->db->where('us.estado_us <>', '0');
 		$this->db->group_by('us.idusuario');
 		$this->db->limit(1);
