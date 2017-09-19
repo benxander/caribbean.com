@@ -7,7 +7,7 @@ class Usuario extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_usuario', 'model_cliente'));
+        $this->load->model(array('model_usuario', 'model_cliente','model_acceso'));
     }
 
     public function listar_usuarios(){
@@ -151,6 +151,58 @@ class Usuario extends CI_Controller {
 			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function editar_idioma_usuario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_usuario->m_editar_idioma_usuario($allInputs) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function editar_clave_usuario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+    	$datos = array(
+    		'clave' => $allInputs['clave'],
+    		'usuario' => $allInputs['username'],
+    		);
+    	$loggedUser = $this->model_acceso->m_logging_user($datos);
+		if( !(isset($loggedUser['logged']) && $loggedUser['logged'] > 0 )){
+			$arrData['message'] = 'Debe ingresar contraseña actual valida.';
+    		$arrData['flag'] = 0;		
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
+		if($allInputs['nuevaclave'] != $allInputs['password']){
+			$arrData['message'] = 'Nueva contraseña y repeticion deben coincidir.';
+    		$arrData['flag'] = 0;		
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
+		if( $this->model_usuario->m_editar_idioma_usuario($allInputs) ){
+			$arrData['message'] = 'Contraseña actualizada correctamente ';
+    		$arrData['flag'] = 1;
+		}
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

@@ -17,7 +17,7 @@
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;"ng-click="p.getPaginationServerSide()" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;"ng-click="p.cargaPerfil();" minotaur-tile-refresh></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
@@ -29,60 +29,82 @@
         <!-- tile body -->
         <section class="tile-body">
           <div class="row">
-           <!--  <div class="col-md-12 col-sm-12">
-              <div class="form-group pull-right" style="position: relative;z-index: 10">
-                <button class="btn btn-success" ng-click='b.btnNuevo()'>Nuevo</button>
-              </div>
-            </div> -->
             <div class="col-md-12 col-sm-12">
               <form class="form-horizontal" role="form">
-                <!-- <div class="tile-body row">
+                <div class="tile-body row">
                   <div class="col-sm-12">
-                    <button class="pull-right btn btn-input-sm btn-danger ml-10 mb-0" type="button" ng-if="!p.modoEditar" ng-click="p.btnPdf();" style="padding: 5px 10px;"><i class="fa fa-file-pdf-o" style="font-size: 1.4em"></i></button>
                     <button class="pull-right btn btn-input-sm btn-warning mb-0" type="button" ng-if="!p.modoEditar" ng-click="p.modoEditar=true">Editar</button>
 
-                    <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.modoEditar" ng-click="p.btnAceptarTab2(p.ficha)"><i class="fa fa-arrow-right"></i> Guardar</button>
-                    <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="p.modoEditar" ng-click="p.btnCancelarTab2()" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
+                    <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.modoEditar" ng-click="p.btnAceptarEditPerfil(p.fDataPerfil)"><i class="fa fa-arrow-right"></i> Guardar</button>
+                    <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="p.modoEditar" ng-click="p.btnCancelarEditPerfil()" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
                   </div>
                   <div class="col-sm-8">
                     <h4 class="text-info f-16 col-sm-12">Datos Personales</h4>
                     <div class="form-group">
-                      <label for="nombre" class="col-sm-3 control-label minotaur-label">Nombre : </label>
+                      <label for="nombre" class="col-sm-3 control-label minotaur-label">Nombres: </label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="nombre" placeholder="Nombre" ng-model="p.ficha.nombre" ng-readonly="!p.modoEditar">
+                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="nombres" placeholder="Nombres" ng-model="p.fDataPerfil.nombres" ng-readonly="!p.modoEditar">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="apellidos" class="col-sm-3 control-label minotaur-label">Apellidos : </label>
+                      <label for="apellidos" class="col-sm-3 control-label minotaur-label">Apellidos: </label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="apellidos" placeholder="Apellidos" ng-model="p.ficha.apellidos" ng-readonly="!p.modoEditar">
+                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="apellidos" placeholder="Apellidos" ng-model="p.fDataPerfil.apellidos" ng-readonly="!p.modoEditar">
+                      </div>
+                    </div>
+                    <h4 class="text-info f-14 col-sm-12">Datos de Contacto</h4>
+                    <div class="form-group">
+                      <label for="whatsapp" class="col-sm-3 control-label minotaur-label">WhatsApp: </label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="whatsapp" placeholder="WhatsApp" ng-model="p.fDataPerfil.whatsapp" ng-readonly="!p.modoEditar">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="fecha_nac" class="col-sm-3 control-label minotaur-label">Fecha de nacimiento : </label>
+                      <label for="email" class="col-sm-3 control-label minotaur-label">Email : </label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="fecha_nac" ng-model="p.ficha.fecha_nacimiento" 
-                          ng-readonly="!p.modoEditar" input-mask mask-options="{alias: 'dd-mm-yyyy'}" placeholder="dd-mm-yyyy">
+                        <input type="email" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="email" placeholder="micorreo@dominio.com" ng-model="p.fDataPerfil.email" ng-readonly="!p.modoEditar">
                       </div>
                     </div>
+                    <h4 class="text-info f-14 col-sm-12">Configuracion de perfil</h4>
                     <div class="form-group">
-                      <label for="edad" class="col-sm-3 control-label minotaur-label">Edad : </label>
+                      <label for="idioma" class="col-sm-3 control-label minotaur-label">Idioma: </label>
                       <div class="col-sm-9">
-                        <p class="form-control underline-input text-center" >{{p.ficha.edad}} años</p>
+                        <p type="text" class="form-control underline-input text-center" ng-if="!p.modoEditar">{{p.fDataPerfil.idioma}} </p>
+                        <select class="form-control" ng-if="p.modoEditar" ng-model="p.fDataPerfil.ididioma" ng-options="item.ididioma as item.nombre for item in p.listaIdiomas" required > </select>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label for="sexo" class="col-sm-3 control-label minotaur-label">Sexo : </label>
-                      <div class="col-sm-9">
-                        <p ng-if="!p.modoEditar" class="form-control underline-input text-center" >{{p.ficha.sexo_desc}} </p>
-                        <select class="form-control" ng-if="p.modoEditar" ng-model="p.ficha.sexo" ng-options="item.id as item.descripcion for item in p.listaSexos" required > </select>
-                      </div>
+
+                    <button class="pull-left btn btn-input-sm btn-primary mt-15" type="button" ng-if="!p.cambiarClave" ng-click="p.cambiarClave=true">Cambiar contraseña</button>
+
+                    <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.cambiarClave" 
+                            ng-click="p.btnGuardarClave(p.fDataPerfil)"><i class="fa fa-arrow-right"></i> Guardar</button>
+                    <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="p.cambiarClave" 
+                            ng-click="btnCancelClave();" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
+
+                    <h4 ng-if="p.cambiarClave" class="text-info f-14 col-sm-12">Cambiar contraseña</h4>
+                    <div ng-if="p.cambiarClave" class="form-group">
+                      <label for="clave" class="col-sm-4 control-label minotaur-label">Ingresa contraseña actual: </label>
+                      <div class="col-sm-8">
+                        <input type="password" class="form-control  text-center" id="clave" placeholder="Contraseña" ng-model="p.fDataPerfil.clave">
+                      </div>                      
+                    </div>
+                    <div ng-if="p.cambiarClave" class="form-group">
+                      <label for="nuevaclave" class="col-sm-4 control-label minotaur-label">Ingresa contraseña nueva: </label>
+                      <div class="col-sm-8">
+                        <input type="password" class="form-control  text-center" id="nuevaclave" placeholder="Nueva Contraseña" ng-model="p.fDataPerfil.nuevaclave">
+                      </div>                      
+                    </div>
+                    <div ng-if="p.cambiarClave" class="form-group">
+                      <label for="password" class="col-sm-4 control-label minotaur-label">Repite contraseña nueva: </label>
+                      <div class="col-sm-8">
+                        <input type="password" class="form-control  text-center" id="password" placeholder="Repite Contraseña" ng-model="p.fDataPerfil.password">
+                      </div>                      
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <!-- <div class="col-sm-4">
                     <h4 class="text-info f-14 col-sm-12">Foto</h4>
                     <div class="text-center" ng-if="!p.fotoCrop">
-                      <img ng-src="assets/images/dinamic/pientes/{{p.ficha.nombre_foto}}" style="width: 100%">
+                      <img ng-src="assets/images/dinamic/clientes/{{p.fDataPerfil.nombre_foto}}" style="width: 100%">
                     </div>
 
                     <div class="row" ng-show="p.fotoCrop">
@@ -111,58 +133,9 @@
                       <button class="btn btn-sm btn-danger" ng-click="p.cancelarFoto();">Cancelar</button>
                       <button class="btn btn-sm btn-success" ng-click="p.subirFoto();">Guardar Foto</button>
                     </div>
-                    <button class="btn btn-sm btn-danger mt-10" ng-click="p.eliminarFoto();" ng-show="p.ficha.nombre_foto != 'sin-imagen.png'">Quitar Foto</button>
-
-                  </div>
+                    <button class="btn btn-sm btn-danger mt-10" ng-click="p.eliminarFoto();" ng-show="p.fDataPerfil.nombre_foto != 'sin-imagen.png'">Quitar Foto</button>
+                  </div>  -->
                 </div>
-                <div class="tile-body row">
-                  <h4 class="text-info f-14 col-sm-12">Datos de Contacto</h4>
-                  <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                      <label for="celular" class="col-sm-3 control-label minotaur-label">Celular : </label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="celular" placeholder="Celular" ng-model="p.ficha.celular" ng-readonly="!p.modoEditar">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                      <label for="email" class="col-sm-3 control-label minotaur-label">Email : </label>
-                      <div class="col-sm-9">
-                        <input type="email" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="email" placeholder="micorreo@dominio.com" ng-model="p.ficha.email" ng-readonly="!p.modoEditar">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="tile-body row">
-                  <h4 class="text-info f-14 col-sm-12">Otros Datos</h4>
-                  <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                      <label for="estatura" class="col-sm-3 control-label minotaur-label">Estatura (cm) : </label>
-                      <div class="col-sm-9">
-                        <input type="number" min="100" max="290" step="1" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="estatura" placeholder="Estatura" ng-model="p.ficha.estatura" ng-readonly="!p.modoEditar">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                      <label for="clasificacion" class="col-sm-3 control-label minotaur-label">Clasificación : </label>
-                      <div class="col-sm-9">
-                        <p type="text" class="form-control underline-input text-center" ng-if="!p.modoEditar">{{p.ficha.clasificacion}} </p>
-                        <select class="form-control" ng-if="p.modoEditar" ng-model="p.ficha.idmotivoconsulta" ng-options="item.id as item.descripcion for item in p.listaMotivos" required > </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                      <label for="cargo_laboral" class="col-sm-3 control-label minotaur-label">Cargo Laboral : </label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="cargo_laboral" placeholder="Cargo Laboral" ng-model="p.ficha.cargo_laboral" ng-readonly="!p.modoEditar">
-
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </form>
             </div>
           </div>

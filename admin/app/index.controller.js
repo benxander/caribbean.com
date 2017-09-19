@@ -63,6 +63,9 @@
       });
     };
 
+    $scope.gChangeLanguage = function(langKey){
+      vm.changeLanguage(langKey);
+    }
 
     $scope.goToUrl = function ( path ) {
       $location.path( path );

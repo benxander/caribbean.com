@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
 
@@ -105,6 +106,12 @@
         templateUrl: 'app/pages/perfil/perfil.html',
         controller: 'PerfilController',
         controllerAs: 'p'
+      })//galeria personal
+      .state('mi-galeria', {
+        url: '/app/mi-galeria',
+        templateUrl: 'app/pages/mi-galeria/gallery.html',
+        controller: 'PagesGalleryController',
+        controllerAs: 'ctrl'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

@@ -106,6 +106,24 @@ class Model_usuario extends CI_Model {
 		return $this->db->update('usuario', $datos);
 	}
 
+	public function m_editar_idioma_usuario($datos){
+		$data = array(			
+			'ididioma' => $datos['ididioma'],
+			'updatedat' => date('Y-m-d H:i:s'),
+		);
+		$this->db->where('idusuario',$datos['idusuario']);
+		return $this->db->update('usuario', $data);
+	}
+
+	public function m_editar_clave_usuario($datos){
+		$data = array(			
+			'password' => hash('md5',$data['password']),
+			'updatedat' => date('Y-m-d H:i:s'),
+		);
+		$this->db->where('idusuario',$datos['idusuario']);
+		return $this->db->update('usuario', $data);
+	}
+
 	public function m_anular_usuario($data){
 		$datos = array(
 			'estado_us' => 0,

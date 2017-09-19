@@ -184,6 +184,7 @@
         sListarGrupo: sListarGrupo,
         sRegistrarUsuario: sRegistrarUsuario,
         sEditarUsuario: sEditarUsuario,
+        sEditarIdiomaUsuario:sEditarIdiomaUsuario,
         sAnularUsuario:sAnularUsuario,
         sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario
     });
@@ -228,6 +229,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Usuario/editar_usuario",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarIdiomaUsuario(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Usuario/editar_idioma_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

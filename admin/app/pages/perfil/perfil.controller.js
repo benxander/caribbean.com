@@ -6,178 +6,202 @@
     .service('PerfilServices', PerfilServices);
 
   /** @ngInject */
-  function PerfilController($scope,PerfilServices,$uibModal, uiGridConstants, toastr, alertify,) {
+  function PerfilController($scope,PerfilServices,rootServices,ClienteServices,UsuarioServices,IdiomaServices,$uibModal, uiGridConstants, toastr, alertify) {
     var vm = this;
-    console.log('$scope.fSessionCI',$scope.fSessionCI);
-    /*var openedToasts = [];
-    //$scope.image = "";
-    // GRILLA PRINCIPAL
-      var paginationOptions = {
-        pageNumber: 1,
-        firstRow: 0,
-        pageSize: 10,
-        sort: uiGridConstants.ASC,
-        sortName: null,
-        search: null
-      };
-      // vm.dirImagesBanner = $scope.dirImages + "banners/";
-      vm.mySelectionGrid = [];
-      vm.gridOptions = {
-        paginationPageSizes: [10, 50, 100, 500, 1000],
-        paginationPageSize: 10,
-        enableFiltering: true,
-        enableSorting: true,
-        useExternalPagination: true,
-        useExternalSorting: true,
-        useExternalFiltering : true,
-        enableRowSelection: true,
-        enableRowHeaderSelection: true,
-        enableFullRowSelection: false,
-        multiSelect: false,
-        appScopeProvider: vm
-      }
-      vm.gridOptions.columnDefs = [
-        { field: 'idseccioncontenido', name:'idseccioncontenido', displayName: 'ID', minWidth: 50, width:80, visible:false, sort: { direction: uiGridConstants.ASC} },
-        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100 },
-        { field: 'titulo', name:'titulo', displayName: 'TITULO', minWidth: 100 },
-        { field: 'subtitulo', name:'subtitulo', displayName: 'SUBTITULO', minWidth: 100 },
+    vm.modoEditar = false;
+    vm.fotoCrop = false;
+    vm.cambiarClave = false;
+    vm.fDataPerfil = {};
 
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
-          cellTemplate: '<div class="text-center">' +
-          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>' +
-          '</div>'
-        }
+    IdiomaServices.sListarIdiomaCbo().then(function(rpta){
+      vm.listaIdiomas = rpta.datos;
+    });
 
-      ];
-      vm.gridOptions.onRegisterApi = function(gridApi) {
-        vm.gridApi = gridApi;
-        gridApi.selection.on.rowSelectionChanged($scope,function(row){
-          vm.mySelectionGrid = gridApi.selection.getSelectedRows();
-        });
-        gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
-          vm.mySelectionGrid = gridApi.selection.getSelectedRows();
-        });
-        gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-          paginationOptions.pageNumber = newPage;
-          paginationOptions.pageSize = pageSize;
-          paginationOptions.firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
-          vm.getPaginationServerSide();
-        });
-        vm.gridApi.core.on.filterChanged( $scope, function(grid, searchColumns) {
-          var grid = this.grid;
-          paginationOptions.search = true;
-          paginationOptions.searchColumn = {
-            'idseccioncontenido' : grid.columns[1].filters[0].term,
-            'se.descripcion_se' : grid.columns[2].filters[0].term,
-            'sc.titulo' : grid.columns[3].filters[0].term,
-            'sc.subtitulo' : grid.columns[3].filters[0].term,
-          }
-          vm.getPaginationServerSide();
-        });
-      }
-
-      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
-        vm.datosGrid = {
-          paginate : paginationOptions
-        };
-        SeccionServices.sListarSecciones(vm.datosGrid).then(function (rpta) {
-          vm.gridOptions.data = rpta.datos;
-          vm.gridOptions.totalItems = rpta.paginate.totalRows;
-          vm.mySelectionGrid = [];
-        });
-      }
-      vm.getPaginationServerSide();
-    // MANTENIMIENTO
-      vm.btnEditar = function(row){
-        var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/seccion/seccion_formview.php',
-          controllerAs: 'ms',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-16',
-          windowClass: 'splash splash-2 splash-ef-16',
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            vm.fData = {};
-            vm.fData = angular.copy(arrToModal.seleccion);
-            vm.modoEdicion = true;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Edición de Sección';
-            vm.fData.cImagen = false;
-
-
-            // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
-            console.log('sel',arrToModal.seleccion);
-            console.log('data',vm.fData);
-            vm.aceptar = function () {
-              // if(vm.fData.cImagen){
-              //   if(angular.isUndefined($scope.image)){
-              //     alert('Debe seleccionar una imagen');
-              //     return false;
-              //   }
-              // }
-
-              SeccionServices.sEditarContenido(vm.fData).then(function (rpta) {
-                if(rpta.flag == 1){
-                  $uibModalInstance.dismiss('cancel');
-                  vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var type = 'success';
-                }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var type = 'warning';
-                }else{
-                  alert('Ocurrió un error');
-                }
-                openedToasts.push(toastr[type](rpta.message, title));
-              });
-              $uibModalInstance.close(vm.fData);
-            };
-            vm.cancel = function () {
-              $uibModalInstance.dismiss('cancel');
-            };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                seleccion : row.entity,
-                scope : vm,
+    vm.cargaPerfil = function(){ 
+      if(!vm.fDataPerfil.idusuario) {      
+        rootServices.sGetSessionCI().then(function (response) {
+          if(response.flag == 1){
+            vm.fDataPerfil = response.datos;
+            ClienteServices.sListarClientePorIdusuario(vm.fDataPerfil).then(function (response) {
+              if(response.flag == 1){
+                vm.fDataPerfil = response.datos;
+                vm.fDataPerfilCopy = angular.copy(response.datos);
+                //console.log('vm.fDataPerfilCopy',vm.fDataPerfilCopy);
               }
-            }
+            });
           }
         });
-      }*/
+      }else{
+        ClienteServices.sListarClientePorIdusuario(vm.fDataPerfil).then(function (response) {
+          if(response.flag == 1){
+            vm.fDataPerfil = response.datos;
+            vm.fDataPerfilCopy = angular.copy(response.datos);
+            //console.log('vm.fDataPerfilCopy',vm.fDataPerfilCopy);
+          }
+        });
+      }    
+    }
+    vm.cargaPerfil();
+
+    vm.btnCancelarEditPerfil = function(){
+      vm.modoEditar = false;
+      vm.fDataPerfil = angular.copy(vm.fDataPerfilCopy);
+    }
+
+    vm.btnAceptarEditPerfil = function(datos){//datos personales
+      ClienteServices.sEditarCliente(datos).then(function (rpta) {
+        if(rpta.flag == 1){
+          UsuarioServices.sEditarIdiomaUsuario(datos).then(function (rpta) {
+            if(rpta.flag == 1){
+              vm.cargaPerfil();
+              $scope.gChangeLanguage(datos.ididioma);
+              vm.modoEditar = false;
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(rpta.message, title);
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(rpta.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+          });          
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+        }else{
+          alert('Ocurrió un error');
+        }
+      });
+    } 
+
+    //CAMBIAR CONTRASEña
+    vm.btnCancelClave = function(){
+      vm.cambiarClave = false;
+      vm.fDataPerfil.clave = null;
+      vm.fDataPerfil.nuevaclave = null;
+      vm.fDataPerfil.password = null;
+    }
+
+    vm.btnGuardarClave = function(){
+      PerfilServices.sEditarClave(vm.fDataPerfil).then(function(rpta){
+        if(rpta.flag == 1){
+          vm.btnCancelClave();
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+        }else{
+          alert('Ocurrió un error');
+        }
+      });
+    }
+
+    // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+    vm.cargarImagen = function(){
+      vm.fotoCrop = true;
+      vm.image = {
+         originalImage: '',
+         croppedImage: '',
+      };
+      vm.cropType='circle';
+
+      var handleFileSelect2=function(evt) {
+        var file = evt.currentTarget.files[0];
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+          /* eslint-disable */
+          $scope.$apply(function($scope){
+            vm.image.originalImage=evt.target.result;
+            // vm.image.fotoNueva=evt.target.result;
+            console.log("foto", vm.image);
+          });
+          /* eslint-enable */
+        };
+        reader.readAsDataURL(file);
+      };
+      $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+        angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
+      });
+    }
+    vm.subirFoto = function(){
+      vm.image.nombre_foto = vm.ficha.nombre_foto;
+      vm.image.idcliente = vm.ficha.idcliente;
+      vm.image.nombre = vm.ficha.nombre;
+      PacienteServices.sSubirFoto(vm.image).then(function(rpta){
+        if(rpta.flag == 1){
+          var title = 'OK';
+          var iconClass = 'success';
+          vm.ficha.nombre_foto = rpta.datos;
+          vm.fotoCrop = false;
+          vm.image = {
+             originalImage: '',
+             croppedImage: '',
+          };
+
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          // vm.toast.title = 'Advertencia';
+          var iconClass = 'warning';
+          // vm.options.iconClass = {name:'warning'}
+        }else{
+          alert('Ocurrió un error');
+        }
+        var toast = toastr[iconClass](rpta.message, title, vm.options);
+        openedToasts.push(toast);
+      });
+    }
+    vm.cancelarFoto = function(){
+      vm.fotoCrop = false;
+      vm.image = {
+         originalImage: '',
+         croppedImage: '',
+      };
+    }
+    vm.eliminarFoto = function(){
+      alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
+        ev.preventDefault();
+        PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
+          if(rpta.flag == 1){
+            var title = 'OK';
+            var iconClass = 'success';
+            vm.ficha.nombre_foto = rpta.datos;
+            vm.fotoCrop = false;
+            vm.image = {
+               originalImage: '',
+               croppedImage: '',
+            };
+
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      });
+
+    }  
   }
   function PerfilServices($http, $q) {
     return({
-        sListarSeccionCbo: sListarSeccionCbo,
-        sListarSecciones: sListarSecciones,
-        sEditarContenido: sEditarContenido,
+        sEditarClave: sEditarClave,
     });
-    function sListarSeccionCbo(pDatos) {
+    
+    function sEditarClave(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Seccion/listar_seccion_cbo",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
-    function sListarSecciones(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Seccion/listar_secciones",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
-    function sEditarContenido(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Seccion/editar_contenido",
+            url :  angular.patchURLCI + "Usuario/editar_clave_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
