@@ -103,7 +103,7 @@ class Seccion extends CI_Controller {
 							'nombre_boton' 	=> $row['nombre_boton'],
 							'enlace_boton' 	=> $row['enlace_boton'],
 							'imagen' 		=> $row['imagen'],
-							'imagen_bg' 		=> $row['imagen_bg'],
+							'imagen_bg' 	=> $row['imagen_bg'],
 						)
 					);
 
