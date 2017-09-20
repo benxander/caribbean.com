@@ -6,7 +6,7 @@
     .service('PerfilServices', PerfilServices);
 
   /** @ngInject */
-  function PerfilController($scope,PerfilServices,rootServices,ClienteServices,UsuarioServices,IdiomaServices,$uibModal, uiGridConstants, toastr, alertify) {
+  function PerfilController($scope,PerfilServices,rootServices,ClienteServices,UsuarioServices,IdiomaServices,uiGridConstants, toastr, alertify) {
     var vm = this;
     vm.modoEditar = false;
     vm.fotoCrop = false;

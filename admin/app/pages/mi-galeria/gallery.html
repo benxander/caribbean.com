@@ -6,10 +6,10 @@
   <div class="row">
     <!-- col -->
     <div class="col-md-12">
-      <div class="tile">
-        <uib-tabset class="minotaur-tab minotaur-tab-light padded">
+      <div class="tile p-15">
+        <!-- <uib-tabset class="minotaur-tab minotaur-tab-light padded"> -->
           
-          <uib-tab heading="4 Columns">
+          <!-- <uib-tab heading="4 Columns">
             <ul class="mix-controls">
               <li class="select-all">
                 <label class="checkbox minotaur-checkbox inline-block m-0">Select all
@@ -38,7 +38,6 @@
                }"
               >
 
-                <!-- col -->
                 <div class="col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
                   <div class="img-container">
                     <img class="img-responsive" ng-src="{{image.src}}" alt="">
@@ -62,23 +61,21 @@
                     </div>
                   </div>
                 </div>
-                <!-- /col -->
-
               </div>
 
             </div>
-          </uib-tab>
+          </uib-tab> -->
 
-          <uib-tab heading="3 Columns">
+          <!-- <uib-tab heading="3 Columns"> -->
             <ul class="mix-controls">
               <li class="select-all">
                 <label class="checkbox minotaur-checkbox inline-block m-0">Select all
                   <input type="checkbox" ng-model="selectedAll" ng-click="ctrl.selectAll()"><div class="input-indicator"></div>
                 </label>
               </li>
-              <li ng-class="{'disabled': !ctrl.isSelected}">
+              <!-- <li ng-class="{'disabled': !ctrl.isSelected}">
                 <a href="javascript:;"><i class="fa fa-share-alt"></i> Compartir</a>
-              </li>
+              </li> -->
               <li ng-class="{'disabled': !ctrl.isSelected}">
                 <a href="javascript:;"><i class="fa fa-download"></i> Descargar</a>
               </li>
@@ -126,9 +123,9 @@
               </div>
 
             </div>
-          </uib-tab>
+          <!-- </uib-tab> -->
 
-          <uib-tab heading="2 Columns">
+          <!-- <uib-tab heading="2 Columns">
             <ul class="mix-controls">
               <li class="select-all">
                 <label class="checkbox minotaur-checkbox inline-block m-0">Select all
@@ -142,7 +139,7 @@
                 <a href="javascript:;"><i class="fa fa-download"></i> Descargar</a>
               </li>
             </ul>
-            <!-- row -->
+            
             <div class="row mix-grid">
               <div class="gallery" ng-mixitup magnific-popup="{
                 delegate: 'a.img-preview',
@@ -156,7 +153,7 @@
                 }
                }"
               >
-                <!-- col -->
+                
                 <div class="col-md-6 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
                   <div class="img-container">
                     <img class="img-responsive" ng-src="{{image.src}}" alt="">
@@ -180,14 +177,14 @@
                     </div>
                   </div>
                 </div>
-                <!-- /col -->
+                
 
               </div>
 
             </div>
-          </uib-tab>
-          
-        </uib-tabset>
+          </uib-tab> -->
+
+        <!-- </uib-tabset> -->
 
       </div>
 
