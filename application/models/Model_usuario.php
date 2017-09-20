@@ -18,6 +18,9 @@ class Model_usuario extends CI_Model {
 		$this->db->join('idioma id','id.ididioma = u.ididioma');
 		$this->db->from('usuario u');
 		$this->db->where('u.estado_us <>', 0);
+		if($this->sessionCP['key_grupo'] != 'key_root'){
+			$this->db->where('u.idgrupo <>', 1);
+		}
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -55,7 +58,7 @@ class Model_usuario extends CI_Model {
 		$this->db->select("idgrupo, nombre_gr");
 		$this->db->from('grupo');
 		$this->db->where("estado_gr",1);
-		
+
 		return $this->db->get()->result_array();
 	}
 

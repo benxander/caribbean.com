@@ -35,12 +35,13 @@ class Model_seccion extends CI_Model {
 			if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
-			}
+		}
 		return $this->db->get()->result_array();
 	}
 	public function m_count_secciones($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('seccion se');
+		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
 		$this->db->where("se.estado_se",1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {

@@ -24,7 +24,7 @@
       vm.gridOptions = {
         paginationPageSizes: [10, 50, 100, 500, 1000],
         paginationPageSize: 10,
-        enableFiltering: true,
+        enableFiltering: false,
         enableSorting: true,
         useExternalPagination: true,
         useExternalSorting: true,
@@ -36,8 +36,8 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idseccioncontenido', name:'idseccioncontenido', displayName: 'ID', minWidth: 50, width:80, visible:false, sort: { direction: uiGridConstants.ASC} },
-        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100 },
+        { field: 'idseccioncontenido', name:'idseccioncontenido', displayName: 'ID', minWidth: 50, width:80, visible:false },
+        { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100, sort: { direction: uiGridConstants.ASC} },
         { field: 'titulo', name:'titulo', displayName: 'TITULO', minWidth: 100 },
         { field: 'subtitulo', name:'subtitulo', displayName: 'SUBTITULO', minWidth: 100 },
 
@@ -75,7 +75,7 @@
         });
       }
 
-      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
+      paginationOptions.sortName = vm.gridOptions.columnDefs[1].name;
       vm.getPaginationServerSide = function() {
         vm.datosGrid = {
           paginate : paginationOptions

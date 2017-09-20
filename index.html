@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="caribbean" ng-controller="MainController as main">
+<html  lang="es" ng-app="caribbean" ng-controller="MainController as vm">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,54 +70,57 @@
 							</a>
 						</div><!-- LOGO -->
 					</div><!-- col -->
-					<div class="col-sm-7">
+					<div class="col-sm-5">
 						<!-- MENU -->
 						<nav class="navbar_cp" data-offset-top="80">
 							<a id="mobile-menu-button" class="waves" href="#"><i class="halcyon-icon-menu"></i></a>
 							<ul class="menu clearfix nav navbar-nav" id="menu">
 								<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
 								<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
-								<li><a href="#blog" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
-								<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
+								<li><a href="#noticias" ng-click="scrollTo('noticias');$event.preventDefault();">Noticias</a></li>
+
 								<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
 							</ul>
 						</nav>
 					</div>
+					<div class="col-sm-2 mr-n text-center">
+						<div id="google_translate_element" class="no_print traductor"></div>
+					</div>
 					<div class="col-sm-2">
 						<div class="login">
-							<a class="btn btn-default-2 waves" ng-href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
+							<a class="btn btn-mini btn-default-2 waves" ng-href="{{dirWeb}}admin" target="_blank" style="margin-bottom: 0px;margin-top: 12px;">ACCESO A TU CUENTA!</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</header>
 		<!-- PAGE CONTENT -->
-		<div ng-show="!pageInicio" ng-include="ruta"></div>
-		<div id="page-content" ng-show="pageInicio">
-			<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
-			<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
-			<section class="block mt-xxl" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section>
-			<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
-		</div><!-- PAGE CONTENT -->
+		<!-- <div ng-show="!pageInicio" ng-include="ruta"></div> -->
+		<div ng-view></div>
 		<!-- FOOTER -->
 		<footer id="footer-container">
 
 			<div id="footer-top">
-
+				<div id="trabaja" style="display:none;width:100%;" ng-include="'templates/seccion/trabaja-con-nosotros.html'"></div>
+				<div id="aviso" style="display:none;width:100%;" ng-include="'templates/seccion/aviso-legal.html'"></div>
+				<div id="terminos" style="display:none;width:100%;" ng-include="'templates/seccion/terminos.html'"></div>
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-3">
 
 							<div class="widget widget-pages">
 
-								<h6 class="widget-title">Secciones</h6>
+								<h6 class="widget-title">Empresa</h6>
 
 								<ul>
-									<li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
-									<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li>
-									<li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li>
-									<li><a href="#trabaja" ng-click="scrollTo('trabaja');$event.preventDefault();">Trabaja con nosotros</a></li>
-									<li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li>
+									<!-- <li><a href="#inicio" ng-click="scrollTo('inicio');$event.preventDefault();">Inicio</a></li>
+									<li><a href="#servicios" ng-click="scrollTo('servicios');$event.preventDefault();">Servicios</a></li> -->
+									<!-- <li><a href="#" ng-click="verBlog();$event.preventDefault();">Noticias</a></li> -->
+									<li><a href="#trabaja" fancybox>Trabaja con nosotros</a></li>
+									<li><a href="#aviso" fancybox >Aviso Legal</a></li>
+									<li><a href="#terminos" fancybox >Términos y Condiciones</a></li>
+
+									<!-- <li><a href="#contacto" ng-click="scrollTo('contacto');$event.preventDefault();">Contacto</a></li> -->
 								</ul>
 
 							</div><!-- widget-pages -->
@@ -127,35 +130,26 @@
 
 							<div class="widget widget-latest-posts">
 
-								<h6 class="widget-title">Blog Posts</h6>
+								<h6 class="widget-title">Ultimas Noticias</h6>
 
 								<ul>
 									<li>
-										<a class="post-date" href="#">22 <small>Ago</small></a>
-										<a class="post-category" href="#">Lifestyle</a>
-										<a class="post-title" href="#">The true story about company</a>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[0].dia}} <small>{{vm.listaNoticiasSec[0].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[0].titulo}}</a>
 									</li>
 									<li>
-										<a class="post-date" href="#">20 <small>Ago</small></a>
-										<a class="post-category" href="#">Banking </a>
-										<a class="post-title" href="#">5 ways to get rid of your headeach</a>
+										<a class="post-date" href="#">{{vm.listaNoticiasSec[1].dia}} <small>{{vm.listaNoticiasSec[1].mes}}</small></a>
+										<!-- <a class="post-category" href="#">Lifestyle</a> -->
+										<a class="post-title" href="#">{{vm.listaNoticiasSec[1].titulo}}</a>
 									</li>
+
 								</ul>
 
 							</div><!-- widget-recent-posts -->
 
 						</div><!-- col -->
-						<div class="col-sm-3" ng-show="false">
 
-							<div class="widget widget-instagram">
-
-								<h6 class="widget-title">Instagram</h6>
-
-								<div id="instafeed" data-user="2000086078" data-number="6" data-accesstoken="2000086078.1677ed0.bd2c323b815b445fa0027cb85c99918d"></div>
-
-							</div><!-- widget-instagram -->
-
-						</div><!-- col -->
 						<div class="col-sm-3">
 
 							<div class="widget widget-contact">
@@ -237,7 +231,6 @@
 				</div><!-- container -->
 
 			</div><!-- footer-bottom -->
-
 		</footer><!-- FOOTER CONTAINER -->
 
 	</div><!-- MAIN CONTAINER -->
@@ -251,7 +244,7 @@
 
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.1.min.js"></script>
-	<!-- <script src="bower_components/angular-route/angular-route.js"></script> -->
+	<script src="bower_components/angular-route/angular-route.js"></script>
 	<!-- <script src="bower_components/angular-cookies/angular-cookies.js"></script> -->
 	<!-- <script src="bower_components/ng-facebook/ngFacebook.js"></script> -->
 	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
@@ -339,7 +332,9 @@
 	<script src="assets/js/index.config.js"></script>
 	<script src="assets/js/index.controller.js"></script>
 
-	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+	<script src="assets/js/controllers/Blog.js"></script>
+	<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<script src="//www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer></script>
 
 </body>

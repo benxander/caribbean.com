@@ -173,202 +173,6 @@ section.tile-body{
     margin: auto;
 }
 
-.cuadroIMC_1, .cuadroIMC_2, .cuadroIMC_3, .cuadroIMC_4 {
-    position: relative;
-}
-
-.cuadroIMC_1 {
-    width: 180px;
-    height: 120px;
-    margin-top: 10px;
-    background-color: #be323f;
-    color: #FFF;
-}
-
-#CuadroDiv1 {
-    top: 0;
-    width: 100%;
-    height: 66px;
-    vertical-align: middle;
-}
-
-#CuadroDiv2 {
-    position: absolute;
-    bottom: 15px;
-    width: 100%;
-}
-
-.cuadroIMC_1 #CuadroDiv1 {
-    font-size: 36px;
-    padding-top: 15px;
-    font-weight: 700;
-}
-
-.cuadroIMC_1 #CuadroDiv2 {
-    font-size: 18px;
-    padding-top: 10px;
-}
-
-
-.cuadroIMC_2 {
-    width: 180px;
-    height: 120px;
-    margin-top: 10px;
-    background-color: #40a42b;
-    color: #FFF;
-}
-
-.cuadroIMC_2 #CuadroDiv1 {
-    font-size: 36px;
-    padding-top: 15px;
-    font-weight: 700;
-}
-
-.cuadroIMC_2 #CuadroDiv2 {
-    font-size: 18px;
-    padding-top: 10px;
-}
-
-.cuadroIMC_3 {
-    width: 180px;
-    height: 120px;
-    margin-top: 10px;
-    background-color: #2C71EB;
-    color: #FFF;
-}
-
-.cuadroIMC_3 #CuadroDiv1 {
-    font-size: 36px;
-    padding-top: 15px;
-    font-weight: 700;
-}
-
-.cuadroIMC_3 #CuadroDiv2 {
-    font-size: 18px;
-    padding-top: 10px;
-}
-
-.cuadroIMC_4 {
-    width: 180px;
-    height: 120px;
-    margin-top: 10px;
-    background-color: #2C71EB;
-    color: #FFF;
-}
-
-.cuadroIMC_4 #CuadroDiv1 {
-    font-size: 36px;
-    padding-top: 15px;
-    font-weight: 700;
-}
-
-.cuadroIMC_4 #CuadroDiv2 {
-    font-size: 18px;
-    padding-top: 10px;
-}
-
-/*tab 3 consulta*/
-.accion-img{
-    float: left;
-    width: 35%;
-}
-.accion-img img{
-    max-width: 100px;
-}
-
-.accion-texto{
-    float: left;
-}
-
-.accion-texto .button a{
-    cursor: pointer;
-}
-
-/*estilo seleccion plan*/
-.item-plan{
-    max-width: 320px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-}
-
-.item-plan:hover{
-    background-color: #eef3f8;
-}
-
-.item-plan .plan1{
-    float: right;
-}
-
-.item-plan .plan2{
-    float: left;
-}
-
-/*estilos turnos en plan*/
-.turno{
-    padding: 10px;
-    text-align: center;
-}
-
-.turno textarea{
-    min-height: 100px;
-}
-
-.turno.compuesto textarea{
-    min-height: 60px;
-}
-
-.alimentos{
-    text-align: left;
-}
-
-/*colores calendar*/
-.fc-event.b-primary{
-    background-color: #428bca !important;
-    color: #fff !important;
-}
-
-.fc-event.b-success{
-    background-color: #5cb85c !important;
-    color: #fff !important;
-}
-
-.menu-dropdown.right{
-    margin-left:10%;
-}
-
-.fc-title{
-    font-size: 10px;
-    letter-spacing: 0px;
-}
-
-.fc-body .fc-time-grid-container{
-    overflow-y: visible !important;
-    height: auto !important;
-}
-
-.fc-event .fc-bg{
-    background: transparent !important;
-}
-
-.fc-event.unico{
-    right: 0% !important;
-    left: 0% !important;
-    margin-right: 0 !important;
-}
-
-.seleccionado{
-    background: #1199d3;
-    padding: 3px 5px;
-    border-radius: 3px;
-    color: white;
-    font-weight: 900;
-}
-
-.fc-event{
-    border: 1px solid #dddddd !important;
-}
-
 /*page-loading*/
 #page-loading{
     width: 100%;
@@ -424,4 +228,14 @@ section.tile-body{
 }
 .ta-scroll-window > .ta-bind {
     min-height: 210px;
+}
+/*BARRA HEADER*/
+minotaur-header{
+  padding: 0 30px 0 0;
+}
+minotaur-header .navbar-header .navbar-brand{
+    padding: 5px;
+}
+minotaur-header .navbar-header .navigation-toggle{
+    margin-left: 10px;
 }

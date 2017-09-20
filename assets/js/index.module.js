@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 	angular.module('caribbean', [
-		// 'ngRoute',
+		'ngRoute',
 		// 'ngCookies',
 		// 'oc.lazyLoad',
 		'rev.slider',
