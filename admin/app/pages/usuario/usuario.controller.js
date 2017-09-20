@@ -146,7 +146,7 @@
 
               console.log(vm.fData);
             }
-            
+
             vm.aceptar = function () {
               UsuarioServices.sEditarUsuario(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -221,6 +221,28 @@
         });
       }
 
+      vm.enviarCorreo = function () {
+
+          if(vm.mySelectionGrid.length == 0){
+            toastr.warning('Seleccione un usuario', 'warning');
+            return null;
+          }
+          
+          UsuarioServices.sEnviarMailRegistro(vm.mySelectionGrid[0]).then(function(rpta){
+            if(rpta.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(rpta.message, title);
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(rpta.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+          });
+        }
+
   }
 
   function UsuarioServices($http, $q) {
@@ -231,7 +253,8 @@
         sRegistrarUsuario: sRegistrarUsuario,
         sEditarUsuario: sEditarUsuario,
         sAnularUsuario:sAnularUsuario,
-        sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario
+        sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario,
+        sEnviarMailRegistro: sEnviarMailRegistro
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -292,6 +315,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Usuario/habilitar_desabilitar_usuario",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEnviarMailRegistro(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Usuario/enviar_mail_registro",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

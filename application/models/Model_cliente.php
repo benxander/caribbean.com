@@ -44,6 +44,16 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 
+	public function m_cargar_cliente_cbo($datos){
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
+		$this->db->from('cliente c');
+		$this->db->join('usuario u','u.idusuario = c.idusuario');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('c.idusuario', $datos['idusuario']);
+		
+		return $this->db->get()->result_array();
+	}
+
 	// MANTENIMIENTO
 	public function m_registrar_cliente($data){
 		$datos = array(			
