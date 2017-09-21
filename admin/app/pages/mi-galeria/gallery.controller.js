@@ -9,17 +9,16 @@
   /** @ngInject */
   function PagesGalleryController($scope, PagesGalleryServices) {
     var vm = this;
-
-    console.log('$scope.fSessionCI',$scope.fSessionCI);
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
-        console.log(rpta);
+        //console.log(rpta);
+        vm.images = rpta.datos;
       });
     }
 
     vm.cargarGaleria($scope.fSessionCI);
 
-    vm.images = [
+    /*vm.images = [
       {
         src: '../uploads/clientes/123456/descargadas/cat1.jpg',
         title: 'Sed ut perspiciatis unde',
@@ -106,7 +105,7 @@
         category: 'cities',
         selected: false
       }
-    ];
+    ];*/
 
     vm.selectedAll = false;
     vm.isSelected = false;

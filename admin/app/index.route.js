@@ -112,6 +112,12 @@
         templateUrl: 'app/pages/mi-galeria/gallery.html',
         controller: 'PagesGalleryController',
         controllerAs: 'ctrl'
+      })//galeria tienda
+      .state('tienda', {
+        url: '/app/tienda',
+        templateUrl: 'app/pages/tienda/tienda.html',
+        controller: 'TiendaController',
+        controllerAs: 'ctrl'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');
