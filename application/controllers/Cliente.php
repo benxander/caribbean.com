@@ -102,10 +102,10 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al subir imagenes';
     	$arrData['flag'] = 0;
-    	var_dump($allInputs);
+    	/*var_dump($allInputs);
     	var_dump($_FILES);
     	var_dump($_REQUEST);
-    	exit();
+    	exit();*/
     	$cliente = "";
 
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
