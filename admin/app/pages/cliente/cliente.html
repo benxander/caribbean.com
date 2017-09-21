@@ -84,17 +84,16 @@
 
                   <div class="col-md-9" style="margin-bottom: 40px">
 
-                    <h3>Upload queue</h3>
                     <p>Queue length: {{ uploader.queue.length }}</p>
 
                     <table class="table">
                         <thead>
                             <tr>
-                                <th width="50%">Name</th>
-                                <th ng-show="uploader.isHTML5">Size</th>
-                                <th ng-show="uploader.isHTML5">Progress</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th width="50%">Nombre</th>
+                                <th ng-show="uploader.isHTML5">Tamaño</th>
+                                <th ng-show="uploader.isHTML5">Progreso</th>
+                                <th>Estatus</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,13 +112,13 @@
                                 </td>
                                 <td nowrap>
                                     <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                        <span class="glyphicon glyphicon-upload"></span> Subir
                                     </button>
                                     <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancelar
                                     </button>
                                     <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                        <span class="glyphicon glyphicon-trash"></span> Emilinar
                                     </button>
                                 </td>
                             </tr>
@@ -134,13 +133,13 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-success btn-s" ng-click="c.subirTodo();" ng-disabled="!uploader.getNotUploadedItems().length">
-                            <span class="glyphicon glyphicon-upload"></span> Upload all
+                            <span class="glyphicon glyphicon-upload"></span> Subir Todo
                         </button>
                         <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancelar Todo
                         </button>
                         <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                            <span class="glyphicon glyphicon-trash"></span> Remove all
+                            <span class="glyphicon glyphicon-trash"></span> Eliminar Todo
                         </button>
                     </div>
 

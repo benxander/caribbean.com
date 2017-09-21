@@ -102,10 +102,10 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al subir imagenes';
     	$arrData['flag'] = 0;
-    	/*var_dump($allInputs);
+    	var_dump($allInputs);
     	var_dump($_FILES);
     	var_dump($_REQUEST);
-    	exit();*/
+    	exit();
     	$cliente = "";
 
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
@@ -123,12 +123,12 @@ class Cliente extends CI_Controller {
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 			    $extensions = array("jpeg","jpg","png");
 
-			    if(in_array($file_ext,$extensions )=== false){
+			    /*if(in_array($file_ext,$extensions )=== false){
 			     $errors[]="imaagen extension not allowed, please choose a JPEG or PNG file.";
 			    }
 			    if($file_size > 2097152){
 			    $errors[]='File size cannot exceed 2 MB';
-			    }
+			    }*/
 			    if(empty($errors)){
 
 			    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
@@ -148,50 +148,7 @@ class Cliente extends CI_Controller {
 					$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
 					$file_name = generateRandomString() .'.'. $file_ext ;
 
-
-
-			        //************ THUMBS *************//
-
-					$maxsize = 600;
-
-					// el archivo o imagen
-					$filename = $file_tmp;
-
-					// Asignar el ancho y alto maximos
-					$width = $maxsize;
-					$height = $maxsize;
-
-					// mandando las cabeceras correspondientes
-					header('Content-type: image/jpeg');
-
-					// obteniendo las dimensiones actuales
-					list($width_orig, $height_orig) = getimagesize($filename);
-					if ($width && ($width_orig < $height_orig)) {
-					$width = ($height / $height_orig) * $width_orig;
-					} else {
-					$height = ($width / $width_orig) * $height_orig;
-					}
-
-					// Cambiando el tamano de la imagen o resample
-					$image_p = imagecreatetruecolor($width, $height);
-					$image = imagecreatefromjpeg($filename);
-					imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-					// Marca de Agua o Watermark
-					$watermark = imagecreatefrompng('uploads/Copyright.png');
-					$watermark_width = imagesx($watermark);
-					$watermark_height = imagesy($watermark);
-					$image = imagecreatetruecolor($watermark_width, $watermark_height);
-					$dest_x = 0; //$width - $watermark_width - 10;
-					$dest_y = 0; //$height - $watermark_height - 10;
-					imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 30);
-
-					// Salida
-					imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
-					imagedestroy($image);
-					imagedestroy($image_p);
-					imagedestroy($watermark);
-
+			        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
 					move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
 
 			        $allInputs = array(
@@ -199,7 +156,7 @@ class Cliente extends CI_Controller {
 						'idusuario' 	=> $idusuario,
 						'nombre_archivo'=> $file_name,
 						'size'			=> $file_size,
-						'idtipoproducto'	=> 1
+						'idtipoproducto'=> 1
 					);
 
 			        if($this->model_archivo->m_registrar_archivo($allInputs)){

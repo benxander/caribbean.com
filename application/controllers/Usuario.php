@@ -210,76 +210,39 @@ class Usuario extends CI_Controller {
 
 		$result =  $this->model_cliente->m_cargar_cliente_cbo($allInputs); 
 		$cliente = $result[0];
-		//var_dump($cliente); exit();
-		$this->load->library('My_PHPMailer');
-		date_default_timezone_set('UTC');
-		define('SMTP_HOST','unaisangamer.com');
-		$correo = 'soporte@unaisangamer.com';
-		$pass = 's0p0rte_Caribbean';
-		$setFromAleas = 'Caribbean';
 
-		define('SMTP_PORT',25);
-		define('SMTP_USERNAME',$correo);
-		define('SMTP_PASSWORD',$pass);
-
-		$mail = new PHPMailer();
-		$mail->IsSMTP(true);
-		$mail->SMTPDebug = 1;
-		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = "tls";
-		$mail->Host = SMTP_HOST;
-		$mail->Port = SMTP_PORT;
-		$mail->Username =  SMTP_USERNAME;
-		$mail->Password = SMTP_PASSWORD;
-		$mail->SetFrom(SMTP_USERNAME,$setFromAleas);
-		$mail->AddReplyTo(SMTP_USERNAME,$setFromAleas);
-
-		$mail->Subject = 'Creacion de Usuario en Caribbean';
-		$cuerpo = '<html> 
+		$mensaje = '<html> 
 		      <head>
 		        <title>Usuario en Caribbean</title> 
 		      </head>
-		      <body style="font-family: sans-serif;padding: 10px 40px;" > 
-		      <div style="text-align: right;">
-		        <img style="width: 160px;" alt="Hospital Villa Salud" src="'.base_url('assets/img/dinamic/empresa/gm_small.png').'">
-		      </div> <br />';
+		      <body style="font-family: sans-serif;padding: 10px 40px;" >';
 		
-		$cuerpo .= '<div style="font-size:16px;">  
+		$mensaje .= '<div style="font-size:16px;">  
 		        Estimado Sr(a).: '. $cliente['nombres']. ' '.$cliente['apellidos'].' <br /> <br /> ';
-  		$cuerpo .= '<div style="font-size:16px;">  
+  		$mensaje .= '<div style="font-size:16px;">  
 		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
-		         Usuario: '.$cliente['email'].'<br />';
-		$cuerpo .= '<br /> Atte: <br /> <br /> DIRECCIÓN MÉDICA </div>';
-		$cuerpo .= '</body></html>';
-		$mail->AltBody = $cuerpo;
-		$mail->MsgHTML($cuerpo);		 
-		$mail->CharSet = 'UTF-8';
+		         Usuario: '.$allInputs['email'].'<br />
+		         Contraseña: '.$allInputs['password'];
+		$mensaje .= '<br /> Ingrese en esta <a href="">página</a> para iniciar session. <br />';
+		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
+		$mensaje .= '</body></html>';
 
-		$mail->SMTPOptions = array(
-		    'ssl' => array(
-		        'verify_peer' => false,
-		        'verify_peer_name' => false,
-		        'allow_self_signed' => true
-		    )
-		);
-		if($cliente['email'] != null && $cliente['email'] != ''){
-			if(comprobar_email($cliente['email'])){
-				$mail->AddAddress($cliente['email']);
-				if($mail->Send()){
-					$arrData['message'] = 'Notificación de correo enviada exitosamente.';
-					$arrData['flag'] = 1;
-				}
-			}else{
-			  	$arrData['message'] = 'Notificación de correo NO enviada. Correo de Cliente inválido.';
-				$arrData['flag'] = 0;
+		$from = 'soporte@unaisangamer.com';
+		$to = $allInputs['email'];
+		$asunto = 'Creacion de Usuario en Caribbean';
+
+		if(comprobar_email($allInputs['email'])){
+			if(envio_email($to, "",$asunto, $mensaje, $from)){
+				$arrData['message'] = 'Notificación de correo enviada exitosamente.';
+				$arrData['flag'] = 1;
 			}
 		}else{
-			$arrData['message'] = 'Notificación de correo NO enviada. Correo de Cliente no registrado.';
+		  	$arrData['message'] = 'Notificación de correo NO enviada. Correo de Cliente inválido.';
 			$arrData['flag'] = 0;
 		}
 
 		$this->output
 		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
+		    ->set_output(json_encode($arrData));	
 	}
 }

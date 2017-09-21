@@ -243,8 +243,8 @@
             vm.modalTitle = 'Registro de usuario';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.listaGrupos = arrToModal.scope.listaGrupos;
-            vm.fData.idioma = vm.listaIdiomas[0].id;
-            vm.fData.grupo = vm.listaGrupos[0].id;
+            vm.fData.ididioma = vm.listaIdiomas[0].id;
+            vm.fData.idgrupo = vm.listaGrupos[0].id;
             vm.fData.idcliente = row.entity.idcliente;
             vm.fData.username = row.entity.email;
 
@@ -262,6 +262,10 @@
               vm.aceptar = function () {
                 UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
                   if(rpta.flag == 1){
+    
+                    var title = 'OK';
+                    var type = 'success';
+                    toastr.success(rpta.message, title);
 
                     UsuarioServices.sEnviarMailRegistro(vm.fData).then(function(rpta){
                       if(rpta.flag == 1){
@@ -279,9 +283,6 @@
 
                     $uibModalInstance.close(vm.fData);
                     vm.getPaginationServerSide();
-                    var title = 'OK';
-                    var type = 'success';
-                    toastr.success(rpta.message, title);
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
@@ -315,9 +316,9 @@
         console.log(vm.fDataUpload);
 
         // a sync filter
-        uploader.filters.push({
+       /* uploader.filters.push({
             name: 'syncFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options) {
+            fn: function(item , options) {
                 console.log('syncFilter');
                 return this.queue.length < 10;
             }
@@ -326,36 +327,30 @@
         // an async filter
         uploader.filters.push({
             name: 'asyncFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options, deferred) {
+            fn: function(item , options, deferred) {
                 console.log('asyncFilter');
                 setTimeout(deferred.resolve, 1e3);
             }
-        });
+        });*/
         vm.subirTodo = function(){
           console.log('aqui estoy');
           uploader.uploadAll();
         }
-
-        /*vm.subirTodo = function() {
-          var datos = {
-            data: vm.fDataUpload,
-            file: angular.copy(uploader)
-          };
-          console.log(datos);
-          ClienteServices.sUploadCliente(datos).then(function (rpta) {
-              if(rpta.flag == 1){
-                var title = 'OK';
-                var type = 'success';
-                toastr.success(rpta.message, title);
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var type = 'warning';
-                toastr.warning(rpta.message, title);
-              }else{
-                alert('Ocurrió un error');
-              }
-            });   
-        }*/
+        vm.btnSubirVideo = function(){
+          UsuarioServices.sUploadCliente(vm.fData).then(function(rpta){
+            if(rpta.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(rpta.message, title);
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(rpta.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+          });
+        }
      
         vm.volver = function() {
           vm.gritdClientes = true; 
@@ -391,9 +386,32 @@
         };
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
             console.info('onSuccessItem', fileItem, response, status, headers);
+            
+            if(response.flag == 1){
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(response.message, title);
+              }else if( response.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(response.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
         };
         uploader.onErrorItem = function(fileItem, response, status, headers) {
             console.info('onErrorItem', fileItem, response, status, headers);
+            if(response.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(response.message, title);
+            }else if( response.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(response.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
         };
         uploader.onCancelItem = function(fileItem, response, status, headers) {
             console.info('onCancelItem', fileItem, response, status, headers);

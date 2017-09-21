@@ -28,7 +28,7 @@ bcc_batch_size	200	None	Number of emails in each BCC batch.
 
 $config['protocol'] = 'smtp'; // mail, sendmail, or smtp    The mail sending protocol.
 $config['smtp_host'] = 'unaisangamer.com';
-$config['smtp_user'] = 'soporte@unaisangamer.com'L; // SMTP Username.
+$config['smtp_user'] = 'soporte@unaisangamer.com'; // SMTP Username.
 $config['smtp_pass'] = 's0p0rte_Caribbean'; // SMTP Password.
 $config['smtp_port'] = '25'; // SMTP Port.
 $config['smtp_timeout'] = '5'; // SMTP Timeout (in seconds).

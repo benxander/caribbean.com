@@ -49,7 +49,7 @@ class Model_cliente extends CI_Model {
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);
-		$this->db->where('c.idusuario', $datos['idusuario']);
+		$this->db->where('c.idcliente', $datos['idcliente']);
 		
 		return $this->db->get()->result_array();
 	}

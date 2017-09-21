@@ -89,3 +89,19 @@ function generateRandomString($length = 10) {
     }
     return $randomString;
 }
+
+function envio_email($to,$cc='', $subject = 'Email de prueba', $message = 'Esto es una prueba',$from) {   
+    $CI = & get_instance();
+
+    $CI->load->library('email');
+
+    $salida = $CI->load->view('notificaciones/plantilla',array(),TRUE);
+    
+    $CI->email->from($from);
+    $CI->email->to($to);
+    $CI->email->cc($cc);
+    $CI->email->subject($subject);
+    $CI->email->message(str_replace("{contenido}", $message, $salida));
+    
+    return $CI->email->send();
+}
