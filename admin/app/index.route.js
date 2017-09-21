@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
 
@@ -98,6 +99,25 @@
         templateUrl: 'app/pages/rol/rol.html',
         controller: 'RolController',
         controllerAs: 'r'
+      })
+      //perfil
+      .state('perfil', {
+        url: '/app/perfil',
+        templateUrl: 'app/pages/perfil/perfil.html',
+        controller: 'PerfilController',
+        controllerAs: 'p'
+      })//galeria personal
+      .state('mi-galeria', {
+        url: '/app/mi-galeria',
+        templateUrl: 'app/pages/mi-galeria/gallery.html',
+        controller: 'PagesGalleryController',
+        controllerAs: 'ctrl'
+      })//galeria tienda
+      .state('tienda', {
+        url: '/app/tienda',
+        templateUrl: 'app/pages/tienda/tienda.html',
+        controller: 'TiendaController',
+        controllerAs: 'ctrl'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Acceso extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper(array('security'));
-		$this->load->model(array('model_acceso'));
+		$this->load->helper(array('security','otros_helper'));
+		$this->load->model(array('model_acceso','model_cliente'));
 		//cache
 		$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
 		$this->output->set_header("Pragma: no-cache");
@@ -29,18 +29,27 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$arrPerfilUsuario['logged'] = true;
 
-					/*$arrPerfilUsuario = $this->model_profesional->m_cargar_perfil($loggedUser['idusuario']);
-					$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];*/
+					$cliente = $this->model_cliente->m_cargar_cliente_por_idusuario($loggedUser['idusuario']);
 
+					if(!empty($cliente['idcliente'])){						
+						$arrPerfilUsuario['idcliente'] = $cliente['idcliente'];
+						$arrPerfilUsuario['nombres'] = $cliente['nombres'];
+						$arrPerfilUsuario['apellidos'] = $cliente['apellidos'];
+						$arrPerfilUsuario['cliente'] = strtoupper_total($cliente['nombres'] . ' ' .$cliente['apellidos']);
+						$arrPerfilUsuario['email'] = $cliente['email'];
+						$arrPerfilUsuario['whatsapp'] = $cliente['whatsapp'];
+						$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
+						$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
+						$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+						$arrData['message'] = 'Usuario inició sesión correctamente';
+					}
 
 					// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA.
 					//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);
 					// ACTUALIZAMOS EL ULTIMO LOGEO DEL USUARIO.
 					//$this->model_acceso->m_actualizar_fecha_ultima_sesion($arrPerfilUsuario);
-					$arrData['message'] = 'Usuario inició sesión correctamente';
-					if( isset($arrPerfilUsuario['idusuario']) ){
+					if( isset($arrPerfilUsuario['idcliente']) ){
 						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
-
 					}else{
 						$arrData['flag'] = 0;
 	    				$arrData['message'] = 'No se encontró los datos del usuario.';

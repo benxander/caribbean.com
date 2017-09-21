@@ -12,7 +12,10 @@
     "SEGURIDAD": "Seguridad",
     "USUARIOS": "Usuarios",
     "GRUPOS": "Grupos",
-    "ROLES": "Roles"
+    "ROLES": "Roles",
+    "PERFIL": "Mi Perfil",
+    "GALERIA": "Mi Galeria",
+    "DESCARGAR": "Tienda"
   },
   "Form": {
     "PREVIOUS":"Atras",

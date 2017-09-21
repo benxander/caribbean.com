@@ -92,5 +92,23 @@
         </li>
       </ul>
     </li>
+    <li ng-class="{'active':$state.includes('perfil')}" ng-show="valores[8]">
+      <a ng-click="$state.reload();" ui-sref="perfil">
+        <span class="nav-text">{{ 'Menu.PERFIL' | translate }}</span>
+        <i class="fa fa-user"></i>
+      </a>
+    </li>
+    <li ng-class="{'active':$state.includes('mi-galeria')}" ng-show="valores[9]">
+      <a ng-click="$state.reload();" ui-sref="mi-galeria">
+        <span class="nav-text">{{ 'Menu.GALERIA' | translate }}</span>
+        <i class="fa fa-image"></i>
+      </a>
+    </li>
+    <li ng-class="{'active':$state.includes('tienda')}" ng-show="valores[10]">
+      <a ng-click="$state.reload();" ui-sref="tienda">
+        <span class="nav-text">{{ 'Menu.DESCARGAR' | translate }}</span>
+        <i class="fa fa-shopping-cart"></i>
+      </a>
+    </li>
   </ul>
 </div>

@@ -43,6 +43,36 @@ class Cliente extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function listar_cliente_por_idusuario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$row = $this->model_cliente->m_cargar_cliente_por_idusuario($allInputs['idusuario']);
+		//var_dump($lista); exit();
+		$arrListado =	array(
+				'idcliente' => $row['idcliente'],
+				'idusuario' => $row['idusuario'],
+				'username' => $row['username'],
+				'nombres' => $row['nombres'],
+				'apellidos' => $row['apellidos'],
+				'cliente' => strtoupper_total($row['nombres'] . ' ' .$row['apellidos']),
+				'email' => $row['email'],
+				'whatsapp' => $row['whatsapp'],
+				'estado_cl' => $row['estado_cl'],
+				'ididioma' => $row['ididioma'],
+				'idioma' => $row['idioma'],
+				'solicita_bonificacion' => $row['solicita_bonificacion'],			
+				'nombre_foto' => $row['nombre_foto'],			
+			);		
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['flag'] = 1;
+		if(empty($row['idcliente'])){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
 	// MANTENIMIENTO
 	public function registrar_cliente(){
 		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
