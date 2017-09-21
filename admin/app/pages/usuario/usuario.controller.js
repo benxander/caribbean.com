@@ -41,8 +41,12 @@
         { field: 'username', name:'username', displayName: 'NOMBRE USUARIO', },
         { field: 'grupo', name: 'nombre_gr', displayName: 'GRUPO'},
         { field: 'idioma', name:'nombre_id', displayName: 'IDIOMA'},
-        { field: 'estado', type: 'object', name: 'estado_us', displayName: 'Estado', maxWidth: 250, enableFiltering: false,
-          cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 120px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>' },
+        { field: 'estado', type: 'object', name: 'estado_us', displayName: 'Estado', maxWidth: 100, enableFiltering: false,
+          cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
+                  '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
+                  '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
+                    '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
+                  '</label></div>' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 130, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
@@ -117,7 +121,32 @@
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            vm.listaGrupos = arrToModal.scope.listaGrupos;
+
+            vm.generarPassword = function (longitud) {
+              console.log("entro2");
+              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ0123456789";
+              var pass = "";
+              for (i=0; i<longitud; i++){
+                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+              }
+              vm.fData.password = pass;
+              console.log(vm.fData.password);
+            }
             
+            vm.generar = function () {
+              
+              if(vm.fData.newpassword){
+                console.log("entro1");
+                vm.generarPassword(5);
+              }else{
+                vm.fData.password = null;
+              }
+
+              console.log(vm.fData);
+            }
+
             vm.aceptar = function () {
               UsuarioServices.sEditarUsuario(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -175,6 +204,45 @@
         });
       }
 
+      vm.btnHabilitarDeshabilitar = function (row) { 
+        UsuarioServices.sHabilitarDesabilitarUsuario(row.entity).then(function (rpta) { 
+          if(rpta.flag == 1){
+            vm.getPaginationServerSide();
+            var title = 'OK';
+            var type = 'success';
+            toastr.success(rpta.message, title);
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            var type = 'warning';
+            toastr.warning(rpta.message, title);
+          }else{
+            alert('Ocurrió un error');
+          }
+        });
+      }
+
+      vm.enviarCorreo = function () {
+
+          if(vm.mySelectionGrid.length == 0){
+            toastr.warning('Seleccione un usuario', 'warning');
+            return null;
+          }
+          
+          UsuarioServices.sEnviarMailRegistro(vm.mySelectionGrid[0]).then(function(rpta){
+            if(rpta.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(rpta.message, title);
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(rpta.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+          });
+        }
+
   }
 
   function UsuarioServices($http, $q) {
@@ -186,7 +254,8 @@
         sEditarUsuario: sEditarUsuario,
         sEditarIdiomaUsuario:sEditarIdiomaUsuario,
         sAnularUsuario:sAnularUsuario,
-        sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario
+        sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario,
+        sEnviarMailRegistro: sEnviarMailRegistro
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -256,6 +325,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Usuario/habilitar_desabilitar_usuario",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEnviarMailRegistro(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Usuario/enviar_mail_registro",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

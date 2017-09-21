@@ -79,3 +79,29 @@ function GetConfiguracion(){
     $ci2->db->from('configuracion c');
     return $ci2->db->get()->row_array();
 }
+
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function envio_email($to,$cc='', $subject = 'Email de prueba', $message = 'Esto es una prueba',$from) {   
+    $CI = & get_instance();
+
+    $CI->load->library('email');
+
+    $salida = $CI->load->view('notificaciones/plantilla',array(),TRUE);
+    
+    $CI->email->from($from);
+    $CI->email->to($to);
+    $CI->email->cc($cc);
+    $CI->email->subject($subject);
+    $CI->email->message(str_replace("{contenido}", $message, $salida));
+    
+    return $CI->email->send();
+}

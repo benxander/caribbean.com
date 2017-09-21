@@ -7,10 +7,14 @@
 
   /** @ngInject */
   function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,
-    ClienteServices, UsuarioServices) {
+    ClienteServices, UsuarioServices, FileUploader) {
     var vm = this;
     var openedToasts = [];
-
+    vm.gritdClientes = true;
+    var uploader = $scope.uploader = new FileUploader ({ 
+      url: angular.patchURLCI + 'cliente/upload_cliente' 
+      // url: '../application/controllers/upload.php' 
+    });
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -239,18 +243,46 @@
             vm.modalTitle = 'Registro de usuario';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.listaGrupos = arrToModal.scope.listaGrupos;
-            vm.fData.idioma = vm.listaIdiomas[0].id;
-            vm.fData.grupo = vm.listaGrupos[0].id;
+            vm.fData.ididioma = vm.listaIdiomas[0].id;
+            vm.fData.idgrupo = vm.listaGrupos[0].id;
             vm.fData.idcliente = row.entity.idcliente;
+            vm.fData.username = row.entity.email;
+
+            vm.generarPassword = function (longitud) {
+              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ2346789";
+              var pass = "";
+              for (i=0; i<longitud; i++){
+                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
+              }
+              vm.fData.password = pass;
+              console.log(vm.fData.password);
+            }
+            vm.generarPassword(5);
             // botones
               vm.aceptar = function () {
                 UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
                   if(rpta.flag == 1){
-                    $uibModalInstance.close(vm.fData);
-                    vm.getPaginationServerSide();
+    
                     var title = 'OK';
                     var type = 'success';
                     toastr.success(rpta.message, title);
+
+                    UsuarioServices.sEnviarMailRegistro(vm.fData).then(function(rpta){
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+
+                    $uibModalInstance.close(vm.fData);
+                    vm.getPaginationServerSide();
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
@@ -275,6 +307,128 @@
           }
         });
       }
+
+      vm.btnUpload = function(row){
+        vm.gritdClientes = false;
+        vm.fData = {};
+        vm.fDataUpload = {};
+        vm.fDataUpload = angular.copy(row.entity);
+        console.log(vm.fDataUpload);
+
+        // a sync filter
+       /* uploader.filters.push({
+            name: 'syncFilter',
+            fn: function(item , options) {
+                console.log('syncFilter');
+                return this.queue.length < 10;
+            }
+        });
+      
+        // an async filter
+        uploader.filters.push({
+            name: 'asyncFilter',
+            fn: function(item , options, deferred) {
+                console.log('asyncFilter');
+                setTimeout(deferred.resolve, 1e3);
+            }
+        });*/
+        vm.subirTodo = function(){
+          console.log('aqui estoy');
+          uploader.uploadAll();
+        }
+        vm.btnSubirVideo = function(){
+          UsuarioServices.sUploadCliente(vm.fData).then(function(rpta){
+            if(rpta.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(rpta.message, title);
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(rpta.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+          });
+        }
+     
+        vm.volver = function() {
+          vm.gritdClientes = true; 
+          vm.fDataUpload = {};
+        }
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            item.formData.push({
+              idcliente: vm.fDataUpload.idcliente,
+              idusuario: vm.fDataUpload.idusuario,
+              nombres: vm.fDataUpload.nombres,
+              apellidos: vm.fDataUpload.apellidos,
+              codigo: vm.fDataUpload.codigo,
+            });
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+            
+            if(response.flag == 1){
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(response.message, title);
+              }else if( response.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(response.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+            if(response.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(response.message, title);
+            }else if( response.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(response.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+        };
+
+        console.info('uploader', uploader);
+
+      }
+
+
+
   }
 
   function ClienteServices($http, $q) {
@@ -283,7 +437,8 @@
         sListarClientePorIdusuario:sListarClientePorIdusuario,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
-        sAnularCliente:sAnularCliente
+        sAnularCliente: sAnularCliente,
+        sUploadCliente: sUploadCliente
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -335,6 +490,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/anular_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sUploadCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/upload_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

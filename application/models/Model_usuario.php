@@ -11,7 +11,7 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_cargar_usuario($paramPaginate=FALSE){
-		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us');
+		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us, u.codigo');
 		$this->db->select('gr.idgrupo, gr.nombre_gr');
 		$this->db->select('id.ididioma, id.nombre_id');
 		$this->db->join('grupo gr','gr.idgrupo = u.idgrupo');
@@ -71,16 +71,17 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_registrar_usuario($data){
-
-		$datos = array(
-			'idgrupo' => $data['grupo'],
+		
+		$datos = array(			
+			'idgrupo' => $data['idgrupo'],
 			'username' => $data['username'],
 			'password' => hash('md5',$data['password']),
-			'ididioma' => $data['idioma'],
+			'ididioma' => $data['ididioma'],
 			'solicita_bonificacion' => 2,
 			'estado_us' => 1,
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s'),
+			'codigo' => $data['codigo']
 		);
 
 		$this->db->insert('usuario', $datos);
@@ -93,15 +94,16 @@ class Model_usuario extends CI_Model {
 		$this->db->select('u.password');
 		$this->db->from('usuario u');
 		$this->db->where('u.estado_us <>', 0);
+		$this->db->where('u.idusuario', $data['idusuario']);
 		$fData = $this->db->get()->row_array();
 		$oldPassword = $fData['password'];
 		$this->db->reset_query();
 
-		$datos = array(
-			'idgrupo' => $data['grupo'],
+		$datos = array(			
+			'idgrupo' => $data['idgrupo'],
 			'username' => $data['username'],
 			'password' => ($oldPassword != hash('md5',$data['password'])) ? hash('md5',$data['password']) : $oldPassword,
-			'ididioma' => $data['idioma'],
+			'ididioma' => $data['ididioma'],
 			'updatedat' => date('Y-m-d H:i:s'),
 		);
 		$this->db->where('idusuario',$data['idusuario']);
@@ -168,6 +170,19 @@ class Model_usuario extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	public function m_verificar_codigo_usuario($codigo){
+		$this->db->select('*');
+		$this->db->from('usuario');
+		$this->db->where('codigo', $codigo);
+		$this->db->where('estado_us', 1);
+		$this->db->limit(1);
+		if ( $this->db->get()->num_rows() > 0 ){
+			return TRUE;
+		}else{
+			return FALSE;
+		}	
 	}
 }
 

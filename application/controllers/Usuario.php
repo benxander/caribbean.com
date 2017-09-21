@@ -19,24 +19,24 @@ class Usuario extends CI_Controller {
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
 			if( $row['estado_us'] == 1 ){
-				$estado = 'HABILITADO';
-				$clase = 'label-success';
+				$bool = true;
 			}
 			if( $row['estado_us'] == 2 ){
-				$estado = 'DESHABILITADO';
-				$clase = 'label-default';
+				$bool = false;
 			}
 			array_push($arrListado,
 				array(
 					'idusuario' => $row['idusuario'],
 					'username' => $row['username'],
+					'ididioma' => $row['ididioma'],
 					'idioma' => $row['nombre_id'],
+					'idgrupo' => $row['idgrupo'],
 					'grupo' => $row['nombre_gr'],
 					'solicita_bonificacion' => $row['solicita_bonificacion'],
 					'estado' => array(
-						'string' => $estado,
-						'clase' =>$clase,
-						'bool' =>$row['estado_us']
+						'id'	 =>$row['idusuario'],
+						'valor'  =>$row['estado_us'],
+						'bool'   =>$bool
 					)
 				)
 			);
@@ -108,16 +108,16 @@ class Usuario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-
-    	if(empty($allInputs['grupo'])){
+    	
+    	if(empty($allInputs['idgrupo'])){
     		$arrData['message'] = 'Debe seleccionar un grupo.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-
-    	if(empty($allInputs['idioma'])){
+  
+    	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
 			    ->set_content_type('application/json')
@@ -125,7 +125,17 @@ class Usuario extends CI_Controller {
 			return;
     	}
 
-    	$this->db->trans_start();
+		$codigo = "";
+    	$band = true;
+    	while ($band) {
+    		$codigo = generateRandomString();
+    		if(!$this->model_usuario->m_verificar_codigo_usuario($codigo)){
+				$band = false;
+			}
+    	}
+    	
+    	$allInputs['codigo'] = $codigo; 
+    	$this->db->trans_start();   	
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
@@ -134,7 +144,6 @@ class Usuario extends CI_Controller {
     			$arrData['flag'] = 1;
 			}
 		}
-
 		$this->db->trans_complete();
 		$this->output
 		    ->set_content_type('application/json')
@@ -220,5 +229,72 @@ class Usuario extends CI_Controller {
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+
+	public function habilitar_desabilitar_usuario()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	$this->db->trans_start();
+    	if( $allInputs['estado']['valor'] == 1 ){
+			if( $this->model_usuario->m_deshabilitar($allInputs['idusuario']) ){ 
+				$arrData['message'] = 'Se deshabilitaron los datos correctamente';
+				$arrData['flag'] = 1;
+			}
+    	}
+    	if( $allInputs['estado']['valor'] == 2 ){
+			if( $this->model_usuario->m_habilitar($allInputs['idusuario']) ){ 
+				$arrData['message'] = 'Se habilitaron los datos correctamente';
+				$arrData['flag'] = 1;
+			}
+    	}
+    	$this->db->trans_complete();
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function enviar_mail_registro(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al enviar email.';
+    	$arrData['flag'] = 0;
+
+		$result =  $this->model_cliente->m_cargar_cliente_cbo($allInputs); 
+		$cliente = $result[0];
+
+		$mensaje = '<html> 
+		      <head>
+		        <title>Usuario en Caribbean</title> 
+		      </head>
+		      <body style="font-family: sans-serif;padding: 10px 40px;" >';
+		
+		$mensaje .= '<div style="font-size:16px;">  
+		        Estimado Sr(a).: '. $cliente['nombres']. ' '.$cliente['apellidos'].' <br /> <br /> ';
+  		$mensaje .= '<div style="font-size:16px;">  
+		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
+		         Usuario: '.$allInputs['email'].'<br />
+		         Contraseña: '.$allInputs['password'];
+		$mensaje .= '<br /> Ingrese en esta <a href="">página</a> para iniciar session. <br />';
+		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
+		$mensaje .= '</body></html>';
+
+		$from = 'soporte@unaisangamer.com';
+		$to = $allInputs['email'];
+		$asunto = 'Creacion de Usuario en Caribbean';
+
+		if(comprobar_email($allInputs['email'])){
+			if(envio_email($to, "",$asunto, $mensaje, $from)){
+				$arrData['message'] = 'Notificación de correo enviada exitosamente.';
+				$arrData['flag'] = 1;
+			}
+		}else{
+		  	$arrData['message'] = 'Notificación de correo NO enviada. Correo de Cliente inválido.';
+			$arrData['flag'] = 0;
+		}
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));	
 	}
 }
