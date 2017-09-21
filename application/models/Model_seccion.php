@@ -16,7 +16,7 @@ class Model_seccion extends CI_Model {
 	public function m_cargar_secciones($paramPaginate=FALSE){
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
 		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
-		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg');
+		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, acepta_ficha');
 		$this->db->from('seccion se');
 		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
 		$this->db->where("se.estado_se",1);
@@ -53,9 +53,32 @@ class Model_seccion extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
-	public function m_editar_contenido($data,$id)
-	{
+	public function m_cargar_secciones_web(){
+		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
+		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
+		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, sc.acepta_ficha');
+		$this->db->select('idficha, titulo_fi, descripcion_fi, icono_fi');
+
+		$this->db->from('seccion se');
+		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
+		$this->db->join('ficha fi','sc.idseccioncontenido = fi.idseccioncontenido AND fi.estado_fi = 1','left');
+
+		$this->db->where("se.estado_se",1);
+
+		return $this->db->get()->result_array();
+	}
+	public function m_editar_contenido($data,$id)	{
 		$this->db->where('idseccioncontenido',$id);
 		return $this->db->update('seccion_contenido', $data);
+	}
+	public function m_cargar_fichas_por_seccion($datos)	{
+		$this->db->select('idficha,idseccioncontenido,titulo_fi,descripcion_fi,icono_fi');
+		$this->db->from('ficha fi');
+		$this->db->where("fi.estado_fi",1);
+		$this->db->where("fi.idseccioncontenido",$datos['idseccioncontenido']);
+		return $this->db->get()->result_array();
+	}
+	public function m_registrar_ficha($data){
+		return $this->db->insert('ficha', $data);
 	}
 }

@@ -154,20 +154,14 @@
 					<data-owl-carousel class="owl-carousel process-slider"
 						data-options="{navigation: true, pagination: false, rewindNav : true,
 							responsive: {
-								0:{
-									items: 1
-								},
-								768:{
-									items: 2
-								},
-								991:{
-									items: 3
-								}
+								0:  {items: 1},
+								768:{items: 2},
+								991:{items: 3}
 							},
-				            autoplay: true,loop: false
+				            autoplay: true, loop: false
 			            }"
 			            >
-				      	<div owl-carousel-item="" ng-repeat="item in ::items1" class="item">
+				      	<div owl-carousel-item="" ng-repeat="item in ::seccionWeb[2].contenedor[2].fichas" class="item">
 							<div class="service-box style-7">
 								<i class="{{::item.clase}}"></i>
 								<div class="service-box-content">

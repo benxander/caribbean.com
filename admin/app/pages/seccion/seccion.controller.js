@@ -10,6 +10,8 @@
     var vm = this;
     var openedToasts = [];
     //$scope.image = "";
+    vm.boolListado = true;
+    vm.listaFichas = [];
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -42,8 +44,10 @@
         { field: 'subtitulo', name:'subtitulo', displayName: 'SUBTITULO', minWidth: 100 },
 
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
-          cellTemplate: '<div class="text-center">' +
-          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>' +
+          cellTemplate: '<div class="text-right">' +
+          '<button ng-if="row.entity.acepta_ficha" class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verFichas(row)" tooltip-placement="left" uib-tooltip="FICHAS" > <i class="icon-grid"></i> </button>' +
+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="icon-pencil"></i> </button>' +
           '</div>'
         }
 
@@ -147,12 +151,93 @@
           }
         });
       }
+
+      vm.verFichas = function(row){
+        vm.boolListado = false;
+        vm.seccion = row.entity;
+
+        SeccionServices.sListarFichas(vm.seccion).then(function (rpta) {
+          vm.listaFichas = rpta.datos;
+          // vm.mySelectionGrid = [];
+        });
+      }
+      vm.btnNuevaFicha = function(seccion){
+
+       /* if(vm.listaFichas.length > 0){
+          vm.listaFichas.push({
+           titulo : 'Titulo',
+           descripcion:'Escriba una descripcion',
+           clase: 'halcyon-icon-paper-plane-1'
+          });
+        }else{
+          vm.listaFichas = [{
+           titulo : 'Titulo',
+           descripcion:'Escriba una descripcion',
+           clase: 'halcyon-icon-paper-plane-1'
+          }];
+        }*/
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/seccion/seccion_ficha_formview.php',
+          controllerAs: 'mf',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            // vm.fData = angular.copy(arrToModal.seleccion);
+            // vm.modoEdicion = true;
+            // vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Registro de Ficha';
+
+            vm.fData.idseccioncontenido = seccion.idseccioncontenido;
+            // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
+            console.log('seccion',seccion);
+            console.log('data',vm.fData);
+            vm.aceptar = function () {
+              SeccionServices.sRegistrarFicha(vm.fData).then(function (rpta) {
+                if(rpta.flag == 1){
+                  $uibModalInstance.dismiss('cancel');
+                  // vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var type = 'success';
+                  $uibModalInstance.close(vm.fData);
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                }else{
+                  alert('Ocurrió un error');
+                }
+                openedToasts.push(toastr[type](rpta.message, title));
+              });
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                // getPaginationServerSide : vm.getPaginationServerSide,
+                seleccion : seccion,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
+      vm.btnVolver = function(){
+        vm.boolListado = true;
+      }
+
   }
   function SeccionServices($http, $q) {
     return({
         sListarSeccionCbo: sListarSeccionCbo,
         sListarSecciones: sListarSecciones,
         sEditarContenido: sEditarContenido,
+        sListarFichas: sListarFichas,
+        sRegistrarFicha: sRegistrarFicha,
     });
     function sListarSeccionCbo(pDatos) {
       var datos = pDatos || {};
@@ -177,6 +262,24 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/editar_contenido",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarFichas(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_fichas",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sRegistrarFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/registrar_ficha",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

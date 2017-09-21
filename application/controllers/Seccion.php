@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Seccion extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-        $this->load->helper(array('imagen'));
+        $this->load->helper(array('imagen','otros'));
         $this->load->model(array('model_seccion'));
     }
 
@@ -51,12 +51,11 @@ class Seccion extends CI_Controller {
 					'tiene_boton' 	=> $row['tiene_boton'] == 'NO' ? FALSE: TRUE,
 					'acepta_imagen' => $row['acepta_imagen'] == 'NO' ? FALSE: TRUE,
 					'acepta_background' => $row['acepta_background'] == 'NO' ? FALSE: TRUE,
+					'acepta_ficha' 	=> $row['acepta_ficha'] == 'NO' ? FALSE: TRUE,
 					'nombre_boton' 	=> $row['nombre_boton'],
 					'enlace_boton' 	=> $row['enlace_boton'],
 					'imagen' 		=> $row['imagen'],
-					'imagen_bg' 		=> $row['imagen_bg'],
-
-
+					'imagen_bg' 	=> $row['imagen_bg'],
 				)
 			);
 		}
@@ -74,11 +73,11 @@ class Seccion extends CI_Controller {
 	}
 	public function listar_secciones_web()
 	{
-		ini_set('xdebug.var_display_max_depth', 5);
+		ini_set('xdebug.var_display_max_depth', 10);
 	    ini_set('xdebug.var_display_max_children', 256);
 	    ini_set('xdebug.var_display_max_data', 1024);
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_seccion->m_cargar_secciones();
+		$lista = $this->model_seccion->m_cargar_secciones_web();
 		$arrSeccion = array();
 		foreach ($lista as $row) {
 			$arrSeccion[$row['idseccion']] = array(
@@ -91,7 +90,8 @@ class Seccion extends CI_Controller {
 			$arrAux = array();
 			foreach ($lista as $key2 => $row) {
 				if($rowSec['idseccion'] == $row['idseccion']){
-					array_push($arrAux,
+					$arrAux[$row['idseccioncontenido']] =
+					// array_push($arrAux,
 						array(
 							'idseccioncontenido' 	=> $row['idseccioncontenido'],
 							'titulo' 		=> $row['titulo'],
@@ -104,14 +104,36 @@ class Seccion extends CI_Controller {
 							'enlace_boton' 	=> $row['enlace_boton'],
 							'imagen' 		=> $row['imagen'],
 							'imagen_bg' 	=> $row['imagen_bg'],
-						)
-					);
+							'fichas'		=> array()
+						);
+					// );
 
 				}
 			}
 			$arrSeccion[$key]['contenedor'] = $arrAux;
 		}
-		// print_r($arrSeccion); exit();
+
+		foreach ($arrSeccion as $key => $rowSec) {
+			foreach ($rowSec['contenedor'] as $key2 => $rowCon) {
+				$arrAux = array();
+				foreach ($lista as $key3 => $row) {
+					if(($rowCon['idseccioncontenido'] == $row['idseccioncontenido']) && !empty($row['idficha']) ){
+						array_push($arrAux,
+							array(
+								'titulo' => $row['titulo_fi'],
+								'descripcion' => $row['descripcion_fi'],
+								'clase' => $row['icono_fi'],
+							)
+						);
+					}
+				}
+				$arrSeccion[$key]['contenedor'][$key2]['fichas'] = $arrAux;
+			}
+		}
+		foreach ($arrSeccion as $key => $rowSec) {
+			$arrSeccion[$key]['contenedor'] =array_values($rowSec['contenedor']);
+		}
+		// var_dump($arrSeccion); exit();
     	$arrData['datos'] = $arrSeccion;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
@@ -159,6 +181,68 @@ class Seccion extends CI_Controller {
     		$arrData['flag'] = 1;
 		}
     	// var_dump($allInputs); exit();
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_fichas()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_seccion->m_cargar_fichas_por_seccion($allInputs);
+		/*$arrListado = array();
+		var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idseccioncontenido' 	=> $row['idseccioncontenido'],
+					'titulo' 		=> $row['titulo'],
+					'contenido' 	=> $row['contenido'],
+
+				)
+			);
+		}*/
+
+    	$arrData['datos'] = $lista;
+    	// $arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function registrar_ficha()
+	{
+		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// validaciones
+    	if(empty($allInputs['titulo'])){
+    		$arrData['message'] = 'Debe ingresar un título';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+		// data
+    	$data = array(
+    		'idseccioncontenido' => $allInputs['idseccioncontenido'],
+    		'titulo_fi' => trim(strtoupper_total($allInputs['titulo'])),
+    		'descripcion_fi' => $allInputs['descripcion'],
+    	);
+
+
+    	$idbanner = $this->model_seccion->m_registrar_ficha($data);
+    	// var_dump($idbanner); exit();
+		if($idbanner){
+
+			$arrData['message'] = 'Se registraron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

@@ -8,7 +8,7 @@
     <!-- col -->
     <div class="col-md-12">
       <!-- tile -->
-      <div class="tile">
+      <div class="tile" ng-show="se.boolListado">
         <!-- tile header -->
         <section class="tile-header">
           <h1 class="heading">Secciones</h1>
@@ -42,6 +42,57 @@
         <!-- /tile body -->
       </div>
       <!-- /tile -->
+      <div class="tile" ng-show="!se.boolListado">
+        <section class="tile-header">
+          <h1 class="heading">Fichas</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" ng-click="" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <section class="tile-body">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <div class="form-group pull-right" style="position: relative;z-index: 10">
+                <button class="btn btn-success" ng-click='se.btnNuevaFicha(se.seccion)'>Nuevo</button>
+              </div>
+              <div class="form-group pull-right" style="position: relative;z-index: 10">
+                <button class="btn btn-warning" ng-click='se.btnVolver()'>Regresar</button>
+              </div>
+            </div>
+            <div class="col-md-4 portlets connected" ng-repeat="item in se.listaFichas" ui-sortable="{items:'.portlet', handle:'.tile-header', connectWith:'.connected'}">
+              <div class="tile portlet bg-primary" style="min-height: 250px;">
+                <!-- tile header -->
+                <section class="tile-header">
+                  <i class="{{item.icono_fi}}"></i>
+                  <h1 class="heading">{{item.titulo_fi}}</h1>
+                  <div class="controls">
+                    <button class="btn btn-transparent" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-transparent" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button class="btn btn-transparent"><i class="fa fa-times" aria-hidden="true"></i></button>
+                  </div>
+                </section>
+                <!-- /tile header -->
+
+                <!-- tile body -->
+                <section class="tile-body">
+                  {{item.descripcion_fi}}
+                </section>
+                <!-- /tile body -->
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
     <!-- /col -->
   </div>
