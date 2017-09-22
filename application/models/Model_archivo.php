@@ -64,4 +64,13 @@ class Model_archivo extends CI_Model {
 
 		return $this->db->update('archivo', $datos);
 	}
+
+	public function m_delete_archivo($data){
+		$datos = array(
+			'estado_ar' => 0
+		);
+		$this->db->where('idcliente',$data['idcliente']);
+
+		return $this->db->update('archivo', $datos);
+	}
 }

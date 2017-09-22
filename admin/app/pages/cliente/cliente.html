@@ -72,19 +72,24 @@
           <div class="row">
             <div class="col-md-12 col-sm-12">
               <div class="form-group pull-right" style="position: relative;z-index: 10">
-                <button class="btn btn-success" ng-click='c.btnVolver()'>Volver</button>
-              </div>
+                <button class="btn btn-success" ng-click='c.btnVolver()'>
+                <i class="fa fa-reply"></i> Volver</button>
+              </div> 
               <div class="form-group" style="position: relative;z-index: 10">
-                <h3 class="heading">Cliente: {{c.fDataUpload.nombres}}</h3>
                 <div class="form-group">
-                  <label class="control-label minotaur-label">Seleccione</label>
-                  <div class="form-group">
-                    <input type="file" nv-file-select="" uploader="uploader" multiple  /><br/>
+                  <h3 class="heading pl-md">Cliente: {{c.fDataUpload.nombres}} {{c.fDataUpload.apellidos}}</h3>
+                  <label class="col-md-12 control-label minotaur-label">Seleccione</label>
+                  <div class="form-group col-md-3">
+                    <input type="file" nv-file-select="" uploader="uploader" multiple class="filestyle" filestyle="{ buttonText: 'Select file', iconName: 'fa fa-inbox' }" /><br/>
                   </div>
+                  <div class="form-group" style="text-align: right;">
+                    <span >Tamaño maximo para Imagenes es de 10Mg</span> <br/>
+                    <span>Tamaño maximo para Videos es de 100Mg</span>
+                  </div>
+                  
+                  <div class="col-md-12" style="margin-bottom: 40px">
 
-                  <div class="col-md-9" style="margin-bottom: 40px">
-
-                    <p>Queue length: {{ uploader.queue.length }}</p>
+                    <p>Cantidad de archivos en cola: {{ uploader.queue.length }}</p>
 
                     <table class="table">
                         <thead>

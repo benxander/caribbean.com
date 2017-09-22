@@ -6,9 +6,10 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
+		$this->db->join('archivo a','a.idcliente = c.idcliente', 'left');
 		$this->db->where('c.estado_cl', 1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -25,6 +26,7 @@ class Model_cliente extends CI_Model {
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
 		}
+		$this->db->group_by('c.idcliente,u.codigo');
 		return $this->db->get()->result_array();
 	}
 

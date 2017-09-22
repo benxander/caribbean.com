@@ -20,12 +20,13 @@ class Cliente extends CI_Controller {
 				array(
 					'idcliente' => $row['idcliente'],
 					'idusuario' => $row['idusuario'],
-					'nombres' => $row['nombres'],
-					'apellidos' => $row['apellidos'],
-					'email' => $row['email'],
-					'whatsapp' => $row['whatsapp'],
-					'estado_cl' => $row['estado_cl'],
-					'codigo' => $row['codigo']
+					'nombres' 	=> $row['nombres'],
+					'apellidos'	=> $row['apellidos'],
+					'email' 	=> $row['email'],
+					'whatsapp' 	=> $row['whatsapp'],
+					'estado_cl'	=> $row['estado_cl'],
+					'codigo' 	=> $row['codigo'],
+					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
 			);
 		}
@@ -97,15 +98,32 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function delete_archivo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+
+		if($this->model_archivo->m_delete_archivo($allInputs)){
+			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
+			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales');
+			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'thumbs');
+			$arrData['message'] = 'Se eliminaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 	public function upload_cliente(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['message'] = 'Error al subir imagenes';
+		$arrData['message'] = 'Error al subir imagenes/videos';
     	$arrData['flag'] = 0;
-    	/*var_dump($allInputs);
-    	var_dump($_FILES);
+    	/*var_dump($_FILES);
     	var_dump($_REQUEST);
-    	exit();*/
+    	var_dump($_POST);*/
+    	
+    	
     	$cliente = "";
 
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
@@ -121,58 +139,112 @@ class Cliente extends CI_Controller {
 			    $file_tmp =$_FILES['file']['tmp_name'];
 			    $file_type=$_FILES['file']['type'];
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-			    $extensions = array("jpeg","jpg","png");
+			    $extensions_image = array("jpeg","jpg","png");
+			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
 
-			    /*if(in_array($file_ext,$extensions )=== false){
-			     $errors[]="imaagen extension not allowed, please choose a JPEG or PNG file.";
-			    }
-			    if($file_size > 2097152){
-			    $errors[]='File size cannot exceed 2 MB';
-			    }*/
-			    if(empty($errors)){
+			    $contenido = '<!DOCTYPE html><html><head>
+									<title>403 Forbidden</title>
+									<style type="text/css">
+										body{background-color:#ffffff;font-family:verdana,sans-serif;
+											font-size: 35px}
+									</style>
+								</head>
+								<body>
+									<p>Acceso denegado</p>
+								</body></html>';
 
-			    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
-			    	if (!file_exists($carpeta)) {
-					    mkdir($carpeta, 0777, true);
-					}
-					if (!file_exists($carpeta . DIRECTORY_SEPARATOR . 'originales')) {
-					    mkdir($carpeta . DIRECTORY_SEPARATOR . 'originales', 0777, true);
-					}
-					if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'thumbs')) {
-					    mkdir($carpeta . DIRECTORY_SEPARATOR . 'thumbs', 0777, true);
-					}
-					if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'descargadas')) {
-					    mkdir($carpeta . DIRECTORY_SEPARATOR .'descargadas', 0777, true);
-					}
+				// CREAR CARPESTAS CLIENTE				
+		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
+		    	if (!file_exists($carpeta)) {
+				    mkdir($carpeta, 0777, true);
+				    file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
+				}
+				if (!file_exists($carpeta . DIRECTORY_SEPARATOR . 'originales')) {
+				    mkdir($carpeta . DIRECTORY_SEPARATOR . 'originales', 0777, true);
+					file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'originales'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+				}
+				if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'thumbs')) {
+				    mkdir($carpeta . DIRECTORY_SEPARATOR . 'thumbs', 0777, true);
+				    file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'thumbs'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+				}
+				if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'descargadas')) {
+				    mkdir($carpeta . DIRECTORY_SEPARATOR .'descargadas', 0777, true);
+				    file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'descargadas'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+				}
 
-					$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
-					$file_name = generateRandomString() .'.'. $file_ext ;
+				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
+				$file_name = generateRandomString() .'.'. $file_ext ;
+								
+				// IMAGENES
+			    if(in_array($file_ext,$extensions_image)){
+			    
+			    	if($file_size < 10485760){
 
-			        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
-					move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
-
-			        $allInputs = array(
-						'idcliente' 	=> $idcliente,
-						'idusuario' 	=> $idusuario,
-						'nombre_archivo'=> $file_name,
-						'size'			=> $file_size,
-						'idtipoproducto'=> 1
-					);
-
-			        if($this->model_archivo->m_registrar_archivo($allInputs)){
-						$arrData['message'] = 'Se subieron las imagenes correctamente. ';
-			    		$arrData['flag'] = 1;
-					}
-			    }else{
-
-			        if(empty($allInputs['imagen'])){
-			    		$arrData['message'] = $errors;
-			    		$arrData['flag'] = 0;
+				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
+						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);  
+						
+						$allInputs = array(
+							'idcliente' 	=> $idcliente,
+							'idusuario' 	=> $idusuario,
+							'nombre_archivo'=> $file_name,
+							'size'			=> $file_size,
+							'idtipoproducto'=> 1
+						);
+						array_push($allInputs,array('idtipoproducto'=> 1));
+				        if($this->model_archivo->m_registrar_archivo($allInputs)){
+							$arrData['message'] = 'Se subieron las imagenes correctamente. ';
+				    		$arrData['flag'] = 1;
+						}
+			    	}else{
+			    		$arrData['message'] = 'El tamaño es mayor a 10Mb';
 			    		$this->output
 						    ->set_content_type('application/json')
 						    ->set_output(json_encode($arrData));
 						return;
-			    	}
+			    	} 
+
+				//VIDEOS	
+			    }elseif(in_array($file_ext,$extensions_video)){
+			    	if($file_size < 104857600){
+				    	/*$frame = 10;
+						$movie = $file_name;
+						$thumbnail = $carpeta_destino . DIRECTORY_SEPARATOR . $file_name;
+
+						$mov = new ffmpeg_movie($movie);
+						$frame = $mov->getFrame($frame);
+						if ($frame) {
+						    $gd_image = $frame->toGDImage();
+						    if ($gd_image) {
+						        imagepng($gd_image, $thumbnail);
+						        imagedestroy($gd_image);
+						    }
+						}*/
+						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+						$allInputs = array(
+							'idcliente' 	=> $idcliente,
+							'idusuario' 	=> $idusuario,
+							'nombre_archivo'=> $file_name,
+							'size'			=> $file_size,
+							'idtipoproducto'=> 2
+						);
+						if($this->model_archivo->m_registrar_archivo($allInputs)){
+							$arrData['message'] = 'Se subieron videos correctamente. ';
+				    		$arrData['flag'] = 1;
+						}
+					}else{
+			    		$arrData['message'] = 'El tamaño es mayor a 100Mb';
+			    		$this->output
+						    ->set_content_type('application/json')
+						    ->set_output(json_encode($arrData));
+						return;
+			    	} 
+			     
+			    }else{
+			    	$arrData['message'] = 'No es el formato correcto';
+		    		$this->output
+					    ->set_content_type('application/json')
+					    ->set_output(json_encode($arrData));
+					return;
 			    }
 			}
 		}
