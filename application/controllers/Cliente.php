@@ -58,9 +58,9 @@ class Cliente extends CI_Controller {
 				'estado_cl' => $row['estado_cl'],
 				'ididioma' => $row['ididioma'],
 				'idioma' => $row['idioma'],
-				'solicita_bonificacion' => $row['solicita_bonificacion'],			
-				'nombre_foto' => $row['nombre_foto'],			
-			);		
+				'solicita_bonificacion' => $row['solicita_bonificacion'],
+				'nombre_foto' => $row['nombre_foto'],
+			);
 
     	$arrData['datos'] = $arrListado;
     	$arrData['flag'] = 1;

@@ -50,79 +50,24 @@
 		<div class="col-md-8">
 
             <div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-6" ng-repeat="item in seccionWeb[2].contenedor[1].fichas">
 
 					<div class="service-box style-4 wow fadeIn">
 
-						<i class="halcyon-icon-worldwide-1"></i>
+						<i class="{{item.clase}}"></i>
 
-						<h6><a href="single-service.html">World recognicion</a></h6>
+						<h6><a href="">{{item.titulo}}</a></h6>
 
 						<div class="service-box-content">
 
-							<p>Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Pellentesque vitae dui.</p>
+							{{item.descripcion}}
 
 						</div><!-- service-box-content -->
 
 					</div><!-- service-box -->
 
 				</div><!-- col -->
-				<div class="col-sm-6">
 
-					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
-
-						<i class="halcyon-icon-network"></i>
-
-						<h6><a href="single-service.html">Test our products</a></h6>
-
-						<div class="service-box-content">
-
-							<p>Etiam turpis tortor, finibus quis urna eu, venenatis dapibus leo. Etiam sit amet
-							fringilla.</p>
-
-						</div><!-- service-box-content -->
-
-					</div><!-- service-box -->
-
-				</div><!-- col -->
-			</div><!-- row -->
-
-			<div class="row">
-				<div class="col-sm-6">
-
-					<div class="service-box style-4 wow fadeIn">
-
-						<i class="halcyon-icon-database-3"></i>
-
-						<h6><a href="single-service.html">Profit's on the way</a></h6>
-
-						<div class="service-box-content">
-
-							<p>Aliquam pretium diam a elit dignissim, sit amet sodales neque tristique. Duis non.</p>
-
-						</div><!-- service-box-content -->
-
-					</div><!-- service-box -->
-
-				</div><!-- col -->
-				<div class="col-sm-6">
-
-					<div class="service-box style-4 wow fadeIn" data-wow-delay="0.1s">
-
-						<i class="halcyon-icon-paper-plane-1"></i>
-
-						<h6><a href="single-service.html">Contact us</a></h6>
-
-						<div class="service-box-content">
-
-							<p>Praesent et laoreet tortor. Ut molestie ac dolor ut maximus. Vestibulum vestibulum
-							enim.</p>
-
-						</div><!-- service-box-content -->
-
-					</div><!-- service-box -->
-
-				</div><!-- col -->
 			</div><!-- row -->
 
         </div><!-- col -->

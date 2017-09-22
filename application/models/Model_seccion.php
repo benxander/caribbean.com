@@ -81,4 +81,8 @@ class Model_seccion extends CI_Model {
 	public function m_registrar_ficha($data){
 		return $this->db->insert('ficha', $data);
 	}
+	public function m_editar_ficha($data,$id){
+		$this->db->where('idficha',$id);
+		return $this->db->update('ficha', $data);
+	}
 }

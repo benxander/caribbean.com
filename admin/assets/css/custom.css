@@ -239,3 +239,7 @@ minotaur-header .navbar-header .navbar-brand{
 minotaur-header .navbar-header .navigation-toggle{
     margin-left: 10px;
 }
+
+/**fichas*/
+.ficha .tile-header .icono{font-size: 1.8em;padding-right: 10px;}
+.ficha .tile-header h4{display: inline;}

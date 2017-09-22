@@ -213,14 +213,13 @@ class Seccion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function registrar_ficha()
-	{
-		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+	public function registrar_ficha(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// validaciones
-    	if(empty($allInputs['titulo'])){
+    	if(empty($allInputs['titulo_fi'])){
     		$arrData['message'] = 'Debe ingresar un título';
     		$this->output
 			    ->set_content_type('application/json')
@@ -231,16 +230,40 @@ class Seccion extends CI_Controller {
 		// data
     	$data = array(
     		'idseccioncontenido' => $allInputs['idseccioncontenido'],
-    		'titulo_fi' => trim(strtoupper_total($allInputs['titulo'])),
-    		'descripcion_fi' => $allInputs['descripcion'],
+    		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
+    		'descripcion_fi' => $allInputs['descripcion_fi'],
     	);
-
-
-    	$idbanner = $this->model_seccion->m_registrar_ficha($data);
-    	// var_dump($idbanner); exit();
-		if($idbanner){
+		if( $this->model_seccion->m_registrar_ficha($data) ){
 
 			$arrData['message'] = 'Se registraron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_ficha(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// validaciones
+    	if(empty($allInputs['titulo_fi'])){
+    		$arrData['message'] = 'Debe ingresar un título';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+		$data = array(
+    		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
+    		'descripcion_fi' => $allInputs['descripcion_fi'],
+    	);
+
+		if( $this->model_seccion->m_editar_ficha($data,$allInputs['idficha']) ){
+
+			$arrData['message'] = 'Se editaron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output

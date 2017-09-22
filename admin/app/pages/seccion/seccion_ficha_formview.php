@@ -7,7 +7,7 @@
 		    <div class="row">
 	            <div class="form-group col-md-12">
 	              <label for="titulo" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
-	              <input type="text" name="titulo" id="titulo" class="form-control" ng-model="mf.fData.titulo" placeholder="Registre titulo" required>
+	              <input type="text" name="titulo" id="titulo" class="form-control" ng-model="mf.fData.titulo_fi" placeholder="Registre titulo" required>
 	              <div ng-messages="formSeccionFicha.titulo.$error" ng-if="formSeccionFicha.titulo.$dirty" role="alert" class="help-block text-red">
 	                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              </div>
@@ -16,7 +16,7 @@
 
 	    		<div class="form-group col-md-12">
 		            <label class="control-label minotaur-label">Contenido <small class="text-red">(*)</small> </label>
-		            <textarea class="form-control" ng-model="mf.fData.descripcion"></textarea>
+		            <textarea class="form-control" ng-model="mf.fData.descripcion_fi"></textarea>
 	            </div>
 
 		    </div>

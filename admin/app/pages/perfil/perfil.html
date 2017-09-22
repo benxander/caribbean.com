@@ -76,9 +76,9 @@
 
                     <button class="pull-left btn btn-input-sm btn-primary mt-15" type="button" ng-if="!p.cambiarClave" ng-click="p.cambiarClave=true">Cambiar contraseña</button>
 
-                    <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.cambiarClave" 
+                    <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.cambiarClave"
                             ng-click="p.btnGuardarClave(p.fDataPerfil)"><i class="fa fa-arrow-right"></i> Guardar</button>
-                    <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="p.cambiarClave" 
+                    <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="p.cambiarClave"
                             ng-click="btnCancelClave();" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
 
                     <h4 ng-if="p.cambiarClave" class="text-info f-14 col-sm-12">Cambiar contraseña</h4>
@@ -86,22 +86,22 @@
                       <label for="clave" class="col-sm-4 control-label minotaur-label">Ingresa contraseña actual: </label>
                       <div class="col-sm-8">
                         <input type="password" class="form-control  text-center" id="clave" placeholder="Contraseña" ng-model="p.fDataPerfil.clave">
-                      </div>                      
+                      </div>
                     </div>
                     <div ng-if="p.cambiarClave" class="form-group">
                       <label for="nuevaclave" class="col-sm-4 control-label minotaur-label">Ingresa contraseña nueva: </label>
                       <div class="col-sm-8">
                         <input type="password" class="form-control  text-center" id="nuevaclave" placeholder="Nueva Contraseña" ng-model="p.fDataPerfil.nuevaclave">
-                      </div>                      
+                      </div>
                     </div>
                     <div ng-if="p.cambiarClave" class="form-group">
                       <label for="password" class="col-sm-4 control-label minotaur-label">Repite contraseña nueva: </label>
                       <div class="col-sm-8">
                         <input type="password" class="form-control  text-center" id="password" placeholder="Repite Contraseña" ng-model="p.fDataPerfil.password">
-                      </div>                      
+                      </div>
                     </div>
                   </div>
-                  <!-- <div class="col-sm-4">
+                  <div class="col-sm-4">
                     <h4 class="text-info f-14 col-sm-12">Foto</h4>
                     <div class="text-center" ng-if="!p.fotoCrop">
                       <img ng-src="assets/images/dinamic/clientes/{{p.fDataPerfil.nombre_foto}}" style="width: 100%">
@@ -134,7 +134,7 @@
                       <button class="btn btn-sm btn-success" ng-click="p.subirFoto();">Guardar Foto</button>
                     </div>
                     <button class="btn btn-sm btn-danger mt-10" ng-click="p.eliminarFoto();" ng-show="p.fDataPerfil.nombre_foto != 'sin-imagen.png'">Quitar Foto</button>
-                  </div>  -->
+                  </div>
                 </div>
               </form>
             </div>

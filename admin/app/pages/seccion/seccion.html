@@ -62,22 +62,21 @@
           <div class="row">
             <div class="col-md-12 col-sm-12">
               <div class="form-group pull-right" style="position: relative;z-index: 10">
+                <button class="btn btn-warning" ng-click='se.btnVolver()'>Regresar <i class="halcyon-icon-arrow-right"></i></button>
+              </div>
+              <div class="form-group pull-right mr" style="position: relative;z-index: 10">
                 <button class="btn btn-success" ng-click='se.btnNuevaFicha(se.seccion)'>Nuevo</button>
               </div>
-              <div class="form-group pull-right" style="position: relative;z-index: 10">
-                <button class="btn btn-warning" ng-click='se.btnVolver()'>Regresar</button>
-              </div>
             </div>
-            <div class="col-md-4 portlets connected" ng-repeat="item in se.listaFichas" ui-sortable="{items:'.portlet', handle:'.tile-header', connectWith:'.connected'}">
-              <div class="tile portlet bg-primary" style="min-height: 250px;">
+            <div class="col-md-3 portlets connected" ng-repeat="item in se.listaFichas" ui-sortable="{items:'.portlet', handle:'.tile-header', connectWith:'.connected'}">
+              <div class="tile portlet bg-primary ficha" style="min-height: 250px;">
                 <!-- tile header -->
                 <section class="tile-header">
-                  <i class="{{item.icono_fi}}"></i>
-                  <h1 class="heading">{{item.titulo_fi}}</h1>
+                  <i class="{{item.icono_fi}} icono"></i>
+                  <h4 class="">{{item.titulo_fi}}</h4>
                   <div class="controls">
-                    <button class="btn btn-transparent" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                    <button class="btn btn-transparent" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                    <button class="btn btn-transparent"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button class="btn btn-transparent" ng-click="se.btnEditarFicha(item)" uib-tooltip="Editar" tooltip-placement="left" ><i class="halcyon-icon-edit" aria-hidden="true"></i></button>
+                    <button class="btn btn-transparent" ng-click="se.btnEliminarFicha(item)" uib-tooltip="Eliminar" tooltip-placement="left"><i class="fa fa-times" aria-hidden="true"></i></button>
                   </div>
                 </section>
                 <!-- /tile header -->

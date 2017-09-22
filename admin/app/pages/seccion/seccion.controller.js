@@ -151,31 +151,19 @@
           }
         });
       }
-
-      vm.verFichas = function(row){
-        vm.boolListado = false;
-        vm.seccion = row.entity;
-
-        SeccionServices.sListarFichas(vm.seccion).then(function (rpta) {
+      vm.listarFichas = function(seccion){
+        SeccionServices.sListarFichas(seccion).then(function (rpta) {
           vm.listaFichas = rpta.datos;
           // vm.mySelectionGrid = [];
         });
       }
+      vm.verFichas = function(row){
+        vm.listaFichas = null;
+        vm.boolListado = false;
+        vm.seccion = row.entity;
+        vm.listarFichas(vm.seccion);
+      }
       vm.btnNuevaFicha = function(seccion){
-
-       /* if(vm.listaFichas.length > 0){
-          vm.listaFichas.push({
-           titulo : 'Titulo',
-           descripcion:'Escriba una descripcion',
-           clase: 'halcyon-icon-paper-plane-1'
-          });
-        }else{
-          vm.listaFichas = [{
-           titulo : 'Titulo',
-           descripcion:'Escriba una descripcion',
-           clase: 'halcyon-icon-paper-plane-1'
-          }];
-        }*/
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/seccion/seccion_ficha_formview.php',
           controllerAs: 'mf',
@@ -187,7 +175,7 @@
             vm.fData = {};
             // vm.fData = angular.copy(arrToModal.seleccion);
             // vm.modoEdicion = true;
-            // vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.listarFichas = arrToModal.listarFichas;
             vm.modalTitle = 'Registro de Ficha';
 
             vm.fData.idseccioncontenido = seccion.idseccioncontenido;
@@ -202,6 +190,7 @@
                   var title = 'OK';
                   var type = 'success';
                   $uibModalInstance.close(vm.fData);
+                  vm.listarFichas(seccion);
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
                   var type = 'warning';
@@ -218,8 +207,58 @@
           resolve: {
             arrToModal: function() {
               return {
-                // getPaginationServerSide : vm.getPaginationServerSide,
+                listarFichas : vm.listarFichas,
                 seleccion : seccion,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
+      vm.btnEditarFicha = function(item){
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/seccion/seccion_ficha_formview.php',
+          controllerAs: 'mf',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.fData = angular.copy(arrToModal.seleccion);
+            // vm.modoEdicion = true;
+            vm.listarFichas = arrToModal.listarFichas;
+            vm.modalTitle = 'Editar Ficha';
+            vm.seccion = arrToModal.scope.seccion;
+            // vm.fData.idficha = arrToModal.seleccion.idficha;
+            console.log('seccion',vm.seccion);
+            console.log('data',vm.fData);
+            vm.aceptar = function () {
+              SeccionServices.sEditarFicha(vm.fData).then(function (rpta) {
+                if(rpta.flag == 1){
+                  $uibModalInstance.dismiss('cancel');
+                  var title = 'OK';
+                  var type = 'success';
+                  $uibModalInstance.close(vm.fData);
+                  vm.listarFichas(vm.seccion);
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                }else{
+                  alert('Ocurrió un error');
+                }
+                openedToasts.push(toastr[type](rpta.message, title));
+              });
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                listarFichas : vm.listarFichas,
+                seleccion : item,
                 scope : vm,
               }
             }
@@ -238,6 +277,7 @@
         sEditarContenido: sEditarContenido,
         sListarFichas: sListarFichas,
         sRegistrarFicha: sRegistrarFicha,
+        sEditarFicha: sEditarFicha,
     });
     function sListarSeccionCbo(pDatos) {
       var datos = pDatos || {};
@@ -280,6 +320,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/registrar_ficha",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/editar_ficha",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
