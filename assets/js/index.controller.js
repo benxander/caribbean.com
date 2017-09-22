@@ -12,7 +12,7 @@
         link: function(scope, element, attrs){
           $(element).fancybox({
             type        :'inline',
-            scrolling   : 'no',
+            scrolling   : 'yes',
             maxWidth    : 1000,
             maxHeight   : 600,
             fitToView   : true,
