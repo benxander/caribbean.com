@@ -89,45 +89,24 @@ class Archivo extends CI_Controller {
 		$error = FALSE;
 		foreach ($allInputs as $key => $image) {
 			if($image['selected']){
-				$urloriginal = '..\uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
-				$urldestino = '..\uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
+				$urloriginal = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
+				$urldestino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
 
 				if(!rename($urloriginal,$urldestino)){
 					$error = TRUE;
 				} 
+
+				if(!$error){
+					//actualizar archivo en BD
+				}
 			}
 		}
-		/*$lista = $this->model_archivo->m_cargar_galeria_no_descargados($allInputs);
-		$arrListado = array();
-		//var_dump($lista); exit();
-		foreach ($lista as $row) {
-			array_push($arrListado,
-				array(
-					'idarchivo' => $row['idarchivo'],
-					'idusuario' => $row['idusuario'],
-					'idcliente' => $row['idcliente'],
-					'nombre_archivo' => $row['nombre_archivo'],
-					'size' => $row['size'],
-					'fecha_subida' => $row['fecha_subida'],
-					'descargado' => $row['descargado'],
-					'fecha_descarga' => $row['fecha_descarga'],
-					'es_bonificacion' => $row['es_bonificacion'],
-					'idtipoproducto' => $row['idtipoproducto'],
-					'producto' => $row['producto'],
-					'precio' => $row['precio'],
-					'selected' => FALSE,
-					'src' => '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'],
-					'title' => '',
-				)
-			);
+
+		if(!$error){
+			$arrData['message'] = 'Archivos descargados exitosamente.';
+    		$arrData['flag'] = 1;
 		}
 
-    	$arrData['datos'] = $arrListado;
-    	$arrData['message'] = '';
-    	$arrData['flag'] = 1;
-		if(empty($lista)){
-			$arrData['flag'] = 0;
-		}*/
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
