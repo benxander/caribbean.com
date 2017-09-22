@@ -21,7 +21,7 @@ class Acceso extends CI_Controller {
 			$loggedUser = $this->model_acceso->m_logging_user($allInputs);
 			if( isset($loggedUser['logged']) && $loggedUser['logged'] > 0 ){
     			if($loggedUser['estado_us'] == 1){
-					$arrData['flag'] = 1;
+
 					$arrPerfilUsuario = array();
 					$arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
 					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
@@ -29,31 +29,41 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$arrPerfilUsuario['logged'] = true;
 
-					$cliente = $this->model_cliente->m_cargar_cliente_por_idusuario($loggedUser['idusuario']);
+					/* CARGAR DATOS DEL CLIENTE SOLO SI ES DEL GRUPO CLIENTE*/
+					if( $loggedUser['key_grupo'] == 'key_cliente' ){
+						$cliente = $this->model_cliente->m_cargar_cliente_por_idusuario($loggedUser['idusuario']);
 
-					if(!empty($cliente['idcliente'])){						
-						$arrPerfilUsuario['idcliente'] = $cliente['idcliente'];
-						$arrPerfilUsuario['nombres'] = $cliente['nombres'];
-						$arrPerfilUsuario['apellidos'] = $cliente['apellidos'];
-						$arrPerfilUsuario['cliente'] = strtoupper_total($cliente['nombres'] . ' ' .$cliente['apellidos']);
-						$arrPerfilUsuario['email'] = $cliente['email'];
-						$arrPerfilUsuario['whatsapp'] = $cliente['whatsapp'];
-						$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
-						$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
-						$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+						if(!empty($cliente['idcliente'])){
+							$arrPerfilUsuario['idcliente'] = $cliente['idcliente'];
+							$arrPerfilUsuario['nombres'] = $cliente['nombres'];
+							$arrPerfilUsuario['apellidos'] = $cliente['apellidos'];
+							$arrPerfilUsuario['cliente'] = strtoupper_total($cliente['nombres'] . ' ' .$cliente['apellidos']);
+							$arrPerfilUsuario['email'] = $cliente['email'];
+							$arrPerfilUsuario['whatsapp'] = $cliente['whatsapp'];
+							$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
+							$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
+							$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+							$arrData['message'] = 'Usuario inició sesión correctamente';
+						}
+
+						// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA.
+						//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);
+						// ACTUALIZAMOS EL ULTIMO LOGEO DEL USUARIO.
+						//$this->model_acceso->m_actualizar_fecha_ultima_sesion($arrPerfilUsuario);
+						if( isset($arrPerfilUsuario['idcliente']) ){
+							$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
+						}else{
+							$arrData['flag'] = 0;
+		    				$arrData['message'] = 'No se encontró los datos del usuario.';
+						}
+
+					}else{
+						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
+						$arrData['flag'] = 1;
 						$arrData['message'] = 'Usuario inició sesión correctamente';
 					}
 
-					// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA.
-					//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);
-					// ACTUALIZAMOS EL ULTIMO LOGEO DEL USUARIO.
-					//$this->model_acceso->m_actualizar_fecha_ultima_sesion($arrPerfilUsuario);
-					if( isset($arrPerfilUsuario['idcliente']) ){
-						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
-					}else{
-						$arrData['flag'] = 0;
-	    				$arrData['message'] = 'No se encontró los datos del usuario.';
-					}
+
 				}elseif($loggedUser['estado_us'] == 2){
 					$arrData['flag'] = 2;
 					$arrData['message'] = 'Su cuenta se encuentra deshabilitada.';
