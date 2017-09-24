@@ -5,6 +5,7 @@
     .module('minotaur')
     .factory('CalendarData', CalendarData)
     .factory('PageLoading', PageLoading)
+    .factory('TileLoading', TileLoading)
     .factory('PinesNotifications', PinesNotifications);
 
   /** @ngInject */
@@ -37,6 +38,32 @@
       }
     }
     return pageLoading;
+  }
+  function TileLoading(){
+    /*var tile = element.parents('.tile');
+        element.on('click', function(){
+          tile.addClass('loading');
+          cfpLoadingBar.start();
+
+          $timeout(function(){
+            tile.removeClass('loading');
+            cfpLoadingBar.complete();
+          },3000)*/
+    var tileLoading = {
+      start: function(text){
+          var tile = angular.element('.tile');
+          // var pageText = angular.element('.page-loading-text');
+          tile.addClass('loading');
+          cfpLoadingBar.start();
+      },
+      stop: function(){
+          var tile = angular.element('.tile');
+          // var pageText = angular.element('.page-loading-text');
+          page.removeClass('loading');
+          cfpLoadingBar.complete();
+      }
+    }
+    return tileLoading;
   }
   function PinesNotifications($window){
     return {

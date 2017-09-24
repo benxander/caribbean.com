@@ -64,7 +64,9 @@
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
+    <div id="page-loading" >
+        <div class="page-loading-text"></div>
+    </div>
     <div id="wrap">
 
       <minotaur-header ng-class="specialClass" ng-if="specialClass !== 'core'"></minotaur-header>
@@ -191,11 +193,11 @@
     <script src="bower_components/mixitup2/dist/mixitup.min.js"></script>
     <script src="bower_components/intro.js/intro.js"></script>
     <script src="bower_components/angular-intro.js/src/angular-intro.js"></script>
-    <script src="bower_components/jqvmap/dist/jquery.vmap.min.js"></script>
+<!--     <script src="bower_components/jqvmap/dist/jquery.vmap.min.js"></script>
     <script src="bower_components/jqvmap/dist/maps/jquery.vmap.world.js"></script>
     <script src="bower_components/jqvmap/dist/maps/jquery.vmap.usa.js"></script>
     <script src="bower_components/jqvmap/dist/maps/jquery.vmap.europe.js"></script>
-    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.germany.js"></script>
+    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.germany.js"></script> -->
     <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
     <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
@@ -240,6 +242,7 @@
     <!-- inject:js -->
     <script src="../assets/js/config.js"></script>
     <script src="app/index.module.js"></script>
+    <!-- <script src="app/index.factory.js"></script> -->
     <script src="app/components/partials/rightbar/rightbar.directive.js"></script>
     <script src="app/components/partials/navigation/navigation.directive.js"></script>
     <script src="app/components/partials/header/header.directive.js"></script>
@@ -292,7 +295,6 @@
     <script src="app/index.run.js"></script>
     <script src="app/index.route.js"></script>
     <script src="app/index.controller.js"></script>
-    <script src="app/index.factory.js"></script>
     <script src="app/index.constants.js"></script>
     <script src="app/index.config.js"></script>
     <!-- endinject -->

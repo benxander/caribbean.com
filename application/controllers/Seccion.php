@@ -31,6 +31,80 @@ class Seccion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_tipo_iconos_cbo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_seccion->m_cargar_tipo_iconos_cbo();
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idtipoicono'],
+					'descripcion' => $row['descripcion']
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_iconos_autocomplete(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_seccion->m_cargar_iconos_cbo($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idicono'],
+					// 'descripcion' => $row['descripcion'],
+					'descripcion' => '<i class="' . $row['icono'] . '"></i> ' . $row['descripcion'],
+					'icono' => $row['icono']
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_iconos(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		// $allInputs['tipoIcono']['id'] = $allInputs['']
+		$lista = $this->model_seccion->m_cargar_iconos_cbo($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idicono'],
+					'descripcion' => $row['descripcion'],
+					// 'descripcion' => '<i class="' . $row['icono'] . '"></i> ' . $row['descripcion'],
+					'icono' => $row['icono']
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function listar_secciones()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);

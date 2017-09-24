@@ -1,8 +1,11 @@
 <div class="page page-ui pull-to-header">
   <ol class="breadcrumb bg-white">
     <li><a ui-sref="dashboard">Dashboard</a></li>
-    <li class="active">Secciones</li>
+    <li class="active" ng-if="se.boolListado">Secciones</li>
+    <li ng-if="!se.boolListado"><a href="" ng-click='se.btnVolver();$preventDefault()'>Secciones</a></li>
+    <li class="active" ng-if="!se.boolListado">{{se.seccion.titulo}}</li>
   </ol>
+
   <!-- row -->
   <div class="row">
     <!-- col -->
@@ -22,7 +25,7 @@
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
+            <!-- <minotaur-tile-close></minotaur-tile-close> -->
           </div>
         </section>
         <!-- /tile header -->
@@ -42,20 +45,20 @@
         <!-- /tile body -->
       </div>
       <!-- /tile -->
-      <div class="tile" ng-show="!se.boolListado">
+      <div class="tile" ng-show="!se.boolListado" style="min-height: 470px;">
         <section class="tile-header">
-          <h1 class="heading">Fichas</h1>
+          <h1 class="heading">{{se.tituloFichas}}</h1>
           <div class="controls">
             <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" ng-click="" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="" ng-click="se.listarFichas(se.seccion);" ><i class="fa fa-refresh"></i>Refresh</a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
+            <!-- <minotaur-tile-close></minotaur-tile-close> -->
           </div>
         </section>
         <section class="tile-body">

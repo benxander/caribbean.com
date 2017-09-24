@@ -13,6 +13,22 @@ class Model_seccion extends CI_Model {
 		// $this->db->limit(10);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_tipo_iconos_cbo(){
+		$this->db->select("idtipoicono, descripcion");
+		$this->db->from('tipo_icono');
+		return $this->db->get()->result_array();
+	}
+	public function m_cargar_iconos_cbo($datos){
+		$this->db->select("idicono, descripcion, icono");
+		$this->db->from('icono ico');
+		$this->db->where("ico.idtipoicono",$datos['tipoIcono']['id']);
+		if(!empty($datos['search'])){
+			$this->db->where("UPPER(ico.icono) LIKE '%". strtoupper($datos['search']) . "%'");
+			$this->db->limit(10);
+		}
+		$this->db->order_by('descripcion','ASC');
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_secciones($paramPaginate=FALSE){
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
 		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');

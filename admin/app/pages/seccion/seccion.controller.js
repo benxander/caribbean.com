@@ -6,12 +6,34 @@
     .service('SeccionServices', SeccionServices);
 
   /** @ngInject */
-  function SeccionController($scope,SeccionServices,$uibModal, uiGridConstants, toastr, alertify,) {
+  function SeccionController($scope,tileLoading,SeccionServices,$uibModal, uiGridConstants, toastr, alertify) {
     var vm = this;
     var openedToasts = [];
     //$scope.image = "";
     vm.boolListado = true;
     vm.listaFichas = [];
+    // LISTA TIPO DE ICONOS
+      SeccionServices.sListarTipoIconosCbo().then(function(rpta){
+        vm.listaTiposIconos = rpta.datos;
+      });
+    // LISTA DE ICONOS
+      vm.listarIconosAuto = function (value,tipo) {
+        var params = {};
+        params.search= value;
+        params.tipoIcono= tipo;
+        return SeccionServices.sListarIconosAutocomplete(params).then(function(rpta) {
+          vm.noResultsLI = false;
+          if( rpta.flag === 0 ){
+            vm.noResultsLI = true;
+          }
+          return rpta.datos;
+        });
+      }
+      // vm.listarIconos = function(tipo){
+      //   SeccionServices.sListarIconos(tipo).then(function(rpta) {
+      //     return rpta.datos;
+      //   });
+      // }
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -80,7 +102,11 @@
       }
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[1].name;
-      vm.getPaginationServerSide = function() {
+      vm.getPaginationServerSide = function(loader) {
+        var loader = loader || false;
+        if(loader){
+          tileLoading.start();
+        }
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -88,9 +114,12 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          if(loader){
+            tileLoading.stop();
+          }
         });
       }
-      vm.getPaginationServerSide();
+      vm.getPaginationServerSide(true);
     // MANTENIMIENTO
       vm.btnEditar = function(row){
         var modalInstance = $uibModal.open({
@@ -123,7 +152,7 @@
               SeccionServices.sEditarContenido(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
-                  vm.getPaginationServerSide();
+                  vm.getPaginationServerSide(true);
                   var title = 'OK';
                   var type = 'success';
                 }else if( rpta.flag == 0 ){
@@ -152,15 +181,18 @@
         });
       }
       vm.listarFichas = function(seccion){
+        tileLoading.start();
         SeccionServices.sListarFichas(seccion).then(function (rpta) {
           vm.listaFichas = rpta.datos;
+          tileLoading.stop();
           // vm.mySelectionGrid = [];
         });
       }
       vm.verFichas = function(row){
-        vm.listaFichas = null;
+        vm.listaFichas = {};
         vm.boolListado = false;
         vm.seccion = row.entity;
+        vm.tituloFichas = 'FICHAS DE ' + vm.seccion.titulo;
         vm.listarFichas(vm.seccion);
       }
       vm.btnNuevaFicha = function(seccion){
@@ -176,12 +208,26 @@
             // vm.fData = angular.copy(arrToModal.seleccion);
             // vm.modoEdicion = true;
             vm.listarFichas = arrToModal.listarFichas;
+            vm.listaTiposIconos = arrToModal.scope.listaTiposIconos;
+            vm.fData.tipoIcono = vm.listaTiposIconos[0];
+
+            vm.listarIconos = function(data){
+              SeccionServices.sListarIconos(data).then(function(rpta) {
+                vm.listaIconos = rpta.datos;
+              });
+            }
+            vm.listarIconos(vm.fData);
+
+            // vm.listarIconos =  arrToModal.scope.listarIconos;
+            // vm.lista = vm.listarIconos(vm.fData);
+            console.log('iconos', vm.listaIconos);
+
             vm.modalTitle = 'Registro de Ficha';
 
             vm.fData.idseccioncontenido = seccion.idseccioncontenido;
             // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
-            console.log('seccion',seccion);
-            console.log('data',vm.fData);
+            // console.log('seccion',seccion);
+            // console.log('data',vm.fData);
             vm.aceptar = function () {
               SeccionServices.sRegistrarFicha(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -274,10 +320,13 @@
     return({
         sListarSeccionCbo: sListarSeccionCbo,
         sListarSecciones: sListarSecciones,
+        sListarTipoIconosCbo: sListarTipoIconosCbo,
         sEditarContenido: sEditarContenido,
         sListarFichas: sListarFichas,
         sRegistrarFicha: sRegistrarFicha,
         sEditarFicha: sEditarFicha,
+        sListarIconos: sListarIconos,
+        sListarIconosAutocomplete: sListarIconosAutocomplete,
     });
     function sListarSeccionCbo(pDatos) {
       var datos = pDatos || {};
@@ -293,6 +342,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/listar_secciones",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarTipoIconosCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_tipo_iconos_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -329,6 +387,24 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/editar_ficha",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarIconosAutocomplete(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_iconos_autocomplete",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarIconos(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_iconos",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

@@ -5,6 +5,64 @@
     .module('minotaur')
     .controller('MainController', MainController)
     .service('rootServices', rootServices)
+    .factory("tileLoading", function(cfpLoadingBar){
+      var tileLoading = {
+        start: function(text){
+            var tile = angular.element('.tile');
+            // var pageText = angular.element('.page-loading-text');
+            tile.addClass('loading');
+            cfpLoadingBar.start();
+        },
+        stop: function(){
+            var tile = angular.element('.tile');
+            // var pageText = angular.element('.page-loading-text');
+            tile.removeClass('loading');
+            cfpLoadingBar.complete();
+        }
+      }
+      return tileLoading;
+    })
+    .factory("pageLoading", function(){
+      var pageLoading = {
+        start: function(text){
+            var page = angular.element('#page-loading');
+            var pageText = angular.element('.page-loading-text');
+            page.addClass('visible');
+            pageText.text(text);
+        },
+        stop: function(){
+            var page = angular.element('#page-loading');
+            var pageText = angular.element('.page-loading-text');
+            page.removeClass('visible');
+            pageText.text('');
+        }
+      }
+      return pageLoading;
+    })
+    .factory("handle", function(alertify){
+      var handle = {
+        error: function (error) {
+                      return function () {
+                        return {success: false, message: Notification.warning({message: error})};
+                      };
+        },
+        success: function (response) {
+            //console.log('response.data',response.data);
+            if(response.data.flag == 'session_expired'){
+              alertify.okBtn("CLICK AQUI")
+                      .cancelBtn("Cerrar")
+                      .confirm(response.data.message,
+                        function (ev) {
+                          var dir = window.location.href.split('app')[0];
+                          window.location.href = dir + 'app/pages/login';
+                        }
+                      );
+            }
+            return( response.data );
+        }
+      }
+      return handle;
+    })
     .directive('hcChart', function () {
       return {
           restrict: 'E',

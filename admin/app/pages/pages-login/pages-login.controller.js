@@ -9,13 +9,15 @@
   /** @ngInject */
   function LoginController($scope,loginServices) {
   	$scope.getValidateSession();
+    $scope.fLogin = {};
   	$scope.btnLoginToSystem = function () {
       //console.log('esta en el Login');
       if($scope.fLogin.usuario == null || $scope.fLogin.clave == null || $scope.fLogin.usuario == '' || $scope.fLogin.clave == ''){
         $scope.fAlert = {};
-        $scope.fAlert.type= 'orange';
+        $scope.fAlert.type= 'warning';
         $scope.fAlert.msg= 'Debe completar los campos usuario y contraseña.';
         $scope.fAlert.strStrong = 'Aviso.';
+        $scope.fAlert.icono = 'fa fa-warning';
         return;
       }
 
@@ -25,6 +27,7 @@
           $scope.fAlert.type= 'success';
           $scope.fAlert.msg= response.message;
           $scope.fAlert.strStrong = 'OK.';
+          $scope.fAlert.icono = 'fa fa-check';
           $scope.getValidateSession();
           $scope.logIn();
           // $scope.getNotificaciones();
@@ -32,10 +35,12 @@
           $scope.fAlert.type= 'danger';
           $scope.fAlert.msg= response.message;
           $scope.fAlert.strStrong = 'Error.';
+          $scope.fAlert.icono = 'fa fa-bullhorn';
         }else if( response.flag == 2 ){  // CUENTA INACTIVA
-          $scope.fAlert.type= 'orange';
+          $scope.fAlert.type= 'warning';
           $scope.fAlert.msg= response.message;
           $scope.fAlert.strStrong = 'Aviso.';
+          $scope.fAlert.icono = 'fa fa-warning';
           $scope.listaSedes = response.datos;
         }
         $scope.fAlert.flag = response.flag;
