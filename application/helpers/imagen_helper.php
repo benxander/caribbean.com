@@ -208,3 +208,14 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
     imagedestroy($watermark);
 
 }
+
+function deleteArchivos($carpeta){
+  foreach(glob($carpeta . "/*") as $archivos_carpeta){             
+    if (is_dir($archivos_carpeta)){
+      deleteArchivos($archivos_carpeta);
+    } else {
+    unlink($archivos_carpeta);
+    }
+  }
+  rmdir($carpeta);
+}

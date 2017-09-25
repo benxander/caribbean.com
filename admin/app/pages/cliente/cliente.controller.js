@@ -47,12 +47,13 @@
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL',width: 150, enableFiltering: false, enableSorting: false },
         { field: 'whatsapp', name: 'whatsapp', displayName: 'WHATSAPP',width: 120, enableFiltering: false, enableSorting: false },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 130, enableFiltering: false,
-          cellTemplate: '<div class="text-center">' +
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 160, enableFiltering: false,
+          cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnNuevoUsuario(row)" tooltip-placement="left" uib-tooltip="CREAR USUARIO" ng-if="!row.entity.idusuario"> <i class="fa fa-user-o"></i> </button>' +
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="SUBIR IMAGENES" ng-if="row.entity.idusuario"> <i class="fa fa-upload"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR IMAGENES" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
           '</div>'
         }
 
@@ -227,6 +228,28 @@
             ev.preventDefault();
         });
       }
+      vm.btnDelete = function(row){
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            ClienteServices.sDelete(row.entity).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+        });
+      }
       vm.btnNuevoUsuario = function (row) {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/usuario/usuario_formview.php',
@@ -315,29 +338,12 @@
         vm.fDataUpload = angular.copy(row.entity);
         console.log(vm.fDataUpload);
 
-        // a sync filter
-       /* uploader.filters.push({
-            name: 'syncFilter',
-            fn: function(item , options) {
-                console.log('syncFilter');
-                return this.queue.length < 10;
-            }
-        });
-      
-        // an async filter
-        uploader.filters.push({
-            name: 'asyncFilter',
-            fn: function(item , options, deferred) {
-                console.log('asyncFilter');
-                setTimeout(deferred.resolve, 1e3);
-            }
-        });*/
         vm.subirTodo = function(){
           console.log('aqui estoy');
           uploader.uploadAll();
         }
         vm.btnSubirVideo = function(){
-          UsuarioServices.sUploadCliente(vm.fData).then(function(rpta){
+          ClienteServices.sUploadClienteVideo(vm.fDataUpload).then(function (rpta) {
             if(rpta.flag == 1){
               var title = 'OK';
               var type = 'success';
@@ -352,9 +358,10 @@
           });
         }
      
-        vm.volver = function() {
+        vm.btnVolver = function() {
           vm.gritdClientes = true; 
           vm.fDataUpload = {};
+          vm.getPaginationServerSide();
         }
 
         // CALLBACKS
@@ -382,6 +389,9 @@
             console.info('onProgressItem', fileItem, progress);
         };
         uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onResumen = function(progress) {
             console.info('onProgressAll', progress);
         };
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
@@ -438,7 +448,9 @@
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
         sAnularCliente: sAnularCliente,
-        sUploadCliente: sUploadCliente
+        sUploadCliente: sUploadCliente,
+        sUploadClienteVideo: sUploadClienteVideo,
+        sDelete: sDelete
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -494,12 +506,31 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
+    function sDelete(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/delete_archivo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sUploadCliente(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/upload_cliente",
             data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sUploadClienteVideo (datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Cliente/upload_cliente", 
+            data : datos,
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
       });
       return (request.then( handleSuccess,handleError ));
     }
