@@ -26,6 +26,8 @@ class Cliente extends CI_Controller {
 					'whatsapp' 	=> $row['whatsapp'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
+					'ididioma' 	=> $row['ididioma'],
+					'fecha' 	=> $row['fecha_final'],
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
 			);
@@ -50,10 +52,26 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
-		if($this->model_cliente->m_registrar_cliente($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente';
-    		$arrData['flag'] = 1;
-		}
+    	if(empty($allInputs['ididioma'])){
+    		$arrData['message'] = 'Debe seleccionar un idioma.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+    	$this->db->trans_start();
+		
+    	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
+		if($idusuario){
+			$allInputs['idusuario'] = $idusuario;
+			if($this->model_cliente->m_registrar_cliente($allInputs)){
+				$arrData['message'] = 'Se registraron los datos correctamente';
+    			$arrData['flag'] = 1;
+			}
+		}	
+		
+		$this->db->trans_complete();
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -66,8 +84,10 @@ class Cliente extends CI_Controller {
     	$arrData['flag'] = 0;
 
 		if( $this->model_cliente->m_editar_cliente($allInputs) ){
-			$arrData['message'] = 'Se editaron los datos correctamente ';
-    		$arrData['flag'] = 1;
+			if( $this->model_usuario->m_editar_usuario_cliente($allInputs) ){
+				$arrData['message'] = 'Se editaron los datos correctamente ';
+	    		$arrData['flag'] = 1;
+			}
 		}
 		$this->output
 		    ->set_content_type('application/json')

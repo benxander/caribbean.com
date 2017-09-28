@@ -6,7 +6,8 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo, COUNT(a.idarchivo) as archivo');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->join('archivo a','a.idcliente = c.idcliente', 'left');
@@ -48,6 +49,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente_cbo($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
+		$this->db->select('u.codigo, u.ididioma, u.fecha_final');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);
@@ -59,24 +61,29 @@ class Model_cliente extends CI_Model {
 	// MANTENIMIENTO
 	public function m_registrar_cliente($data){
 		$datos = array(			
-			'nombres' => strtoupper($data['nombres']),
-			'apellidos' => strtoupper($data['apellidos']),
-			'email' => $data['email'],
-			'whatsapp' => empty($data['whatsapp']) ? NULL : $data['whatsapp'],
-			'estado_cl' => 1,
-			'createdat' => date('Y-m-d H:i:s'),
-			'updatedat' => date('Y-m-d H:i:s'),
+			'nombres' 		 => strtoupper($data['nombres']),
+			'apellidos' 	=> strtoupper($data['apellidos']),
+			'email' 		=> $data['email'],
+			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'estado_cl' 	=> 1,
+			'idusuario' 	=> $data['idusuario'],
+			'createdat' 	=> date('Y-m-d H:i:s'),
+			'updatedat' 	=> date('Y-m-d H:i:s'),
+			'fecha_final' 	=> $data['fecha'],
 		 );
-		return $this->db->insert('cliente', $datos);
+		$this->db->insert('cliente', $datos);
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
 	}
 
 	public function m_editar_cliente($data){
 		$datos = array(			
-			'nombres' => strtoupper($data['nombres']),
-			'apellidos' => strtoupper($data['apellidos']),
-			'email' => $data['email'],
-			'whatsapp' => empty($data['whatsapp']) ? NULL : $data['whatsapp'],
-			'updatedat' => date('Y-m-d H:i:s'),
+			'nombres' 		=> strtoupper($data['nombres']),
+			'apellidos' 	=> strtoupper($data['apellidos']),
+			'email' 		=> $data['email'],
+			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'updatedat' 	=> date('Y-m-d H:i:s'),
+			'fecha_final'	=> $data['fecha'],
 		 );
 		$this->db->where('idcliente',$data['idcliente']);
 

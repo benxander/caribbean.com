@@ -73,9 +73,9 @@ class Model_usuario extends CI_Model {
 	public function m_registrar_usuario($data){
 		
 		$datos = array(			
-			'idgrupo' => $data['idgrupo'],
-			'username' => $data['username'],
-			'password' => hash('md5',$data['password']),
+			'idgrupo' => 3,
+			'username' => $data['email'],
+			'password' => hash('md5',$data['codigo']),
 			'ididioma' => $data['ididioma'],
 			'solicita_bonificacion' => 2,
 			'estado_us' => 1,
@@ -104,6 +104,20 @@ class Model_usuario extends CI_Model {
 			'username' => $data['username'],
 			'password' => ($oldPassword != hash('md5',$data['password'])) ? hash('md5',$data['password']) : $oldPassword,
 			'ididioma' => $data['ididioma'],
+			'updatedat' => date('Y-m-d H:i:s'),
+		);
+		$this->db->where('idusuario',$data['idusuario']);
+
+		return $this->db->update('usuario', $datos);
+	}
+
+	public function m_editar_usuario_cliente($data){
+
+		$datos = array(			
+			'username' => $data['email'],
+			'password' => hash('md5',$data['codigo']),
+			'ididioma' => $data['ididioma'],
+			'codigo' => $data['codigo'],
 			'updatedat' => date('Y-m-d H:i:s'),
 		);
 		$this->db->where('idusuario',$data['idusuario']);

@@ -22,6 +22,18 @@
 					<label for="whatsapp" class="control-label minotaur-label">Whatsapp</label>
 	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Registre Whatsapp" >
 	            </div>
+	            <div class="form-group col-md-6">
+					<label for="idioma" class="control-label minotaur-label">Idioma</label>
+	              	<select class="form-control" ng-model="mc.fData.ididioma" ng-options="item.id as item.descripcion for item in mc.listaIdiomas" > </select>
+	            </div>
+	            <div class="form-group col-md-6" >
+					<label for="codigo" class="control-label minotaur-label">Codigo del Cliente <small class="text-red">(*)</small> </label>
+	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Codigo del Cliente" required>
+	            </div>
+	            <div class="form-group col-md-6" >
+					<label for="fecha" class="control-label minotaur-label">Fecha de Estadia <small class="text-red">(*)</small> </label>
+	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha" input-mask mask-options="{alias: 'date'}" required>
+	            </div>
 		    </div>
 		</form>
 	</section>

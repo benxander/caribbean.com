@@ -51,7 +51,6 @@
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
-          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnNuevoUsuario(row)" tooltip-placement="left" uib-tooltip="CREAR USUARIO" ng-if="!row.entity.idusuario"> <i class="fa fa-user-o"></i> </button>' +
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="SUBIR IMAGENES" ng-if="row.entity.idusuario"> <i class="fa fa-upload"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR IMAGENES" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
           '</div>'
@@ -103,11 +102,6 @@
         vm.listaIdiomas = rpta.datos;
         vm.listaIdiomas.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
       });
-      // GRUPO
-      UsuarioServices.sListarGrupo().then(function (rpta) {
-        vm.listaGrupos = rpta.datos;
-        vm.listaGrupos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});       
-      });
 
       // MANTENIMIENTO
       vm.btnNuevo = function () {
@@ -124,6 +118,9 @@
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de cliente';
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            vm.fData.ididioma = vm.listaIdiomas[0].id;
+            
 
             // botones
               vm.aceptar = function () {
@@ -134,6 +131,20 @@
                     var title = 'OK';
                     var type = 'success';
                     toastr.success(rpta.message, title);
+
+                    UsuarioServices.sEnviarMailRegistro(vm.fData).then(function(rpta){
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
@@ -172,6 +183,7 @@
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             
             vm.aceptar = function () {
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {
@@ -250,87 +262,6 @@
             ev.preventDefault();
         });
       }
-      vm.btnNuevoUsuario = function (row) {
-        var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/usuario/usuario_formview.php',
-          controllerAs: 'mu',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-16',
-          windowClass: 'splash splash-2 splash-ef-16',
-          scope: $scope,
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            vm.fData = {};
-            vm.modoEdicion = false;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Registro de usuario';
-            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            vm.listaGrupos = arrToModal.scope.listaGrupos;
-            vm.fData.ididioma = vm.listaIdiomas[0].id;
-            vm.fData.idgrupo = vm.listaGrupos[0].id;
-            vm.fData.idcliente = row.entity.idcliente;
-            vm.fData.username = row.entity.email;
-
-            vm.generarPassword = function (longitud) {
-              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ2346789";
-              var pass = "";
-              for (i=0; i<longitud; i++){
-                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
-              }
-              vm.fData.password = pass;
-              console.log(vm.fData.password);
-            }
-            vm.generarPassword(5);
-            // botones
-              vm.aceptar = function () {
-                UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
-                  if(rpta.flag == 1){
-    
-                    var title = 'OK';
-                    var type = 'success';
-                    toastr.success(rpta.message, title);
-
-                    UsuarioServices.sEnviarMailRegistro(vm.fData).then(function(rpta){
-                      if(rpta.flag == 1){
-                        var title = 'OK';
-                        var type = 'success';
-                        toastr.success(rpta.message, title);
-                      }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var type = 'warning';
-                        toastr.warning(rpta.message, title);
-                      }else{
-                        alert('Ocurrió un error');
-                      }
-                    });
-
-                    $uibModalInstance.close(vm.fData);
-                    vm.getPaginationServerSide();
-                  }else if( rpta.flag == 0 ){
-                    var title = 'Advertencia';
-                    var type = 'warning';
-                    toastr.warning(rpta.message, title);
-                  }else{
-                    alert('Ocurrió un error');
-                  }
-                });
-
-              };
-              vm.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-              };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                scope : vm,
-              }
-            }
-          }
-        });
-      }
-
       vm.btnUpload = function(row){
         vm.gritdClientes = false;
         vm.fData = {};
@@ -434,11 +365,7 @@
         };
 
         console.info('uploader', uploader);
-
       }
-
-
-
   }
 
   function ClienteServices($http, $q) {

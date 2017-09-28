@@ -108,15 +108,7 @@ class Usuario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	
-    	if(empty($allInputs['idgrupo'])){
-    		$arrData['message'] = 'Debe seleccionar un grupo.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
-  
+    	 
     	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
@@ -208,21 +200,18 @@ class Usuario extends CI_Controller {
 		$arrData['message'] = 'Error al enviar email.';
     	$arrData['flag'] = 0;
 
-		$result =  $this->model_cliente->m_cargar_cliente_cbo($allInputs); 
-		$cliente = $result[0];
-
 		$mensaje = '<html> 
 		      <head>
 		        <title>Usuario en Caribbean</title> 
 		      </head>
-		      <body style="font-family: sans-serif;padding: 10px 40px;" >';
+		      <body style="font-family: sans-serif;padding: 10px 40px; color: #000000" >';
 		
 		$mensaje .= '<div style="font-size:16px;">  
-		        Estimado Sr(a).: '. $cliente['nombres']. ' '.$cliente['apellidos'].' <br /> <br /> ';
+		        Estimado Sr(a).: '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
   		$mensaje .= '<div style="font-size:16px;">  
 		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
 		         Usuario: '.$allInputs['email'].'<br />
-		         Contraseña: '.$allInputs['password'];
+		         Contraseña: '.$allInputs['codigo'];
 		$mensaje .= '<br /> Ingrese en esta <a href="">página</a> para iniciar session. <br />';
 		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
 		$mensaje .= '</body></html>';
