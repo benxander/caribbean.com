@@ -211,12 +211,23 @@
             vm.listaTiposIconos = arrToModal.scope.listaTiposIconos;
             vm.fData.tipoIcono = vm.listaTiposIconos[0];
 
-            vm.listarIconos = function(data){
-              SeccionServices.sListarIconos(data).then(function(rpta) {
-                vm.listaIconos = rpta.datos;
+            vm.listarIconos = function(value){
+              var params = {
+                search: value,
+                tipoIcono: vm.fData.tipoIcono
+              }
+              return SeccionServices.sListarIconosAutocomplete(params).then(function(rpta) {
+                $scope.noResultsLPSC = false;
+                if( rpta.flag === 0 ){
+                  $scope.noResultsLPSC = true;
+                }
+                return rpta.datos;
               });
+              // SeccionServices.sListarIconos(params).then(function(rpta) {
+              //   vm.listaIconos = rpta.datos;
+              // });
             }
-            vm.listarIconos(vm.fData);
+            //vm.listarIconos(vm.fData);
 
             // vm.listarIconos =  arrToModal.scope.listarIconos;
             // vm.lista = vm.listarIconos(vm.fData);

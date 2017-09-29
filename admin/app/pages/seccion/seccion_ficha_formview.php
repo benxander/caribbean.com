@@ -1,3 +1,9 @@
+<style>
+	#icono .dropdown-menu{
+		height: 190px!important;
+		overflow: auto!important;
+	}
+</style>
 <div class="modal-header">
   <h4 class="modal-title">{{mf.modalTitle}}</h4>
 </div>
@@ -32,11 +38,12 @@
 			          <i class="glyphicon glyphicon-remove"></i> No Results Found
 			        </div> -->
 	            <!-- </div> -->
-	            <div class="form-group col-md-3">
-		            <label class="control-label minotaur-label">Icono</label>
-	                <select chosen="{width: '100%'}" ng-model="mf.fData.icono" ng-options="item as item.descripcion for item in mf.listaIconos">
-	                </select>
+	            <div class="form-group col-md-3" id="icono">
 
+		            <label class="control-label minotaur-label">Icono</label>
+	                <!-- <select chosen="{width: '100%'}" ng-model="mf.fData.icono" data-ng-options="item as mf.format(item) for item in mf.listaIconos">
+	                </select> -->
+	                <input type="text" ng-model="mf.fData.icono" placeholder="Selecciona Icono" uib-typeahead="item as item.descripcion for item in mf.listarIconos($viewValue)" class="form-control" typeahead-show-hint="false" typeahead-min-length="0">
 		        </div>
 
 	    		<div class="form-group col-md-12">
