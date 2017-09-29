@@ -71,11 +71,11 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_registrar_usuario($data){
-		
-		$datos = array(			
-			'idgrupo' => $data['idgrupo'],
-			'username' => $data['username'],
-			'password' => hash('md5',$data['password']),
+
+		$datos = array(
+			'idgrupo' => 3,
+			'username' => $data['email'],
+			'password' => hash('md5',$data['codigo']),
 			'ididioma' => $data['ididioma'],
 			'solicita_bonificacion' => 2,
 			'estado_us' => 1,
@@ -99,7 +99,7 @@ class Model_usuario extends CI_Model {
 		$oldPassword = $fData['password'];
 		$this->db->reset_query();
 
-		$datos = array(			
+		$datos = array(
 			'idgrupo' => $data['idgrupo'],
 			'username' => $data['username'],
 			'password' => ($oldPassword != hash('md5',$data['password'])) ? hash('md5',$data['password']) : $oldPassword,
@@ -111,8 +111,9 @@ class Model_usuario extends CI_Model {
 		return $this->db->update('usuario', $datos);
 	}
 
+// <<<<<<< HEAD
 	public function m_editar_idioma_usuario($datos){
-		$data = array(			
+		$data = array(
 			'ididioma' => $datos['ididioma'],
 			'updatedat' => date('Y-m-d H:i:s'),
 		);
@@ -121,12 +122,27 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_editar_clave_usuario($datos){
-		$data = array(			
+		$data = array(
 			'password' => hash('md5',$data['password']),
 			'updatedat' => date('Y-m-d H:i:s'),
 		);
 		$this->db->where('idusuario',$datos['idusuario']);
 		return $this->db->update('usuario', $data);
+	}
+// =======
+	public function m_editar_usuario_cliente($data){
+
+		$datos = array(
+			'username' => $data['email'],
+			'password' => hash('md5',$data['codigo']),
+			'ididioma' => $data['ididioma'],
+			'codigo' => $data['codigo'],
+			'updatedat' => date('Y-m-d H:i:s'),
+		);
+		$this->db->where('idusuario',$data['idusuario']);
+
+		return $this->db->update('usuario', $datos);
+// >>>>>>> b_cliente
 	}
 
 	public function m_anular_usuario($data){
@@ -182,7 +198,7 @@ class Model_usuario extends CI_Model {
 			return TRUE;
 		}else{
 			return FALSE;
-		}	
+		}
 	}
 }
 
