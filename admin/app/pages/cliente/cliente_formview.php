@@ -32,7 +32,7 @@
 	            </div>
 	            <div class="form-group col-md-6" >
 					<label for="fecha" class="control-label minotaur-label">Fecha de Estadia <small class="text-red">(*)</small> </label>
-	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha" input-mask mask-options="{alias: 'date'}" required>
+	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
 		    </div>
 		</form>

@@ -66,6 +66,25 @@ class Model_archivo extends CI_Model {
 		return $fData;
 	}
 
+	public function m_cargar_imagenes($data){
+		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto, 
+		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, u.codigo');
+		$this->db->from('archivo a');
+		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
+		$this->db->where('a.estado_arc', 1);
+		$this->db->where('a.idusuario', $data['idusuario']);
+		return $this->db->get()->result_array();
+	}
+
+	public function m_cargar_nombre_imagenes($data){
+		$this->db->select('a.nombre_archivo');
+		$this->db->from('archivo a');
+		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
+		$this->db->where('a.estado_arc', 1);
+		$this->db->where('a.idusuario', $data['idusuario']);
+		return $this->db->get()->result_array();
+	}
+
 	// MANTENIMIENTO
 	public function m_registrar_archivo($data){
 		$datos = array(
@@ -82,7 +101,7 @@ class Model_archivo extends CI_Model {
 
 	public function m_anular_archivo($data){
 		$datos = array(
-			'estado_ar' => 0
+			'estado_arc' => 0
 		);
 		$this->db->where('idarchivo',$data['idarchivo']);
 
@@ -92,7 +111,7 @@ class Model_archivo extends CI_Model {
 
 	public function m_delete_archivo($data){
 		$datos = array(
-			'estado_ar' => 0
+			'estado_arc' => 0
 		);
 		$this->db->where('idcliente',$data['idcliente']);
 

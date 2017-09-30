@@ -219,3 +219,33 @@ function deleteArchivos($carpeta){
   }
   rmdir($carpeta);
 }
+
+function createCarpetas($carpeta){
+    $contenido = '<!DOCTYPE html><html><head>
+                    <title>403 Forbidden</title>
+                    <style type="text/css">
+                        body{background-color:#ffffff;font-family:verdana,sans-serif;
+                            font-size: 35px}
+                    </style>
+                </head>
+                <body>
+                    <p>Acceso denegado</p>
+                </body></html>';
+
+    if (!file_exists($carpeta)) {
+        mkdir($carpeta, 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+    if (!file_exists($carpeta . DIRECTORY_SEPARATOR . 'originales')) {
+        mkdir($carpeta . DIRECTORY_SEPARATOR . 'originales', 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'originales'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+    if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'thumbs')) {
+        mkdir($carpeta . DIRECTORY_SEPARATOR . 'thumbs', 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'thumbs'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+    if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'descargadas')) {
+        mkdir($carpeta . DIRECTORY_SEPARATOR .'descargadas', 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'descargadas'. DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+}
