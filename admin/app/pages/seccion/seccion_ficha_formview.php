@@ -11,14 +11,14 @@
 	<section class="tile-body p-0">
 		<form name="formSeccionFicha" role="form" novalidate class="form-validation">
 		    <div class="row">
-	            <div class="form-group col-md-6">
+	            <div class="form-group col-md-12">
 	              <label for="titulo" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
 	              <input type="text" name="titulo" id="titulo" class="form-control" ng-model="mf.fData.titulo_fi" placeholder="Registre titulo" required>
 	              <div ng-messages="formSeccionFicha.titulo.$error" ng-if="formSeccionFicha.titulo.$dirty" role="alert" class="help-block text-red">
 	                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              </div>
 	            </div>
-	            <div class="form-group col-md-3">
+	            <div class="form-group col-md-3" ng-if="false">
 	            	<label class="control-label minotaur-label">Tipo de Icono  </label>
 	            	<select class="form-control" ng-model="mf.fData.tipoIcono" ng-options="item as item.descripcion for item in mf.listaTiposIconos" ng-change="mf.fData.icono = null" required > </select>
 	            </div>
@@ -38,7 +38,7 @@
 			          <i class="glyphicon glyphicon-remove"></i> No Results Found
 			        </div> -->
 	            <!-- </div> -->
-	            <div class="form-group col-md-3" id="icono">
+	            <div class="form-group col-md-3" id="icono" ng-if="false">
 
 		            <label class="control-label minotaur-label">Icono</label>
 	                <!-- <select chosen="{width: '100%'}" ng-model="mf.fData.icono" data-ng-options="item as mf.format(item) for item in mf.listaIconos">

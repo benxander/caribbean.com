@@ -199,7 +199,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/seccion/seccion_ficha_formview.php',
           controllerAs: 'mf',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
