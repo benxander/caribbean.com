@@ -72,6 +72,11 @@ class Cliente extends CI_Controller {
 		}	
 		
 		$this->db->trans_complete();
+
+		if($arrData['flag'] == 1){
+			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
+		    createCarpetas($carpeta);
+		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -118,6 +123,21 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
+	public function anular_archivo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if($this->model_archivo->m_anular_archivo($allInputs)){
+			$arrData['message'] = 'Se anularon los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
 	public function delete_archivo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
@@ -139,11 +159,6 @@ class Cliente extends CI_Controller {
 	public function upload_cliente(){
 		$arrData['message'] = 'Error al subir imagenes/videos';
     	$arrData['flag'] = 0;
-    	/*var_dump($_FILES);
-    	var_dump($_REQUEST);
-    	var_dump($_POST);*/
-    	
-    	
     	$cliente = "";
 
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
@@ -162,36 +177,9 @@ class Cliente extends CI_Controller {
 			    $extensions_image = array("jpeg","jpg","png");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
 
-			    $contenido = '<!DOCTYPE html><html><head>
-									<title>403 Forbidden</title>
-									<style type="text/css">
-										body{background-color:#ffffff;font-family:verdana,sans-serif;
-											font-size: 35px}
-									</style>
-								</head>
-								<body>
-									<p>Acceso denegado</p>
-								</body></html>';
-
 				// CREAR CARPESTAS CLIENTE				
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
-		    	if (!file_exists($carpeta)) {
-				    mkdir($carpeta, 0777, true);
-				    file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
-				}
-				if (!file_exists($carpeta . DIRECTORY_SEPARATOR . 'originales')) {
-				    mkdir($carpeta . DIRECTORY_SEPARATOR . 'originales', 0777, true);
-					file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'originales'. DIRECTORY_SEPARATOR .'index.html', $contenido);
-				}
-				if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'thumbs')) {
-				    mkdir($carpeta . DIRECTORY_SEPARATOR . 'thumbs', 0777, true);
-				    file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'thumbs'. DIRECTORY_SEPARATOR .'index.html', $contenido);
-				}
-				if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'descargadas')) {
-				    mkdir($carpeta . DIRECTORY_SEPARATOR .'descargadas', 0777, true);
-				    file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'descargadas'. DIRECTORY_SEPARATOR .'index.html', $contenido);
-				}
-
+		    	createCarpetas($carpeta);
 				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
 				$file_name = generateRandomString() .'.'. $file_ext ;
 								
@@ -270,6 +258,103 @@ class Cliente extends CI_Controller {
 		}
 
 
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function lista_imagenes(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_archivo->m_cargar_imagenes($allInputs);
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idarchivo' => $row['idarchivo'],
+					'idusuario' => $row['idusuario'],
+					'idcliente' => $row['idcliente'],
+					'nombre_archivo' => $row['nombre_archivo'],
+					'size' => $row['size'],
+					'idtipoproducto' => $row['idtipoproducto'],
+					'codigo_usuario' => $row['codigo'],
+					'selected' => FALSE,
+					'src' => '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'],
+					'title' => '',
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+    public function subir_imagenes_carpeta(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true); 
+		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente'; 
+    	$arrData['flag'] = 0;
+		
+        $this->load->helper('file');
+        $this->load->library('image_lib');
+        $extensions_image = array("jpeg","jpg","png");
+		$extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
+     	$lista = $this->model_archivo->m_cargar_nombre_imagenes($allInputs);
+     	$archivos = array();
+		$carpeta = './uploads/clientes/' . $allInputs['codigo'];
+		
+		if (!file_exists($carpeta)) {
+			$arrData['message'] = 'No existe el directorio';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
+		if (!file_exists($carpeta.'/originales/')) {
+			$arrData['message'] = 'No existe el directorio';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
+		foreach ($lista as $key => $value) {
+			array_push($archivos,$value['nombre_archivo']); 
+		}
+		
+       	foreach (get_filenames('./uploads/clientes/'.$allInputs['codigo'].'/originales/') as $archivo) {
+       		$file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+		   
+		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
+            	if(!in_array($archivo,$archivos)){
+            		$allInputs['nombre_archivo'] = $archivo;
+					$allInputs['size'] = $var;
+					if(in_array($file_ext,$extensions_image)){
+						$allInputs['idtipoproducto'] = 1;
+					}else{
+						$allInputs['idtipoproducto'] = 2;	
+					}
+		   			
+				    $carpeta = './uploads/clientes/'.$allInputs['codigo'];
+				    $archivo_dest = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
+				    $var = filesize($carpeta);
+		   			redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
+		   			
+            		if($this->model_archivo->m_registrar_archivo($allInputs)){
+						$arrData['message'] = 'Se subieron las imagen/videos correctamente. ';
+			    		$arrData['flag'] = 1;
+					}
+            	}
+            }
+        }
+    	//exit();
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

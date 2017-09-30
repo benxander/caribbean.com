@@ -10,7 +10,7 @@ class Model_cliente extends CI_Model {
 		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
-		$this->db->join('archivo a','a.idcliente = c.idcliente', 'left');
+		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -69,7 +69,7 @@ class Model_cliente extends CI_Model {
 			'idusuario' 	=> $data['idusuario'],
 			'createdat' 	=> date('Y-m-d H:i:s'),
 			'updatedat' 	=> date('Y-m-d H:i:s'),
-			'fecha_final' 	=> $data['fecha'],
+			'fecha_final' 	=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
 		 );
 		$this->db->insert('cliente', $datos);
 		$insert_id = $this->db->insert_id();

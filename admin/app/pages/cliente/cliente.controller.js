@@ -264,6 +264,7 @@
       }
       vm.btnUpload = function(row){
         vm.gritdClientes = false;
+        vm.uploadBtn = false;
         vm.fData = {};
         vm.fDataUpload = {};
         vm.fDataUpload = angular.copy(row.entity);
@@ -273,12 +274,57 @@
           console.log('aqui estoy');
           uploader.uploadAll();
         }
-        vm.btnSubirVideo = function(){
-          ClienteServices.sUploadClienteVideo(vm.fDataUpload).then(function (rpta) {
+     
+        vm.btnVolver = function() {
+          vm.gritdClientes = true; 
+          vm.fDataUpload = {};
+          vm.getPaginationServerSide();
+        }
+
+        vm.btnSubir = function() {
+          vm.uploadBtn = true;
+        }
+
+        vm.btnAnularArchivo = function(row){
+          alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+              ev.preventDefault();
+              ClienteServices.sAnularArchivo(row).then(function (rpta) {
+                if(rpta.flag == 1){
+                  vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var type = 'success';
+                  toastr.success(rpta.message, title);
+                  vm.cargarImagenes();
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                  toastr.warning(rpta.message, title);
+                }else{
+                  alert('Ocurrió un error');
+                }
+              });
+            },
+            function(ev){
+              ev.preventDefault();
+          });
+        }
+
+        vm.cargarImagenes = function(datos){
+          ClienteServices.sListarImagenes(vm.fDataUpload).then(function(rpta){
+            console.log(rpta);
+            vm.images = rpta.datos;
+          });
+        }
+        vm.cargarImagenes();
+
+        vm.btnSubirImagenesCarpeta = function(datos){
+          ClienteServices.sSubirImagenesCarpeta(vm.fDataUpload).then(function(rpta){
             if(rpta.flag == 1){
+              vm.getPaginationServerSide();
               var title = 'OK';
               var type = 'success';
               toastr.success(rpta.message, title);
+              vm.cargarImagenes();
             }else if( rpta.flag == 0 ){
               var title = 'Advertencia';
               var type = 'warning';
@@ -288,12 +334,7 @@
             }
           });
         }
-     
-        vm.btnVolver = function() {
-          vm.gritdClientes = true; 
-          vm.fDataUpload = {};
-          vm.getPaginationServerSide();
-        }
+
 
         // CALLBACKS
 
@@ -362,6 +403,9 @@
         };
         uploader.onCompleteAll = function() {
             console.info('onCompleteAll');
+            vm.uploadBtn = false;
+            uploader.clearQueue();
+            vm.cargarImagenes();
         };
 
         console.info('uploader', uploader);
@@ -374,8 +418,10 @@
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
         sAnularCliente: sAnularCliente,
+        sAnularArchivo: sAnularArchivo,
         sUploadCliente: sUploadCliente,
-        sUploadClienteVideo: sUploadClienteVideo,
+        sListarImagenes: sListarImagenes,
+        sSubirImagenesCarpeta: sSubirImagenesCarpeta,
         sDelete: sDelete
     });
     function sListarCliente(pDatos) {
@@ -423,6 +469,15 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
+    function sAnularArchivo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/anular_archivo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sDelete(pDatos) {
       var datos = pDatos || {};
       var request = $http({
@@ -441,13 +496,21 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sUploadClienteVideo (datos) {
+    function sListarImagenes (pDatos) {
+      var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Cliente/upload_cliente", 
-            data : datos,
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
+            url :  angular.patchURLCI + "Cliente/lista_imagenes",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sSubirImagenesCarpeta (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/subir_imagenes_carpeta",
+            data : datos
       });
       return (request.then( handleSuccess,handleError ));
     }
