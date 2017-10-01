@@ -334,6 +334,10 @@ class Cliente extends CI_Controller {
 		   
 		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
             	if(!in_array($archivo,$archivos)){
+            		$carpeta = './uploads/clientes/'.$allInputs['codigo'];
+				    $archivo_dest = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
+				    $var = filesize($carpeta);
+
             		$allInputs['nombre_archivo'] = $archivo;
 					$allInputs['size'] = $var;
 					if(in_array($file_ext,$extensions_image)){
@@ -342,10 +346,9 @@ class Cliente extends CI_Controller {
 						$allInputs['idtipoproducto'] = 2;	
 					}
 		   			
-				    $carpeta = './uploads/clientes/'.$allInputs['codigo'];
-				    $archivo_dest = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
-				    $var = filesize($carpeta);
-		   			redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
+				   	if(in_array($file_ext,$extensions_image)){
+		   				redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
+				   	}
 		   			
             		if($this->model_archivo->m_registrar_archivo($allInputs)){
 						$arrData['message'] = 'Se subieron las imagen/videos correctamente. ';
