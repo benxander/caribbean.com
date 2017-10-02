@@ -7266,4 +7266,8 @@
 /* traductor */
 .skiptranslate .goog-te-banner-frame{display:none!important;}
 body{top:0px!important;}
-.traductor{margin-top: 12px;}
+.traductor{
+	visibility: hidden;
+	position: absolute;
+	z-index: 999999;
+	right: 20%;top: 12px;}

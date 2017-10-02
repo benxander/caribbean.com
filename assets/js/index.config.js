@@ -80,6 +80,7 @@
         /* Remove preloader */
         $(".preloader-wrapper").fadeOut(1000, function() {
           $(this).remove();
+          $(".traductor").css({"visibility": "visible"});
         });
         /* page scroll */
         // var offset = $("body").data("offset");

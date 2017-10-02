@@ -334,6 +334,7 @@
                     });
                 }
             }
+            $('.traductor').css({"position":"relative"});
         } else {
             $("#mobile-menu").hide();
 			$(".menu-2").hide();
@@ -350,9 +351,15 @@
 			if ($(window).scrollTop() > sticky_point) {
 				$("#header-sticky").slideDown(300).addClass("header-sticky");
 				$("#header .menu ul, #header .menu .megamenu-container").css({"visibility": "hidden"});
-			} else {
-				$("#header-sticky").slideUp(100).removeClass("header-sticky");
-				$("#header .menu ul, #header .menu .megamenu-container").css({"visibility": "visible"});
+                if ($(window).width() >= 992) {
+                    $('.traductor').css({"position":"fixed"});
+                }
+            } else {
+                $("#header-sticky").slideUp(100).removeClass("header-sticky");
+                $("#header .menu ul, #header .menu .megamenu-container").css({"visibility": "visible"});
+                if ($(window).width() >= 992) {
+                    $('.traductor').css({"position":"absolute"});
+                }
 			}
 		});
 	}

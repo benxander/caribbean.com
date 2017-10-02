@@ -7,6 +7,8 @@
 	    .service('BlogServices', BlogServices);
 	function BlogController($scope,BlogServices) {
 	    var vm = this;
+	    $scope.pageInicio = false;
+	    console.log('scope.pageInicio',$scope.pageInicio);
 	    vm.listaNoticias = [];
 	    vm.headerStyle = {
 	    	'background-image' : 'url(uploads/banners/puntacana.jpg)'

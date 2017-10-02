@@ -67,52 +67,59 @@
     $scope.pageInicio = true;
 
     // $scope.fSessionCI = {};
-    $scope.items1 = [
-      {
-        'titulo': 'Responsive',
-        'descripcion' : 'Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet luctus.',
-        'clase' : 'halcyon-icon-eyeglasses'
-      },
-      {
-        'titulo': 'Seleccione sus fotos',
-        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
-        'clase' : 'halcyon-icon-photo-camera'
-      },
-      {
-        'titulo': 'Pagos con Paypal y Tarjeta',
-        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
-        'clase' : 'halcyon-icon-id-card-4'
-      },
-      {
-        'titulo': 'Otro item',
-        'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
-        'clase' : 'halcyon-icon-id-card-2'
-      }
-    ];
+    // $scope.items1 = [
+    //   {
+    //     'titulo': 'Responsive',
+    //     'descripcion' : 'Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet luctus.',
+    //     'clase' : 'halcyon-icon-eyeglasses'
+    //   },
+    //   {
+    //     'titulo': 'Seleccione sus fotos',
+    //     'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+    //     'clase' : 'halcyon-icon-photo-camera'
+    //   },
+    //   {
+    //     'titulo': 'Pagos con Paypal y Tarjeta',
+    //     'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+    //     'clase' : 'halcyon-icon-id-card-4'
+    //   },
+    //   {
+    //     'titulo': 'Otro item',
+    //     'descripcion' : 'Luctus mi mollis quam feugiat conseq uat eu sed eros. Cras suscipit eu est sed imperdiet. Aenean mdiet.',
+    //     'clase' : 'halcyon-icon-id-card-2'
+    //   }
+    // ];
 
     $scope.goToUrl = function ( path ) {
       $location.path( path );
     };
     $scope.scrollTo = function(id) {
       var delay = 0;
-      if($scope.pageInicio === false){
-        delay = 200;
-        $scope.pageInicio = true;
-      }
-      $timeout(function() {
-        if(id == 'inicio'){
-          $("html, body").animate({
-              scrollTop: 0
-          }, 800, 'linear');
-        }else{
-          var offset = $("body").data("offset");
-          $("html, body").animate({
-              scrollTop: $('#'+id).offset().top - offset
-          }, 800, 'linear');
-          console.log('offset',$('#'+id).offset().top);
-        }
+       console.log('home');
+      if($location.path( '/' )){
 
-      },delay);
+        $timeout(function() {
+          if(id == 'inicio'){
+            $("html, body").animate({
+                scrollTop: 0
+            }, 800, 'linear');
+          }else{
+            var offset = $("body").data("offset");
+            $("html, body").animate({
+                scrollTop: $('#'+id).offset().top - offset
+            }, 800, 'linear');
+            console.log('offset',$('#'+id).offset().top);
+          }
+
+        },delay);
+
+        // $location.path( '/' );
+        // delay = 200;
+        // $scope.pageInicio = true;
+      }else{
+       console.log('blog');
+
+      }
       return false;
     };
 
@@ -227,21 +234,22 @@
       //         scrollTop: 0
       //     }, 800, 'linear');
       // }
-      var paramDatos = {
-        'limit': 3,
-        'sortName': 'fecha',
-        'sort' : 'DESC'
-
-      }
-      BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
-        if(rpta.flag == 1){
-          vm.listaNoticiasSec = rpta.datos;
-          console.log(vm.listaNoticiasSec);
-
-        }else{
-          console.log('no data');
+      if( $location.path() == '/' ){
+        var paramDatos = {
+          'limit': 3,
+          'sortName': 'fecha',
+          'sort' : 'DESC'
         }
-      });
+        BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
+          if(rpta.flag == 1){
+            vm.listaNoticiasSec = rpta.datos;
+            console.log(vm.listaNoticiasSec);
+
+          }else{
+            console.log('no data');
+          }
+        });
+      }
     // SECCION CONTACTO
       $scope.captchaValido = false;
       window.recaptchaResponse = function(token) {
@@ -251,7 +259,7 @@
       $scope.keyRecaptcha='';
       window.onloadCallback = function(){
         console.log('location.path()',$location.path());
-        // if( $location.path() == '/' ){
+        if( $location.path() == '/' ){
           $timeout(function() {
             $scope.keyRecaptcha =  '6LedKS8UAAAAAEJQu9f2HFyRN_Dlg00DjEGlSdo_';
             grecaptcha.render('reCaptcha', {
@@ -259,7 +267,7 @@
               'callback' : recaptchaResponse,
             });
           },1500);
-        // }
+        }
       }
 
       $scope.enviar = function(){
