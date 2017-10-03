@@ -43,6 +43,7 @@ class Acceso extends CI_Controller {
 							$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
 							$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
 							$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+							$arrData['flag'] = 1;
 							$arrData['message'] = 'Usuario inició sesión correctamente';
 						}
 
