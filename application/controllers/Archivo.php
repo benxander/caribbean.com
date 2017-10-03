@@ -97,7 +97,10 @@ class Archivo extends CI_Controller {
 				} 
 
 				if(!$error){
-					//actualizar archivo en BD
+					$image['valor'] = 1;
+					if(!$this->model_archivo->m_editar_descarga_archivo($image)){
+						$error = TRUE;
+					}
 				}
 			}
 		}

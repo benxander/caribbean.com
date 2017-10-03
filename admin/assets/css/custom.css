@@ -239,3 +239,16 @@ minotaur-header .navbar-header .navbar-brand{
 minotaur-header .navbar-header .navigation-toggle{
     margin-left: 10px;
 }
+
+/*galeria*/
+.mix-grid .mix.selected .img-controls .img-select {
+    background: none;
+}
+
+.img-controls a{
+    font-size: 20px;    
+}
+
+.img-controls a i{
+    width: 24px;   
+}

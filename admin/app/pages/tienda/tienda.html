@@ -50,21 +50,16 @@
             <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                <div class="img-details">
+                <div class="img-details-static">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
                     <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                      <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                      <i class="fa fa-circle" ng-show="image.selected"></i>
+                      <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                      <i class="fa fa-check-square-o" ng-show="image.selected"></i>
                     </a>
-                    <a href="javascript:;" class="img-link">
-                      <i class="fa fa-link"></i>
-                    </a>
+
                     <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                       <i class="fa fa-search"></i>
-                    </a>
-                    <a href="javascript:;" class="img-more">
-                      <i class="fa fa-ellipsis-v"></i>
                     </a>
                   </div>
                 </div>
