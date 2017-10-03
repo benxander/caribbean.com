@@ -252,3 +252,19 @@ minotaur-header .navbar-header .navigation-toggle{
 .img-controls a i{
     width: 24px;   
 }
+
+/*puntuacion*/
+.rating-stars{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.rating-stars span{
+    font-size: 40px;
+    color:#d3d3d3;
+}
+
+.rating-stars .checked {
+    color: orange;
+}

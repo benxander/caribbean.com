@@ -8,11 +8,13 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, TiendaServices, rootServices) {
+  function TiendaController($scope, TiendaServices, rootServices,toastr) {
     var vm = this;
     vm.modoSeleccionar = true;
+    //vm.modoSeleccionar = false;
     vm.modoPagar = false;
     vm.modoDescarga = false;
+    //vm.modoDescarga = true;
     vm.cargarGaleria = function(datos){
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
@@ -82,8 +84,13 @@
       TiendaServices.sDescargarArchivosPagados(vm.images).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescarga=true;
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
         }else if(rpta.flag == 0){
-
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
         }else{
           alert('Error inesperado');
         }
