@@ -79,10 +79,10 @@
 
     //CAMBIAR CONTRASEña
     vm.btnCancelClave = function(){
-      vm.cambiarClave = false;
       vm.fDataPerfil.clave = null;
       vm.fDataPerfil.nuevaclave = null;
       vm.fDataPerfil.password = null;
+      vm.cambiarClave = false;
     }
 
     vm.btnGuardarClave = function(){
