@@ -59,7 +59,7 @@ class Cliente extends CI_Controller {
 				'ididioma' => $row['ididioma'],
 				'idioma' => $row['idioma'],
 				'solicita_bonificacion' => $row['solicita_bonificacion'],			
-				'nombre_foto' => $row['nombre_foto'],			
+				'nombre_foto' => empty($row['nombre_foto']) ? 'sin-imagen.png' : $row['nombre_foto'],			
 			);		
 
     	$arrData['datos'] = $arrListado;
