@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope, PagesGalleryServices) {
+  function PagesGalleryController($scope, PagesGalleryServices, rootServices ) {
     var vm = this;
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
@@ -16,96 +16,12 @@
       });
     }
 
-    vm.cargarGaleria($scope.fSessionCI);
-
-    /*vm.images = [
-      {
-        src: '../uploads/clientes/123456/descargadas/cat1.jpg',
-        title: 'Sed ut perspiciatis unde',
-        category: 'cats',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/cat2.jpg',
-        title: 'Quis autem vel eum iure',
-        category: 'cats',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/cat3.jpg',
-        title: 'Temporibus autem quibusdam',
-        category: 'cats',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/cat4.jpg',
-        title: 'Neque porro quisquam est',
-        category: 'cats',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/cat5.jpg',
-        title: 'Et harum quidem rerum',
-        category: 'cats',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/animal1.jpg',
-        title: 'Nemo enim ipsam voluptatem',
-        category: 'animals',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/animal2.jpg',
-        title: 'At vero eos et accusamus',
-        category: 'animals',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/animal3.jpg',
-        title: 'Itaque earum rerum hic tenetur',
-        category: 'animals',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/animal4.jpg',
-        title: 'Ut enim ad minima veniam',
-        category: 'animals',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/animal5.jpg',
-        title: 'Temporibus autem quibusdam',
-        category: 'animals',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city1.jpg',
-        title: 'Neque porro quisquam est',
-        category: 'cities',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city6.jpg',
-        title: 'Nam libero tempore',
-        category: 'cities',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city2.jpg',
-        title: 'Neque porro quisquam est',
-        category: 'cities',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city3.jpg',
-        title: 'Nam libero tempore',
-        category: 'cities',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city4.jpg',
-        title: 'Neque porro quisquam est',
-        category: 'cities',
-        selected: false
-      },{
-        src: '../uploads/clientes/123456/descargadas/city5.jpg',
-        title: 'Nam libero tempore',
-        category: 'cities',
-        selected: false
-      },{
-        src: 'https://www.youtube.com/embed/uyxjlRI_FUA',
-        title: 'Nam libero tempore',
-        category: 'cities',
-        selected: false
+    rootServices.sGetSessionCI().then(function (response) {
+      if(response.flag == 1){
+        vm.fDataUsuario = response.datos;
+        vm.cargarGaleria(vm.fDataUsuario);
       }
-    ];*/
+    });
 
     vm.selectedAll = false;
     vm.isSelected = false;
