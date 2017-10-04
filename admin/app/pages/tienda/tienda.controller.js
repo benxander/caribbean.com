@@ -10,11 +10,11 @@
   /** @ngInject */
   function TiendaController($scope, TiendaServices, rootServices,toastr) {
     var vm = this;
-    vm.modoSeleccionar = true;
-    //vm.modoSeleccionar = false;
+    //vm.modoSeleccionar = true;
+    vm.modoSeleccionar = false;
     vm.modoPagar = false;
-    vm.modoDescarga = false;
-    //vm.modoDescarga = true;
+    //vm.modoDescargaCompleta = false;
+    vm.modoDescargaCompleta = true;
     vm.cargarGaleria = function(datos){
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
@@ -83,7 +83,7 @@
     vm.irCompraExitosa = function(){
       TiendaServices.sDescargarArchivosPagados(vm.images).then(function(rpta){
         if(rpta.flag == 1){
-          vm.modoDescarga=true;
+          vm.modoDescargaCompleta=true;
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);

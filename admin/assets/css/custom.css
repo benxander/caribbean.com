@@ -260,11 +260,20 @@ minotaur-header .navbar-header .navigation-toggle{
     text-align: center;
 }
 
-.rating-stars span{
-    font-size: 40px;
-    color:#d3d3d3;
+.rating-stars {
+  unicode-bidi: bidi-override;
+  direction: rtl;
 }
-
-.rating-stars .checked {
-    color: orange;
+.rating-stars > span {
+  display: inline-block;
+  position: relative;
+  color:#d3d3d3;
+  width: 1.1em;
+  font-size: 50px;
+}
+.rating-stars > span:hover:before,
+.rating-stars > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: orange;
 }
