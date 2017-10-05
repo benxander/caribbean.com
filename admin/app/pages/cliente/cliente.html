@@ -169,14 +169,15 @@
                       <!-- col -->
                       <div class="col-md-4 col-sm-6 mb-20 mix" ng-class="{'selected': c.image.selected}" ng-repeat="image in c.images">
                         <div class="img-container">
-                          <img class="img-responsive" ng-src="{{image.src}}" alt="">
+                          <img class="img-responsive" ng-src="{{image.src}}" alt="" ng-if="image.idtipoproducto == 1">
+                          <img class="img-responsive" ng-src="{{c.imageVideos}}" alt="" ng-if="image.idtipoproducto == 2">
                           <div class="img-details">
                             <h4>{{image.title}}</h4>
                             <div class="img-controls"> 
                               <a href="javascript:;" class="img-link" ng-click="c.btnAnularArchivo(image)">
                                 <i class="fa fa-trash"></i>
                               </a>
-                              <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
+                              <a class="img-preview" href="{{image.src}}" target="_blank" title="{{image.title}}">
                                 <i class="fa fa-search"></i>
                               </a>
                             </div>
