@@ -111,7 +111,7 @@
         url: '/app/mi-galeria',
         templateUrl: 'app/pages/mi-galeria/gallery.html',
         controller: 'PagesGalleryController',
-        controllerAs: 'ctrl'
+        controllerAs: 'ga'
       })//galeria tienda
       .state('tienda', {
         url: '/app/tienda',

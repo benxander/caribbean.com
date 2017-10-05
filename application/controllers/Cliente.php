@@ -61,8 +61,9 @@ class Cliente extends CI_Controller {
 				'estado_cl' => $row['estado_cl'],
 				'ididioma' => $row['ididioma'],
 				'idioma' => $row['idioma'],
+
 				'solicita_bonificacion' => $row['solicita_bonificacion'],
-				'nombre_foto' => $row['nombre_foto'],
+				'nombre_foto' => empty($row['nombre_foto']) ? 'sin-imagen.png' : $row['nombre_foto'],
 			);
 
     	$arrData['datos'] = $arrListado;
@@ -91,7 +92,7 @@ class Cliente extends CI_Controller {
     	}
 
     	$this->db->trans_start();
-		
+
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
@@ -99,8 +100,8 @@ class Cliente extends CI_Controller {
 				$arrData['message'] = 'Se registraron los datos correctamente';
     			$arrData['flag'] = 1;
 			}
-		}	
-		
+		}
+
 		$this->db->trans_complete();
 
 		if($arrData['flag'] == 1){
@@ -207,20 +208,20 @@ class Cliente extends CI_Controller {
 			    $extensions_image = array("jpeg","jpg","png");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
 
-				// CREAR CARPESTAS CLIENTE				
+				// CREAR CARPESTAS CLIENTE
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 		    	createCarpetas($carpeta);
 				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
 				$file_name = generateRandomString() .'.'. $file_ext ;
-								
+
 				// IMAGENES
 			    if(in_array($file_ext,$extensions_image)){
-			    
+
 			    	if($file_size < 10485760){
 
 				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
-						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);  
-						
+						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
 							'idusuario' 	=> $idusuario,
@@ -239,9 +240,9 @@ class Cliente extends CI_Controller {
 						    ->set_content_type('application/json')
 						    ->set_output(json_encode($arrData));
 						return;
-			    	} 
+			    	}
 
-				//VIDEOS	
+				//VIDEOS
 			    }elseif(in_array($file_ext,$extensions_video)){
 			    	if($file_size < 104857600){
 				    	/*$frame = 10;
@@ -275,8 +276,8 @@ class Cliente extends CI_Controller {
 						    ->set_content_type('application/json')
 						    ->set_output(json_encode($arrData));
 						return;
-			    	} 
-			     
+			    	}
+
 			    }else{
 			    	$arrData['message'] = 'No es el formato correcto';
 		    		$this->output
@@ -327,10 +328,10 @@ class Cliente extends CI_Controller {
 	}
 
     public function subir_imagenes_carpeta(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true); 
-		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente'; 
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente';
     	$arrData['flag'] = 0;
-		
+
         $this->load->helper('file');
         $this->load->library('image_lib');
         $extensions_image = array("jpeg","jpg","png");
@@ -338,7 +339,7 @@ class Cliente extends CI_Controller {
      	$lista = $this->model_archivo->m_cargar_nombre_imagenes($allInputs);
      	$archivos = array();
 		$carpeta = './uploads/clientes/' . $allInputs['codigo'];
-		
+
 		if (!file_exists($carpeta)) {
 			$arrData['message'] = 'No existe el directorio';
     		$this->output
@@ -356,12 +357,12 @@ class Cliente extends CI_Controller {
 		}
 
 		foreach ($lista as $key => $value) {
-			array_push($archivos,$value['nombre_archivo']); 
+			array_push($archivos,$value['nombre_archivo']);
 		}
-		
+
        	foreach (get_filenames('./uploads/clientes/'.$allInputs['codigo'].'/originales/') as $archivo) {
        		$file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-		   
+
 		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
             	if(!in_array($archivo,$archivos)){
             		$carpeta = './uploads/clientes/'.$allInputs['codigo'];
@@ -373,13 +374,13 @@ class Cliente extends CI_Controller {
 					if(in_array($file_ext,$extensions_image)){
 						$allInputs['idtipoproducto'] = 1;
 					}else{
-						$allInputs['idtipoproducto'] = 2;	
+						$allInputs['idtipoproducto'] = 2;
 					}
-		   			
+
 				   	if(in_array($file_ext,$extensions_image)){
 		   				redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
 				   	}
-		   			
+
             		if($this->model_archivo->m_registrar_archivo($allInputs)){
 						$arrData['message'] = 'Se subieron las imagen/videos correctamente. ';
 			    		$arrData['flag'] = 1;

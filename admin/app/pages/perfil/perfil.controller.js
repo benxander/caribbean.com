@@ -6,7 +6,7 @@
     .service('PerfilServices', PerfilServices);
 
   /** @ngInject */
-  function PerfilController($scope,PerfilServices,rootServices,ClienteServices,UsuarioServices,IdiomaServices,uiGridConstants, toastr, alertify) {
+  function PerfilController($scope,$timeout,$document,PerfilServices,rootServices,ClienteServices,UsuarioServices,IdiomaServices,uiGridConstants, toastr, alertify) {
     var vm = this;
     vm.modoEditar = false;
     vm.fotoCrop = false;
@@ -79,10 +79,10 @@
 
     //CAMBIAR CONTRASEña
     vm.btnCancelClave = function(){
-      vm.cambiarClave = false;
       vm.fDataPerfil.clave = null;
       vm.fDataPerfil.nuevaclave = null;
       vm.fDataPerfil.password = null;
+      vm.cambiarClave = false;
     }
 
     vm.btnGuardarClave = function(){
@@ -130,14 +130,14 @@
       });
     }
     vm.subirFoto = function(){
-      vm.image.nombre_foto = vm.ficha.nombre_foto;
-      vm.image.idcliente = vm.ficha.idcliente;
-      vm.image.nombre = vm.ficha.nombre;
-      PacienteServices.sSubirFoto(vm.image).then(function(rpta){
+      vm.image.nombre_foto = vm.fDataPerfil.nombre_foto;
+      vm.image.idusuario = vm.fDataPerfil.idusuario;
+      vm.image.nombre = vm.fDataPerfil.nombre;
+      PerfilServices.sSubirFoto(vm.image).then(function(rpta){
         if(rpta.flag == 1){
           var title = 'OK';
           var iconClass = 'success';
-          vm.ficha.nombre_foto = rpta.datos;
+          vm.fDataPerfil.nombre_foto = rpta.datos;
           vm.fotoCrop = false;
           vm.image = {
              originalImage: '',
@@ -166,11 +166,11 @@
     vm.eliminarFoto = function(){
       alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
-        PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
+        PacienteServices.sEliminarFoto(vm.fDataPerfil).then(function(rpta){
           if(rpta.flag == 1){
             var title = 'OK';
             var iconClass = 'success';
-            vm.ficha.nombre_foto = rpta.datos;
+            vm.fDataPerfil.nombre_foto = rpta.datos;
             vm.fotoCrop = false;
             vm.image = {
                originalImage: '',
@@ -195,6 +195,7 @@
   function PerfilServices($http, $q) {
     return({
         sEditarClave: sEditarClave,
+        sSubirFoto:sSubirFoto,
     });
     
     function sEditarClave(pDatos) {
@@ -202,6 +203,16 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Usuario/editar_clave_usuario",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+
+    function sSubirFoto(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Usuario/subir_imagen_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

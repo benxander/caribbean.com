@@ -4,11 +4,14 @@ class Model_archivo extends CI_Model {
 	{
 		parent::__construct();
 	}
-// <<<<<<< HEAD
+
 	public function m_cargar_galeria_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
-							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.idtipoproducto');
+							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.idtipoproducto,
+							us.codigo, tp.descripcion_tp as producto, tp.precio');
 		$this->db->from('archivo arc');
+		$this->db->join('tipo_producto tp','tp.idtipoproducto = arc.idtipoproducto');
+		$this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 1);
 		$this->db->where('arc.idusuario', $pDatos['idusuario']);
@@ -27,7 +30,6 @@ class Model_archivo extends CI_Model {
 		$this->db->where('arc.idusuario', $pDatos['idusuario']);
 		return $this->db->get()->result_array();
 	}
-// =======
 
 	public function m_cargar_archivo($paramPaginate=FALSE){
 		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
@@ -99,6 +101,15 @@ class Model_archivo extends CI_Model {
 		return $this->db->insert('archivo', $datos);
 	}
 
+	public function m_editar_descarga_archivo($data){
+		$datos = array(
+			'descargado' => $data['valor']
+		);
+		$this->db->where('idarchivo',$data['idarchivo']);
+
+		return $this->db->update('archivo', $datos);
+	}
+
 	public function m_anular_archivo($data){
 		$datos = array(
 			'estado_arc' => 0
@@ -106,7 +117,6 @@ class Model_archivo extends CI_Model {
 		$this->db->where('idarchivo',$data['idarchivo']);
 
 		return $this->db->update('archivo', $datos);
-// >>>>>>> b_cliente
 	}
 
 	public function m_delete_archivo($data){

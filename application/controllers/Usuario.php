@@ -171,6 +171,20 @@ class Usuario extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function subir_imagen_usuario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		/*if( $this->model_usuario->m_editar_idioma_usuario($allInputs) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}*/
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
 	public function editar_clave_usuario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';

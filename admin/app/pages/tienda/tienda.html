@@ -4,7 +4,6 @@
     <li class="active">Tienda</li>
   </ol>
   <div class="row">
-    <!-- col -->
     <div class="col-md-12">
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
         <section class="tile-header pl-0">
@@ -50,21 +49,16 @@
             <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                <div class="img-details">
+                <div class="img-details-static">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
                     <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                      <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                      <i class="fa fa-circle" ng-show="image.selected"></i>
+                      <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                      <i class="fa fa-check-square-o" ng-show="image.selected"></i>
                     </a>
-                    <a href="javascript:;" class="img-link">
-                      <i class="fa fa-link"></i>
-                    </a>
+
                     <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                       <i class="fa fa-search"></i>
-                    </a>
-                    <a href="javascript:;" class="img-more">
-                      <i class="fa fa-ellipsis-v"></i>
                     </a>
                   </div>
                 </div>
@@ -109,24 +103,6 @@
                 <div class="img-details-price form-group">
                   <label class="col-sm-12 control-label minotaur-label"><i class="fa fa-money"></i> {{image.precio}} </label>
                 </div>
-                <!-- <div class="img-details">
-                  <h4>{{image.title}}</h4>
-                  <div class="img-controls">
-                    <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                      <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                      <i class="fa fa-circle" ng-show="image.selected"></i>
-                    </a>
-                    <a href="javascript:;" class="img-link">
-                      <i class="fa fa-link"></i>
-                    </a>
-                    <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
-                      <i class="fa fa-search"></i>
-                    </a>
-                    <a href="javascript:;" class="img-more">
-                      <i class="fa fa-ellipsis-v"></i>
-                    </a>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -134,7 +110,7 @@
         <button class="pull-right btn btn-input-sm btn-success mt-15" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
       </div>
 
-      <div class="tile p-15" ng-if="ctrl.modoDescarga">
+      <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
         <section class="tile-header pl-0">
           <h1 class="heading">Compra Exitosa</h1>
           <div class="controls">
@@ -150,15 +126,20 @@
             <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
-        Encuesta...
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <h2 class="text-custom text-center mb-5">Gracias por tu compra!</h2>
+            <h3 class="text-custom text-center text-cyan mt-0">Califica nuestro servicio.</h3>
+            <div class="rating-stars">              
+              <span ng-click="ctrl.calificar(5);" >☆</span>
+              <span ng-click="ctrl.calificar(4);">☆</span>
+              <span ng-click="ctrl.calificar(3);">☆</span>
+              <span ng-click="ctrl.calificar(2);">☆</span>
+              <span ng-click="ctrl.calificar(1);">☆</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- /col -->
-
   </div>
-  <!-- /row -->
-
-
-
-
 </div>

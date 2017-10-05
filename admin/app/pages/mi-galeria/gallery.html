@@ -4,198 +4,67 @@
     <li class="active">Mi Galeria</li>
   </ol>
   <div class="row">
-    <!-- col -->
-    <div class="col-md-12">
-      <div class="tile p-15">
-        <!-- <uib-tabset class="minotaur-tab minotaur-tab-light padded"> -->
-          
-          <!-- <uib-tab heading="4 Columns">
-            <ul class="mix-controls">
-              <li class="select-all">
-                <label class="checkbox minotaur-checkbox inline-block m-0">Select all
-                  <input type="checkbox" ng-model="selectedAll" ng-click="ctrl.selectAll()"><div class="input-indicator"></div>
-                </label>
-              </li>
-              <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-share-alt"></i> Compartir</a>
-              </li>
-              <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-download"></i> Descargar</a>
-              </li>
+    <div class="tile p-15">
+      <section class="tile-header pl-0">
+        <h1 class="heading">Mi Galeria</h1>
+        <div class="controls">
+          <div class="btn-group" uib-dropdown>
+            <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+            <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+              <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+              <li role="menuitem"><a href="javascript:;" ng-click="ga.cargarGaleria();" minotaur-tile-refresh></a></li>
+              <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+              <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
             </ul>
+          </div>
+          <minotaur-tile-close></minotaur-tile-close>
+        </div>
+      </section>
 
-            <div class="row mix-grid">
-              <div class="gallery" ng-mixitup magnific-popup="{
-                delegate: 'a.img-preview',
-                type: 'image',
-                tLoading: 'Loading image #%curr%...',
-                mainClass: 'mfp-img-mobile',
-                gallery: {
-                  enabled: true,
-                  navigateByImgClick: true,
-                  preload: [0,1]
-                }
-               }"
-              >
+      <ul class="mix-controls">
+        <li class="select-all">
+          <label class="checkbox minotaur-checkbox inline-block m-0">Select all
+            <input type="checkbox" ng-model="selectedAll" ng-click="ga.selectAll()"><div class="input-indicator"></div>
+          </label>
+        </li>
 
-                <div class="col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
-                  <div class="img-container">
-                    <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                    <div class="img-details">
-                      <h4>{{image.title}}</h4>
-                      <div class="img-controls">
-                        <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                          <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                          <i class="fa fa-circle" ng-show="image.selected"></i>
-                        </a>
-                        <a href="javascript:;" class="img-link">
-                          <i class="fa fa-link"></i>
-                        </a>
-                        <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
-                          <i class="fa fa-search"></i>
-                        </a>
-                        <a href="javascript:;" class="img-more">
-                          <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+        <li ng-class="{'disabled': !ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
+          <a href="javascript:;"><i class="fa fa-download" ></i> Descargar</a>
+        </li>
+      </ul>
+      <div class="row mix-grid">
+        <div class="gallery" ng-mixitup magnific-popup="{
+          delegate: 'a.img-preview',
+          type: 'image',
+          tLoading: 'Loading image #%curr%...',
+          mainClass: 'mfp-img-mobile',
+          gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1]
+          }
+         }"
+        >
+          <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
+            <div class="img-container">
+              <img class="img-responsive" ng-src="{{image.src}}" alt="">
+              <div class="img-details-static">
+                <h4>{{image.title}}</h4>
+                <div class="img-controls">
+                  <a href="javascript:;" class="img-select" ng-click="ga.selectImage($index)">
+                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
+                  </a>
+
+                  <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
+                    <i class="fa fa-search"></i>
+                  </a>
                 </div>
               </div>
-
             </div>
-          </uib-tab> -->
-
-          <!-- <uib-tab heading="3 Columns"> -->
-            <ul class="mix-controls">
-              <li class="select-all">
-                <label class="checkbox minotaur-checkbox inline-block m-0">Select all
-                  <input type="checkbox" ng-model="selectedAll" ng-click="ctrl.selectAll()"><div class="input-indicator"></div>
-                </label>
-              </li>
-              <!-- <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-share-alt"></i> Compartir</a>
-              </li> -->
-              <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-download"></i> Descargar</a>
-              </li>
-            </ul>
-
-            <!-- row -->
-            <div class="row mix-grid">
-              <div class="gallery" ng-mixitup magnific-popup="{
-                delegate: 'a.img-preview',
-                type: 'image',
-                tLoading: 'Loading image #%curr%...',
-                mainClass: 'mfp-img-mobile',
-                gallery: {
-                  enabled: true,
-                  navigateByImgClick: true,
-                  preload: [0,1]
-                }
-               }"
-              >
-
-                <!-- col -->
-                <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
-                  <div class="img-container">
-                    <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                    <div class="img-details">
-                      <h4>{{image.title}}</h4>
-                      <div class="img-controls">
-                        <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                          <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                          <i class="fa fa-circle" ng-show="image.selected"></i>
-                        </a>
-                        <a href="javascript:;" class="img-link">
-                          <i class="fa fa-link"></i>
-                        </a>
-                        <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
-                          <i class="fa fa-search"></i>
-                        </a>
-                        <a href="javascript:;" class="img-more">
-                          <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          <!-- </uib-tab> -->
-
-          <!-- <uib-tab heading="2 Columns">
-            <ul class="mix-controls">
-              <li class="select-all">
-                <label class="checkbox minotaur-checkbox inline-block m-0">Select all
-                  <input type="checkbox" ng-model="selectedAll" ng-click="ctrl.selectAll()"><div class="input-indicator"></div>
-                </label>
-              </li>
-              <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-share-alt"></i> Compartir</a>
-              </li>
-              <li ng-class="{'disabled': !ctrl.isSelected}">
-                <a href="javascript:;"><i class="fa fa-download"></i> Descargar</a>
-              </li>
-            </ul>
-            
-            <div class="row mix-grid">
-              <div class="gallery" ng-mixitup magnific-popup="{
-                delegate: 'a.img-preview',
-                type: 'image',
-                tLoading: 'Loading image #%curr%...',
-                mainClass: 'mfp-img-mobile',
-                gallery: {
-                  enabled: true,
-                  navigateByImgClick: true,
-                  preload: [0,1]
-                }
-               }"
-              >
-                
-                <div class="col-md-6 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
-                  <div class="img-container">
-                    <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                    <div class="img-details">
-                      <h4>{{image.title}}</h4>
-                      <div class="img-controls">
-                        <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
-                          <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                          <i class="fa fa-circle" ng-show="image.selected"></i>
-                        </a>
-                        <a href="javascript:;" class="img-link">
-                          <i class="fa fa-link"></i>
-                        </a>
-                        <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
-                          <i class="fa fa-search"></i>
-                        </a>
-                        <a href="javascript:;" class="img-more">
-                          <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-
-              </div>
-
-            </div>
-          </uib-tab> -->
-
-        <!-- </uib-tabset> -->
-
+          </div>
+        </div>
       </div>
-
-    </div>
-    <!-- /col -->
-
-
+      </div>
   </div>
-  <!-- /row -->
-
-
-
-
 </div>

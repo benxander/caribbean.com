@@ -96,8 +96,7 @@
       vm.currentLanguage = langKey;
     };
     $scope.empresaNombre = empresaNombre;
-    //vm.currentLanguage = $translate.proposedLanguage() || $translate.use();
-    vm.changeLanguage('es');
+    //vm.currentLanguage = $translate.proposedLanguage() || $translate.use();    
 
     $scope.fSessionCI = {};
 
@@ -109,6 +108,7 @@
 
     $scope.logIn = function() {
       $scope.isLoggedIn = true;
+      vm.changeLanguage($scope.fSessionCI.ididioma);
     };
 
     $scope.btnLogoutToSystem = function () {

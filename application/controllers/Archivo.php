@@ -27,7 +27,12 @@ class Archivo extends CI_Controller {
 					'descargado' => $row['descargado'],
 					'fecha_descarga' => $row['fecha_descarga'],
 					'es_bonificacion' => $row['es_bonificacion'],
-					'idtipoproducto' => $row['idtipoproducto']
+					'idtipoproducto' => $row['idtipoproducto'],
+					'producto' => $row['producto'],
+					'codigo_usuario' => $row['codigo'],
+					'selected' => FALSE,
+					'src' => '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'],
+					'title' => '',
 				)
 			);
 		}
@@ -97,7 +102,10 @@ class Archivo extends CI_Controller {
 				} 
 
 				if(!$error){
-					//actualizar archivo en BD
+					$image['valor'] = 1;
+					if(!$this->model_archivo->m_editar_descarga_archivo($image)){
+						$error = TRUE;
+					}
 				}
 			}
 		}

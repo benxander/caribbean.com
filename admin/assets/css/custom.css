@@ -307,3 +307,41 @@ minotaur-header .navbar-header .navigation-toggle{
 /**fichas*/
 .ficha .tile-header .icono{font-size: 1.8em;padding-right: 10px;}
 .ficha .tile-header h4{display: inline;}
+
+/*galeria*/
+.mix-grid .mix.selected .img-controls .img-select {
+    background: none;
+}
+
+.img-controls a{
+    font-size: 20px;
+}
+
+.img-controls a i{
+    width: 24px;
+}
+
+/*puntuacion*/
+.rating-stars{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.rating-stars {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating-stars > span {
+  display: inline-block;
+  position: relative;
+  color:#d3d3d3;
+  width: 1.1em;
+  font-size: 50px;
+}
+.rating-stars > span:hover:before,
+.rating-stars > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: orange;
+}
