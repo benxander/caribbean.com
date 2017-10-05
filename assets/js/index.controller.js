@@ -60,7 +60,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($scope,$timeout, $location, $window, rootServices,BlogServices) {
+  function MainController($scope,$timeout, $location, $window, rootServices,BlogServices,$routeParams) {
     var vm = this;
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
@@ -137,8 +137,31 @@
         console.log('no data');
       }
     });
+    // SECCION BLOG
+        // $scope.verBlog = function(){
+        //   $scope.pageInicio = false;
+        //   $scope.ruta = 'templates/blog.php';
+        //   $("html, body").animate({
+        //         scrollTop: 0
+        //     }, 800, 'linear');
+        // }
+        // if( $location.path() == '/' ){
+          var paramDatos = {
+            'limit': 3,
+            'sortName': 'fecha',
+            'sort' : 'DESC'
+          }
+          BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
+            if(rpta.flag == 1){
+              vm.listaNoticiasSec = rpta.datos;
+              console.log(vm.listaNoticiasSec);
 
-    rootServices.sCargarBanners().then(function (response) {
+            }else{
+              console.log('no data');
+            }
+          });
+        // }
+    /*rootServices.sCargarBanners().then(function (response) {
       if(response.flag == 1){
         $scope.slides = response.datos;
       }else{
@@ -288,16 +311,16 @@
         $timeout(function() {
           $scope.fAlert = {};
         },4000);
-      }
+      }*/
 
   }
   function rootServices($http, $q) {
     return({
-        sCargarBanners: sCargarBanners,
+        // sCargarBanners: sCargarBanners,
         sCargarDatosWeb: sCargarDatosWeb,
         sCargarSecciones: sCargarSecciones,
     });
-    function sCargarBanners(pDatos) {
+    /*function sCargarBanners(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
@@ -305,7 +328,7 @@
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
-    }
+    }*/
     function sCargarDatosWeb(pDatos) {
       var datos = pDatos || {};
       var request = $http({

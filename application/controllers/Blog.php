@@ -125,6 +125,52 @@ class Blog extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function cargar_post_blog(){
+		ini_set('xdebug.var_display_max_depth', 5);
+	    ini_set('xdebug.var_display_max_children', 256);
+	    ini_set('xdebug.var_display_max_data', 1024);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+
+		$lista = $this->model_blog->m_cargar_post_blog($allInputs);
+		$arrListado = array();
+
+		$ruta = 'uploads/blog/';
+		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
+		$arrListado = array(
+			'idblog' => $lista[0]['idblog'],
+			'titulo' => $lista[0]['titulo'],
+			'descripcion' => $lista[0]['descripcion'],
+			'autor' => $lista[0]['autor'],
+			'dia' => date('d', strtotime($lista[0]['fecha'])),
+			'mes' => $shortMonthArray[(int)date('m',strtotime($lista[0]['fecha']))],
+			'imagen' => $ruta .$lista[0]['imagen'],
+			'posts' => array()
+		);
+
+		foreach ($lista as $row) {
+			if(!empty($row['idblogpost'])){
+				array_push($arrListado['posts'], array(
+						'idblogpost' => $row['idblogpost'],
+						'autor_post' => $row['autor_post'],
+						'comentario' => $row['comentario'],
+						'fecha_post' => formatoFechaReporte3($row['fecha_post']),
+					)
+				);
+
+			}
+		}
+		// print_r($arrListado); exit();
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	// MANTENIMIENTO
 	public function registrar_noticia()	{
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));

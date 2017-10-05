@@ -30,14 +30,23 @@
       //   }]
       // }
     })
-    .when('/:templateFile', {
+    .when('/blog', {
       // templateUrl: 'templates/blog.php',
       templateUrl: function(param) {
       console.log('param',param);
-          return angular.dirViews + param.templateFile + '.php';
+          return angular.dirViews +  'blog.php';
+          // return angular.dirViews + param.templateFile + '.php';
         },
       controller: 'BlogController',
 
+    }).when('/post', {
+      templateUrl: function(param) {
+      console.log('param',param);
+          return angular.dirViews +  'post.php';
+          // return angular.dirViews + param.templateFile + '.php';
+        },
+      controller: 'PostController',
+      controllerAs: 'bp',
     });
   }
   /*function config($logProvider,$routeProvider, $locationProvider) {

@@ -40,6 +40,16 @@ class Model_blog extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_cargar_post_blog($datos){
+		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen');
+		$this->db->select('bp.idblogpost,bp.autor_post, bp.comentario, bp.fecha_post, bp.idblogpost_origen');
+		$this->db->from('blog bl');
+		$this->db->join('blog_post bp','bl.idblog = bp.idblog AND bp.estado_bp = 1','left');
+		$this->db->where('bl.estado_bl', 1);
+		$this->db->where('bl.idblog', $datos['id']);
+
+		return $this->db->get()->result_array();
+	}
 	public function m_registrar($data)
 	{
 		return $this->db->insert('blog', $data);

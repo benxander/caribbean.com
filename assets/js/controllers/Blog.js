@@ -5,8 +5,9 @@
 	    .module('caribbean')
 	    .controller('BlogController', BlogController)
 	    .service('BlogServices', BlogServices);
-	function BlogController($scope,BlogServices) {
+	function BlogController($scope,BlogServices,$routeParams) {
 	    var vm = this;
+	    console.log($routeParams,'$routeParams.modulo');
 	    $scope.pageInicio = false;
 	    console.log('scope.pageInicio',$scope.pageInicio);
 	    vm.listaNoticias = [];

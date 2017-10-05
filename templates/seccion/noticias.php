@@ -26,7 +26,7 @@
                 </div>
 
               </div>
-              <a href="" class="homepage-community-item-more-link">Read More >> </a>
+              <a href="{{dirWeb}}post?id={{item.idblog}}" class="homepage-community-item-more-link">Leer más >> </a>
             </div>
           </div>
         </div>

@@ -138,12 +138,12 @@
 									<li>
 										<a class="post-date" href="#">{{vm.listaNoticiasSec[0].dia}} <small>{{vm.listaNoticiasSec[0].mes}}</small></a>
 										<!-- <a class="post-category" href="#">Lifestyle</a> -->
-										<a class="post-title" href="#">{{vm.listaNoticiasSec[0].titulo}}</a>
+										<a class="post-title" href="{{dirWeb}}post?id={{vm.listaNoticiasSec[0].idblog}}">{{vm.listaNoticiasSec[0].titulo}}</a>
 									</li>
 									<li>
 										<a class="post-date" href="#">{{vm.listaNoticiasSec[1].dia}} <small>{{vm.listaNoticiasSec[1].mes}}</small></a>
 										<!-- <a class="post-category" href="#">Lifestyle</a> -->
-										<a class="post-title" href="#">{{vm.listaNoticiasSec[1].titulo}}</a>
+										<a class="post-title" href="{{dirWeb}}post?id={{vm.listaNoticiasSec[1].idblog}}">{{vm.listaNoticiasSec[1].titulo}}</a>
 									</li>
 
 								</ul>
@@ -334,7 +334,9 @@
 	<script src="assets/js/index.config.js"></script>
 	<script src="assets/js/index.controller.js"></script>
 
+	<script src="assets/js/controllers/Home.js"></script>
 	<script src="assets/js/controllers/Blog.js"></script>
+	<script src="assets/js/controllers/Post.js"></script>
 	<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 	<script src="//www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer></script>
