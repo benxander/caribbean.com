@@ -7,11 +7,11 @@
 		    <div class="row">
 
 	            <div class="form-group col-md-6">
-					<label for="nombres" class="control-label minotaur-label">Nombres <small class="text-red">(*)</small> </label>
+					<label for="nombres" class="control-label minotaur-label">Nombres </label>
 	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" required>
 	            </div>
 	            <div class="form-group col-md-6">
-					<label for="apellidos" class="control-label minotaur-label">Apellidos <small class="text-red">(*)</small> </label>
+					<label for="apellidos" class="control-label minotaur-label">Apellidos </label>
 	              	<input type="text" name="apellidos" id="apellidos" class="form-control" ng-model="mc.fData.apellidos" placeholder="Registre apellidos" required>
 	            </div>
 	            <div class="form-group col-md-6">

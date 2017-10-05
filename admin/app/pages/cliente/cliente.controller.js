@@ -268,7 +268,8 @@
         vm.fData = {};
         vm.fDataUpload = {};
         vm.fDataUpload = angular.copy(row.entity);
-        console.log(vm.fDataUpload);
+        vm.imageVideos = '../uploads/player.jpg';
+
 
         vm.subirTodo = function(){
           console.log('aqui estoy');

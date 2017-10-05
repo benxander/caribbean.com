@@ -258,13 +258,13 @@ class Usuario extends CI_Controller {
 		      </head>
 		      <body style="font-family: sans-serif;padding: 10px 40px; color: #000000" >';
 		
-		$mensaje .= '<div style="font-size:16px;">  
-		        Estimado Sr(a).: '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
+		$mensaje .= '<div style="font-size:16px; color: #000000">  
+		        Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
   		$mensaje .= '<div style="font-size:16px;">  
 		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
 		         Usuario: '.$allInputs['email'].'<br />
 		         Contraseña: '.$allInputs['codigo'];
-		$mensaje .= '<br /> Ingrese en esta <a href="">página</a> para iniciar session. <br />';
+		$mensaje .= '<br /><br /> Ingrese en esta <a href="http://www.unaisangamer.com/admin" target="_blank">página</a> para iniciar session. <br />';
 		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
 		$mensaje .= '</body></html>';
 

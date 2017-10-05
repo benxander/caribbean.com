@@ -21,27 +21,27 @@
 
         }
         a{text-decoration: none;}
-        a, a:visited, a:active{color: #0500B6;}
+        a, a:visited, a:active{color: #4C7727;}
         a:hover{color: #FFF;}          
     </style>
     <body>
 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr bgcolor="#D6AA15">
+            <tr bgcolor="#fff">
                 <td width="30%" style="white-space: nowrap;font-size: 34px;font-family: verdana,arial;font-weight: normal;margin: 0;font-family: verdana,arial;font-weight: normal;">
                     <a href="">
-                        <img style="width:240px" src ="https://citasenlinea.villasalud.pe/assets/img/dinamic/empresa/header-mail.jpg"> <!-- assets/images/logo-dark.png -->
+                        <img style="width:240px" src ="http://www.unaisangamer.com/assets/images/logo-dark.png"> <!-- assets/images/logo-dark.png -->
                     </a>
                 </td>
                 <td></td>
             </tr>
             <tr>
-              <td colspan="5" style="padding:15px; color:#000"; bgcolor="#990033">{contenido}</td>
+              <td colspan="5" style="padding:15px; color:#000; border-top: 4px solid #D00033;"; bgcolor="#e6e5e5">{contenido}</td>
             </tr>
         </table>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr bgcolor="#fff">
-                <td height="67px" class="pie">
+            <tr style="padding:15px;"; bgcolor="#ccc">
+                <td style="color:#727272;" height="67px" class="pie">
 					&copy; <?=date("Y")?> - 
 				</td>
             </tr>
