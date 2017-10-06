@@ -42,17 +42,18 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC} },
-        { field: 'idusuario', name:'idusuario', displayName: 'ID USUARIO',  width:90, visible:false },
+        { field: 'idusuario', name:'idusuario', displayName: 'ID USUARIO',  width:80, visible:false },
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
-        { field: 'email', name: 'email', displayName: 'EMAIL',width: 150, enableFiltering: false, enableSorting: false },
-        { field: 'whatsapp', name: 'whatsapp', displayName: 'WHATSAPP',width: 120, enableFiltering: false, enableSorting: false },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 160, enableFiltering: false,
+        { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
+        { field: 'whatsapp', name: 'whatsapp', displayName: 'WHATSAPP',width: 110, enableFiltering: false, enableSorting: false },
+        { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="SUBIR IMAGENES" ng-if="row.entity.idusuario"> <i class="fa fa-upload"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR IMAGENES" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
           '</div>'
         }
 
@@ -119,8 +120,7 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de cliente';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            vm.fData.ididioma = vm.listaIdiomas[0].id;
-            
+            vm.fData.ididioma = vm.listaIdiomas[0].id;           
 
             // botones
               vm.aceptar = function () {
@@ -131,20 +131,6 @@
                     var title = 'OK';
                     var type = 'success';
                     toastr.success(rpta.message, title);
-
-                    UsuarioServices.sEnviarMailRegistro(vm.fData).then(function(rpta){
-                      if(rpta.flag == 1){
-                        var title = 'OK';
-                        var type = 'success';
-                        toastr.success(rpta.message, title);
-                      }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var type = 'warning';
-                        toastr.warning(rpta.message, title);
-                      }else{
-                        alert('Ocurrió un error');
-                      }
-                    });
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
@@ -269,7 +255,8 @@
         vm.fDataUpload = {};
         vm.fDataUpload = angular.copy(row.entity);
         vm.imageVideos = '../uploads/player.jpg';
-
+        vm.selectedAll = false;
+        vm.isSelected = false;
 
         vm.subirTodo = function(){
           console.log('aqui estoy');
@@ -336,8 +323,71 @@
           });
         }
 
+        vm.selectAll = function () {
+          if (vm.selectedAll) {
+            vm.selectedAll = false;
+            vm.isSelected = false;
+          } else {
+            vm.selectedAll = true;
+            vm.isSelected = true;
+          }
 
-        // CALLBACKS
+          angular.forEach(vm.images, function(image) {
+            image.selected = vm.selectedAll;
+          });
+        }
+
+        vm.selectImage = function(index) {
+          var i = 0;
+
+          if (vm.images[index].selected) {
+            vm.images[index].selected = false;
+          } else {
+            vm.images[index].selected = true;
+            vm.isSelected = true;
+          }
+
+          angular.forEach(vm.images, function(image) {
+            if (image.selected) {
+              i++;
+            }
+          });
+
+          if (i === 0) {
+            vm.isSelected = false;
+          }
+        }
+
+        vm.videosView = function (video) {
+          var modalInstance = $uibModal.open({
+            templateUrl: 'app/pages/cliente/videos_view.php',
+            controllerAs: 'mcv',
+            size: 'lg',
+            backdropClass: 'splash splash-1 splash-ef-1',
+            windowClass: 'splash splash-1 splash-ef-1',
+            scope: $scope,
+            controller: function($scope, $uibModalInstance, arrToModal ){
+              var vm = this;
+              vm.fData = {};
+              vm.fData = video;
+              vm.fData.type = 'video/' + vm.fData.nombre_archivo.split(".")[1];
+              vm.modalTitle = '';           
+              console.log(vm.fData);
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+            },
+            resolve: {
+              arrToModal: function() {
+                return {
+                  scope : vm,
+                }
+              }
+            }
+          });
+        }
+
+      // CALLBACKS
 
         uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
@@ -410,6 +460,21 @@
         };
 
         console.info('uploader', uploader);
+      }
+      vm.btnEnviarEmail = function(row){
+        UsuarioServices.sEnviarMailRegistro(row.entity).then(function(rpta){
+          if(rpta.flag == 1){
+            var title = 'OK';
+            var type = 'success';
+            toastr.success(rpta.message, title);
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            var type = 'warning';
+            toastr.warning(rpta.message, title);
+          }else{
+            alert('Ocurrió un error');
+          }
+        });
       }
   }
 
