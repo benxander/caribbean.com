@@ -5,15 +5,19 @@
 	    .module('caribbean')
 	    .controller('BlogController', BlogController)
 	    .service('BlogServices', BlogServices);
-	function BlogController($scope,BlogServices,$routeParams) {
+	function BlogController($scope,BlogServices,$routeParams,$timeout) {
 	    var vm = this;
-	    console.log($routeParams,'$routeParams.modulo');
+	    $timeout(function() {
+		    $("html, body").animate({
+	            scrollTop: 0
+	        }, 800, 'linear');
+	    },300);
 	    $scope.pageInicio = false;
-	    console.log('scope.pageInicio',$scope.pageInicio);
+
 	    vm.listaNoticias = [];
-	    vm.headerStyle = {
-	    	'background-image' : 'url(uploads/banners/puntacana.jpg)'
-	    }
+	    // vm.headerStyle = {
+	    // 	'background-image' : 'url(uploads/banners/puntacana.jpg)'
+	    // }
 
 	    BlogServices.sCargarNoticiasWeb().then(function (rpta) {
 	      if(rpta.flag == 1){

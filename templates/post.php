@@ -48,7 +48,7 @@
                             	{{item.comentario}}
                             </div><!--  comment-content -->
 
-							<div class="reply">
+							<div class="reply" ng-if="false">
                             	<a class="comment-reply-link" href="#">Reply</a>
                             </div><!-- reply -->
 
@@ -57,14 +57,14 @@
 
 				</ul>
 
-				<h6 class="commentform-title">Leave a comment</h6>
+				<h6 class="commentform-title">Déjanos un Comentario</h6>
 
 				<form id="commentform" class="col-sm-10" name="commentform" novalidate method="post" action="#">
                     <fieldset>
 
                         <p class="commentform-author">
                             <input id="name" class="col-xs-12" type="text" name="name" placeholder="" required>
-							<label for="name">Name</label>
+							<label for="name">Nombre</label>
                         </p>
 
                         <p class="commentform-email">
@@ -72,18 +72,14 @@
 							<label for="email">E-mail</label>
                         </p>
 
-                        <p class="commentform-url">
-                            <input id="url" class="col-xs-12" type="text" name="url" placeholder="" required>
-							<label for="url">URL</label>
-                        </p>
 
 						<p class="commentform-comment">
                             <textarea id="comment" class="col-xs-12" name="comment" rows="6" cols="25" placeholder="" required></textarea>
-							<label for="comment">Comment</label>
+							<label for="comment">Comentario</label>
                         </p>
 
                         <p class="commentform-submit">
-                            <button class="btn btn-default-1 waves" id="submit" type="submit" name="submit" value="">Send comment</button>
+                            <button class="btn btn-default-1 waves" id="submit" type="submit" name="submit" value="">Enviar</button>
                         </p>
 
                     </fieldset>

@@ -6,7 +6,7 @@
     .service('BannerServices', BannerServices);
 
   /** @ngInject */
-  function BannerController($scope, $uibModal, uiGridConstants, toastr, alertify,
+  function BannerController($scope, $uibModal, uiGridConstants, toastr, alertify,tileLoading,
     BannerServices, TipobannerServices, SeccionServices) {
     var vm = this;
     var openedToasts = [];
@@ -75,7 +75,11 @@
       }
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
+      vm.getPaginationServerSide = function(loader) {
+        var loader = loader || false;
+        if(loader){
+          tileLoading.start();
+        }
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -83,9 +87,12 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          if(loader){
+            tileLoading.stop();
+          }
         });
       }
-      vm.getPaginationServerSide();
+      vm.getPaginationServerSide(true);
     // SECCION
       SeccionServices.sListarSeccionCbo().then(function (rpta) {
         vm.listaSeccion = rpta.datos;
@@ -106,6 +113,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           scope: $scope,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
@@ -211,6 +220,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};

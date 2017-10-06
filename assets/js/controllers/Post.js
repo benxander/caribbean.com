@@ -8,6 +8,9 @@
 	function PostController($scope,$routeParams,$location,PostServices) {
 	    var vm = this;
 	    vm.fData = {}
+	    $("html, body").animate({
+            scrollTop: 0
+        }, 800, 'linear');
 	    // console.log($routeParams,'$routeParams.modulo');
 	    var searchObject = $location.search();
 	    console.log('searchObject',searchObject);
