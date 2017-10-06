@@ -14,7 +14,7 @@
             font-variant: normal;
             font-weight: normal;
             margin: 0;
-            padding: 10px 0 5px 10px;
+            padding: 20px;
             text-align: left;
             text-decoration: none;
             text-transform: none;
@@ -41,7 +41,7 @@
         </table>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr style="padding:15px;"; bgcolor="#ccc">
-                <td style="color:#727272;" height="67px" class="pie">
+                <td style="color:#727272; padding:15px;" height="67px" class="pie">
 					&copy; <?=date("Y")?> - 
 				</td>
             </tr>
