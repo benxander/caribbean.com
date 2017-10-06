@@ -318,9 +318,15 @@ minotaur-header .navbar-header .navigation-toggle{
 }
 
 .img-controls a i{
-    width: 24px;
+    position: relative;
+    top: 10px;
 }
-
+.mix-grid .mix .img-details .img-controls > a{
+    padding: 0px;
+}
+.mix-grid .mix .img-details h4 {
+    margin-top: 25%;
+}
 /*puntuacion*/
 .rating-stars{
     width: 80%;

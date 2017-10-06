@@ -11,9 +11,9 @@
     var vm = this;
     var openedToasts = [];
     vm.gritdClientes = true;
-    var uploader = $scope.uploader = new FileUploader ({ 
-      url: angular.patchURLCI + 'cliente/upload_cliente' 
-      // url: '../application/controllers/upload.php' 
+    var uploader = $scope.uploader = new FileUploader ({
+      url: angular.patchURLCI + 'cliente/upload_cliente'
+      // url: '../application/controllers/upload.php'
     });
     // GRILLA PRINCIPAL
       var paginationOptions = {
@@ -24,7 +24,7 @@
         sortName: null,
         search: null
       };
-      
+
       vm.mySelectionGrid = [];
       vm.gridOptions = {
         paginationPageSizes: [10, 50, 100, 500, 1000],
@@ -50,10 +50,10 @@
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
-          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
-          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="SUBIR IMAGENES" ng-if="row.entity.idusuario"> <i class="fa fa-upload"></i> </button>'+
-          '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR IMAGENES" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="FOTOGRAFIAS" ng-if="row.entity.idusuario"> <i class="halcyon-icon-photo-camera"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR FOTOS" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
           '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '</div>'
         }
 
@@ -97,7 +97,7 @@
         });
       }
       vm.getPaginationServerSide();
-      
+
       // IDIOMA
       UsuarioServices.sListarIdioma().then(function (rpta) {
         vm.listaIdiomas = rpta.datos;
@@ -120,7 +120,7 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de cliente';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            vm.fData.ididioma = vm.listaIdiomas[0].id;           
+            vm.fData.ididioma = vm.listaIdiomas[0].id;
 
             // botones
               vm.aceptar = function () {
@@ -170,7 +170,7 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            
+
             vm.aceptar = function () {
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -262,9 +262,9 @@
           console.log('aqui estoy');
           uploader.uploadAll();
         }
-     
+
         vm.btnVolver = function() {
-          vm.gritdClientes = true; 
+          vm.gritdClientes = true;
           vm.fDataUpload = {};
           vm.getPaginationServerSide();
         }
@@ -371,7 +371,7 @@
               vm.fData = {};
               vm.fData = video;
               vm.fData.type = 'video/' + vm.fData.nombre_archivo.split(".")[1];
-              vm.modalTitle = '';           
+              vm.modalTitle = '';
               console.log(vm.fData);
               vm.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
@@ -419,7 +419,7 @@
         };
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
             console.info('onSuccessItem', fileItem, response, status, headers);
-            
+
             if(response.flag == 1){
                 var title = 'OK';
                 var type = 'success';
