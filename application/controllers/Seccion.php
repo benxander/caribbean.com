@@ -306,6 +306,7 @@ class Seccion extends CI_Controller {
     		'idseccioncontenido' => $allInputs['idseccioncontenido'],
     		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
     		'descripcion_fi' => $allInputs['descripcion_fi'],
+    		'icono_fi' => 'halcyon-icon-photos',
     	);
 		if( $this->model_seccion->m_registrar_ficha($data) ){
 
@@ -338,6 +339,21 @@ class Seccion extends CI_Controller {
 		if( $this->model_seccion->m_editar_ficha($data,$allInputs['idficha']) ){
 
 			$arrData['message'] = 'Se editaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function eliminar_ficha(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar la ficha, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_seccion->m_eliminar_ficha($allInputs['idficha']) ){
+
+			$arrData['message'] = 'Se eliminó la ficha correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output

@@ -324,9 +324,32 @@
           }
         });
       }
+      vm.btnEliminarFicha = function (item) {
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            SeccionServices.sEliminarFicha(item).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.listarFichas(vm.seccion);
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+        });
+      }
       vm.btnVolver = function(){
         vm.boolListado = true;
       }
+
 
   }
   function SeccionServices($http, $q) {
@@ -338,6 +361,7 @@
         sListarFichas: sListarFichas,
         sRegistrarFicha: sRegistrarFicha,
         sEditarFicha: sEditarFicha,
+        sEliminarFicha: sEliminarFicha,
         sListarIconos: sListarIconos,
         sListarIconosAutocomplete: sListarIconosAutocomplete,
     });
@@ -400,6 +424,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/editar_ficha",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/eliminar_ficha",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

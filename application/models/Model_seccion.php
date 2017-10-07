@@ -101,4 +101,11 @@ class Model_seccion extends CI_Model {
 		$this->db->where('idficha',$id);
 		return $this->db->update('ficha', $data);
 	}
+	public function m_eliminar_ficha($id){
+		$datos = array(
+			'estado_fi' => 0,
+		);
+		$this->db->where('idficha',$id);
+		return $this->db->update('ficha', $datos);
+	}
 }

@@ -33,14 +33,7 @@
 
             <h5><strong>{{seccionWeb[2].contenedor[1].subtitulo}}</strong></h5>
 
-			<br>
-
-			<p>Aenean luctus mi mollis quam feugiat consequat eu sed eros. Cras suscipit eu est sed imperdiet.
-			Curabitur ultrices dolor magna, at vene natis lacus rutrum nec. Quisque elit velit, lacinia sit amet
-			tellus at, auctor sus cipit metus. Duis congue nibh at tortor ornare, sed commo do ipsum mattis.
-			Phasellus lacinia sed purus eget rhoncus. Mauris ut tortor efficitur.</p>
-
-			<br>
+            <div ng-bind-html="seccionWeb[2].contenedor[1].contenido"></div>
 
 			<p><a ng-show="seccionWeb[2].contenedor[1].tiene_boton" class="btn btn-default-1 waves" href="#">Discover</a></p>
 
@@ -52,11 +45,11 @@
             <div class="row">
 				<div class="col-sm-6" ng-repeat="item in seccionWeb[2].contenedor[1].fichas">
 
-					<div class="service-box style-4 wow fadeIn">
+					<div class="service-box style-4 wow fadeIn" style="height: 180px;">
 
 						<i class="{{item.clase}}"></i>
 
-						<h6><a href="">{{item.titulo}}</a></h6>
+						<h6 style="color: #FFF">{{item.titulo}}</h6>
 
 						<div class="service-box-content">
 
