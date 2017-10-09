@@ -24,6 +24,7 @@ class Cliente extends CI_Controller {
 					'apellidos'	=> $row['apellidos'],
 					'email' 	=> $row['email'],
 					'whatsapp' 	=> $row['whatsapp'],
+					'monedero' 	=> $row['monedero'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],

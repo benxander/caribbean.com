@@ -98,7 +98,7 @@
         <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
           <!-- <span class="inline"> Profesional: Luis Luna </span> -->
           <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
-          <span class="nav-text"><i class="fa fa-user"></i> Ing. Ruben Guevara</span>
+          <span class="nav-text"><i class="fa fa-user"></i> </span>
         </button>
         <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
           <div class="media">
@@ -106,18 +106,18 @@
               <img class="media-object img-circle" src="assets/images/ici-avatar.jpg" alt="">
             </div>
             <div class="media-body">
-              <h4 class="text-sm uppercase-bold">Ing. Ruben Guevara</h4>
-              <a href="javascript:;">rguevarac@hotmail.es</a>
+              <h4 class="text-sm uppercase-bold">{{fSessionCI.cliente}}</h4>
+              <a >{{fSessionCI.email}}</a>
               <ul class="list-unstyled">
-                <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
+                <!-- <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
                 <li><a href="javascript:;"><i class="fa fa-check"></i> Tasks</a></li>
-                <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
+                <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li> -->
               </ul>
             </div>
           </div>
           <div class="footer">
-            <button class="btn btn-theme minotaur-btn pull-right" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> Cerrar Sesión </button>
-            <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button>
+            <button class="btn btn-theme minotaur-btn" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> Cerrar Sesión </button>
+            <!-- <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button> -->
           </div>
         </div>
       </div>

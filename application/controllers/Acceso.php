@@ -59,6 +59,8 @@ class Acceso extends CI_Controller {
 						}
 
 					}else{
+						$arrPerfilUsuario['cliente'] = $arrPerfilUsuario['username'];
+						$arrPerfilUsuario['email'] = $arrPerfilUsuario['key_grupo'] =='key_admin' ? 'Administrador':'Supremo';
 						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
 						$arrData['flag'] = 1;
 						$arrData['message'] = 'Usuario inició sesión correctamente';

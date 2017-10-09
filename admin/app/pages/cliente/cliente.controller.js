@@ -46,7 +46,7 @@
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
-        { field: 'whatsapp', name: 'whatsapp', displayName: 'WHATSAPP',width: 110, enableFiltering: false, enableSorting: false },
+        { field: 'monedero', name: 'monedero', displayName: 'MONEDERO',width: 110, enableFiltering: false, enableSorting: false },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
