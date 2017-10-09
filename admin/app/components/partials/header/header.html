@@ -12,7 +12,7 @@
     <i class="fa fa-bars"></i>
   </button>
 </div>
-<div class="main-search hidden-xs">
+<div class="main-search hidden-xs" ng-if="fSessionCI.key_grupo == 'key_root'">
   <form>
     <input type="text" class="form-control" placeholder="Buscar cliente..." ng-model="fBusqueda">
     <button class="btn" ng-click="buscarPaciente(fBusqueda);">
