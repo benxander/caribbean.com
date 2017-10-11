@@ -221,8 +221,8 @@ class Cliente extends CI_Controller {
 			    $file_tmp =$_FILES['file']['tmp_name'];
 			    $file_type=$_FILES['file']['type'];
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-			    $extensions_image = array("jpeg","jpg","png");
-			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
+			    $extensions_image = array("jpeg","jpg");
+			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
 
 				// CREAR CARPESTAS CLIENTE
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
