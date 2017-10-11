@@ -297,10 +297,35 @@
           });
         }
 
+        vm.btnDeleteArchivoSelect = function(){
+          alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+              ev.preventDefault();
+              ClienteServices.sDeleteArchivoSelect(vm.images).then(function (rpta) {
+                if(rpta.flag == 1){
+                  vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var type = 'success';
+                  toastr.success(rpta.message, title);
+                  vm.cargarImagenes();
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                  toastr.warning(rpta.message, title);
+                }else{
+                  alert('Ocurrió un error');
+                }
+              });
+            },
+            function(ev){
+              ev.preventDefault();
+          });
+        }
+
         vm.cargarImagenes = function(datos){
           ClienteServices.sListarImagenes(vm.fDataUpload).then(function(rpta){
-            console.log(rpta);
             vm.images = rpta.datos;
+            vm.length_images = vm.images.length;
+            if (vm.length_images == 0) { vm.uploadBtn = true; };
           });
         }
         vm.cargarImagenes();
@@ -485,6 +510,7 @@
         sEditarCliente: sEditarCliente,
         sAnularCliente: sAnularCliente,
         sAnularArchivo: sAnularArchivo,
+        sDeleteArchivoSelect: sDeleteArchivoSelect,
         sUploadCliente: sUploadCliente,
         sListarImagenes: sListarImagenes,
         sSubirImagenesCarpeta: sSubirImagenesCarpeta,
@@ -549,6 +575,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/anular_archivo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sDeleteArchivoSelect(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/delete_archivo_select",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

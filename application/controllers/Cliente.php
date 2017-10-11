@@ -136,21 +136,13 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
-
-    	if(!empty($allInputs['idusuario'])){
-    		if($this->model_usuario->m_consultar_usuario($allInputs)){
-    			$arrData['message'] = 'Este cliente tiene un usuario asociado';
-	    		$this->output
-				    ->set_content_type('application/json')
-				    ->set_output(json_encode($arrData));
-				return;
-    		}
-    	}
-
-		if($this->model_cliente->m_anular_cliente($allInputs)){
-			$arrData['message'] = 'Se anularon los datos correctamente';
-    		$arrData['flag'] = 1;
+    	if($this->model_usuario->m_anular_usuario($allInputs)){
+			if($this->model_cliente->m_anular_cliente($allInputs)){
+				$arrData['message'] = 'Se anularon los datos correctamente';
+	    		$arrData['flag'] = 1;
+			}
 		}
+	
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -162,6 +154,8 @@ class Cliente extends CI_Controller {
     	$arrData['flag'] = 0;
 
 		if($this->model_archivo->m_anular_archivo($allInputs)){
+			unlink($allInputs['src']);
+    		if($allInputs['idtipoproducto'] == 2){unlink($allInputs['src_image']);}
 			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}
@@ -183,6 +177,27 @@ class Cliente extends CI_Controller {
 			$arrData['message'] = 'Se eliminaron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function delete_archivo_select(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	
+    	foreach ($allInputs as $key => $value) {
+    		if($value['selected']){
+    			if($this->model_archivo->m_anular_archivo($value)){
+    				deleteArchivos($value['src']);
+    				if($value['idtipoproducto'] == 2){deleteArchivos($value['src_image']);}
+					$arrData['message'] = 'Se eliminaron los datos correctamente';
+		    		$arrData['flag'] = 1;
+				}
+    		}
+    	}
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -213,7 +228,9 @@ class Cliente extends CI_Controller {
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 		    	createCarpetas($carpeta);
 				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
-				$file_name = generateRandomString() .'.'. $file_ext ;
+				$random = generateRandomString();
+				$file_name = $random .'.'. $file_ext;
+								
 
 				// IMAGENES
 			    if(in_array($file_ext,$extensions_image)){
@@ -246,20 +263,11 @@ class Cliente extends CI_Controller {
 				//VIDEOS
 			    }elseif(in_array($file_ext,$extensions_video)){
 			    	if($file_size < 104857600){
-				    	/*$frame = 10;
-						$movie = $file_name;
-						$thumbnail = $carpeta_destino . DIRECTORY_SEPARATOR . $file_name;
-
-						$mov = new ffmpeg_movie($movie);
-						$frame = $mov->getFrame($frame);
-						if ($frame) {
-						    $gd_image = $frame->toGDImage();
-						    if ($gd_image) {
-						        imagepng($gd_image, $thumbnail);
-						        imagedestroy($gd_image);
-						    }
-						}*/
+						
+							
 						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+						imagenVideo($carpeta_destino . DIRECTORY_SEPARATOR . $file_name, $random, $carpeta_destino. DIRECTORY_SEPARATOR);
+				
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
 							'idusuario' 	=> $idusuario,
@@ -301,6 +309,10 @@ class Cliente extends CI_Controller {
 		$arrListado = array();
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
+			$src_image ='';
+			if($row['idtipoproducto'] == 2){
+				$src_image = '../uploads/clientes/'.$row['codigo'].'/originales/'.explode(".", $row['nombre_archivo'])[0].'.jpg';
+			}
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
@@ -312,6 +324,7 @@ class Cliente extends CI_Controller {
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'src' => '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'],
+					'src_image' => $src_image,
 					'title' => '',
 				)
 			);
@@ -335,8 +348,8 @@ class Cliente extends CI_Controller {
 
         $this->load->helper('file');
         $this->load->library('image_lib');
-        $extensions_image = array("jpeg","jpg","png");
-		$extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
+        $extensions_image = array("jpeg","jpg");
+		$extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
      	$lista = $this->model_archivo->m_cargar_nombre_imagenes($allInputs);
      	$archivos = array();
 		$carpeta = './uploads/clientes/' . $allInputs['codigo'];
@@ -358,14 +371,14 @@ class Cliente extends CI_Controller {
 		}
 
 		foreach ($lista as $key => $value) {
-			array_push($archivos,$value['nombre_archivo']);
+			array_push($archivos,explode(".", $value['nombre_archivo'])[0]);
 		}
 
        	foreach (get_filenames('./uploads/clientes/'.$allInputs['codigo'].'/originales/') as $archivo) {
        		$file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
 
 		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
-            	if(!in_array($archivo,$archivos)){
+            	if(!in_array(explode(".", $archivo)[0],$archivos)){
             		$carpeta = './uploads/clientes/'.$allInputs['codigo'];
 				    $archivo_dest = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
 				    $var = filesize($carpeta);
@@ -380,6 +393,8 @@ class Cliente extends CI_Controller {
 
 				   	if(in_array($file_ext,$extensions_image)){
 		   				redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
+				   	}else{
+				   		imagenVideo($archivo_dest, explode(".", $archivo)[0], $carpeta.'/originales/');
 				   	}
 
             		if($this->model_archivo->m_registrar_archivo($allInputs)){
