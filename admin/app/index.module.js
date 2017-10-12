@@ -63,6 +63,7 @@
       'leaflet-directive',
       'ui.calendar',
       'angular-flot',
+      // 'Descuento.controller'
     ]);
 
 })();

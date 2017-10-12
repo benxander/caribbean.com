@@ -303,7 +303,10 @@ minotaur-header .navbar-header .navigation-toggle{
         height: 100px;
         margin: 6px 0 0 6px;
     }
-
+.ui-grid-viewport .ui-editCell, .ui-editPanel{
+    background-color: #fcfbcd !important;
+    font-style: oblique !important;
+}
 /**fichas*/
 .ficha .tile-header .icono{font-size: 1.8em;padding-right: 10px;}
 .ficha .tile-header h4{display: inline;}

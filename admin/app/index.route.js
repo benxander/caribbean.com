@@ -118,6 +118,12 @@
         templateUrl: 'app/pages/tienda/tienda.html',
         controller: 'TiendaController',
         controllerAs: 'ctrl'
+      })
+      .state('descuento', {
+        url: '/app/descuento',
+        templateUrl: 'app/pages/descuento/descuento.html',
+        controller: 'DescuentoController',
+        controllerAs: 'des'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');
