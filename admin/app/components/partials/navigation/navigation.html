@@ -61,10 +61,24 @@
       </ul>
     </li>
     <li ng-class="{'open active':$state.includes('config')}" ng-show="valores[6]">
-      <a ng-click="$state.reload();" ui-sref="config">
+      <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.CONFIG' | translate }}</span>
         <i class="fa fa-cogs"></i>
       </a>
+      <ul>
+        <li ui-sref-active="active">
+          <a ng-click="$state.reload();" ui-sref="config">
+            <span class="nav-text">{{ 'Menu.WEB' | translate }}</span>
+            <i>{{ 'Menu.WEB' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="descuento">
+            <span class="nav-text">{{ 'Menu.DESCUENTO' | translate }}</span>
+            <i>{{ 'Menu.DESCUENTO' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+      </ul>
     </li>
     <li ng-show="valores[7]">
       <a href="javascript:;">
