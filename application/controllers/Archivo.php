@@ -31,7 +31,7 @@ class Archivo extends CI_Controller {
 					'producto' => $row['producto'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
-					'src' => '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'],
+					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					'title' => '',
 				)
 			);
