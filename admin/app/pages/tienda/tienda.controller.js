@@ -32,9 +32,11 @@
     vm.isSelected = false;
 
     vm.selectAll = function () {
+      var monto = 0;
       if (vm.selectedAll) {
         vm.selectedAll = false;
         vm.isSelected = false;
+
       } else {
         vm.selectedAll = true;
         vm.isSelected = true;
@@ -42,11 +44,16 @@
 
       angular.forEach(vm.images, function(image) {
         image.selected = vm.selectedAll;
+        if(vm.isSelected){
+          monto = monto + image.precio_float;
+        }
       });
+      vm.monto_total = monto.toFixed(2);
     };
 
     vm.selectImage = function(index) {
       var i = 0;
+      var monto = 0;
 
       if (vm.images[index].selected) {
         vm.images[index].selected = false;
@@ -58,13 +65,17 @@
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
           i++;
+          monto = monto + image.precio_float;
         }
       });
 
       if (i === 0) {
         vm.isSelected = false;
       }
+      console.log('monto', monto);
+      vm.monto_total = monto.toFixed(2);
     };
+    vm.monto_total = 0.00;
 
     vm.btnDescargarFiles = function(){ 
       vm.modoSeleccionar=false;

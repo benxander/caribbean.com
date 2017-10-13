@@ -67,6 +67,7 @@ class Archivo extends CI_Controller {
 					'es_bonificacion' => $row['es_bonificacion'],
 					'idtipoproducto' => $row['idtipoproducto'],
 					'producto' => $row['producto'],
+					'precio_float' => (float)$row['precio'],
 					'precio' => $row['precio'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
