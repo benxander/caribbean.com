@@ -71,6 +71,11 @@
       vm.modoPagar=true;
     }
 
+    vm.btnVolver = function(){ 
+      vm.modoSeleccionar=true;
+      vm.modoPagar=false;
+    }
+
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;
       vm.modoPagar=false;
