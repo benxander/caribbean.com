@@ -103,11 +103,11 @@
 
 
       // MANTENIMIENTO
-      vm.btnEditar = function(row){
+      vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/usuario/usuario_formview.php',
-          controllerAs: 'mu',
-          size: 'lg',
+          templateUrl: 'app/pages/descuento/descuento_formview.php',
+          controllerAs: 'md',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -116,7 +116,7 @@
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Edición de Cliente';
+            vm.modalTitle = 'Nuevo descuento';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.listaGrupos = arrToModal.scope.listaGrupos;
 
