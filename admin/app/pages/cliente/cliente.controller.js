@@ -41,8 +41,8 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC} },
-        { field: 'idusuario', name:'idusuario', displayName: 'ID USUARIO',  width:80, visible:false },
+        { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
+        { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:80, visible:true },
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
@@ -483,6 +483,7 @@
         sListarClientePorIdusuario:sListarClientePorIdusuario,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
+        sEditarPerfilCliente: sEditarPerfilCliente,
         sAnularCliente: sAnularCliente,
         sAnularArchivo: sAnularArchivo,
         sUploadCliente: sUploadCliente,
@@ -531,6 +532,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/editar_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarPerfilCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/editar_perfil_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

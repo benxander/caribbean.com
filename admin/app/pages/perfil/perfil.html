@@ -54,17 +54,18 @@
                     </div>
                     <h4 class="text-info f-14 col-sm-12">Datos de Contacto</h4>
                     <div class="form-group">
+                      <label for="email" class="col-sm-3 control-label minotaur-label">Teléfono : </label>
+                      <div class="col-sm-9">
+                        <input type="tel" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="telefono" placeholder="999999999" ng-model="p.fDataPerfil.telefono" ng-readonly="!p.modoEditar">
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label for="whatsapp" class="col-sm-3 control-label minotaur-label">WhatsApp: </label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="whatsapp" placeholder="WhatsApp" ng-model="p.fDataPerfil.whatsapp" ng-readonly="!p.modoEditar">
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label for="email" class="col-sm-3 control-label minotaur-label">Email : </label>
-                      <div class="col-sm-9">
-                        <input type="email" class="form-control  text-center ng-class:{'underline-input':!p.modoEditar};" id="email" placeholder="micorreo@dominio.com" ng-model="p.fDataPerfil.email" ng-readonly="!p.modoEditar">
-                      </div>
-                    </div>
+
                     <h4 class="text-info f-14 col-sm-12">Configuracion de perfil</h4>
                     <div class="form-group">
                       <label for="idioma" class="col-sm-3 control-label minotaur-label">Idioma: </label>
@@ -74,7 +75,7 @@
                       </div>
                     </div>
 
-                    <button class="pull-left btn btn-input-sm btn-primary mt-15" type="button" ng-if="!p.cambiarClave" ng-click="p.cambiarClave=true">Cambiar contraseña</button>
+                  <!--   <button class="pull-left btn btn-input-sm btn-primary mt-15" type="button" ng-if="!p.cambiarClave" ng-click="p.cambiarClave=true">Cambiar contraseña</button> -->
 
                     <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="p.cambiarClave"
                             ng-click="p.btnGuardarClave(p.fDataPerfil)"><i class="fa fa-arrow-right"></i> Guardar</button>

@@ -17,8 +17,8 @@
       vm.listaIdiomas = rpta.datos;
     });
 
-    vm.cargaPerfil = function(){ 
-      if(!vm.fDataPerfil.idusuario) {      
+    vm.cargaPerfil = function(){
+      if(!vm.fDataPerfil.idusuario) {
         rootServices.sGetSessionCI().then(function (response) {
           if(response.flag == 1){
             vm.fDataPerfil = response.datos;
@@ -39,7 +39,7 @@
             //console.log('vm.fDataPerfilCopy',vm.fDataPerfilCopy);
           }
         });
-      }    
+      }
     }
     vm.cargaPerfil();
 
@@ -49,7 +49,7 @@
     }
 
     vm.btnAceptarEditPerfil = function(datos){//datos personales
-      ClienteServices.sEditarCliente(datos).then(function (rpta) {
+      ClienteServices.sEditarPerfilCliente(datos).then(function (rpta) {
         if(rpta.flag == 1){
           UsuarioServices.sEditarIdiomaUsuario(datos).then(function (rpta) {
             if(rpta.flag == 1){
@@ -66,7 +66,7 @@
             }else{
               alert('Ocurrió un error');
             }
-          });          
+          });
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var type = 'warning';
@@ -75,7 +75,7 @@
           alert('Ocurrió un error');
         }
       });
-    } 
+    }
 
     //CAMBIAR CONTRASEña
     vm.btnCancelClave = function(){
@@ -190,14 +190,14 @@
         });
       });
 
-    }  
+    }
   }
   function PerfilServices($http, $q) {
     return({
         sEditarClave: sEditarClave,
         sSubirFoto:sSubirFoto,
     });
-    
+
     function sEditarClave(pDatos) {
       var datos = pDatos || {};
       var request = $http({

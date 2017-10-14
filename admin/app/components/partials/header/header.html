@@ -51,7 +51,7 @@
         </div>
       </div>
     </li> -->
-    <li>
+    <li ng-if="fSessionCI.key_grupo == 'key_cliente'">
       <div uib-dropdown>
         <button id="language" type="button" class="btn no-bg" uib-dropdown-toggle>
           <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-Kingdom.png" class="img-responsive img-circle hidden-xs" alt="">
@@ -96,14 +96,13 @@
     <li>
       <div uib-dropdown>
         <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
-          <!-- <span class="inline"> Profesional: Luis Luna </span> -->
-          <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
+          <img src="assets/images/sin-imagen.png" class="img-responsive img-circle hidden-xs" alt="">
           <span class="nav-text"><i class="fa fa-user"></i> </span>
         </button>
         <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
           <div class="media">
             <div class="media-left">
-              <img class="media-object img-circle" src="assets/images/ici-avatar.jpg" alt="">
+              <img class="media-object img-circle" src="assets/images/sin-imagen.png" alt="">
             </div>
             <div class="media-body">
               <h4 class="text-sm uppercase-bold">{{fSessionCI.cliente}}</h4>

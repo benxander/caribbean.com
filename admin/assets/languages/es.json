@@ -15,9 +15,9 @@
     "USUARIOS": "Usuarios",
     "GRUPOS": "Grupos",
     "ROLES": "Roles",
-    "PERFIL": "Mi Perfil",
+    "DESCARGAR": "Tienda",
     "GALERIA": "Mi Galeria",
-    "DESCARGAR": "Tienda"
+    "PERFIL": "Mi Perfil"
   },
   "Form": {
     "PREVIOUS":"Atras",

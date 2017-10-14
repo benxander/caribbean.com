@@ -6,7 +6,7 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
@@ -47,7 +47,7 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 	public function m_cargar_cliente_por_idusuario($idusuario){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono');
 		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','c.idusuario = u.idusuario');
@@ -101,6 +101,20 @@ class Model_cliente extends CI_Model {
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
 			'fecha_final'	=> $data['fecha'],
+
+		 );
+		$this->db->where('idcliente',$data['idcliente']);
+
+		return $this->db->update('cliente', $datos);
+	}
+	public function m_editar_perfil_cliente($data){
+
+		$datos = array(
+			'nombres' 		=> strtoupper($data['nombres']),
+			'apellidos' 	=> strtoupper($data['apellidos']),
+			'telefono' 		=> empty($data['telefono']) ? NULL : $data['telefono'],
+			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'updatedat' 	=> date('Y-m-d H:i:s'),
 
 		 );
 		$this->db->where('idcliente',$data['idcliente']);

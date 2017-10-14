@@ -24,6 +24,7 @@ class Cliente extends CI_Controller {
 					'apellidos'	=> $row['apellidos'],
 					'email' 	=> $row['email'],
 					'whatsapp' 	=> $row['whatsapp'],
+					'telefono' 	=> $row['telefono'],
 					'monedero' 	=> $row['monedero'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
@@ -59,6 +60,7 @@ class Cliente extends CI_Controller {
 				'cliente' => strtoupper_total($row['nombres'] . ' ' .$row['apellidos']),
 				'email' => $row['email'],
 				'whatsapp' => $row['whatsapp'],
+				'telefono' 	=> $row['telefono'],
 				'estado_cl' => $row['estado_cl'],
 				'ididioma' => $row['ididioma'],
 				'idioma' => $row['idioma'],
@@ -122,6 +124,22 @@ class Cliente extends CI_Controller {
 
 		if( $this->model_cliente->m_editar_cliente($allInputs) ){
 			if( $this->model_usuario->m_editar_usuario_cliente($allInputs) ){
+				$arrData['message'] = 'Se editaron los datos correctamente ';
+	    		$arrData['flag'] = 1;
+			}
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_perfil_cliente(){
+		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_cliente->m_editar_perfil_cliente($allInputs) ){
+			if( $this->model_usuario->m_editar_idioma_usuario($allInputs) ){
 				$arrData['message'] = 'Se editaron los datos correctamente ';
 	    		$arrData['flag'] = 1;
 			}
@@ -208,7 +226,7 @@ class Cliente extends CI_Controller {
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 			    $extensions_image = array("jpeg","jpg","png");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "wmv", "mov");
-
+			    // var_dump($_FILES['file']); exit();
 				// CREAR CARPESTAS CLIENTE
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 		    	createCarpetas($carpeta);
@@ -220,8 +238,10 @@ class Cliente extends CI_Controller {
 
 			    	if($file_size < 10485760){
 
-				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
+
+				        // redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
 						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+				        redimencionMarcaAgua2(500, $carpeta, $file_name);
 
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,

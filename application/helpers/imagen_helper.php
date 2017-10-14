@@ -165,41 +165,68 @@ function crearVistasPreviasCompletas($img,$dir, $width, $height)
             $ci->image_lib->clear();
         }
     }
+    function redimencionMarcaAgua2($maxsize = 600, $carpeta, $file_name) {
+        $ci =& get_instance();
+        $ci->load->library('image_moo');
+        $ci->image_moo->set_watermark_transparency(40);
+        //$ci->image_moo->set_jpg_quality(80);
+        // el archivo o imagen
+        $filename = $carpeta . DIRECTORY_SEPARATOR .'originales'. DIRECTORY_SEPARATOR . $file_name;
+        list($width_orig, $height_orig) = getimagesize($filename);
+        // Asignar el ancho y alto maximos
+        $width = $maxsize;
+        $height = $maxsize;
+        $miniatura = $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name;
+        $ci->image_moo->load($filename)->resize($width, $height)->save($miniatura, true);
 
+        for ($i=1; $i <= 9; $i++) {
+            if($width_orig < $height_orig){
+                if(!in_array($i, array(2,5,8))){
+                    $ci->image_moo->load($miniatura)->load_watermark('assets/images/watermark2.png')->watermark($i)->save($miniatura, true);
+                }
+            }else{
+                $ci->image_moo->load($miniatura)->load_watermark('assets/images/watermark2.png')->watermark($i)->save($miniatura, true);
+            }
+        }
+
+        return true;
+    }
 
 function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
-
     // el archivo o imagen
     $filename = $file_tmp;
-
     // Asignar el ancho y alto maximos
     $width = $maxsize;
     $height = $maxsize;
-
     // mandando las cabeceras correspondientes
     header('Content-type: image/jpeg');
 
     // obteniendo las dimensiones actuales
     list($width_orig, $height_orig) = getimagesize($filename);
     if ($width && ($width_orig < $height_orig)) {
-    $width = ($height / $height_orig) * $width_orig;
+        $width = ($height / $height_orig) * $width_orig;
     } else {
-    $height = ($width / $width_orig) * $height_orig;
+        $height = ($width / $width_orig) * $height_orig;
     }
 
     // Cambiando el tamano de la imagen o resample
-    $image_p = imagecreatetruecolor($width, $height);
     $image = imagecreatefromjpeg($filename);
+    $image_p = imagecreatetruecolor($width, $height);
     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
     // Marca de Agua o Watermark
-    $watermark = imagecreatefrompng('uploads/Copyright.png');
-    $watermark_width = imagesx($watermark);
-    $watermark_height = imagesy($watermark);
-    $image = imagecreatetruecolor($watermark_width, $watermark_height);
+    $watermark_image = imagecreatefrompng('assets/images/watermark.png');
+    $wm_width = imagesx($watermark_image);
+    $wm_height = imagesy($watermark_image);
+    $watermark = imagecreatetruecolor($wm_width, $wm_height);
     $dest_x = 0; //$width - $watermark_width - 10;
     $dest_y = 0; //$height - $watermark_height - 10;
-    imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 30);
+    imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
+    // imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
+
+
+    imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 20);
+    // imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 30);
 
     // Salida
     imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
@@ -210,7 +237,7 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
 }
 
 function deleteArchivos($carpeta){
-  foreach(glob($carpeta . "/*") as $archivos_carpeta){             
+  foreach(glob($carpeta . "/*") as $archivos_carpeta){
     if (is_dir($archivos_carpeta)){
       deleteArchivos($archivos_carpeta);
     } else {
@@ -249,3 +276,4 @@ function createCarpetas($carpeta){
         file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'descargadas'. DIRECTORY_SEPARATOR .'index.html', $contenido);
     }
 }
+
