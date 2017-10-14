@@ -313,6 +313,12 @@ class Cliente extends CI_Controller {
 			if($row['idtipoproducto'] == 2){
 				$src_image = '../uploads/clientes/'.$row['codigo'].'/originales/'.explode(".", $row['nombre_archivo'])[0].'.jpg';
 			}
+
+			if($row['descargado'] == 1){
+				$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
+			}else{
+				$src = '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'];
+			}
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
