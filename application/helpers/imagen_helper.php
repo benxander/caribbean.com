@@ -215,10 +215,12 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
     // Marca de Agua o Watermark
+
     $watermark_image = imagecreatefrompng('assets/images/watermark.png');
     $wm_width = imagesx($watermark_image);
     $wm_height = imagesy($watermark_image);
     $watermark = imagecreatetruecolor($wm_width, $wm_height);
+
     $dest_x = 0; //$width - $watermark_width - 10;
     $dest_y = 0; //$height - $watermark_height - 10;
     imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
@@ -233,7 +235,36 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
     imagedestroy($image);
     imagedestroy($image_p);
     imagedestroy($watermark);
+}
 
+function imagenVideo($file_name, $name, $carpeta_destino){
+
+    $video = $file_name;
+    $time = '00:00:02';
+    $image_destino = $carpeta_destino.$name.'.jpg';
+    $ffmpeg_path = 'C:\\ffmpeg\\bin\\';
+
+    // Sacar Imagen del Video
+    exec($ffmpeg_path."ffmpeg -i ".$video." -ss ".$time." -vframes 1 ".$image_destino);
+
+    // Marca de Agua o Watermark
+    list($image_video_width, $image_video_height) = getimagesize($image_destino);
+    $image_video = imagecreatefromjpeg($image_destino);
+
+    $watermark = imagecreatefrompng('assets/images/play_icon.png');
+    $watermark_width = imagesx($watermark);
+    $watermark_height = imagesy($watermark);
+
+    $image = imagecreatetruecolor($watermark_width, $watermark_height);
+    $dest_x = ($image_video_width - $watermark_width) / 2;
+    $dest_y = ($image_video_height - $watermark_height) / 2;
+    imagecopy($image_video, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height);
+
+    // Salida
+    imagejpeg($image_video, $image_destino);
+    imagedestroy($image_video);
+    imagedestroy($image);
+    imagedestroy($watermark);
 }
 
 function deleteArchivos($carpeta){
@@ -241,10 +272,12 @@ function deleteArchivos($carpeta){
     if (is_dir($archivos_carpeta)){
       deleteArchivos($archivos_carpeta);
     } else {
-    unlink($archivos_carpeta);
+        if(explode(".", $archivos_carpeta)[1] != 'html'){
+            unlink($archivos_carpeta);
+        }
     }
   }
-  rmdir($carpeta);
+  //rmdir($carpeta);
 }
 
 function createCarpetas($carpeta){
