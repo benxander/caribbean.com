@@ -24,13 +24,17 @@
 
         <ul class="mix-controls">
           <li class="select-all">
-            <label class="checkbox minotaur-checkbox inline-block m-0">Select all
+            <label class="checkbox minotaur-checkbox inline-block m-0">Todos
               <input type="checkbox" ng-model="selectedAll" ng-click="ctrl.selectAll()"><div class="input-indicator"></div>
             </label>
           </li>
 
           <li ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.btnDescargarFiles();'>
             <a href="javascript:;"><i class="fa fa-download" ></i> Descargar</a>
+          </li>
+
+          <li class="pull-right select-all" style="font-size: 15px;font-weight: 600">
+            <i class="fa fa-shopping-cart" ></i> <span style="color:#1199d3;">{{ctrl.monto_total}}</span></a>
           </li>
         </ul>
         <div class="row mix-grid">
@@ -76,6 +80,9 @@
                 <button class="btn btn-warning" style="font-size:14px;color:#fff;" ng-click="ctrl.btnVolver()">
                   <i class="halcyon-icon-back"></i> Regresar
                 </button>
+                <div class="pull-right mt-10 ml-10" style="font-size: 15px;font-weight: 600">
+                  <i class="fa fa-shopping-cart" ></i> <span style="color:#1199d3;">{{ctrl.monto_total}}</span>
+                </div>
             </div>
             <!-- <minotaur-tile-close></minotaur-tile-close> -->
           </div>
@@ -103,7 +110,10 @@
             </div>
           </div>
         </div>
-        <button class="pull-right btn btn-input-sm btn-success mt-15" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
+        <div class="pull-right" > 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_total}}</p> 
+          <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
+        </div>
       </div>
 
       <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
