@@ -268,7 +268,7 @@ function imagenVideo($file_name, $name, $carpeta_destino){
 }
 
 function deleteArchivos($carpeta){
-  foreach(glob($carpeta . "/*") as $archivos_carpeta){
+  foreach(glob($carpeta .DIRECTORY_SEPARATOR. "*") as $archivos_carpeta){
     if (is_dir($archivos_carpeta)){
       deleteArchivos($archivos_carpeta);
     } else {
@@ -278,6 +278,16 @@ function deleteArchivos($carpeta){
     }
   }
   //rmdir($carpeta);
+}
+
+function deleteUnArchivo($carpeta, $archivo){
+  foreach(glob($carpeta . "/*") as $value){ 
+    print_r($value . "\n"); 
+    print_r($archivo. "\n"); 
+    if($value == $archivo){
+        unlink($value);
+    }  
+  }
 }
 
 function createCarpetas($carpeta){
