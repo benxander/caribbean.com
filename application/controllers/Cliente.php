@@ -256,9 +256,9 @@ class Cliente extends CI_Controller {
 			    	if($file_size < 10485760){
 
 
-				        // redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
+				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
 						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
-				        redimencionMarcaAgua2(500, $carpeta, $file_name);
+				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
