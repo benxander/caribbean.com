@@ -10,11 +10,11 @@
   /** @ngInject */
   function TiendaController($scope, TiendaServices, ClienteServices, rootServices,toastr) {
     var vm = this;
-    //vm.modoSeleccionar = true;
-    vm.modoSeleccionar = false;
+    vm.modoSeleccionar = true;
+    //vm.modoSeleccionar = false;
     vm.modoPagar = false;
-    //vm.modoDescargaCompleta = false;
-    vm.modoDescargaCompleta = true;
+    vm.modoDescargaCompleta = false;
+    //vm.modoDescargaCompleta = true;
     vm.cargarGaleria = function(datos){
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
