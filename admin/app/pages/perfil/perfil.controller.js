@@ -103,90 +103,61 @@
     }
 
     // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
-    vm.cargarImagen = function(){
+    vm.cargarImagen = function(){      
       vm.fotoCrop = true;
-      vm.image = {
-         originalImage: '',
-         croppedImage: '',
-      };
-      vm.cropType='circle';
-
-      var handleFileSelect2=function(evt) {
+      var handleFileSelect=function(evt) {        
         var file = evt.currentTarget.files[0];
         var reader = new FileReader();
         reader.onload = function (evt) {
           /* eslint-disable */
-          $scope.$apply(function($scope){
-            vm.image.originalImage=evt.target.result;
-            // vm.image.fotoNueva=evt.target.result;
-            console.log("foto", vm.image);
-          });
+          $('#img-selecionada').attr('src', evt.target.result);           
           /* eslint-enable */
         };
         reader.readAsDataURL(file);
       };
       $timeout(function() { // lo pongo dentro de un timeout sino no funciona
-        angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
-      });
+        angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect);
+      }/* no delay here */);
     }
     vm.subirFoto = function(){
-      vm.image.nombre_foto = vm.fDataPerfil.nombre_foto;
-      vm.image.idusuario = vm.fDataPerfil.idusuario;
-      vm.image.nombre = vm.fDataPerfil.nombre;
-      PerfilServices.sSubirFoto(vm.image).then(function(rpta){
+      vm.fDataPerfil.image =  $('#img-selecionada').attr('src');
+      PerfilServices.sSubirFoto(vm.fDataPerfil).then(function(rpta){
         if(rpta.flag == 1){
           var title = 'OK';
-          var iconClass = 'success';
+          var type = 'success';
           vm.fDataPerfil.nombre_foto = rpta.datos;
-          vm.fotoCrop = false;
-          vm.image = {
-             originalImage: '',
-             croppedImage: '',
-          };
-
+          vm.cancelarFoto();
+          toastr.success(rpta.message, title);
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
-          // vm.toast.title = 'Advertencia';
-          var iconClass = 'warning';
-          // vm.options.iconClass = {name:'warning'}
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
         }else{
           alert('Ocurrió un error');
         }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
       });
     }
     vm.cancelarFoto = function(){
       vm.fotoCrop = false;
-      vm.image = {
-         originalImage: '',
-         croppedImage: '',
-      };
+      $('#img-selecionada').attr('src', '#');
     }
     vm.eliminarFoto = function(){
       alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
-        PacienteServices.sEliminarFoto(vm.fDataPerfil).then(function(rpta){
+        PerfilServices.sEliminarFoto(vm.fDataPerfil).then(function(rpta){
           if(rpta.flag == 1){
             var title = 'OK';
-            var iconClass = 'success';
+            var type = 'success';
             vm.fDataPerfil.nombre_foto = rpta.datos;
-            vm.fotoCrop = false;
-            vm.image = {
-               originalImage: '',
-               croppedImage: '',
-            };
-
+            vm.cancelarFoto();
+            toastr.success(rpta.message, title);
           }else if( rpta.flag == 0 ){
             var title = 'Advertencia';
-            // vm.toast.title = 'Advertencia';
-            var iconClass = 'warning';
-            // vm.options.iconClass = {name:'warning'}
+            var type = 'warning';
+            toastr.warning(rpta.message, title);
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
         });
       });
 
@@ -196,6 +167,7 @@
     return({
         sEditarClave: sEditarClave,
         sSubirFoto:sSubirFoto,
+        sEliminarFoto:sEliminarFoto,
     });
     
     function sEditarClave(pDatos) {
@@ -213,6 +185,16 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Usuario/subir_imagen_usuario",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    } 
+
+    function sEliminarFoto(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Usuario/eliminar_imagen_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

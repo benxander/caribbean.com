@@ -173,14 +173,48 @@ class Usuario extends CI_Controller {
 
 	public function subir_imagen_usuario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+		$arrData['message'] = 'Error al subir la foto, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
-		/*if( $this->model_usuario->m_editar_idioma_usuario($allInputs) ){
-			$arrData['message'] = 'Se editaron los datos correctamente ';
+    	if(empty($allInputs['image']) || $allInputs['image'] == '#' ){
+    		$arrData['flag'] = 0;
+    		$arrData['message'] = 'Debe seleccionar una imagen para subir.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+		    return;	
+    	}
+
+		$allInputs['nombre_foto'] = url_title($allInputs['username']).date('YmdHis').'.jpg';
+		subir_imagen_Base64($allInputs['image'], 'admin/assets/images/dinamic/clientes/' ,$allInputs['nombre_foto']);
+		if($this->model_usuario->m_editar_foto($allInputs)){
+    		$arrData['message'] = 'La foto se cambió correctamente';
     		$arrData['flag'] = 1;
-		}*/
-		$this->output
+    		$arrData['datos'] = $allInputs['nombre_foto'];
+    	}    	
+
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function eliminar_imagen_usuario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar la foto, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+		if( file_exists("admin/assets/images/dinamic/clientes/" . trim($allInputs['nombre_foto'])) ){
+			unlink("admin/assets/images/dinamic/clientes/" . trim($allInputs['nombre_foto']));
+		}
+
+		$allInputs['nombre_foto'] = NULL;
+		if($this->model_usuario->m_editar_foto($allInputs)){
+    		$arrData['message'] = 'La foto se eliminó correctamente';
+    		$arrData['flag'] = 1;
+    		$arrData['datos'] = 'sin-imagen.png';
+    	}
+
+    	$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}

@@ -101,33 +101,20 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="form-group col-md-4">
                     <h4 class="text-info f-14 col-sm-12">Foto</h4>
                     <div class="text-center" ng-if="!p.fotoCrop">
-                      <img ng-src="assets/images/dinamic/clientes/{{p.fDataPerfil.nombre_foto}}" style="width: 100%">
+                        <img ng-src="assets/images/dinamic/clientes/{{p.fDataPerfil.nombre_foto}}" style="width: 100%" />
                     </div>
 
-                    <div class="row" ng-show="p.fotoCrop">
-                      <div class="col-md-12">
-                        <div class="p-10 bg-white b-a b-solid" style="height:180px">
-                          <!-- <img-crop
-                            image="p.image.originalImage"
-                            result-image="p.image.croppedImage"
-                            result-image-size="160"
-                            area-type="{{p.cropType}}"
-                          ></img-crop> -->
-                        </div>
-                      </div>
-                      <div class="col-md-12" ng-show="false">
-                        <div class="p-15 bg-white b-a b-solid inline-block">
-                          <img ng-src="{{p.image.croppedImage}}" />
-                        </div>
-                      </div>
+                    <div class="text-center" ng-show="p.fotoCrop">
+                        <img id="img-selecionada" src="#" style="width: 100%;min-height: 180px;" />
                     </div>
+
                     <input type="file" class="filestyle" filestyle="{
-                        buttonText: 'Select image',
-                        iconName: 'fa fa-file-image-o'
-                      }" id="fileInput2" ng-click="p.cargarImagen();" >
+                            buttonText: 'Select image',
+                            iconName: 'fa fa-file-image-o'
+                          }" id="fileInput2" ng-click="p.cargarImagen();" />
 
                     <div class="text-center mt-10" ng-show="p.fotoCrop" >
                       <button class="btn btn-sm btn-danger" ng-click="p.cancelarFoto();">Cancelar</button>
@@ -135,6 +122,7 @@
                     </div>
                     <button class="btn btn-sm btn-danger mt-10" ng-click="p.eliminarFoto();" ng-show="p.fDataPerfil.nombre_foto != 'sin-imagen.png'">Quitar Foto</button>
                   </div>
+
 
                 </div>
               </form>
