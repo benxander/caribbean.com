@@ -5,7 +5,7 @@ class Cliente extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_cliente','model_usuario','model_archivo'));
+        $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion'));
     }
 
     public function listar_clientes(){
@@ -395,4 +395,20 @@ class Cliente extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function registrar_puntuacion(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'No se pudo registrar la calificacion.';
+    	$arrData['flag'] = 0;
+
+    	//print_r($allInputs); exit();
+
+    	if($this->model_puntuacion->m_registrar_puntuacion($allInputs)){
+    		$arrData['message'] = 'Calificacion registrada exitosamente.';
+    		$arrData['flag'] = 1;
+    	}
+
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

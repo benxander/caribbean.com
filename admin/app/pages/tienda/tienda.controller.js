@@ -8,13 +8,13 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, TiendaServices, rootServices,toastr) {
+  function TiendaController($scope, TiendaServices, ClienteServices, rootServices,toastr) {
     var vm = this;
-    vm.modoSeleccionar = true;
-    //vm.modoSeleccionar = false;
+    //vm.modoSeleccionar = true;
+    vm.modoSeleccionar = false;
     vm.modoPagar = false;
-    vm.modoDescargaCompleta = false;
-    //vm.modoDescargaCompleta = true;
+    //vm.modoDescargaCompleta = false;
+    vm.modoDescargaCompleta = true;
     vm.cargarGaleria = function(datos){
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
@@ -100,6 +100,25 @@
       TiendaServices.sDescargarArchivosPagados(vm.images).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
+        }else if(rpta.flag == 0){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+        }else{
+          alert('Error inesperado');
+        }
+      });
+    }
+  
+    vm.calificar = function(value){
+      vm.calificacion = value;
+      vm.fDataUsuario.puntos = value;
+      ClienteServices.sRegistrarPuntuacion(vm.fDataUsuario).then(function(rpta){
+        if(rpta.flag == 1){
+          vm.modoCalificacionOk=true;
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
