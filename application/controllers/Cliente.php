@@ -170,10 +170,23 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
+    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR;
 
+    	if($allInputs['descargado']){
+    		$arrData['message'] = 'Este archivo fue descargado. Esta en la carpeta de descargadas';
+    		$arrData['flag'] = 0;
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
 		if($this->model_archivo->m_anular_archivo($allInputs)){
-			unlink($allInputs['src']);
-    		if($allInputs['idtipoproducto'] == 2){unlink($allInputs['src_image']);}
+			unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
+			if($allInputs['idtipoproducto'] == 2){
+				unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $allInputs['nombre_archivo'])[0].'.jpg');
+			}else{
+				unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
+			}
 			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}
@@ -186,7 +199,6 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-
 
 		if($this->model_archivo->m_delete_archivo($allInputs)){
 			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
@@ -204,12 +216,17 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
+    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR;
 
     	foreach ($allInputs as $key => $value) {
-    		if($value['selected']){
+    		if($value['selected'] && !$value['descargado']){
     			if($this->model_archivo->m_anular_archivo($value)){
-    				deleteArchivos($value['src']);
-    				if($value['idtipoproducto'] == 2){deleteArchivos($value['src_image']);}
+    				unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
+					if($value['idtipoproducto'] == 2){
+						unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $value['nombre_archivo'])[0].'.jpg');
+					}else{
+						unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
+					}
 					$arrData['message'] = 'Se eliminaron los datos correctamente';
 		    		$arrData['flag'] = 1;
 				}
@@ -335,8 +352,10 @@ class Cliente extends CI_Controller {
 			}
 
 			if($row['descargado'] == 1){
+				$descargado = TRUE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
 			}else{
+				$descargado = FALSE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'];
 			}
 			array_push($arrListado,
@@ -349,7 +368,8 @@ class Cliente extends CI_Controller {
 					'idtipoproducto' => $row['idtipoproducto'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
-					'src' => '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'],
+					'descargado' => $descargado,
+					'src' => $src,
 					'src_image' => $src_image,
 					'title' => '',
 				)

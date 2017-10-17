@@ -307,6 +307,7 @@
                   var type = 'success';
                   toastr.success(rpta.message, title);
                   vm.cargarImagenes();
+                  vm.isSelected = false;
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
                   var type = 'warning';
