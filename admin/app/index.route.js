@@ -124,6 +124,12 @@
         templateUrl: 'app/pages/descuento/descuento.html',
         controller: 'DescuentoController',
         controllerAs: 'des'
+      })
+      .state('email', {
+        url: '/app/email',
+        templateUrl: 'app/pages/email/email.html',
+        controller: 'EmailController',
+        controllerAs: 'em'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

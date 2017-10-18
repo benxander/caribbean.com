@@ -96,7 +96,7 @@
       vm.currentLanguage = langKey;
     };
     $scope.empresaNombre = empresaNombre;
-    //vm.currentLanguage = $translate.proposedLanguage() || $translate.use();    
+    //vm.currentLanguage = $translate.proposedLanguage() || $translate.use();
 
     $scope.fSessionCI = {};
 
