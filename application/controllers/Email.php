@@ -14,9 +14,9 @@ class Email extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'idcontenidoemail' => $row['idcontenidoemail'],
-					'titulo' => $row['titulo'],
-					'contenido' => $row['contenido']
+					'idemail' => $row['idemail'],
+					'titulo' => $row['titulo_em'],
+					'contenido' => strip_tags($row['contenido'])
 				)
 			);
 		}
@@ -31,8 +31,30 @@ class Email extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function editar_descuento()
-	{
+	public function registrar_email(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	$data = array(
+    		'titulo_em' => $allInputs['titulo']
+    	);
+    	$idemail = $this->model_email->m_registrar_email($data);
+		if( $idemail != FALSE ){
+    		// print_r($idemail); exit();
+			$data = array(
+	    		'idemail' => $idemail,
+	    		'contenido' => $allInputs['contenido'],
+	    		'ididioma' => 'es',
+	    	);
+			$this->model_email->m_registrar_contenido_email($data);
+			$arrData['message'] = 'Se registraron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_email(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;

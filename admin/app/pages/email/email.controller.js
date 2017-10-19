@@ -38,7 +38,7 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idcontenidoemail', name:'idcontenidoemail', displayName: 'ID', enableCellEdit: false, width:90, sort: { direction: uiGridConstants.ASC} },
+        { field: 'idemail', name:'idemail', displayName: 'ID', enableCellEdit: false, width:90, sort: { direction: uiGridConstants.ASC} },
         { field: 'titulo', name:'titulo', displayName: 'TITULO ',cellClass:'ui-editCell' },
         { field: 'contenido', name: 'contenido', displayName: 'CONTENIDO'},
 
@@ -108,46 +108,22 @@
       // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/Email/Email_formview.php',
-          controllerAs: 'md',
-          size: '',
+          templateUrl: 'app/pages/email/email_formview.php',
+          controllerAs: 'me',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
-            vm.fData = angular.copy(arrToModal.seleccion);
-            vm.modoEdicion = true;
+
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Nuevo Email';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.listaGrupos = arrToModal.scope.listaGrupos;
 
-            vm.generarPassword = function (longitud) {
-              console.log("entro2");
-              var caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ0123456789";
-              var pass = "";
-              for (i=0; i<longitud; i++){
-                pass += caracteres.charAt(Math.floor(Math.random()*caracteres.length));
-              }
-              vm.fData.password = pass;
-              console.log(vm.fData.password);
-            }
-
-            vm.generar = function () {
-
-              if(vm.fData.newpassword){
-                console.log("entro1");
-                vm.generarPassword(5);
-              }else{
-                vm.fData.password = null;
-              }
-
-              console.log(vm.fData);
-            }
-
             vm.aceptar = function () {
-              EmailServices.sEditarUsuario(vm.fData).then(function (rpta) {
+              EmailServices.sRegistrarEmail(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
@@ -172,7 +148,6 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
-                seleccion : row.entity,
                 scope : vm,
               }
             }
@@ -182,7 +157,7 @@
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
-            EmailServices.sAnularUsuario(row.entity).then(function (rpta) {
+            EmailServices.sAnularEmail(row.entity).then(function (rpta) {
               if(rpta.flag == 1){
                 vm.getPaginationServerSide();
                 var title = 'OK';
@@ -247,7 +222,7 @@
   function EmailServices($http, $q) {
     return({
         sListarEmail: sListarEmail,
-        // sRegistrarEmail: sRegistrarEmail,
+        sRegistrarEmail: sRegistrarEmail,
         sEditarEmail: sEditarEmail,
     });
     function sListarEmail(pDatos) {
@@ -259,20 +234,20 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    // function sRegistrarEmail(pDatos) {
-    //   var datos = pDatos || {};
-    //   var request = $http({
-    //         method : "post",
-    //         url :  angular.patchURLCI + "Email/registrar_Email",
-    //         data : datos
-    //   });
-    //   return (request.then( handleSuccess,handleError ));
-    // }
+    function sRegistrarEmail(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Email/registrar_email",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sEditarEmail(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Email/editar_Email",
+            url :  angular.patchURLCI + "Email/editar_email",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
