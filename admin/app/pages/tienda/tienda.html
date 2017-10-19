@@ -135,13 +135,21 @@
         <div class="row">
           <div class="col-md-12 col-sm-12">
             <h2 class="text-custom text-center mb-5">Gracias por tu compra!</h2>
-            <h3 class="text-custom text-center text-cyan mt-0">Califica nuestro servicio.</h3>
-            <div class="rating-stars">              
+            <h3 ng-if="!ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Califica nuestro servicio.</h3>
+            <h3 ng-if="ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Gracias por calificar nuestro servicio.</h3>
+            <div class="rating-stars" ng-if="!ctrl.modoCalificacionOk" >              
               <span ng-click="ctrl.calificar(5);" >☆</span>
               <span ng-click="ctrl.calificar(4);">☆</span>
               <span ng-click="ctrl.calificar(3);">☆</span>
               <span ng-click="ctrl.calificar(2);">☆</span>
               <span ng-click="ctrl.calificar(1);">☆</span>
+            </div>
+            <div class="rating-stars-calificado" ng-if="ctrl.modoCalificacionOk" >              
+              <span ng-class="{'califica': 1 <= ctrl.calificacion}">★</span>
+              <span ng-class="{'califica': 2 <= ctrl.calificacion}">★</span>
+              <span ng-class="{'califica': 3 <= ctrl.calificacion}">★</span>
+              <span ng-class="{'califica': 4 <= ctrl.calificacion}">★</span>
+              <span ng-class="{'califica': 5 == ctrl.calificacion}">★</span>
             </div>
           </div>
         </div>

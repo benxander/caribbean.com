@@ -516,7 +516,8 @@
         sUploadCliente: sUploadCliente,
         sListarImagenes: sListarImagenes,
         sSubirImagenesCarpeta: sSubirImagenesCarpeta,
-        sDelete: sDelete
+        sDelete: sDelete,
+        sRegistrarPuntuacion:sRegistrarPuntuacion,
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -631,6 +632,16 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/subir_imagenes_carpeta",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+
+    function sRegistrarPuntuacion (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/registrar_puntuacion",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

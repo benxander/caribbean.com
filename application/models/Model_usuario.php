@@ -111,7 +111,6 @@ class Model_usuario extends CI_Model {
 		return $this->db->update('usuario', $datos);
 	}
 
-// <<<<<<< HEAD
 	public function m_editar_idioma_usuario($datos){
 		$data = array(
 			'ididioma' => $datos['ididioma'],
@@ -129,7 +128,7 @@ class Model_usuario extends CI_Model {
 		$this->db->where('idusuario',$datos['idusuario']);
 		return $this->db->update('usuario', $data);
 	}
-// =======
+
 	public function m_editar_usuario_cliente($data){
 
 		$datos = array(
@@ -142,7 +141,6 @@ class Model_usuario extends CI_Model {
 		$this->db->where('idusuario',$data['idusuario']);
 
 		return $this->db->update('usuario', $datos);
-// >>>>>>> b_cliente
 	}
 
 	public function m_anular_usuario($data){
@@ -199,6 +197,15 @@ class Model_usuario extends CI_Model {
 		}else{
 			return FALSE;
 		}
+	}
+
+	public function m_editar_foto($datos){
+		$data = array(
+			'nombre_foto' => $datos['nombre_foto'],
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idusuario',$datos['idusuario']);
+		return $this->db->update('usuario', $data);
 	}
 }
 
