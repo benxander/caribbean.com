@@ -272,7 +272,7 @@ function deleteArchivos($carpeta){
     if (is_dir($archivos_carpeta)){
       deleteArchivos($archivos_carpeta);
     } else {
-        if(explode(".", $archivos_carpeta)[1] != 'html'){
+        if(substr($archivos_carpeta, strrpos($archivos_carpeta, ".")+1) != 'html'){
             unlink($archivos_carpeta);
         }
     }
