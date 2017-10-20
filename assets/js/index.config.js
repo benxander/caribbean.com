@@ -105,8 +105,10 @@
       });
     })(jQuery);
 function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en,es,ca,fr,it,de,ja,pt,ru,zh-TW', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-    }
+  var idiomas = 'en,es,fr,it,de,pt';
+  // var idiomas = 'en,es,ca,fr,it,de,ja,pt,ru,zh-TW';
+  new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: idiomas, layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
 function handleError(error) {
   return function () {
     return {success: false, message: Notification.warning({message: error})};
