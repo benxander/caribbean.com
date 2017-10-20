@@ -7,7 +7,7 @@
 
   /** @ngInject */
   function EmailController($scope, $uibModal, uiGridConstants, toastr, alertify,
-    EmailServices) {
+    EmailServices,IdiomaServices) {
     var vm = this;
     var openedToasts = [];
 
@@ -38,41 +38,22 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idemail', name:'idemail', displayName: 'ID', enableCellEdit: false, width:90, sort: { direction: uiGridConstants.ASC} },
-        { field: 'titulo', name:'titulo', displayName: 'TITULO ',cellClass:'ui-editCell' },
+        { field: 'idemail', name:'idemail', displayName: 'ID', width:90,visble:false },
+        { field: 'titulo', name:'titulo', displayName: 'TIPO EMAIL ', sort: { direction: uiGridConstants.ASC} },
+        { field: 'idioma', name: 'idioma', displayName: 'IDIOMA', width:80},
+        { field: 'asunto', name: 'asunto', displayName: 'ASUNTO'},
         { field: 'contenido', name: 'contenido', displayName: 'CONTENIDO'},
-
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
+          cellTemplate: '<div class="text-right">' +
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="icon-pencil"></i> </button>' +
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+          '</div>'
+        }
 
       ];
       vm.gridOptions.onRegisterApi = function(gridApi) {
         vm.gridApi = gridApi;
-        gridApi.edit.on.afterCellEdit($scope,function (rowEntity, colDef, newValue, oldValue){
-          rowEntity.column = colDef.field;
-          if(rowEntity.column == 'titulo'){
-            if( !(rowEntity.titulo > 0) ){
-              var title = 'Advertencia!';
-              var pType = 'warning';
-              rowEntity.titulo = oldValue;
-              toastr.warning('Ocurrió un error', title);
-              return false;
-            }
-          }
-          EmailServices.sEditarEmail(rowEntity).then(function (rpta) {
-            if(rpta.flag == 1){
-              vm.getPaginationServerSide();
-              var title = 'OK';
-              var type = 'success';
-              toastr.success(rpta.message, title);
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var type = 'warning';
-              toastr.warning(rpta.message, title);
-            }else{
-              alert('Ocurrió un error');
-            }
-          });
-          $scope.$apply();
-        });
+
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
         });
@@ -104,6 +85,16 @@
       }
       vm.getPaginationServerSide();
 
+      // IDIOMA
+      IdiomaServices.sListarIdiomaCbo().then(function (rpta) {
+        vm.listaIdiomas = rpta.datos;
+        vm.listaIdiomas.splice(0,0,{ id : '', nombre:'--Seleccione una opción--'});
+      });
+      // TIPOS EMAIL
+      EmailServices.sListarTipoEmailCbo().then(function (rpta) {
+        vm.listaTiposEmail = rpta.datos;
+        vm.listaTiposEmail.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+      });
 
       // MANTENIMIENTO
       vm.btnNuevo = function(){
@@ -113,6 +104,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -120,7 +113,10 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Nuevo Email';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            vm.listaGrupos = arrToModal.scope.listaGrupos;
+            vm.listaTiposEmail = arrToModal.scope.listaTiposEmail;
+
+            vm.fData.idioma = vm.listaIdiomas[0];
+            vm.fData.tipoEmail = vm.listaTiposEmail[0];
 
             vm.aceptar = function () {
               EmailServices.sRegistrarEmail(vm.fData).then(function (rpta) {
@@ -154,6 +150,66 @@
           }
         });
       }
+      vm.btnEditar = function(row){
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/email/email_formview.php',
+          controllerAs: 'me',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.fData = angular.copy(arrToModal.seleccion);
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Editar Email';
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            vm.listaTiposEmail = arrToModal.scope.listaTiposEmail;
+            vm.fData.idioma = vm.listaIdiomas.filter(function(obj) {
+              return obj.ididioma == vm.fData.ididioma;
+            }).shift();
+            // vm.fData.idioma = objIndex;
+
+            vm.fData.tipoEmail = vm.listaTiposEmail.filter(function(obj) {
+              return obj.id == vm.fData.idemail;
+            }).shift();
+
+
+            vm.aceptar = function () {
+              EmailServices.sEditarEmail(vm.fData).then(function (rpta) {
+                if(rpta.flag == 1){
+                  $uibModalInstance.dismiss('cancel');
+                  vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var type = 'success';
+                  toastr.success(rpta.message, title);
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                  toastr.warning(rpta.message, title);
+                }else{
+                  alert('Ocurrió un error');
+                }
+              });
+              $uibModalInstance.close(vm.fData);
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                seleccion : row.entity,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
@@ -178,44 +234,8 @@
         });
       }
 
-      vm.btnHabilitarDeshabilitar = function (row) {
-        EmailServices.sHabilitarDesabilitarUsuario(row.entity).then(function (rpta) {
-          if(rpta.flag == 1){
-            vm.getPaginationServerSide();
-            var title = 'OK';
-            var type = 'success';
-            toastr.success(rpta.message, title);
-          }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            var type = 'warning';
-            toastr.warning(rpta.message, title);
-          }else{
-            alert('Ocurrió un error');
-          }
-        });
-      }
 
-      vm.enviarCorreo = function () {
 
-          if(vm.mySelectionGrid.length == 0){
-            toastr.warning('Seleccione un usuario', 'warning');
-            return null;
-          }
-
-          EmailServices.sEnviarMailRegistro(vm.mySelectionGrid[0]).then(function(rpta){
-            if(rpta.flag == 1){
-              var title = 'OK';
-              var type = 'success';
-              toastr.success(rpta.message, title);
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var type = 'warning';
-              toastr.warning(rpta.message, title);
-            }else{
-              alert('Ocurrió un error');
-            }
-          });
-        }
 
   }
 
@@ -224,6 +244,7 @@
         sListarEmail: sListarEmail,
         sRegistrarEmail: sRegistrarEmail,
         sEditarEmail: sEditarEmail,
+        sListarTipoEmailCbo:sListarTipoEmailCbo,
     });
     function sListarEmail(pDatos) {
       var datos = pDatos || {};
@@ -261,6 +282,15 @@
     //   });
     //   return (request.then( handleSuccess,handleError ));
     // }
+    function sListarTipoEmailCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Email/listar_tipo_email_cbo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
   }
 
 })();

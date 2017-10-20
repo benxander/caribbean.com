@@ -18,6 +18,7 @@ class Idioma extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
+					'id' => $row['ididioma'],
 					'ididioma' => $row['ididioma'],
 					'nombre' => $row['nombre_id'],
 					'descripcion' => $row['descripcion_id'],

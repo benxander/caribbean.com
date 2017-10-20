@@ -5,9 +5,17 @@
 	<section class="tile-body">
 		<form name="formEmail" role="form" novalidate class="form-validation">
 		    <div class="row">
-		    	<div class="form-group col-md-12">
-					<label for="titulo" class="control-label minotaur-label">Título </label>
-	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="me.fData.titulo" placeholder="Registre titulo" required>
+	            <div class="form-group col-md-3">
+					<label class="control-label minotaur-label">Tipo Email </label>
+	              	<select class="form-control" ng-model="me.fData.tipoEmail" ng-options="item as item.descripcion for item in me.listaTiposEmail" required > </select>
+	            </div>
+	            <div class="form-group col-md-3">
+					<label class="control-label minotaur-label">Idioma </label>
+	              	<select class="form-control" ng-model="me.fData.idioma" ng-options="item as item.nombre for item in me.listaIdiomas" required > </select>
+	            </div>
+		    	<div class="form-group col-md-6">
+					<label for="asunto" class="control-label minotaur-label">Asunto </label>
+	              	<input type="text" name="asunto" id="asunto" class="form-control" ng-model="me.fData.asunto" placeholder="Registre asunto" required>
 	            </div>
 		    </div>
 		    <div class="row">
