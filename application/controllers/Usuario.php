@@ -108,7 +108,7 @@ class Usuario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	 
+
     	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
@@ -125,9 +125,9 @@ class Usuario extends CI_Controller {
 				$band = false;
 			}
     	}
-    	
-    	$allInputs['codigo'] = $codigo; 
-    	$this->db->trans_start();   	
+
+    	$allInputs['codigo'] = $codigo;
+    	$this->db->trans_start();
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
@@ -182,7 +182,7 @@ class Usuario extends CI_Controller {
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
-		    return;	
+		    return;
     	}
 
 		$allInputs['nombre_foto'] = url_title($allInputs['username']).date('YmdHis').'.jpg';
@@ -191,7 +191,7 @@ class Usuario extends CI_Controller {
     		$arrData['message'] = 'La foto se cambió correctamente';
     		$arrData['flag'] = 1;
     		$arrData['datos'] = $allInputs['nombre_foto'];
-    	}    	
+    	}
 
     	$this->output
 		    ->set_content_type('application/json')
@@ -231,7 +231,7 @@ class Usuario extends CI_Controller {
     	$loggedUser = $this->model_acceso->m_logging_user($datos);
 		if( !(isset($loggedUser['logged']) && $loggedUser['logged'] > 0 )){
 			$arrData['message'] = 'Debe ingresar contraseña actual valida.';
-    		$arrData['flag'] = 0;		
+    		$arrData['flag'] = 0;
 			$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -240,7 +240,7 @@ class Usuario extends CI_Controller {
 
 		if($allInputs['nuevaclave'] != $allInputs['password']){
 			$arrData['message'] = 'Nueva contraseña y repeticion deben coincidir.';
-    		$arrData['flag'] = 0;		
+    		$arrData['flag'] = 0;
 			$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -278,13 +278,13 @@ class Usuario extends CI_Controller {
     	$arrData['flag'] = 0;
     	$this->db->trans_start();
     	if( $allInputs['estado']['valor'] == 1 ){
-			if( $this->model_usuario->m_deshabilitar($allInputs['idusuario']) ){ 
+			if( $this->model_usuario->m_deshabilitar($allInputs['idusuario']) ){
 				$arrData['message'] = 'Se deshabilitaron los datos correctamente';
 				$arrData['flag'] = 1;
 			}
     	}
     	if( $allInputs['estado']['valor'] == 2 ){
-			if( $this->model_usuario->m_habilitar($allInputs['idusuario']) ){ 
+			if( $this->model_usuario->m_habilitar($allInputs['idusuario']) ){
 				$arrData['message'] = 'Se habilitaron los datos correctamente';
 				$arrData['flag'] = 1;
 			}
@@ -300,21 +300,16 @@ class Usuario extends CI_Controller {
 		$arrData['message'] = 'Error al enviar email.';
     	$arrData['flag'] = 0;
 
-		$mensaje = '<html> 
-		      <head>
-		        <title>Usuario en Caribbean</title> 
-		      </head>
-		      <body style="font-family: sans-serif;padding: 10px 40px; color: #000000" >';
-		
-		$mensaje .= '<div style="font-size:16px; color: #000000">  
+
+		$mensaje = '<div style="font-size:16px; color: #000000">
 		        Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
-  		$mensaje .= '<div style="font-size:16px;">  
+  		$mensaje .= '<div style="font-size:16px;">
 		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
 		         Usuario: '.$allInputs['email'].'<br />
 		         Contraseña: '.$allInputs['codigo'];
 		$mensaje .= '<br /><br /> Ingrese en esta <a href="http://www.unaisangamer.com/admin" target="_blank">página</a> para iniciar session. <br />';
 		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
-		$mensaje .= '</body></html>';
+
 
 		$from = 'soporte@unaisangamer.com';
 		$to = $allInputs['email'];
@@ -332,6 +327,6 @@ class Usuario extends CI_Controller {
 
 		$this->output
 		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));	
+		    ->set_output(json_encode($arrData));
 	}
 }

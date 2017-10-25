@@ -14,8 +14,8 @@ class Email extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'id' => $row['idemail'],
-					'descripcion' => $row['titulo_em'],
+					'id' => $row['idtipoemail'],
+					'descripcion' => $row['titulo_te'],
 
 				)
 			);
@@ -40,9 +40,9 @@ class Email extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'idcontenidoemail' => $row['idcontenidoemail'],
-					'idemail' => $row['idemail'],
-					'titulo' => $row['titulo_em'],
+					'idcontenidoemail' => $row['idemail'],
+					'idemail' => $row['idtipoemail'],
+					'titulo' => $row['titulo_te'],
 					'asunto' => $row['asunto'],
 					'contenido' => strip_tags($row['contenido']),
 					'ididioma' => $row['ididioma'],
@@ -68,12 +68,12 @@ class Email extends CI_Controller {
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	$data = array(
-    		'idemail' => $allInputs['tipoEmail']['id'],
+    		'idtipoemail' => $allInputs['tipoEmail']['id'],
     		'ididioma' => $allInputs['idioma']['id'],
     		'asunto' => $allInputs['asunto'],
     		'contenido' => $allInputs['contenido'],
     	);
-		if( $this->model_email->m_registrar_contenido_email($data) ){
+		if( $this->model_email->m_registrar_email($data) ){
 			$arrData['message'] = 'Se registraron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
@@ -86,7 +86,7 @@ class Email extends CI_Controller {
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	$data = array(
-    		'idemail' => $allInputs['tipoEmail']['id'],
+    		'idtipoemail' => $allInputs['tipoEmail']['id'],
     		'ididioma' => $allInputs['idioma']['id'],
     		'asunto' => $allInputs['asunto'],
     		'contenido' => $allInputs['contenido'],
