@@ -20,7 +20,7 @@
         sortName: null,
         search: null
       };
-    
+
       vm.mySelectionGrid = [];
       vm.gridOptions = {
         paginationPageSizes: [10, 50, 100, 500, 1000],
@@ -94,7 +94,7 @@
         });
       }
       vm.getPaginationServerSide();
-      
+
       // IDIOMA
       UsuarioServices.sListarIdioma().then(function (rpta) {
         vm.listaIdiomas = rpta.datos;
@@ -103,7 +103,7 @@
       // GRUPO
       UsuarioServices.sListarGrupo().then(function (rpta) {
         vm.listaGrupos = rpta.datos;
-        vm.listaGrupos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});       
+        vm.listaGrupos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
       });
 
       // MANTENIMIENTO
@@ -134,9 +134,9 @@
               vm.fData.password = pass;
               console.log(vm.fData.password);
             }
-            
+
             vm.generar = function () {
-              
+
               if(vm.fData.newpassword){
                 console.log("entro1");
                 vm.generarPassword(5);
@@ -204,8 +204,8 @@
         });
       }
 
-      vm.btnHabilitarDeshabilitar = function (row) { 
-        UsuarioServices.sHabilitarDesabilitarUsuario(row.entity).then(function (rpta) { 
+      vm.btnHabilitarDeshabilitar = function (row) {
+        UsuarioServices.sHabilitarDesabilitarUsuario(row.entity).then(function (rpta) {
           if(rpta.flag == 1){
             vm.getPaginationServerSide();
             var title = 'OK';
@@ -227,8 +227,8 @@
             toastr.warning('Seleccione un usuario', 'warning');
             return null;
           }
-          
-          UsuarioServices.sEnviarMailRegistro(vm.mySelectionGrid[0]).then(function(rpta){
+
+          UsuarioServices.sEnviarMailUsuario(vm.mySelectionGrid[0]).then(function(rpta){
             if(rpta.flag == 1){
               var title = 'OK';
               var type = 'success';
@@ -255,7 +255,7 @@
         sEditarIdiomaUsuario:sEditarIdiomaUsuario,
         sAnularUsuario:sAnularUsuario,
         sHabilitarDesabilitarUsuario: sHabilitarDesabilitarUsuario,
-        sEnviarMailRegistro: sEnviarMailRegistro
+        sEnviarMailUsuario: sEnviarMailUsuario
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -329,11 +329,11 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sEnviarMailRegistro(pDatos) {
+    function sEnviarMailUsuario(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Usuario/enviar_mail_registro",
+            url :  angular.patchURLCI + "Usuario/enviar_mail_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

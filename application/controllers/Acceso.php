@@ -28,6 +28,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['key_grupo'] = $loggedUser['key_grupo'];
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$arrPerfilUsuario['logged'] = true;
+					$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 
 					/* CARGAR DATOS DEL CLIENTE SOLO SI ES DEL GRUPO CLIENTE*/
 					if( $loggedUser['key_grupo'] == 'key_cliente' ){
@@ -42,7 +43,7 @@ class Acceso extends CI_Controller {
 							$arrPerfilUsuario['whatsapp'] = $cliente['whatsapp'];
 							$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
 							$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
-							$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+							// $arrPerfilUsuario['nombre_foto'] = empty($cliente['nombre_foto']) ? 'sin-imagen.png' : $cliente['nombre_foto'];
 							$arrData['flag'] = 1;
 							$arrData['message'] = 'Usuario inició sesión correctamente';
 						}

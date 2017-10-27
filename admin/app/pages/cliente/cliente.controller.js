@@ -487,7 +487,14 @@
 
       }
       vm.btnEnviarEmail = function(row){
-        UsuarioServices.sEnviarMailRegistro(row.entity).then(function(rpta){
+        console.log('row.entity',row.entity);
+        var paramDatos = {
+            idtipoemail : 2,
+            ididioma : row.entity.ididioma,
+            codigo : row.entity.codigo,
+            email : row.entity.email,
+          }
+        UsuarioServices.sEnviarMailUsuario(paramDatos).then(function(rpta){
           if(rpta.flag == 1){
             var title = 'OK';
             var type = 'success';

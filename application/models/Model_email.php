@@ -35,6 +35,15 @@ class Model_email extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_cargar_email($datos){
+		$this->db->select("em.idtipoemail, em.idemail, em.asunto, em.contenido, em.ididioma");
+		$this->db->from('email em');
+		$this->db->where("estado_em",1);
+		$this->db->where('ididioma', $datos['ididioma']);
+		$this->db->where('idtipoemail', $datos['idtipoemail']);
+
+		return $this->db->get()->result_array();
+	}
 	public function m_editar_email($data,$id)	{
 		$this->db->where('idemail',$id);
 		return $this->db->update('email', $data);

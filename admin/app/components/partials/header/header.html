@@ -96,13 +96,13 @@
     <li>
       <div uib-dropdown>
         <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
-          <img src="assets/images/sin-imagen.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-src="assets/images/dinamic/clientes/{{fSessionCI.nombre_foto}}" class="img-responsive img-circle hidden-xs" alt="" style="border: 1px solid #c6efff;">
           <span class="nav-text"><i class="fa fa-user"></i> </span>
         </button>
         <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
           <div class="media">
             <div class="media-left">
-              <img class="media-object img-circle" src="assets/images/sin-imagen.png" alt="">
+              <img class="media-object img-circle" ng-src="assets/images/dinamic/clientes/{{fSessionCI.nombre_foto}}" alt="">
             </div>
             <div class="media-body">
               <h4 class="text-sm uppercase-bold">{{fSessionCI.cliente}}</h4>

@@ -7,7 +7,7 @@ class Usuario extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_usuario', 'model_cliente','model_acceso'));
+        $this->load->model(array('model_usuario', 'model_cliente','model_acceso','model_email'));
     }
 
     public function listar_usuarios(){
@@ -295,12 +295,13 @@ class Usuario extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	public function enviar_mail_registro(){
+	public function enviar_mail_usuario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al enviar email.';
     	$arrData['flag'] = 0;
 
-
+    	$lista = $this->model_email->m_cargar_email($allInputs);
+    	var_dump($lista); exit();
 		$mensaje = '<div style="font-size:16px; color: #000000">
 		        Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
   		$mensaje .= '<div style="font-size:16px;">

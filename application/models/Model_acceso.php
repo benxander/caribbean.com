@@ -6,7 +6,7 @@ class Model_acceso extends CI_Model {
 	}
  	// ACCESO AL SISTEMA
 	public function m_logging_user($data){
-		$this->db->select('COUNT(*) AS logged, us.idusuario, us.estado_us, us.username, us.idgrupo, gr.nombre_gr, gr.key_grupo, ididioma',FALSE);
+		$this->db->select('COUNT(*) AS logged, us.idusuario, us.estado_us, us.username, us.idgrupo, gr.nombre_gr, gr.key_grupo, ididioma, us.nombre_foto,',FALSE);
 		$this->db->from('usuario us');
 		$this->db->join('grupo gr', 'us.idgrupo = gr.idgrupo');
 		$this->db->join('cliente cli', 'us.idusuario = cli.idusuario','left');
