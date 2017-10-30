@@ -48,6 +48,50 @@
           <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container">
               <img class="img-responsive" ng-src="{{image.src}}" alt="">
+              <div class="img-details-hover">
+                <div>
+                  <!-- <a href="" socialshare
+                    socialshare-provider="facebook"
+                    socialshare-type="sharer"
+                    socialshare-text="Mira mi foto"
+                    socialshare-url="{{image.src_share}}"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-facebook"></i>
+                  </a> -->
+                  <a href="" socialshare
+                    socialshare-provider="facebook"
+                    socialshare-type="feed"
+                    socialshare-via="145634995501895"
+                    socialshare-media="http://720kb.net/assets/img/720kb-fb.png"
+                    socialshare-text="720kb"
+                    socialshare-caption="720kb is enough"
+                    socialshare-url="http://720kb.net"
+                    socialshare-redirect-uri="http://localhost"
+                    socialshare-quote="720kb Angular-Social-Share"
+                    socialshare-hashtags="#720kb"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                  <a href="" socialshare
+                    socialshare-provider="twitter"
+                    socialshare-type="sharer"
+                    socialshare-text="Mira mi foto {{image.src_share}}"
+                    socialshare-via="caribbean.com"
+                    socialshare-hashtags="Caribean"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </div>
+              </div>
               <div class="img-details-static">
                 <h4>{{image.title}}</h4>
                 <div class="img-controls">
@@ -61,6 +105,7 @@
                   </a>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>

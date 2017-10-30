@@ -9,7 +9,8 @@
 
   angular
     .module('minotaur')
-    .config(config);
+    .config(config)
+    .config(configApp);
 
   /** @ngInject */
   function config($logProvider, toastrConfig, $translateProvider, $locationProvider,$qProvider) {
@@ -40,7 +41,32 @@
 
     // remove ! hash prefix
     $locationProvider.hashPrefix('');
+  }
 
+  function configApp(socialshareConfProvider) {
+    socialshareConfProvider.configure([
+      {
+        'provider': 'twitter',
+        'conf': {
+          'url': 'http://720kb.net',
+          'text': '720kb is enough',
+          'via': 'npm',
+          'hashtags': 'angularjs,socialshare,angular-socialshare',
+          'trigger': 'click',
+          'popupHeight': 800,
+          'popupWidth' : 400
+        }
+      },
+      {
+        'provider': 'facebook',
+        'conf': {
+          'url': 'http://dantecervantes/social-share-con-angular-js',
+          'trigger': 'click',
+          'popupHeight': 800,
+          'popupWidth' : 400
+        }
+      }
+    ]);
   }
 
 })();

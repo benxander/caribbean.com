@@ -32,6 +32,7 @@ class Archivo extends CI_Controller {
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
+					'src_share' => base_url().'caribbean.com/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					'title' => '',
 				)
 			);

@@ -78,6 +78,10 @@
     vm.monto_total = 0.00;
 
     vm.btnDescargarFiles = function(){ 
+      if(!vm.isSelected){
+        return;
+      }
+
       vm.modoSeleccionar=false;
       vm.modoPagar=true;
     }
