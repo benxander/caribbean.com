@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, TiendaServices, ClienteServices, rootServices,toastr) {
+  function TiendaController($scope, TiendaServices, ClienteServices, rootServices,toastr, pageLoading) {
     var vm = this;
     vm.modoSeleccionar = true;
     //vm.modoSeleccionar = false;
@@ -16,8 +16,10 @@
     vm.modoDescargaCompleta = false;
     //vm.modoDescargaCompleta = true;
     vm.cargarGaleria = function(datos){
+      pageLoading.start('Cargando archivos...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
+        pageLoading.stop();
       });
     }
 
@@ -82,8 +84,18 @@
         return;
       }
 
-      vm.modoSeleccionar=false;
-      vm.modoPagar=true;
+      pageLoading.start('Verificando seleccion...');
+      var datos = {
+        seleccion : vm.images,
+        usuario : vm.fDataUsuario
+      }
+
+      TiendaServices.sVerificarSeleccion(datos).then(function(rpta){ 
+        vm.modoSeleccionar=false;
+        vm.modoPagar=true;
+        pageLoading.stop();
+
+      });
     }
 
     vm.btnVolver = function(){ 
@@ -91,13 +103,11 @@
       vm.modoPagar=false;
     }
 
-    vm.btnPagar = function(){
-      vm.modoSeleccionar = false;
-      vm.modoPagar=false;
-
-      /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
-
-      vm.irCompraExitosa();     
+    vm.btnPagar = function(){      
+        vm.modoSeleccionar = false;
+        vm.modoPagar=false;
+        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
+        vm.irCompraExitosa();           
     }
 
     vm.irCompraExitosa = function(){
@@ -141,6 +151,7 @@
     return({
         sListarNoDescargados: sListarNoDescargados,
         sDescargarArchivosPagados: sDescargarArchivosPagados,
+        sVerificarSeleccion:sVerificarSeleccion,
     });
     
     function sListarNoDescargados(pDatos) {
@@ -158,6 +169,16 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Archivo/descargar_archivos_pagados",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+
+    function sVerificarSeleccion(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Compra/verificar_archivos_seleccion",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
