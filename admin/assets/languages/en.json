@@ -3,11 +3,11 @@
     "DASHBOARD": "Dashboard",
     "CLIENTES": "Customers",
     "BANNERS": "Banners",
-    "SECCION": "Seccions",
+    "SECCION": "Sections",
     "BLOG": "Blog",
     "MANTENIMIENTO": "Maintenance",
     "IDIOMAS": "Languages",
-    "SITIOS": "Places",
+    "EXCURSION": "Excursion",
     "CONFIG": "Configuration",
     "WEB": "Website",
     "DESCUENTO": "Discount",
@@ -18,11 +18,15 @@
     "ROLES": "Roles",
     "PERFIL": "My Profile",
     "GALERIA": "My Galery",
-    "DESCARGAR": "Store"
+    "DESCARGAR": "Shop"
   },
   "Form": {
-    "PREVIOUS":"Back",
+    "PREVIOUS":"Previous",
     "NEXT":"Next",
     "SAVE":"Save"
+  },
+  "Text": {
+    "MONEDERO":"Purse",
+    "LOGOUT":"Log Out"
   }
 }

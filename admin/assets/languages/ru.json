@@ -1,0 +1,32 @@
+{
+  "Menu": {
+    "DASHBOARD": "Панель приборов",
+    "CLIENTES": "Клиенты",
+    "BANNERS": "Баннеры",
+    "SECCION": "Разделы",
+    "BLOG": "Блог",
+    "MANTENIMIENTO": "Обслуживание",
+    "IDIOMAS": "Языки",
+    "EXCURSION": "экскурсия",
+    "CONFIG": "конфигурация",
+    "WEB": "Веб-сайт",
+    "DESCUENTO": "скидка",
+    "EMAILS": "электронная почта",
+    "SEGURIDAD": "Безопасность",
+    "USUARIOS": "пользователей",
+    "GRUPOS": "группы",
+    "ROLES": "Роли",
+    "PERFIL": "Мой профайл",
+    "GALERIA": "Моя галерея",
+    "DESCARGAR": "Магазин"
+  },
+  "Form": {
+    "PREVIOUS":"предыдущий",
+    "NEXT":"следующий",
+    "SAVE":"Сохранить"
+  },
+  "Text": {
+    "MONEDERO":"Кошелек",
+    "LOGOUT":"Выйти"
+  }
+}

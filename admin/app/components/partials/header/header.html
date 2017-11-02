@@ -51,45 +51,46 @@
         </div>
       </div>
     </li> -->
+    <li ng-if="fSessionCI.monedero"><div style="color: #c6efff; padding-top: 10px;">{{ 'Text.MONEDERO' | translate }}: {{fSessionCI.monedero}} $</div></li>
     <li ng-if="fSessionCI.key_grupo == 'key_cliente'">
       <div uib-dropdown>
         <button id="language" type="button" class="btn no-bg" uib-dropdown-toggle>
-          <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-Kingdom.png" class="img-responsive img-circle hidden-xs" alt="">
-          <img ng-show="main.currentLanguage == 'sk'" src="assets/images/flags/Slovakia.png" class="img-responsive img-circle hidden-xs" alt="">
-          <img ng-show="main.currentLanguage == 'cz'" src="assets/images/flags/Czech-Republic.png" class="img-responsive img-circle hidden-xs" alt="">
-          <img ng-show="main.currentLanguage == 'de'" src="assets/images/flags/Germany.png" class="img-responsive img-circle hidden-xs" alt="">
           <img ng-show="main.currentLanguage == 'es'" src="assets/images/flags/Spain.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-States-of-America.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'de'" src="assets/images/flags/Germany.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'ru'" src="assets/images/flags/Russia.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'fr'" src="assets/images/flags/France.png" class="img-responsive img-circle hidden-xs" alt="">
           <span class="nav-text"><i class="fa fa-language"></i> Language</span>
         </button>
         <ul class="dropdown-menu with-arrow animated littleFadeInRight language" uib-dropdown-menu role="menu" aria-labelledby="language">
-          <li ng-class="{selected: main.currentLanguage == 'en'}">
-            <a href="javascript:;" ng-click="main.changeLanguage('en')">
-              <img src="assets/images/flags/United-Kingdom.png" alt=""> English
-            </a>
-          </li>
-
-          <li ng-class="{selected: main.currentLanguage == 'sk'}">
-            <a href="javascript:;" ng-click="main.changeLanguage('sk')">
-              <img src="assets/images/flags/Slovakia.png" alt=""> Slovak
-            </a>
-          </li>
-
-          <li ng-class="{selected: main.currentLanguage == 'cz'}">
-            <a href="javascript:;" ng-click="main.changeLanguage('cz')">
-              <img src="assets/images/flags/Czech-Republic.png" alt=""> Czech
-            </a>
-          </li>
-
-          <li ng-class="{selected: main.currentLanguage == 'de'}">
-            <a href="javascript:;" ng-click="main.changeLanguage('de')">
-              <img src="assets/images/flags/Germany.png" alt=""> German
-            </a>
-          </li>
           <li ng-class="{selected: main.currentLanguage == 'es'}">
             <a href="javascript:;" ng-click="main.changeLanguage('es')">
               <img src="assets/images/flags/Spain.png" alt=""> Español
             </a>
           </li>
+          <li ng-class="{selected: main.currentLanguage == 'en'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('en')">
+              <img src="assets/images/flags/United-States-of-America.png" alt=""> English
+            </a>
+          </li>
+          <li ng-class="{selected: main.currentLanguage == 'de'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('de')">
+              <img src="assets/images/flags/Germany.png" alt=""> German
+            </a>
+          </li>
+
+          <li ng-class="{selected: main.currentLanguage == 'ru'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('ru')">
+              <img src="assets/images/flags/Russia.png" alt=""> Russian
+            </a>
+          </li>
+
+          <li ng-class="{selected: main.currentLanguage == 'fr'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('fr')">
+              <img src="assets/images/flags/France.png" alt=""> French
+            </a>
+          </li>
+
         </ul>
       </div>
     </li>
@@ -115,7 +116,7 @@
             </div>
           </div>
           <div class="footer">
-            <button class="btn btn-theme minotaur-btn" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> Cerrar Sesión </button>
+            <button class="btn btn-theme minotaur-btn" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> {{ 'Text.LOGOUT' | translate }} </button>
             <!-- <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button> -->
           </div>
         </div>

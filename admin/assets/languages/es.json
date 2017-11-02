@@ -7,7 +7,7 @@
     "BLOG": "Blog",
     "MANTENIMIENTO": "Mantenimiento",
     "IDIOMAS": "Idiomas",
-    "SITIOS": "Sitios",
+    "EXCURSION": "Excursiones",
     "CONFIG": "Configuración",
     "WEB": "Sitio Web",
     "DESCUENTO": "Descuento",
@@ -24,6 +24,10 @@
     "PREVIOUS":"Atras",
     "NEXT":"Siguiente",
     "SAVE":"Guardar"
+  },
+  "Text": {
+    "MONEDERO":"Monedero",
+    "LOGOUT":"Cerrar Sesión"
   }
 }
 

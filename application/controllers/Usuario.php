@@ -21,7 +21,7 @@ class Usuario extends CI_Controller {
 			if( $row['estado_us'] == 1 ){
 				$bool = true;
 			}
-			if( $row['estado_us'] == 2 ){
+			elseif( $row['estado_us'] == 2 ){
 				$bool = false;
 			}
 			array_push($arrListado,

@@ -27,6 +27,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
 					$arrPerfilUsuario['key_grupo'] = $loggedUser['key_grupo'];
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
+					$arrPerfilUsuario['monedero'] = strtoupper($loggedUser['monedero']);
 					$arrPerfilUsuario['logged'] = true;
 					$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 

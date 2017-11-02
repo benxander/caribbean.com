@@ -3,18 +3,19 @@
     "DASHBOARD": "Instrumententafel",
     "CLIENTES": "Kunden",
     "BANNERS": "Banners",
-    "SECCION": "Seccions",
+    "SECCION": "Abschnitte",
     "BLOG": "Blog",
     "MANTENIMIENTO": "Instandhaltung",
     "IDIOMAS": "Languages",
-    "SITIOS": "Places",
+    "EXCURSION": "Ausflug",
     "CONFIG": "Konfiguration",
     "WEB": "Website",
     "DESCUENTO": "Rabatt",
+    "EMAILS": "Emails",
     "SEGURIDAD": "Sicherheit",
-    "USUARIOS": "Users",
-    "GRUPOS": "Groups",
-    "ROLES": "Roles",
+    "USUARIOS": "Benutzer",
+    "GRUPOS": "Gruppen",
+    "ROLES": "Rollen",
     "PERFIL": "Mein Profil",
     "GALERIA": "Meine Gallerie",
     "DESCARGAR": "Geschäft"
@@ -23,5 +24,9 @@
     "PREVIOUS":"Zurück",
     "NEXT":"Nächster",
     "SAVE":"Sparen"
+  },
+  "Text": {
+    "MONEDERO":"Geldbörse",
+    "LOGOUT":"Ausloggen"
   }
 }

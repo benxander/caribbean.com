@@ -1,0 +1,32 @@
+{
+  "Menu": {
+    "DASHBOARD": "Tableau de bord",
+    "CLIENTES": "Les clients",
+    "BANNERS": "Banners",
+    "SECCION": "Sections",
+    "BLOG": "Blog",
+    "MANTENIMIENTO": "Entretien",
+    "IDIOMAS": "Langues",
+    "EXCURSION": "Excursion",
+    "CONFIG": "Configuration",
+    "WEB": "Site Internet",
+    "DESCUENTO": "Remise",
+    "EMAILS": "Emails",
+    "SEGURIDAD": "Sécurité",
+    "USUARIOS": "Utilisateurs",
+    "GRUPOS": "Groupes",
+    "ROLES": "Les rôles",
+    "PERFIL": "Mon profil",
+    "GALERIA": "Ma galerie",
+    "DESCARGAR": "Boutique"
+  },
+  "Form": {
+    "PREVIOUS":"Précédent",
+    "NEXT":"Prochain",
+    "SAVE":"Sauvegarder"
+  },
+  "Text": {
+    "MONEDERO":"Bourse",
+    "LOGOUT":"Connectez - Out"
+  }
+}

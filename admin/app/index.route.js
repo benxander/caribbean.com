@@ -37,6 +37,13 @@
         controller: 'ClienteController',
         controllerAs: 'c'
       })
+      //excursion
+      .state('excursion', {
+        url: '/app/excursion',
+        templateUrl: 'app/pages/excursion/excursion.html',
+        controller: 'ExcursionController',
+        controllerAs: 'e'
+      })
       //banner
       .state('banner', {
         url: '/app/banner',
