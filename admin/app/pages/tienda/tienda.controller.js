@@ -78,6 +78,8 @@
       vm.monto_total = monto.toFixed(2);
     };
     vm.monto_total = 0.00;
+    vm.monto_descuento = 0.00;
+    vm.monto_bonificacion = 0.00;
 
     vm.btnDescargarFiles = function(){ 
       if(!vm.isSelected){
@@ -91,14 +93,51 @@
       }
 
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){ 
+        vm.datosVista = rpta;        
+        vm.calculaDescuentos(); 
+
+        if(vm.datosVista.mostrar_productos){          
+          angular.forEach(vm.images, function(image,key) {
+            if (image.selected) {
+              vm.images[key].lista_productos = angular.copy(vm.datosVista.lista_productos);
+            }
+          });       
+        }
+
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
         pageLoading.stop();
-
       });
     }
 
+    vm.calculaDescuentos = function(){
+      if(vm.datosVista.tiene_bonificacion){
+        var encontrado = false;
+        angular.forEach(vm.images, function(image) {
+          if (image.selected && !encontrado) {
+            vm.monto_bonificacion = image.precio_float;
+            encontrado = true;
+          }
+        });        
+      }
+
+      if(vm.datosVista.tiene_descuento){
+        vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100).toFixed(2);
+        vm.monto_neto = (parseFloat(vm.monto_total) - parseFloat(vm.monto_descuento)).toFixed(2);
+      }
+    }
+
+    vm.updatePrecio = function(producto){
+      var productos = (parseInt(producto.cantidad) * parseFloat(producto.precio)).toFixed(2);
+      vm.monto_total = (parseFloat(vm.monto_total) + parseFloat(productos)).toFixed(2);
+      vm.calculaDescuentos();
+    }
+
     vm.btnVolver = function(){ 
+      angular.forEach(vm.images, function(image) {
+        image.selected = false;
+      });
+      vm.monto_total = 0.00;
       vm.modoSeleccionar=true;
       vm.modoPagar=false;
     }
@@ -111,6 +150,7 @@
     }
 
     vm.irCompraExitosa = function(){
+      pageLoading.start('Procesando descarga...');
       TiendaServices.sDescargarArchivosPagados(vm.images).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
@@ -124,6 +164,7 @@
         }else{
           alert('Error inesperado');
         }
+        pageLoading.stop();
       });
     }
   
@@ -168,7 +209,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Archivo/descargar_archivos_pagados",
+            url :  angular.patchURLCI + "Compra/descargar_archivos_pagados",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

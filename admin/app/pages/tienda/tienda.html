@@ -100,18 +100,33 @@
             }
            }"
           >
-            <div class="col-md-2 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images" ng-if="image.selected">
+            <div class="col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images" ng-if="image.selected">
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
                 <div class="img-details-price form-group">
-                  <label class="col-sm-12 control-label minotaur-label"><i class="fa fa-money"></i> {{image.precio}} </label>
+                  <label class="col-sm-12 control-label minotaur-label pl-0 mt-5"><i class="fa fa-money"></i> {{image.precio}} </label>
+                </div>
+                <div class="otros-productos" ng-if="ctrl.datosVista.mostrar_productos">
+                  <form class="form-inline">
+                    <div class="form-group" ng-repeat="(ind, prod) in image.lista_productos" style="margin-bottom: 5px;">
+                      <label for="cantidad" style="font-weight: 900;text-transform: capitalize;width: 70px;">{{prod.descripcion_tp}}: </label>
+                      <input type="number" style="width: 75px;margin-right: 10px;" class="form-control" id="cantidad" name="cantidad" ng-model="prod.cantidad" ng-change="ctrl.updatePrecio(prod);" >
+                      <label >{{prod.precio}}</label>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="pull-right" > 
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_total}}</p> 
+        <div class="pull-right text-right"> 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;" 
+              ng-if="ctrl.datosVista.tiene_descuento">Total productos: {{ctrl.monto_total}}</p> 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;" 
+              ng-if="ctrl.datosVista.tiene_bonificacion">Total bonificacion: {{ctrl.monto_bonificacion}}</p> 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;" 
+              ng-if="ctrl.datosVista.tiene_descuento">Total descuento: {{ctrl.monto_descuento}}</p> 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_neto}}</p> 
           <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
         </div>
       </div>
