@@ -7,7 +7,7 @@
 
   /** @ngInject */
   function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,
-    ClienteServices, UsuarioServices, FileUploader) {
+    ClienteServices, ExcursionServices, UsuarioServices, FileUploader) {
     var vm = this;
     var openedToasts = [];
     vm.gritdClientes = true;
@@ -98,6 +98,11 @@
       }
       vm.getPaginationServerSide();
 
+      // EXCURSIONES
+      ExcursionServices.sListarExcursionCbo().then(function (rpta) {
+        vm.listaExcursiones = rpta.datos;
+        vm.listaExcursiones.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+      });
       // IDIOMA
       UsuarioServices.sListarIdioma().then(function (rpta) {
         vm.listaIdiomas = rpta.datos;
@@ -121,6 +126,8 @@
             vm.modalTitle = 'Registro de cliente';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData.ididioma = vm.listaIdiomas[0].id;
+            vm.listaExcursiones = arrToModal.scope.listaExcursiones;
+            vm.fData.idexcursion = vm.listaExcursiones[0].id;
 
             // botones
               vm.aceptar = function () {
@@ -164,12 +171,13 @@
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
+            vm.listaExcursiones = arrToModal.scope.listaExcursiones;
+            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
-            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
 
             vm.aceptar = function () {
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {

@@ -101,18 +101,60 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/excursion/excursion_formview.php',
           controllerAs: 'mb',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
+            vm.fData.temporal = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de excursion';
-            vm.fData.cImagen = false;
+            // vm.fData.cImagen = false;
 
+            vm.gridOptions = {
+            // paginationPageSizes: [10, 50, 100, 500, 1000],
+            // paginationPageSize: 10,
+            // enableFiltering: true,
+            // enableSorting: true,
+            // useExternalPagination: true,
+            // useExternalSorting: true,
+            // useExternalFiltering : true,
+            // enableRowSelection: true,
+            // enableRowHeaderSelection: true,
+            enableFullRowSelection: false,
+            multiSelect: false,
+            appScopeProvider: vm
+          }
+          vm.gridOptions.columnDefs = [
+            { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 50,},
+            { field: 'cantidad',displayName: 'CANT.', minWidth: 50,},
+            { field: 'porc_monto',displayName: 'MONTO %', minWidth: 50},
+            { field: 'monto',displayName: 'MONTO $', minWidth: 50, },
 
+          ];
+
+          vm.calcularCantidad = function(){
+            if( vm.fData.cantidad > 0 ){
+              vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad/100);
+            }
+          }
+          vm.calcularMonto = function(){
+            if( vm.fData.monto > 0 ){
+              vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto/100);
+            }
+          }
+          vm.agregarItem = function(){
+            vm.arrTemporal = {
+              'porc_cantidad' : vm.fData.temporal.porc_cantidad,
+              'cantidad' : vm.fData.temporal.cantidad,
+              'porc_monto' : vm.fData.temporal.porc_monto,
+              'monto' : vm.fData.temporal.monto,
+
+            };
+            vm.gridOptions.data.push(vm.arrTemporal);
+          }
             // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
             // DATEPICKER
               vm.today = function() {
@@ -222,10 +264,10 @@
               //     return false;
               //   }
               // }
-              vm.fData.imagen = $scope.image;
-              vm.fData.size = $scope.file.size;
-              vm.fData.nombre_imagen = $scope.file.name;
-              vm.fData.tipo_imagen = $scope.file.type;
+              // vm.fData.imagen = $scope.image;
+              // vm.fData.size = $scope.file.size;
+              // vm.fData.nombre_imagen = $scope.file.name;
+              // vm.fData.tipo_imagen = $scope.file.type;
 
               ExcursionServices.sRegistrarExcursion(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -258,9 +300,9 @@
       }
       vm.btnEditar = function(row){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/blog/blog_formview.php',
+          templateUrl: 'app/pages/excursion/excursion_formview.php',
           controllerAs: 'mb',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -269,14 +311,13 @@
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Edición de Blog';
-            vm.fData.canvas = false;
+            vm.modalTitle = 'Edición de Excursión';
+            // vm.fData.canvas = false;
 
+            console.log('vm.fData',vm.fData);
 
+            // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
 
-            vm.rutaImagen = arrToModal.scope.dirImagesBlog;
-            console.log('sel',arrToModal.seleccion);
-            console.log('data',vm.fData);
             // DATEPICKER
               vm.fData.fecha = moment(vm.fData.fecha).toDate();
               vm.today = function() {
@@ -350,17 +391,17 @@
                 return '';
               }
             vm.aceptar = function () {
-              if(vm.fData.canvas){
-                if(angular.isUndefined($scope.image)){
-                  alert('Debe seleccionar una imagen');
-                  return false;
-                }
-                vm.fData.imagen = $scope.image;
-                console.log('imagen',vm.fData.imagen);
-                vm.fData.size = $scope.file.size;
-                vm.fData.nombre_imagen = $scope.file.name;
-                vm.fData.tipo_imagen = $scope.file.type;
-              }
+              // if(vm.fData.canvas){
+              //   if(angular.isUndefined($scope.image)){
+              //     alert('Debe seleccionar una imagen');
+              //     return false;
+              //   }
+              //   vm.fData.imagen = $scope.image;
+              //   console.log('imagen',vm.fData.imagen);
+              //   vm.fData.size = $scope.file.size;
+              //   vm.fData.nombre_imagen = $scope.file.name;
+              //   vm.fData.tipo_imagen = $scope.file.type;
+              // }
 
               ExcursionServices.sEditarExcursion(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -434,12 +475,22 @@
   }
   function ExcursionServices($http, $q) {
     return({
+        sListarExcursionCbo: sListarExcursionCbo,
         sListarExcursiones: sListarExcursiones,
         sRegistrarExcursion: sRegistrarExcursion,
         sEditarExcursion: sEditarExcursion,
         sAnularExcursion: sAnularExcursion,
         sHabilitarDeshabilitarExcursion: sHabilitarDeshabilitarExcursion,
     });
+    function sListarExcursionCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/listar_excursion_cbo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sListarExcursiones(pDatos) {
       var datos = pDatos || {};
       var request = $http({

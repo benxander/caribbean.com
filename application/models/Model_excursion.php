@@ -4,8 +4,15 @@ class Model_excursion extends CI_Model {
 	{
 		parent::__construct();
 	}
+	public function m_cargar_excursion_cbo($paramPaginate=FALSE){
+		$this->db->select('ac.idactividad, ac.descripcion, ac.fecha_actividad, ac.cantidad_fotos, ac.monto_total, ac.precio_video, estado');
+		$this->db->from('actividad ac');
+		$this->db->where_in('ac.estado', array(1));
+		$this->db->order_by('descripcion','ASC');
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_excursiones($paramPaginate=FALSE){
-		$this->db->select('ac.idactividad, ac.descripcion, ac.fecha_actividad, ac.cantidad_fotos, ac.monto_total, estado');
+		$this->db->select('ac.idactividad, ac.descripcion, ac.fecha_actividad, ac.cantidad_fotos, ac.monto_total, ac.precio_video, estado');
 		$this->db->from('actividad ac');
 		$this->db->where_in('ac.estado', array(1,2));
 		if($paramPaginate){
@@ -40,25 +47,24 @@ class Model_excursion extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
-	public function m_cargar_post_blog($datos){
-		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen');
-		$this->db->select('bp.idblogpost,bp.autor_post, bp.comentario, bp.fecha_post, bp.idblogpost_origen');
-		$this->db->from('blog bl');
-		$this->db->join('blog_post bp','bl.idblog = bp.idblog AND bp.estado_bp = 1','left');
-		$this->db->where('bl.estado_bl', 1);
-		$this->db->where('bl.idblog', $datos['id']);
 
-		return $this->db->get()->result_array();
-	}
 	public function m_registrar($data)
 	{
-		return $this->db->insert('blog', $data);
+		$this->db->insert('actividad', $data);
+		$last_id = $this->db->insert_id();
+		return $last_id;
+	}
+	public function m_registrar_paquete($data)
+	{
+		$this->db->insert('paquete', $data);
+		$last_id = $this->db->insert_id();
+		return $last_id;
 	}
 
 	public function m_editar($data,$id)
 	{
-		$this->db->where('idblog',$id);
-		return $this->db->update('blog', $data);
+		$this->db->where('idactividad',$id);
+		return $this->db->update('actividad', $data);
 	}
 	public function m_anular($datos){
 		$data = array(

@@ -10,6 +10,30 @@ class Excursion extends CI_Controller {
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_excursion'));
     }
+    public function listar_excursion_cbo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_excursion->m_cargar_excursion_cbo();
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idactividad'],
+					'descripcion' => $row['descripcion'],
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function listar_excursiones(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
@@ -26,8 +50,9 @@ class Excursion extends CI_Controller {
 			array_push($arrListado, array(
 				'idactividad' => $row['idactividad'],
 				'descripcion' => $row['descripcion'],
-				'cantidad_fotos' => $row['cantidad_fotos'],
-				'monto_total' => $row['monto_total'],
+				'cantidad_fotos' => (int)$row['cantidad_fotos'],
+				'monto_total' => (int)$row['monto_total'],
+				'precio_video' => empty($row['precio_video'])? NULL : (int)$row['precio_video'],
 				'fecha' => date('Y-m-d',strtotime($row['fecha_actividad'])),
 				// 'fecha' => $row['fecha'],
 				'fecha_f' => darFormatoDMY2($row['fecha_actividad']),
@@ -66,9 +91,29 @@ class Excursion extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-
+    	$data = array(
+    		'descripcion' => $allInputs['descripcion'],
+    		'fecha_actividad' => date('Y-m-d',strtotime($allInputs['fecha'])),
+    		'cantidad_fotos' => $allInputs['cantidad_fotos'],
+    		'monto_total' => $allInputs['monto_total'],
+    		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
+    		'createdat' => date('Y-m-d H:i:s'),
+    		'updatedat' => date('Y-m-d H:i:s'),
+    	);
     	// print_r($data); exit();
-    	if($this->model_excursion->m_registrar($data)){
+    	$idactividad = $this->model_excursion->m_registrar($data);
+    	if($idactividad){
+	    	$data2 = array(
+	    		'idactividad' => $idactividad,
+	    		'porc_cantidad' => 100,
+	    		'porc_monto' => 100,
+	    		'cantidad' => $allInputs['cantidad_fotos'],
+	    		'monto' => $allInputs['monto_total'],
+	    	);
+    		$reg_paquete = $this->model_excursion->m_registrar_paquete($data2);
+    	}
+    	if($reg_paquete){
+
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
     	}
@@ -85,15 +130,16 @@ class Excursion extends CI_Controller {
     	// data
     	$data = array(
 
-    		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
-    		'autor' => $allInputs['autor'],
-    		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
-    		// 'fecha' => date('Y-m-d H:i:s'),
+    		'fecha_actividad' => date('Y-m-d',strtotime($allInputs['fecha'])),
+    		'cantidad_fotos' => $allInputs['cantidad_fotos'],
+    		'monto_total' => $allInputs['monto_total'],
+    		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
+    		'updatedat' => date('Y-m-d H:i:s'),
     	);
 
     	// VALIDACIONES
-    	if( $allInputs['canvas']){
+    	/*if( $allInputs['canvas']){
     		if( empty($allInputs['imagen']) ){
 	    		$arrData['message'] = 'Debe subir una imagen';
 	    		$this->output
@@ -114,10 +160,10 @@ class Excursion extends CI_Controller {
 				'imagen' => $nombre
 			);
 			$data = array_merge($data,$data_imagen);
-    	}
+    	}*/
 
     	// var_dump($data); exit();
-		if( $this->model_excursion->m_editar($data,$allInputs['idblog']) ){
+		if( $this->model_excursion->m_editar($data,$allInputs['idactividad']) ){
 			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}

@@ -22,13 +22,17 @@
 					<label for="codigo" class="control-label minotaur-label">Código del Cliente <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Código del Cliente" required>
 	            </div>
-	            <div class="form-group col-md-6">
+	            <div class="form-group col-md-3">
 					<label for="telefono" class="control-label minotaur-label">Teléfono</label>
-	              	<input type="text" name="codigo" id="telefono" class="form-control" ng-model="mc.fData.telefono" placeholder="Registre Código del Cliente">
+	              	<input type="text" name="codigo" id="telefono" class="form-control" ng-model="mc.fData.telefono" placeholder="999999999">
+	            </div>
+	            <div class="form-group col-md-3">
+					<label for="whatsapp" class="control-label minotaur-label">Whatsapp</label>
+	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Whatsapp" >
 	            </div>
 	            <div class="form-group col-md-6">
-					<label for="whatsapp" class="control-label minotaur-label">Whatsapp</label>
-	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Registre Whatsapp" >
+					<label for="idioma" class="control-label minotaur-label">Excursión</label>
+	              	<select class="form-control" ng-model="mc.fData.idexcursion" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" > </select>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="hotel" class="control-label minotaur-label">Hotel</label>
