@@ -24,21 +24,21 @@
 	            </div>
 	            <div class="form-group col-sm-12 col-md-4">
 		    		<label for="cantidad" class="control-label minotaur-label">Cantidad de fotos <small class="text-red">(*)</small> </label>
-	              	<input type="number" name="cantidad" id="cantidad" class="form-control" ng-model="mb.fData.cantidad_fotos" placeholder="Cantidad" required>
+	              	<div touch-spin name="cantidad" id="cantidad" ng-model="mb.fData.cantidad_fotos" placeholder="Cantidad" required options="{verticalButtons: true, max: 100000, step:10}"></div>
 	              	<div ng-messages="formExc.cantidad.$error" ng-if="formExc.cantidad.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-4">
 		    		<label for="monto" class="control-label minotaur-label">Precio Total Fotos($) <small class="text-red">(*)</small> </label>
-	              	<input type="number" name="monto" id="monto" class="form-control" ng-model="mb.fData.monto_total" placeholder="$" required>
+	              	<div touch-spin name="monto" id="monto" ng-model="mb.fData.monto_total" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" required></div>
 	              	<div ng-messages="formExc.monto.$error" ng-if="formExc.monto.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-4">
 		    		<label for="precio_video" class="control-label minotaur-label">Precio Video($) </label>
-	              	<input type="number" name="precio_video" id="precio_video" class="form-control" ng-model="mb.fData.precio_video" placeholder="$">
+	              	<div touch-spin name="precio_video" id="precio_video" ng-model="mb.fData.precio_video" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-12">
 		    		<label for="video" class="control-label minotaur-label">Video </label>

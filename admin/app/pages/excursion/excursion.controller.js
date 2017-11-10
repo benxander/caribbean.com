@@ -445,6 +445,16 @@
               }
             }
             vm.agregarItem = function(){
+              if( !vm.fData.temporal.cantidad ){
+                var title = 'Advertencia';
+                openedToasts.push(toastr['warning']('La cantidad no puede ser nula', title));
+                return false;
+              }
+              if( !vm.fData.temporal.monto ){
+                var title = 'Advertencia';
+                openedToasts.push(toastr['warning']('El monto no puede ser nulo', title));
+                return false;
+              }
               vm.arrTemporal = {
                 'idactividad' : vm.fData.idactividad,
                 'porc_cantidad' : vm.fData.temporal.porc_cantidad,
