@@ -4,30 +4,39 @@
 <div class="modal-body">
 	<section class="tile-body p-0">
 		<form name="formPaq" role="form" novalidate class="form-validation">
-
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="cantidad" class="control-label minotaur-label">Cantidad de fotos: </label>
+					<span>{{mb.fData.cantidad_fotos}}</span>
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="cantidad" class="control-label minotaur-label">Monto total($): </label>
+					<span>{{mb.fData.monto_total}}</span>
+				</div>
+			</div>
 
 			<fieldset>
 				<legend align="right" class="f-16">Paquetes</legend>
 				<div class="row">
 					<div class="form-group col-sm-3">
-			    		<label for="cantidad" class="control-label minotaur-label">Porc. cant. % </label>
-		              	<input type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.porc_cantidad"  ng-disabled="!mb.fData.cantidad" ng-change="mb.calcularCantidad()">
+			    		<label for="porc_cantidad" class="control-label minotaur-label">Porc. cant. % </label>
+		              	<input type="text" name="porc_cantidad" id="porc_cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.porc_cantidad"  ng-disabled="!mb.fData.cantidad_fotos" ng-change="mb.calcularCantidad()" tabindex="1">
 		            </div>
 		            <div class="form-group col-sm-3">
 			    		<label for="cantidad" class="control-label minotaur-label">Cantidad</label>
-		              	<input type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.cantidad" ng-disabled="true">
+		              	<input type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.cantidad" ng-disabled="true" tabindex="2">
 		            </div>
 		            <div class="form-group col-sm-3">
-			    		<label for="cantidad" class="control-label minotaur-label">Porc. Monto. % </label>
-		              	<input type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.porc_monto" ng-disabled="!mb.fData.monto" ng-change="mb.calcularMonto()">
+			    		<label for="porc_monto" class="control-label minotaur-label">Porc. Monto. % </label>
+		              	<input type="text" name="porc_monto" id="porc_monto" class="form-control input-sm" ng-model="mb.fData.temporal.porc_monto" ng-disabled="!mb.fData.monto_total" ng-change="mb.calcularMonto()" tabindex="3">
 		            </div>
 		            <div class="form-group col-sm-3">
-			    		<label for="cantidad" class="control-label minotaur-label">Monto $</label>
-		              	<input type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.monto"  ng-disabled="true">
+			    		<label for="monto" class="control-label minotaur-label">Monto $</label>
+		              	<input type="text" name="monto" id="monto" class="form-control input-sm" ng-model="mb.fData.temporal.monto" ng-disabled="true" tabindex="4">
 		            </div>
 		            <div class="form-group mb-sm col-sm-12">
 			            <div class="btn-group" style="min-width: 100%">
-			                <a href="" class="btn btn-info" ng-click="mb.agregarItem(); $event.preventDefault();" style="min-width: 100%;"  tabindex="115">Agregar</a>
+			                <a href="" class="btn btn-info" ng-click="mb.agregarItem(); $event.preventDefault();" style="min-width: 100%;"  tabindex="5">Agregar</a>
 			            </div>
 			        </div>
 		            <div class="col-md-12 col-sm-12">

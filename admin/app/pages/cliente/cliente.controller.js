@@ -43,6 +43,7 @@
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:80, visible:true },
+        { field: 'descripcion', name:'descripcion', displayName: 'EXCURSION',  minWidth:150, visible:true },
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
@@ -127,7 +128,7 @@
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData.ididioma = vm.listaIdiomas[0].id;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
-            vm.fData.idexcursion = vm.listaExcursiones[0].id;
+            vm.fData.idactividad = vm.listaExcursiones[0].id;
 
             // botones
               vm.aceptar = function () {

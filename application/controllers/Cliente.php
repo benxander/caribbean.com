@@ -29,6 +29,8 @@ class Cliente extends CI_Controller {
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
+					'idactividad' 	=> $row['idactividad'],
+					'descripcion' 	=> $row['descripcion'],
 					'fecha' 	=> $row['fecha_final'],
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
@@ -88,6 +90,13 @@ class Cliente extends CI_Controller {
 
     	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(empty($allInputs['idactividad'])){
+    		$arrData['message'] = 'Debe seleccionar una excursión.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));

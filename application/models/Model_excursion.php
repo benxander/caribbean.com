@@ -47,6 +47,13 @@ class Model_excursion extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_cargar_paquetes($datos){
+		$this->db->select('pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base');
+		$this->db->from('paquete pq');
+		$this->db->where('idactividad', $datos['idactividad']);
+		$this->db->where('es_base', 2);
+		return $this->db->get()->result_array();
+	}
 
 	public function m_registrar($data)
 	{

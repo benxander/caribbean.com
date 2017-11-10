@@ -49,8 +49,10 @@
                   '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
                     '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
                   '</label></div>' },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
+          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPaquetes(row)" tooltip-placement="left" uib-tooltip="PAQUETES" > <i class="icon-grid"></i> </button>' +
+
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '</div>'
@@ -107,54 +109,12 @@
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
-            vm.fData.temporal = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de excursion';
             // vm.fData.cImagen = false;
 
-            vm.gridOptions = {
-            // paginationPageSizes: [10, 50, 100, 500, 1000],
-            // paginationPageSize: 10,
-            // enableFiltering: true,
-            // enableSorting: true,
-            // useExternalPagination: true,
-            // useExternalSorting: true,
-            // useExternalFiltering : true,
-            // enableRowSelection: true,
-            // enableRowHeaderSelection: true,
-            enableFullRowSelection: false,
-            multiSelect: false,
-            appScopeProvider: vm
-          }
-          vm.gridOptions.columnDefs = [
-            { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 50,},
-            { field: 'cantidad',displayName: 'CANT.', minWidth: 50,},
-            { field: 'porc_monto',displayName: 'MONTO %', minWidth: 50},
-            { field: 'monto',displayName: 'MONTO $', minWidth: 50, },
 
-          ];
-
-          vm.calcularCantidad = function(){
-            if( vm.fData.cantidad > 0 ){
-              vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad/100);
-            }
-          }
-          vm.calcularMonto = function(){
-            if( vm.fData.monto > 0 ){
-              vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto/100);
-            }
-          }
-          vm.agregarItem = function(){
-            vm.arrTemporal = {
-              'porc_cantidad' : vm.fData.temporal.porc_cantidad,
-              'cantidad' : vm.fData.temporal.cantidad,
-              'porc_monto' : vm.fData.temporal.porc_monto,
-              'monto' : vm.fData.temporal.monto,
-
-            };
-            vm.gridOptions.data.push(vm.arrTemporal);
-          }
             // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
             // DATEPICKER
               vm.today = function() {
@@ -434,6 +394,102 @@
           }
         });
       }
+      vm.verPaquetes = function(row){
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/excursion/paquetes_formview.php',
+          controllerAs: 'mb',
+          size: '',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.fData = angular.copy(arrToModal.seleccion);
+            vm.fData.temporal = {};
+            vm.modoEdicion = true;
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Paquetes de Excursión';
+            // vm.fData.canvas = false;
+            // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
+            // GRILLA PAQUETES
+              vm.gridOptions = {
+                enableFullRowSelection: false,
+                multiSelect: false,
+                appScopeProvider: vm
+              }
+              vm.gridOptions.columnDefs = [
+                { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 50,},
+                { field: 'cantidad',displayName: 'CANT.', minWidth: 50,},
+                { field: 'porc_monto',displayName: 'MONTO %', minWidth: 50},
+                { field: 'monto',displayName: 'MONTO $', minWidth: 50, },
+
+              ];
+                // paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
+              vm.getPaginationServerSide = function() {
+                ExcursionServices.sListarPaquetes(vm.fData).then(function (rpta) {
+                  vm.gridOptions.data = rpta.datos;
+                  // vm.gridOptions.totalItems = rpta.paginate.totalRows;
+                  // vm.mySelectionGrid = [];
+                });
+              }
+              vm.getPaginationServerSide();
+
+            vm.calcularCantidad = function(){
+              if( vm.fData.cantidad_fotos > 0 ){
+                vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad_fotos/100);
+              }
+            }
+            vm.calcularMonto = function(){
+              if( vm.fData.monto_total > 0 ){
+                vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto_total/100);
+              }
+            }
+            vm.agregarItem = function(){
+              vm.arrTemporal = {
+                'idactividad' : vm.fData.idactividad,
+                'porc_cantidad' : vm.fData.temporal.porc_cantidad,
+                'cantidad' : vm.fData.temporal.cantidad,
+                'porc_monto' : vm.fData.temporal.porc_monto,
+                'monto' : vm.fData.temporal.monto,
+                'es_nuevo' : true
+
+              };
+              vm.gridOptions.data.push(vm.arrTemporal);
+              vm.fData.temporal = {}
+              $("#porc_cantidad").focus();
+            }
+            vm.aceptar = function () {
+              ExcursionServices.sRegistrarPaquetes(vm.gridOptions.data).then(function (rpta) {
+                if(rpta.flag == 1){
+                  $uibModalInstance.dismiss('cancel');
+                  vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var type = 'success';
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var type = 'warning';
+                }else{
+                  alert('Ocurrió un error');
+                }
+                openedToasts.push(toastr[type](rpta.message, title));
+              });
+              $uibModalInstance.close(vm.fData);
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                seleccion : row.entity,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
@@ -479,6 +535,8 @@
         sListarExcursiones: sListarExcursiones,
         sRegistrarExcursion: sRegistrarExcursion,
         sEditarExcursion: sEditarExcursion,
+        sListarPaquetes: sListarPaquetes,
+        sRegistrarPaquetes: sRegistrarPaquetes,
         sAnularExcursion: sAnularExcursion,
         sHabilitarDeshabilitarExcursion: sHabilitarDeshabilitarExcursion,
     });
@@ -514,6 +572,24 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Excursion/editar_excursion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarPaquetes(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/listar_paquetes",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sRegistrarPaquetes(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/registrar_paquetes",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

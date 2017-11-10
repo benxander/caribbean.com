@@ -6,11 +6,12 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.idactividad, ac.descripcion');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
+		$this->db->join('actividad ac','c.idactividad = ac.idactividad');
 		$this->db->where('c.estado_cl', 1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -71,18 +72,19 @@ class Model_cliente extends CI_Model {
 	// MANTENIMIENTO
 	public function m_registrar_cliente($data){
 		$datos = array(
-			'nombres' 		 => strtoupper($data['nombres']),
-			'apellidos' 	=> strtoupper($data['apellidos']),
-			'email' 		=> $data['email'],
-			'telefono' 		=> empty($data['telefono']) ? NULL : $data['telefono'],
-			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
-			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
-			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
-			'estado_cl' 	=> 1,
-			'idusuario' 	=> $data['idusuario'],
-			'createdat' 	=> date('Y-m-d H:i:s'),
-			'updatedat' 	=> date('Y-m-d H:i:s'),
-			'fecha_final' 	=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
+			'nombres' 	 => empty($data['nombres'])? NULL : strtoupper($data['nombres']),
+			'apellidos'  => empty($data['apellidos'])? NULL : strtoupper($data['apellidos']),
+			'email' 	 => $data['email'],
+			'telefono' 	 => empty($data['telefono']) ? NULL : $data['telefono'],
+			'whatsapp' 	 => empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'hotel' 	 => empty($data['hotel']) ? NULL : $data['hotel'],
+			'monedero' 	 => empty($data['monedero']) ? NULL : (float)$data['monedero'],
+			'estado_cl'  => 1,
+			'idactividad'=> $data['idactividad'],
+			'idusuario'  => $data['idusuario'],
+			'createdat'  => date('Y-m-d H:i:s'),
+			'updatedat'  => date('Y-m-d H:i:s'),
+			'fecha_final'=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
 		 );
 		$this->db->insert('cliente', $datos);
 		$insert_id = $this->db->insert_id();
@@ -101,6 +103,7 @@ class Model_cliente extends CI_Model {
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
 			'fecha_final'	=> $data['fecha'],
+			'idactividad'	=> $data['idactividad'],
 
 		 );
 		$this->db->where('idcliente',$data['idcliente']);
@@ -130,6 +133,14 @@ class Model_cliente extends CI_Model {
 		$this->db->where('idcliente',$data['idcliente']);
 
 		return $this->db->update('cliente', $datos);
+	}
+	public function m_anula_actividad_cliente($data){
+		$datos = array(
+			'estado_ac' => 0,
+		);
+		$this->db->where('idcliente',$data['idcliente']);
+
+		return $this->db->update('actividad_cliente', $datos);
 	}
 
 	public function m_actualizar_cliente_usuario($data){

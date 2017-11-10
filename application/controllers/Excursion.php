@@ -76,6 +76,43 @@ class Excursion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_paquetes(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_excursion->m_cargar_paquetes($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			// if( $row['estado_pq'] == 1 ){
+			// 	$bool = true;
+			// }
+			// elseif( $row['estado_pq'] == 2 ){
+			// 	$bool = false;
+			// }
+			array_push($arrListado, array(
+				'idactividad' => $row['idactividad'],
+				'porc_cantidad' => (int)$row['porc_cantidad'],
+				'porc_monto' => (int)$row['porc_monto'],
+				'cantidad' => (int)$row['cantidad'],
+				'monto' => (int)$row['monto'],
+				'es_nuevo' => FALSE,
+				// 'estado_pq' => array(
+				// 		'id'	 =>$row['idactividad'],
+				// 		'valor'  =>$row['estado_pq'],
+				// 		'bool'   =>$bool
+				// 	)
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 	// MANTENIMIENTO
 	public function registrar_excursion()	{
@@ -109,6 +146,7 @@ class Excursion extends CI_Controller {
 	    		'porc_monto' => 100,
 	    		'cantidad' => $allInputs['cantidad_fotos'],
 	    		'monto' => $allInputs['monto_total'],
+	    		'es_base' => 1
 	    	);
     		$reg_paquete = $this->model_excursion->m_registrar_paquete($data2);
     	}
@@ -165,6 +203,39 @@ class Excursion extends CI_Controller {
     	// var_dump($data); exit();
 		if( $this->model_excursion->m_editar($data,$allInputs['idactividad']) ){
 			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function registrar_paquetes()	{
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// data
+    	$hay_error = FALSE;
+    	foreach ($allInputs as $row) {
+    		if($row['es_nuevo']){
+		    	$data = array(
+		    		'idactividad' => $row['idactividad'],
+		    		'porc_cantidad' => $row['porc_cantidad'],
+		    		'porc_monto' => $row['porc_monto'],
+		    		'cantidad' => $row['cantidad'],
+		    		'monto' => $row['monto'],
+		    		'es_base' => 2
+		    	);
+    			if( !$this->model_excursion->m_registrar_paquete($data) ){
+					$hay_error = TRUE;
+				}
+    		}
+
+    	}
+
+    	// var_dump($data); exit();
+		if( !$hay_error ){
+			$arrData['message'] = 'Se registraron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output

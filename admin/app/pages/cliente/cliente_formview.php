@@ -8,11 +8,11 @@
 
 	            <div class="form-group col-md-6">
 					<label for="nombres" class="control-label minotaur-label">Nombres </label>
-	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" required>
+	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" >
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="apellidos" class="control-label minotaur-label">Apellidos </label>
-	              	<input type="text" name="apellidos" id="apellidos" class="form-control" ng-model="mc.fData.apellidos" placeholder="Registre apellidos" required>
+	              	<input type="text" name="apellidos" id="apellidos" class="form-control" ng-model="mc.fData.apellidos" placeholder="Registre apellidos" >
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="email" class="control-label minotaur-label">Correo <small class="text-red">(*)</small> </label>
@@ -31,8 +31,8 @@
 	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Whatsapp" >
 	            </div>
 	            <div class="form-group col-md-6">
-					<label for="idioma" class="control-label minotaur-label">Excursión</label>
-	              	<select class="form-control" ng-model="mc.fData.idexcursion" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" > </select>
+					<label for="idioma" class="control-label minotaur-label">Excursión <small class="text-red">(*)</small> </label>
+	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="hotel" class="control-label minotaur-label">Hotel</label>
@@ -47,12 +47,12 @@
 	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
 	            <div class="form-group col-md-6">
-					<label for="idioma" class="control-label minotaur-label">Idioma</label>
-	              	<select class="form-control" ng-model="mc.fData.ididioma" ng-options="item.id as item.descripcion for item in mc.listaIdiomas" > </select>
+					<label for="idioma" class="control-label minotaur-label">Idioma <small class="text-red">(*)</small> </label>
+	              	<select class="form-control" ng-model="mc.fData.ididioma" ng-options="item.id as item.descripcion for item in mc.listaIdiomas" required > </select>
 	            </div>
 	            <div class="form-group col-md-6" >
 					<label for="monedero" class="control-label minotaur-label">Monedero </label>
-	                <input type="text" class="form-control" id="monedero" ng-model="mc.fData.monedero" >
+	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
 	            </div>
 		    </div>
 		</form>
