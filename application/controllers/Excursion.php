@@ -88,6 +88,8 @@ class Excursion extends CI_Controller {
 			// 	$bool = false;
 			// }
 			array_push($arrListado, array(
+				'idpaquete' => $row['idpaquete'],
+				'titulo_pq' => $row['titulo_pq'],
 				'idactividad' => $row['idactividad'],
 				'porc_cantidad' => (int)$row['porc_cantidad'],
 				'porc_monto' => (int)$row['porc_monto'],
@@ -141,6 +143,7 @@ class Excursion extends CI_Controller {
     	$idactividad = $this->model_excursion->m_registrar($data);
     	if($idactividad){
 	    	$data2 = array(
+	    		'titulo_pq' => 'PAQUETE BASE',
 	    		'idactividad' => $idactividad,
 	    		'porc_cantidad' => 100,
 	    		'porc_monto' => 100,
@@ -176,29 +179,6 @@ class Excursion extends CI_Controller {
     		'updatedat' => date('Y-m-d H:i:s'),
     	);
 
-    	// VALIDACIONES
-    	/*if( $allInputs['canvas']){
-    		if( empty($allInputs['imagen']) ){
-	    		$arrData['message'] = 'Debe subir una imagen';
-	    		$this->output
-				    ->set_content_type('application/json')
-				    ->set_output(json_encode($arrData));
-				return;
-	    	}
-
-	    	// preparacion y subida de imagen
-			$extension = strrchr($allInputs['nombre_imagen'], ".");
-			$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
-			$nombre .= '-'. date('YmdHis') . $extension;
-			// $ruta = 'uploads/banners/' . $allInputs['tipoBanner']['descripcion'].'/';
-			$ruta = 'uploads/blog/';
-			// $allInputs['imagen_ba'] = $nombre;
-			subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
-			$data_imagen = array(
-				'imagen' => $nombre
-			);
-			$data = array_merge($data,$data_imagen);
-    	}*/
 
     	// var_dump($data); exit();
 		if( $this->model_excursion->m_editar($data,$allInputs['idactividad']) ){
@@ -220,6 +200,7 @@ class Excursion extends CI_Controller {
     		if($row['es_nuevo']){
 		    	$data = array(
 		    		'idactividad' => $row['idactividad'],
+		    		'titulo_pq' => strtoupper_total($row['titulo_pq']),
 		    		'porc_cantidad' => $row['porc_cantidad'],
 		    		'porc_monto' => $row['porc_monto'],
 		    		'cantidad' => $row['cantidad'],
@@ -236,6 +217,30 @@ class Excursion extends CI_Controller {
     	// var_dump($data); exit();
 		if( !$hay_error ){
 			$arrData['message'] = 'Se registraron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_paquete()	{
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// data
+    	$data = array(
+    		'titulo_pq' => $allInputs['titulo_pq'],
+    		'porc_cantidad' => $allInputs['porc_cantidad'],
+    		'porc_monto' => $allInputs['porc_monto'],
+    		'cantidad' => $allInputs['cantidad'],
+    		'monto' => $allInputs['monto'],
+    	);
+
+
+    	// var_dump($data); exit();
+		if( $this->model_excursion->m_editar_paquete($data,$allInputs['idpaquete']) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output

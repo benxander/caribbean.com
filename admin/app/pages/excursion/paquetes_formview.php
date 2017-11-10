@@ -6,10 +6,14 @@
 		<form name="formPaq" role="form" novalidate class="form-validation">
 			<div class="row">
 				<div class="form-group col-sm-6">
+					<label for="cantidad" class="control-label minotaur-label">Excursión: </label>
+					<span>{{mb.fData.descripcion}}</span>
+				</div>
+				<div class="form-group col-sm-3">
 					<label for="cantidad" class="control-label minotaur-label">Cantidad de fotos: </label>
 					<span>{{mb.fData.cantidad_fotos}}</span>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<label for="cantidad" class="control-label minotaur-label">Monto total($): </label>
 					<span>{{mb.fData.monto_total}}</span>
 				</div>
@@ -18,29 +22,33 @@
 			<fieldset>
 				<legend class="f-16 text-left">Paquetes</legend>
 				<div class="row">
-					<div class="form-group col-sm-3">
+					<div class="form-group col-sm-4">
+			    		<label for="titulo" class="control-label minotaur-label">Titulo</label>
+		              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.temporal.titulo_pq" tabindex="1" ng-focus="true" >
+		            </div>
+					<div class="form-group col-sm-2">
 			    		<label for="porc_cantidad" class="control-label minotaur-label">Porc. cant. % </label>
-		              	<div touch-spin name="porc_cantidad" id="porc_cantidad" ng-model="mb.fData.temporal.porc_cantidad"  ng-disabled="!mb.fData.cantidad_fotos" ng-change="mb.calcularCantidad()" options="{postfix: '%',verticalButtons: true, max: 100, step:5}" tabindex="1"></div>
+		              	<div touch-spin name="porc_cantidad" id="porc_cantidad" ng-model="mb.fData.temporal.porc_cantidad"  ng-disabled="!mb.fData.cantidad_fotos" ng-change="mb.calcularCantidad()" options="{postfix: '%',verticalButtons: true, max: 100, step:5}" tabindex="2"></div>
 		            </div>
-		            <div class="form-group col-sm-3">
+		            <div class="form-group col-sm-1 pl-0">
 			    		<label for="cantidad" class="control-label minotaur-label">Cantidad</label>
-		              	<input  touch-spin type="text" name="cantidad" id="cantidad" class="form-control input-sm" ng-model="mb.fData.temporal.cantidad" ng-disabled="true">
+		              	<input  type="text" name="cantidad" id="cantidad" class="form-control" ng-model="mb.fData.temporal.cantidad" ng-disabled="true">
 		            </div>
-		            <div class="form-group col-sm-3">
+		            <div class="form-group col-sm-2">
 			    		<label for="porc_monto" class="control-label minotaur-label">Porc. Monto. % </label>
-		              	<div  touch-spin name="porc_monto" id="porc_monto" ng-model="mb.fData.temporal.porc_monto" ng-disabled="!mb.fData.monto_total" ng-change="mb.calcularMonto()" options="{postfix: '%',verticalButtons: true, max: 100, step:5}" tabindex="2"></div>
+		              	<div  touch-spin name="porc_monto" id="porc_monto" ng-model="mb.fData.temporal.porc_monto" ng-disabled="!mb.fData.monto_total" ng-change="mb.calcularMonto()" options="{postfix: '%',verticalButtons: true, max: 100, step:5}" tabindex="3"></div>
 		            </div>
-		            <div class="form-group col-sm-3">
-			    		<label for="monto" class="control-label minotaur-label">Monto $</label>
-		              	<input type="text" name="monto" id="monto" class="form-control input-sm" ng-model="mb.fData.temporal.monto" ng-disabled="true">
+		            <div class="form-group col-sm-1 pl-0">
+			    		<label for="monto" class="control-label minotaur-label">Monto $ </label>
+		              	<input type="text" name="monto" id="monto" class="form-control" ng-model="mb.fData.temporal.monto" ng-disabled="true">
 		            </div>
-		            <div class="form-group mb-sm col-sm-12">
+		            <div class="form-group mb-sm mt-lg col-sm-2">
 			            <div class="btn-group" style="min-width: 100%">
-			                <a href="" class="btn btn-info" ng-click="mb.agregarItem(); $event.preventDefault();" style="min-width: 100%;"  tabindex="5">Agregar</a>
+			                <a href="" class="btn btn-info" ng-click="mb.agregarItem(); $event.preventDefault();" style="min-width: 100%;"  tabindex="4">Agregar</a>
 			            </div>
 			        </div>
 		            <div class="col-md-12 col-sm-12">
-		              <div ui-grid="mb.gridOptions" ui-grid-auto-resize class="grid table-responsive" style="height: 150px"></div>
+		              <div ui-grid="mb.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
 		            </div>
 				</div>
 			</fieldset>

@@ -398,7 +398,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/excursion/paquetes_formview.php',
           controllerAs: 'mb',
-          size: '',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -418,12 +418,56 @@
                 appScopeProvider: vm
               }
               vm.gridOptions.columnDefs = [
-                { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 50,},
-                { field: 'cantidad',displayName: 'CANT.', minWidth: 50,},
-                { field: 'porc_monto',displayName: 'MONTO %', minWidth: 50},
-                { field: 'monto',displayName: 'MONTO $', minWidth: 50, },
+                { field: 'titulo_pq',displayName: 'TITULO', minWidth: 80,},
+                { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 60,width:90,cellClass:'ui-editCell'},
+                { field: 'cantidad',displayName: 'CANT.', minWidth: 60,width:90,enableCellEdit: false},
+                { field: 'porc_monto',displayName: 'MONTO %', minWidth: 60,width:90,cellClass:'ui-editCell'},
+                { field: 'monto',displayName: 'MONTO $', minWidth: 60,width:90,enableCellEdit: false },
 
               ];
+              vm.gridOptions.onRegisterApi = function(gridApi) {
+                vm.gridApi = gridApi;
+                gridApi.edit.on.afterCellEdit($scope,function (rowEntity, colDef, newValue, oldValue){
+                  rowEntity.column = colDef.field;
+                  if(rowEntity.column == 'porc_cantidad'){
+                    if( !(rowEntity.porc_cantidad > 0 && rowEntity.porc_cantidad < 100) ){
+                      var title = 'Advertencia!';
+                      var pType = 'warning';
+                      rowEntity.porc_cantidad = oldValue;
+                      toastr.warning('El porcentaje debe ser numero mayor a cero', title);
+                      return false;
+                    }
+                    rowEntity.cantidad = Math.ceil(rowEntity.porc_cantidad*vm.fData.cantidad_fotos/100);
+                  }
+                  else if(rowEntity.column == 'porc_monto'){
+                    if( !(rowEntity.porc_monto > 0 && rowEntity.porc_monto < 100) ){
+                      var title = 'Advertencia!';
+                      var pType = 'warning';
+                      rowEntity.porc_monto = oldValue;
+                      toastr.warning('El porcentaje debe ser numero mayor a cero', title);
+                      return false;
+                    }
+                    rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.monto_total/100);
+                  }
+                  if(!rowEntity.es_nuevo){
+                    ExcursionServices.sEditarPaquete(rowEntity).then(function (rpta) {
+                      if(rpta.flag == 1){
+                        vm.getPaginationServerSide();
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  }
+                  $scope.$apply();
+                });
+              }
                 // paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
               vm.getPaginationServerSide = function() {
                 ExcursionServices.sListarPaquetes(vm.fData).then(function (rpta) {
@@ -445,6 +489,11 @@
               }
             }
             vm.agregarItem = function(){
+              if( !vm.fData.temporal.titulo_pq ){
+                var title = 'Advertencia';
+                openedToasts.push(toastr['warning']('Agregue un título', title));
+                return false;
+              }
               if( !vm.fData.temporal.cantidad ){
                 var title = 'Advertencia';
                 openedToasts.push(toastr['warning']('La cantidad no puede ser nula', title));
@@ -457,6 +506,7 @@
               }
               vm.arrTemporal = {
                 'idactividad' : vm.fData.idactividad,
+                'titulo_pq' : vm.fData.temporal.titulo_pq,
                 'porc_cantidad' : vm.fData.temporal.porc_cantidad,
                 'cantidad' : vm.fData.temporal.cantidad,
                 'porc_monto' : vm.fData.temporal.porc_monto,
@@ -466,7 +516,9 @@
               };
               vm.gridOptions.data.push(vm.arrTemporal);
               vm.fData.temporal = {}
-              $("#porc_cantidad").focus();
+              vm.fData.temporal.porc_cantidad = 0;
+              vm.fData.temporal.porc_monto = 0;
+              $("#titulo").focus();
             }
             vm.aceptar = function () {
               ExcursionServices.sRegistrarPaquetes(vm.gridOptions.data).then(function (rpta) {
@@ -541,14 +593,15 @@
   }
   function ExcursionServices($http, $q) {
     return({
-        sListarExcursionCbo: sListarExcursionCbo,
-        sListarExcursiones: sListarExcursiones,
-        sRegistrarExcursion: sRegistrarExcursion,
-        sEditarExcursion: sEditarExcursion,
-        sListarPaquetes: sListarPaquetes,
-        sRegistrarPaquetes: sRegistrarPaquetes,
-        sAnularExcursion: sAnularExcursion,
-        sHabilitarDeshabilitarExcursion: sHabilitarDeshabilitarExcursion,
+      sListarExcursionCbo: sListarExcursionCbo,
+      sListarExcursiones: sListarExcursiones,
+      sRegistrarExcursion: sRegistrarExcursion,
+      sEditarExcursion: sEditarExcursion,
+      sListarPaquetes: sListarPaquetes,
+      sEditarPaquete: sEditarPaquete,
+      sRegistrarPaquetes: sRegistrarPaquetes,
+      sAnularExcursion: sAnularExcursion,
+      sHabilitarDeshabilitarExcursion: sHabilitarDeshabilitarExcursion,
     });
     function sListarExcursionCbo(pDatos) {
       var datos = pDatos || {};
@@ -591,6 +644,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Excursion/listar_paquetes",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarPaquete(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/editar_paquete",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

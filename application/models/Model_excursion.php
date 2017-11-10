@@ -48,7 +48,7 @@ class Model_excursion extends CI_Model {
 		return $fData;
 	}
 	public function m_cargar_paquetes($datos){
-		$this->db->select('pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base');
+		$this->db->select('pq.idpaquete, pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq');
 		$this->db->from('paquete pq');
 		$this->db->where('idactividad', $datos['idactividad']);
 		$this->db->where('es_base', 2);
@@ -72,6 +72,11 @@ class Model_excursion extends CI_Model {
 	{
 		$this->db->where('idactividad',$id);
 		return $this->db->update('actividad', $data);
+	}
+	public function m_editar_paquete($data,$id)
+	{
+		$this->db->where('idpaquete',$id);
+		return $this->db->update('paquete', $data);
 	}
 	public function m_anular($datos){
 		$data = array(
