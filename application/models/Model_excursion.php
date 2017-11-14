@@ -51,7 +51,28 @@ class Model_excursion extends CI_Model {
 		$this->db->select('pq.idpaquete, pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq');
 		$this->db->from('paquete pq');
 		$this->db->where('idactividad', $datos['idactividad']);
-		$this->db->where('es_base', 2);
+		if($this->sessionCP['key_grupo'] != 'key_cliente'){
+			$this->db->where('es_base', 2);
+		}
+		return $this->db->get()->result_array();
+	}
+	public function m_cargar_paquetes_cliente($datos){
+		$this->db->select('pq.idpaquete, pq.idactividad, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq, act.descripcion, act.cantidad_fotos, act.monto_total');
+		$this->db->select('act.precio_por_adicional, act.precio_video');
+		$this->db->from('paquete pq');
+		$this->db->join('actividad act', 'pq.idactividad = act.idactividad');
+		$this->db->join('actividad_cliente ac', 'act.idactividad = ac.idactividad');
+		$this->db->join('cliente c', 'ac.idcliente = c.idcliente');
+		$this->db->where('c.idcliente', $datos['idcliente']);
+		$this->db->where('ac.estado_ac', 1);
+
+		return $this->db->get()->result_array();
+	}
+	public function m_cargar_excursiones_cliente($datos){
+		$this->db->select('idactividad');
+		$this->db->from('actividad_cliente');
+		$this->db->where('idcliente', $datos['idcliente']);
+		$this->db->where('estado_ac', 1);
 		return $this->db->get()->result_array();
 	}
 

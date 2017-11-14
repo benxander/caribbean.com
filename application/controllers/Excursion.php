@@ -5,8 +5,8 @@ class Excursion extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        // Se le asigna a la informacion a la variable $sessionCP.
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_excursion'));
     }
@@ -105,6 +105,64 @@ class Excursion extends CI_Controller {
 			);
 		}
 
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_excursion_paquetes_cliente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_excursion->m_cargar_paquetes_cliente($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+ 			$arrListado[$row['idactividad']] = array(
+				'idactividad' => $row['idactividad'],
+				'descripcion' => $row['descripcion'],
+				'cantidad_fotos' => (int)$row['cantidad_fotos'],
+				'monto_total' => (int)$row['monto_total'],
+				'precio_por_adicional' => (int)$row['precio_por_adicional'],
+				'precio_video' => (int)$row['precio_video'],
+				'paquetes' => array()
+			);
+		}
+		foreach ($arrListado as $key => $value) {
+			$arrAux = array();
+			foreach ($lista as $row) {
+				if($key == $row['idactividad']){
+					array_push($arrAux, array(
+						'idpaquete' => $row['idpaquete'],
+						'titulo_pq' => $row['titulo_pq'],
+						'cantidad' => (int)$row['cantidad'],
+						'monto' => (int)$row['monto'],
+						)
+					);
+				}
+			}
+			$arrListado[$key]['paquetes'] = $arrAux;
+		}
+		$arrListado = array_values($arrListado);
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_excursiones_cliente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_excursion->m_cargar_excursiones_cliente($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+ 			$arrListado[] = $row['idactividad'];
+		}
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

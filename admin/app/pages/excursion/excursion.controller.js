@@ -598,6 +598,8 @@
       sRegistrarExcursion: sRegistrarExcursion,
       sEditarExcursion: sEditarExcursion,
       sListarPaquetes: sListarPaquetes,
+      sListarExcursionesCliente: sListarExcursionesCliente,
+      sListarExcursionPaquetesCliente: sListarExcursionPaquetesCliente,
       sEditarPaquete: sEditarPaquete,
       sRegistrarPaquetes: sRegistrarPaquetes,
       sAnularExcursion: sAnularExcursion,
@@ -644,6 +646,24 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Excursion/listar_paquetes",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarExcursionesCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/listar_excursiones_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarExcursionPaquetesCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Excursion/listar_excursion_paquetes_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

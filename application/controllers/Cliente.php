@@ -29,8 +29,8 @@ class Cliente extends CI_Controller {
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
-					'idactividad' 	=> $row['idactividad'],
-					'descripcion' 	=> $row['descripcion'],
+					// 'idactividad' 	=> $row['idactividad'],
+					// 'descripcion' 	=> $row['descripcion'],
 					'fecha' 	=> $row['fecha_final'],
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
@@ -87,7 +87,7 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-
+    	// var_dump($allInputs); exit();
     	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
@@ -95,7 +95,7 @@ class Cliente extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-    	if(empty($allInputs['idactividad'])){
+    	if(empty($allInputs['actividades'])){
     		$arrData['message'] = 'Debe seleccionar una excursión.';
     		$this->output
 			    ->set_content_type('application/json')
@@ -104,16 +104,23 @@ class Cliente extends CI_Controller {
     	}
 
     	$this->db->trans_start();
-
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
-			if($this->model_cliente->m_registrar_cliente($allInputs)){
+			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
+			// var_dump($allInputs);
+			if($idcliente){
+				foreach ($allInputs['actividades'] as $row) {
+					$data = array(
+						'idcliente' => $idcliente,
+						'idactividad' => $row
+					);
+					$this->model_cliente->m_registrar_actividad_cliente($data);
+				}
 				$arrData['message'] = 'Se registraron los datos correctamente';
     			$arrData['flag'] = 1;
 			}
 		}
-
 		$this->db->trans_complete();
 
 		if($arrData['flag'] == 1){

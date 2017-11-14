@@ -102,7 +102,7 @@
       // EXCURSIONES
       ExcursionServices.sListarExcursionCbo().then(function (rpta) {
         vm.listaExcursiones = rpta.datos;
-        vm.listaExcursiones.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+        vm.listaExcursiones.splice(0,0,{ id : '', descripcion:''});
       });
       // IDIOMA
       UsuarioServices.sListarIdioma().then(function (rpta) {
@@ -179,6 +179,11 @@
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
+
+            ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
+              vm.fData.actividades = rpta.datos;
+            });
+            // vm.fData.actividades = ["1","5"];
 
             vm.aceptar = function () {
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {

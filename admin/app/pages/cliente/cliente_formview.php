@@ -7,8 +7,8 @@
 		    <div class="row">
 
 	            <div class="form-group col-md-6">
-					<label for="nombres" class="control-label minotaur-label">Nombres </label>
-	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" >
+					<label for="nombres" class="control-label minotaur-label">Nombres <small class="text-red">(*)</small> </label>
+	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" required>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="apellidos" class="control-label minotaur-label">Apellidos </label>
@@ -31,9 +31,13 @@
 	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Whatsapp" >
 	            </div>
 	            <div class="form-group col-md-6">
-					<label for="idioma" class="control-label minotaur-label">Excursión <small class="text-red">(*)</small> </label>
-	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
+					<label class="control-label minotaur-label">Excursiones <small class="text-red">(*)</small> </label>
+	              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mc.fData.actividades" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
 	            </div>
+
+
+
+
 	            <div class="form-group col-md-6">
 					<label for="hotel" class="control-label minotaur-label">Hotel</label>
 	              	<input type="text" name="hotel" id="hotel" class="form-control" ng-model="mc.fData.hotel" placeholder="Registre Hotel" >

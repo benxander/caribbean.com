@@ -6,8 +6,41 @@
   <div class="row">
     <div class="col-md-12">
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
+        <div class="row">
+          <h1 class="heading text-center">{{ctrl.listaExcursiones[0].descripcion}}</h1>
+
+          <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
+              <div class="card">
+                <div class="front bg-greensea">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <i class="fa fa-shopping-cart fa-4x"></i>
+                    </div>
+                    <div class="col-xs-8">
+                      <p class="text-xl line-xl text-strong mb-0">{{item.titulo_pq}}</p>
+                      <!-- <span>New Users</span> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="back bg-greensea">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <a href=javascript:;><i class="fa fa-camera fa-2x"></i>{{item.cantidad}} fotos</a>
+                    </div>
+                    <div class="col-xs-4">
+                      <a href=javascript:;><i class="fa fa-usd fa-2x"></i>{{item.monto}}</a>
+                    </div>
+                    <div class="col-xs-4">
+                      <a href=javascript:;><i class="fa fa-film fa-2x"></i> {{ctrl.listaExcursiones[0].precio_video}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+        </div>
         <section class="tile-header pl-0">
-          <h1 class="heading">Seleccionar Productos</h1>
+          <h2 class="heading">Seleccionar Productos</h2>
           <div class="controls">
             <!-- <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
@@ -110,8 +143,8 @@
             </div>
           </div>
         </div>
-        <div class="pull-right" > 
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_total}}</p> 
+        <div class="pull-right" >
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_total}}</p>
           <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
         </div>
       </div>
@@ -137,14 +170,14 @@
             <h2 class="text-custom text-center mb-5">Gracias por tu compra!</h2>
             <h3 ng-if="!ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Califica nuestro servicio.</h3>
             <h3 ng-if="ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Gracias por calificar nuestro servicio.</h3>
-            <div class="rating-stars" ng-if="!ctrl.modoCalificacionOk" >              
+            <div class="rating-stars" ng-if="!ctrl.modoCalificacionOk" >
               <span ng-click="ctrl.calificar(5);" >☆</span>
               <span ng-click="ctrl.calificar(4);">☆</span>
               <span ng-click="ctrl.calificar(3);">☆</span>
               <span ng-click="ctrl.calificar(2);">☆</span>
               <span ng-click="ctrl.calificar(1);">☆</span>
             </div>
-            <div class="rating-stars-calificado" ng-if="ctrl.modoCalificacionOk" >              
+            <div class="rating-stars-calificado" ng-if="ctrl.modoCalificacionOk" >
               <span ng-class="{'califica': 1 <= ctrl.calificacion}">★</span>
               <span ng-class="{'califica': 2 <= ctrl.calificacion}">★</span>
               <span ng-class="{'califica': 3 <= ctrl.calificacion}">★</span>

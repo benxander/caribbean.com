@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, TiendaServices, ClienteServices, rootServices,toastr) {
+  function TiendaController($scope, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr) {
     var vm = this;
     vm.modoSeleccionar = true;
     //vm.modoSeleccionar = false;
@@ -20,14 +20,21 @@
         vm.images = rpta.datos;
       });
     }
+    vm.cargarExcursiones = function(datos){
+      ExcursionServices.sListarExcursionPaquetesCliente(datos).then(function(rpta){
+        vm.listaExcursiones = rpta.datos;
+        vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
+      });
+    }
 
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
         vm.fDataUsuario = response.datos;
         vm.cargarGaleria(vm.fDataUsuario);
+        vm.cargarExcursiones(vm.fDataUsuario);
       }
     });
- 
+
     vm.selectedAll = false;
     vm.isSelected = false;
 
@@ -77,12 +84,12 @@
     };
     vm.monto_total = 0.00;
 
-    vm.btnDescargarFiles = function(){ 
+    vm.btnDescargarFiles = function(){
       vm.modoSeleccionar=false;
       vm.modoPagar=true;
     }
 
-    vm.btnVolver = function(){ 
+    vm.btnVolver = function(){
       vm.modoSeleccionar=true;
       vm.modoPagar=false;
     }
@@ -93,7 +100,7 @@
 
       /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
 
-      vm.irCompraExitosa();     
+      vm.irCompraExitosa();
     }
 
     vm.irCompraExitosa = function(){
@@ -112,7 +119,7 @@
         }
       });
     }
-  
+
     vm.calificar = function(value){
       vm.calificacion = value;
       vm.fDataUsuario.puntos = value;
@@ -138,7 +145,7 @@
         sListarNoDescargados: sListarNoDescargados,
         sDescargarArchivosPagados: sDescargarArchivosPagados,
     });
-    
+
     function sListarNoDescargados(pDatos) {
       var datos = pDatos || {};
       var request = $http({
