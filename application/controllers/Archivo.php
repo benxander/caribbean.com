@@ -32,6 +32,7 @@ class Archivo extends CI_Controller {
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
+					'src_share' => base_url().'caribbean.com/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					'title' => '',
 				)
 			);
@@ -87,38 +88,4 @@ class Archivo extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
-	public function descargar_archivos_pagados(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['flag'] = 0;
-		$arrData['message'] = 'Ha ocurrido error';
-		$error = FALSE;
-		foreach ($allInputs as $key => $image) {
-			if($image['selected']){
-				$urloriginal = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
-				$urldestino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
-
-				if(!rename($urloriginal,$urldestino)){
-					$error = TRUE;
-				}
-
-				if(!$error){
-					$image['valor'] = 1;
-					if(!$this->model_archivo->m_editar_descarga_archivo($image)){
-						$error = TRUE;
-					}
-				}
-			}
-		}
-
-		if(!$error){
-			$arrData['message'] = 'Archivos descargados exitosamente.';
-    		$arrData['flag'] = 1;
-		}
-
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-	}
-
 }

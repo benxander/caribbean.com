@@ -53,7 +53,7 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 	public function m_cargar_cliente_por_idusuario($idusuario){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_final, c.createdat as fecha_creacion');
 		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','c.idusuario = u.idusuario');

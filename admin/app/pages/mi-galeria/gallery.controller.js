@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope, PagesGalleryServices, rootServices ) {
+  function PagesGalleryController($scope, PagesGalleryServices, rootServices, Socialshare) {
     var vm = this;
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
