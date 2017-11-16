@@ -5,13 +5,16 @@ class Model_cliente extends CI_Model {
 		parent::__construct();
 	}
 
-	public function m_cargar_cliente($paramPaginate=FALSE){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono');
+	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
+		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
+		$this->db->where('ac.estado_ac', 1);
+		$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -31,10 +34,13 @@ class Model_cliente extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
-	public function m_count_cliente($paramPaginate=FALSE){
+	public function m_count_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
+		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
+		$this->db->where('ac.estado_ac', 1);
+		$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
 		$this->db->where('c.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {

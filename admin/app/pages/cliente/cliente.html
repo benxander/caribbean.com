@@ -17,7 +17,7 @@
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;"ng-click="c.getPaginationServerSide()" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" ng-click="c.getPaginationServerSide(true)" minotaur-tile-refresh></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
@@ -29,8 +29,16 @@
         <!-- tile body -->
         <section class="tile-body">
           <div class="row">
-            <div class="col-md-12 col-sm-12">
-              <div class="form-group pull-right" style="position: relative;z-index: 10">
+            <div class="col-md-3 col-sm-12 mb">
+              <label> EXCURSIONES </label>
+              <select class="form-control"
+                      ng-model="c.fBusqueda.filtroExcursiones" ng-change="c.getPaginationServerSide(true);"
+                      ng-options="item.descripcion for item in c.listaExcursionesFiltro"
+                      aria-invalid="false" style="">
+              </select>
+            </div>
+            <div class="col-md-9 col-sm-12">
+              <div class="form-group pull-right mt-lg" style="position: relative;z-index: 10">
                 <button class="btn btn-success" ng-click='c.btnNuevo()'>Nuevo</button>
               </div>
             </div>

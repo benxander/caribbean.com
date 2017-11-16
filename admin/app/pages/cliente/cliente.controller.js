@@ -6,9 +6,10 @@
     .service('ClienteServices', ClienteServices);
 
   /** @ngInject */
-  function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,
+  function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,tileLoading,
     ClienteServices, ExcursionServices, UsuarioServices, FileUploader) {
     var vm = this;
+    vm.fBusqueda = {}
     var openedToasts = [];
     vm.gritdClientes = true;
     var uploader = $scope.uploader = new FileUploader ({
@@ -43,7 +44,7 @@
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:80, visible:true },
-        { field: 'descripcion', name:'descripcion', displayName: 'EXCURSION',  minWidth:150, visible:true },
+        { field: 'fecha', name:'fecha', displayName: 'FECHA'},
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
@@ -78,39 +79,51 @@
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
             'c.idcliente' : grid.columns[1].filters[0].term,
-            'c.idusuario' : grid.columns[2].filters[0].term,
-            'c.nombres' : grid.columns[3].filters[0].term,
-            'c.apellidos' : grid.columns[4].filters[0].term,
+            'u.codigo' : grid.columns[2].filters[0].term,
+            'fecha' : grid.columns[3].filters[0].term,
+            'c.nombres' : grid.columns[4].filters[0].term,
+            'c.apellidos' : grid.columns[5].filters[0].term,
           }
           vm.getPaginationServerSide();
         });
       }
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
+      vm.getPaginationServerSide = function(loader) {
+        var loader = loader || false;
+        if(loader){
+          tileLoading.start();
+        }
         vm.datosGrid = {
-          paginate : paginationOptions
+          paginate : paginationOptions,
+          datos: vm.fBusqueda
         };
         ClienteServices.sListarCliente(vm.datosGrid).then(function (rpta) {
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          if(loader){
+            tileLoading.stop();
+          }
         });
       }
-      vm.getPaginationServerSide();
 
-      // EXCURSIONES
+    // EXCURSIONES
       ExcursionServices.sListarExcursionCbo().then(function (rpta) {
-        vm.listaExcursiones = rpta.datos;
+        vm.listaExcursiones = angular.copy(rpta.datos);
         vm.listaExcursiones.splice(0,0,{ id : '', descripcion:''});
+        vm.listaExcursionesFiltro = angular.copy(rpta.datos);
+        vm.fBusqueda.filtroExcursiones = vm.listaExcursionesFiltro[0];
+        vm.getPaginationServerSide(true);
       });
-      // IDIOMA
+
+    // IDIOMA
       UsuarioServices.sListarIdioma().then(function (rpta) {
         vm.listaIdiomas = rpta.datos;
         vm.listaIdiomas.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
       });
 
-      // MANTENIMIENTO
+    // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/cliente_formview.php',
@@ -118,6 +131,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           scope: $scope,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
@@ -170,6 +185,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
@@ -273,7 +290,7 @@
         vm.isSelected = false;
 
         vm.subirTodo = function(){
-          console.log('aqui estoy');
+          console.log('subir todo');
           uploader.uploadAll();
         }
 
@@ -445,6 +462,7 @@
               nombres: vm.fDataUpload.nombres,
               apellidos: vm.fDataUpload.apellidos,
               codigo: vm.fDataUpload.codigo,
+              idactividadcliente: vm.fDataUpload.idactividadcliente,
             });
             //console.info('onBeforeUploadItem', item);
         };

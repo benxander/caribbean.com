@@ -69,7 +69,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_imagenes($data){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto, 
+		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto,
 		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, u.codigo');
 		$this->db->from('archivo a');
 		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
@@ -92,6 +92,7 @@ class Model_archivo extends CI_Model {
 		$datos = array(
 			'idcliente' => $data['idcliente'],
 			'idusuario' => $data['idusuario'],
+			'idactividadcliente' => $data['idactividadcliente'],
 			'nombre_archivo' => $data['nombre_archivo'],
 			'size' => $data['size'],
 			'idtipoproducto' => $data['idtipoproducto'],

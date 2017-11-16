@@ -11,8 +11,10 @@ class Cliente extends CI_Controller {
     public function listar_clientes(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
-		$lista = $this->model_cliente->m_cargar_cliente($paramPaginate);
-		$totalRows = $this->model_cliente->m_count_cliente($paramPaginate);
+		$paramDatos = $allInputs['datos'];
+		// var_dump($allInputs); exit();
+		$lista = $this->model_cliente->m_cargar_cliente($paramPaginate,$paramDatos);
+		$totalRows = $this->model_cliente->m_count_cliente($paramPaginate,$paramDatos);
 		$arrListado = array();
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
@@ -29,9 +31,10 @@ class Cliente extends CI_Controller {
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
-					// 'idactividad' 	=> $row['idactividad'],
+					'idactividadcliente' 	=> $row['idactividadcliente'],
 					// 'descripcion' 	=> $row['descripcion'],
-					'fecha' 	=> $row['fecha_final'],
+					'fecha' 	=> $row['createdat'],
+					'fecha_final' 	=> $row['fecha_final'],
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
 			);
@@ -258,13 +261,13 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al subir imagenes/videos';
     	$arrData['flag'] = 0;
     	$cliente = "";
-
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
 
 			if(!empty( $_REQUEST )){
 				$codigo = $_REQUEST['codigo'];
 				$idcliente = $_REQUEST['idcliente'];
 				$idusuario = $_REQUEST['idusuario'];
+				$idactividadcliente = $_REQUEST['idactividadcliente'];
 
 			    $errors= array();
 			    $file_name = $_FILES['file']['name'];
@@ -275,7 +278,7 @@ class Cliente extends CI_Controller {
 			    $extensions_image = array("jpeg","jpg");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
 
-				// CREAR CARPESTAS CLIENTE
+				// CREAR CARPETAS CLIENTE
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 		    	createCarpetas($carpeta);
 				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
@@ -296,6 +299,7 @@ class Cliente extends CI_Controller {
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
 							'idusuario' 	=> $idusuario,
+							'idactividadcliente' 	=> $idactividadcliente,
 							'nombre_archivo'=> $file_name,
 							'size'			=> $file_size,
 							'idtipoproducto'=> 1
@@ -324,6 +328,7 @@ class Cliente extends CI_Controller {
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
 							'idusuario' 	=> $idusuario,
+							'idactividadcliente' 	=> $idactividadcliente,
 							'nombre_archivo'=> $file_name,
 							'size'			=> $file_size,
 							'idtipoproducto'=> 2
