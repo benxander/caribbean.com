@@ -5,14 +5,14 @@
 	<section class="tile-body p-0">
 		<form name="formExc" role="form" novalidate class="form-validation">
 		    <div class="row">
-		    	<div class="form-group col-sm-12 col-md-6 mb-n">
+		    	<div class="form-group col-sm-12 col-md-12 mb-n">
 		    		<label for="descripcion" class="control-label minotaur-label">Descripción <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="descripcion" id="descripcion" class="form-control" ng-model="mb.fData.descripcion" placeholder="Registre descripcion" required>
 	              	<div ng-messages="formExc.descripcion.$error" ng-if="formExc.descripcion.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
-	            <div class="form-group  col-sm-12 col-md-6">
+	            <div class="form-group  col-sm-12 col-md-6" ng-if="false">
 	              	<label for="fecha" class="control-label minotaur-label">Fecha <small class="text-red">(*)</small> </label>
 	                <div class="input-group">
 	                  <input type="text" class="form-control" uib-datepicker-popup="{{mb.format}}" ng-model="mb.fData.fecha" ng-model-options="{ timezone: 'UTC' }" is-open="mb.popup1.opened" datepicker-options="mb.dateOptions" ng-required="true" close-text="Close" ng-click="mb.open1($event)" />

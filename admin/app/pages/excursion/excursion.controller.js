@@ -37,9 +37,9 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idactividad', name:'idactividad', displayName: 'ID', minWidth: 50, width:80, visible:false, sort: { direction: uiGridConstants.DESC} },
+        { field: 'idactividad', name:'idactividad', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
 
-        { field: 'fecha_f', name:'fecha_actividad', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
+        // { field: 'fecha_f', name:'fecha_actividad', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
         { field: 'descripcion', name:'descripcion', displayName: 'DESCRIPCION', minWidth: 100 },
         { field: 'cantidad_fotos', name:'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 100 },
         { field: 'monto_total', name:'monto_total', displayName: 'MONTO ($)', minWidth: 100 },
