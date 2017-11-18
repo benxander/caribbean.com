@@ -139,6 +139,7 @@ class Excursion extends CI_Controller {
 						'titulo_pq' => $row['titulo_pq'],
 						'cantidad' => (int)$row['cantidad'],
 						'monto' => (int)$row['monto'],
+						'selected' => FALSE
 						)
 					);
 				}

@@ -6,41 +6,42 @@
   <div class="row">
     <div class="col-md-12">
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
-        <div class="row">
-          <h1 class="heading text-center">{{ctrl.listaExcursiones[0].descripcion}}</h1>
-
-          <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
-              <div class="card">
-                <div class="front bg-greensea">
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <i class="fa fa-shopping-cart fa-4x"></i>
-                    </div>
-                    <div class="col-xs-8">
-                      <p class="text-xl line-xl text-strong mb-0">{{item.titulo_pq}}</p>
-                      <!-- <span>New Users</span> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="back bg-greensea">
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <a href=javascript:;><i class="fa fa-camera fa-2x"></i>{{item.cantidad}} fotos</a>
-                    </div>
-                    <div class="col-xs-4">
-                      <a href=javascript:;><i class="fa fa-usd fa-2x"></i>{{item.monto}}</a>
-                    </div>
-                    <div class="col-xs-4">
-                      <a href=javascript:;><i class="fa fa-film fa-2x"></i> {{ctrl.listaExcursiones[0].precio_video}}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-
-        </div>
         <section class="tile-header pl-0">
-          <h2 class="heading">Seleccionar Productos</h2>
+          <div class="row">
+            <h1 class="heading text-center">{{ctrl.listaExcursiones[0].descripcion}}</h1>
+            <div class="col-md-12 f-18 mb text-info">Seleccione un paquete</div>
+            <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
+                <div class="card" ng-click="ctrl.selPaquete(item.idpaquete)">
+                  <div class="front" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
+                    <div class="row">
+                      <div class="col-xs-4">
+                        <i class="fa fa-shopping-cart fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                        <p class="text-xl line-xl text-strong mb-0">{{item.titulo_pq}}</p>
+                        <!-- <span>New Users</span> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="back" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
+                    <div class="row">
+                      <div class="col-xs-4">
+                        <a href=javascript:;><i class="fa fa-camera fa-2x"></i>{{item.cantidad}} fotos</a>
+                      </div>
+                      <div class="col-xs-4">
+                        <a href=javascript:;><i class="fa fa-usd fa-2x"></i>{{item.monto}}</a>
+                      </div>
+                      <div class="col-xs-4">
+                        <a href=javascript:;><i class="fa fa-film fa-2x"></i> {{ctrl.listaExcursiones[0].precio_video}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <input type="radio" name="exc" ng-model=""> -->
+            </div>
+
+          </div>
+          <div class="col-md-12 f-18 mb text-info">Seleccionar Productos</div>
           <div class="controls">
             <!-- <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
@@ -96,6 +97,9 @@
 
                     <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                       <i class="fa fa-search"></i>
+                    </a>
+                    <a class="img-select" href="javascript:;" ng-click="ctrl.btnPedidos($index)" uib-tooltip="Merchandise" tooltip-placement="top">
+                      <i class="fa fa-gift"></i>
                     </a>
                   </div>
                 </div>
