@@ -26,7 +26,11 @@
     "SAVE":"Save"
   },
   "Text": {
-    "MONEDERO":"Purse",
-    "LOGOUT":"Log Out"
+    "MONEDERO":"Available balance",
+    "LOGOUT":"Log Out",
+    "SEL_PAQUETE":"Select a package",
+    "SEL_PRODUCTO":"Select Products",
+    "TODOS":"Everybody",
+    "DESCARGAR":"Download"
   }
 }

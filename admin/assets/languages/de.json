@@ -26,7 +26,11 @@
     "SAVE":"Sparen"
   },
   "Text": {
-    "MONEDERO":"Geldbörse",
-    "LOGOUT":"Ausloggen"
+    "MONEDERO":"Verfügbares Guthaben",
+    "LOGOUT":"Ausloggen",
+    "SEL_PAQUETE":"Wählen Sie ein Paket aus",
+    "SEL_PRODUCTO":"Produkte auswählen",
+    "TODOS":"Jeder",
+    "DESCARGAR":"Herunterladen"
   }
 }

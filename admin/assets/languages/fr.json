@@ -26,7 +26,11 @@
     "SAVE":"Sauvegarder"
   },
   "Text": {
-    "MONEDERO":"Bourse",
-    "LOGOUT":"Connectez - Out"
+    "MONEDERO":"Solde disponible",
+    "LOGOUT":"Connectez - Out",
+    "SEL_PAQUETE":"Sélectionnez un paquet",
+    "SEL_PRODUCTO":"Sélectionnez des produits",
+    "TODOS":"Tout le monde",
+    "DESCARGAR":"Télécharger"
   }
 }

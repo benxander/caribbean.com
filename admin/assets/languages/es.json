@@ -26,8 +26,12 @@
     "SAVE":"Guardar"
   },
   "Text": {
-    "MONEDERO":"Monedero",
-    "LOGOUT":"Cerrar Sesión"
+    "MONEDERO":"Saldo",
+    "LOGOUT":"Cerrar Sesión",
+    "SEL_PAQUETE":"Seleccione un paquete",
+    "SEL_PRODUCTO":"Seleccionar Productos",
+    "TODOS":"Todos",
+    "DESCARGAR":"Descargar"
   }
 }
 
