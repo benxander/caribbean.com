@@ -5,16 +5,16 @@ class Model_excursion extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_excursion_cbo($paramPaginate=FALSE){
-		$this->db->select('ac.idactividad, ac.descripcion, ac.fecha_actividad, ac.cantidad_fotos, ac.monto_total, ac.precio_video, estado');
-		$this->db->from('actividad ac');
-		$this->db->where_in('ac.estado', array(1));
-		$this->db->order_by('descripcion','ASC');
+		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, act.precio_video, act.precio_por_adicional, estado');
+		$this->db->from('actividad act');
+		$this->db->where_in('act.estado', array(1));
+		$this->db->order_by('descripcion_act','ASC');
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones($paramPaginate=FALSE){
-		$this->db->select('ac.idactividad, ac.descripcion, ac.fecha_actividad, ac.cantidad_fotos, ac.monto_total, ac.precio_video, estado');
-		$this->db->from('actividad ac');
-		$this->db->where_in('ac.estado', array(1,2));
+		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, act.precio_video, act.precio_por_adicional, estado');
+		$this->db->from('actividad act');
+		$this->db->where_in('act.estado', array(1,2));
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -35,8 +35,8 @@ class Model_excursion extends CI_Model {
 	}
 	public function m_count_excursiones($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
-		$this->db->from('actividad ac');
-		$this->db->where_in('ac.estado', array(1,2));
+		$this->db->from('actividad act');
+		$this->db->where_in('act.estado', array(1,2));
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -56,8 +56,14 @@ class Model_excursion extends CI_Model {
 		}
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_paquetes_por_actividad($datos){
+		$this->db->select('pq.idpaquete, pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq');
+		$this->db->from('paquete pq');
+		$this->db->where('idactividad', $datos['idactividad']);
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_paquetes_cliente($datos){
-		$this->db->select('pq.idpaquete, pq.idactividad, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq, act.descripcion, act.cantidad_fotos, act.monto_total');
+		$this->db->select('pq.idpaquete, pq.idactividad, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total');
 		$this->db->select('act.precio_por_adicional, act.precio_video');
 		$this->db->from('paquete pq');
 		$this->db->join('actividad act', 'pq.idactividad = act.idactividad');
@@ -65,6 +71,7 @@ class Model_excursion extends CI_Model {
 		$this->db->join('cliente c', 'ac.idcliente = c.idcliente');
 		$this->db->where('c.idcliente', $datos['idcliente']);
 		$this->db->where('ac.estado_ac', 1);
+		$this->db->where('pq.estado_pq', 1);
 
 		return $this->db->get()->result_array();
 	}

@@ -51,6 +51,7 @@
         </div>
       </div>
     </li> -->
+    <li ng-if="fSessionCI.key_grupo == 'key_cliente'" ><div style="color: #c6efff; padding-top: 10px;">Seleccionadas: {{seleccionadas}}</div></li>
     <li ng-if="fSessionCI.monedero"><div style="color: #c6efff; padding-top: 10px;">{{ 'Text.MONEDERO' | translate }}: {{fSessionCI.monedero}} $</div></li>
     <li ng-if="fSessionCI.key_grupo == 'key_cliente'">
       <div uib-dropdown>

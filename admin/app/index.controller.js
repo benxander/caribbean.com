@@ -87,9 +87,14 @@
   /** @ngInject */
   function MainController($translate,$scope,$state,$location, rootServices, empresaNombre) {
     var vm = this;
+    $scope.isSelected = false;
+    $scope.seleccionadas = 0;
     $scope.dirImages = angular.patchURL+'uploads/';
      // $scope.valores = [true,true,true,true,true,true];
     // console.log('$translate',$translate);
+    $scope.actualizarSeleccion = function(sel){
+      $scope.seleccionadas = sel;
+    }
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
       $translate.use(langKey);

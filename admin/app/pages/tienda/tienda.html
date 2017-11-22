@@ -8,31 +8,42 @@
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
         <section class="tile-header pl-0">
           <div class="row">
-            <h1 class="heading text-center">{{ctrl.listaExcursiones[0].descripcion}}</h1>
+            <h1 class="heading text-center">{{ctrl.listaExcursiones[0].titulo_act}}</h1>
             <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PAQUETE' | translate }}</div>
             <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
                 <div class="card" ng-click="ctrl.selPaquete(item.idpaquete)">
-                  <div class="front" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
+                  <div class="front text-center" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
                     <div class="row">
-                      <div class="col-xs-4">
-                        <i class="fa fa-shopping-cart fa-4x"></i>
-                      </div>
-                      <div class="col-xs-8">
-                        <p class="text-xl line-xl text-strong mb-0">{{item.titulo_pq}}</p>
+                      <!-- <div class="col-xs-4">
+                        <i class="fa fa-shopping-cart fa-2x"></i>
+                      </div> -->
+                      <div class="col-xs-12">
+                        <p class="text-lg line-lg text-strong">{{item.titulo_pq}}</p>
                         <!-- <span>New Users</span> -->
                       </div>
                     </div>
-                  </div>
-                  <div class="back" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
                     <div class="row">
-                      <div class="col-xs-4">
-                        <a href=javascript:;><i class="fa fa-camera fa-2x"></i>{{item.cantidad}} fotos</a>
+                      <div class="col-xs-6">
+                        <div><i class="fa fa-camera fa-2x"></i></div>
+                        <div>{{item.cantidad}} fotos</div>
                       </div>
-                      <div class="col-xs-4">
-                        <a href=javascript:;><i class="fa fa-usd fa-2x"></i>{{item.monto}}</a>
+                      <div class="col-xs-6">
+                        <div><i class="fa fa-usd fa-2x"></i></div>
+                        <div>USD {{item.monto}}</div>
                       </div>
-                      <div class="col-xs-4">
-                        <a href=javascript:;><i class="fa fa-film fa-2x"></i> {{ctrl.listaExcursiones[0].precio_video}}</a>
+                    </div>
+                  </div>
+                  <div class="back text-center p-md" ng-class="{'bg-lightred': item.selected, 'bg-greensea':!item.selected}">
+                    <div class="row">
+                      <div class="col-xs-12" style="height: 25%">
+                        <p class="text-lg line-lg text-strong">{{item.titulo_pq}}</p>
+                        <p class="text-md line-md">{{item.cantidad}} fotos al precio de USD {{item.monto}}</p>
+                      </div>
+                      <div class="col-xs-6" style="height: 60%">
+                        <a href=javascript:;><i class="fa fa-camera fa-2x"></i> + USD {{ctrl.listaExcursiones[0].precio_por_adicional}}</a>
+                      </div>
+                      <div class="col-xs-6" style="height: 60%">
+                        <a href=javascript:;><i class="fa fa-video-camera fa-2x"></i> + USD {{ctrl.listaExcursiones[0].precio_video}}</a>
                       </div>
                     </div>
                   </div>

@@ -11,6 +11,9 @@
   function TiendaController($scope, $uibModal, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading) {
 
     var vm = this;
+    var scope = $scope;
+    console.log('scope',scope);
+    vm.seleccionadas = 0;
     vm.modoSeleccionar = true;
     //vm.modoSeleccionar = false;
     vm.modoPagar = false;
@@ -49,6 +52,8 @@
 
     vm.selectedAll = false;
     vm.isSelected = false;
+    console.log('$scope.isSelected',$scope.isSelected);
+    $scope.isSelected = vm.isSelected;
 
     vm.selectAll = function () {
       var monto = 0;
@@ -79,6 +84,7 @@
       } else {
         vm.images[index].selected = true;
         vm.isSelected = true;
+
       }
 
       angular.forEach(vm.images, function(image) {
@@ -91,7 +97,9 @@
       if (i === 0) {
         vm.isSelected = false;
       }
-      console.log('monto', monto);
+     vm.seleccionadas = i;
+     $scope.actualizarSeleccion(i);
+      // console.log('fSessionCI.key_grupo', $scope.fSessionCI.key_grupo);
       vm.monto_total = monto.toFixed(2);
     };
     vm.monto_total = 0.00;

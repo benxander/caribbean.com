@@ -40,7 +40,7 @@
         { field: 'idactividad', name:'idactividad', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
 
         // { field: 'fecha_f', name:'fecha_actividad', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
-        { field: 'descripcion', name:'descripcion', displayName: 'DESCRIPCION', minWidth: 100 },
+        { field: 'titulo_act', name:'titulo_act', displayName: 'TITULO', minWidth: 100 },
         { field: 'cantidad_fotos', name:'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 100 },
         { field: 'monto_total', name:'monto_total', displayName: 'MONTO ($)', minWidth: 100 },
         { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100, enableFiltering: false,
@@ -78,8 +78,9 @@
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
             'idactividad' : grid.columns[1].filters[0].term,
-            'descripcion' : grid.columns[2].filters[0].term,
-            'cantidad' : grid.columns[5].filters[0].term,
+            'titulo_act' : grid.columns[2].filters[0].term,
+            'cantidad' : grid.columns[3].filters[0].term,
+            'monto' : grid.columns[4].filters[0].term,
           }
           vm.getPaginationServerSide();
         });

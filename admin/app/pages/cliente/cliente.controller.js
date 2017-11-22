@@ -143,7 +143,7 @@
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData.ididioma = vm.listaIdiomas[0].id;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
-            vm.fData.idactividad = vm.listaExcursiones[0].id;
+            // vm.fData.idactividad = vm.listaExcursiones[0].id;
 
             // botones
               vm.aceptar = function () {
