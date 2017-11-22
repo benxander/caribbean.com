@@ -1,3 +1,20 @@
+<style>
+	#section-26 {
+		background-image: url(uploads/banners/FONDO/{{seccionWeb[1].contenedor[1].imagen_bg}});
+	}
+	#section-27 {
+		background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[0].imagen_bg}});
+	}
+	@media (max-width: 767px) {
+		#section-26,#section-27 {
+			background-image: none;
+		}
+		#section-26:after, #section-27:after {
+			display: none;
+		}
+	}
+
+</style>
 <div id="page-content" ng-controller="HomeController as vm">
 	<div class="container-fluid block" data-ng-style="{'max-width':'5120px'}" >
 	    <!-- slider parent container -->
@@ -49,8 +66,8 @@
 	    </section>
 	</div>
 	<section class="block" id="inicio" ng-include="'templates/seccion/inicio.html'"></section>
-	<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
 	<section class="block mt-xxl" id="noticias" ng-include="'templates/seccion/noticias.php'" ></section>
+	<section class="block" id="servicios" ng-include="'templates/seccion/servicios.html'"></section>
 	<!-- <section class="block mt-xxl" id="trabaja" ng-include="'templates/seccion/trabaja-con-nosotros.html'" ></section> -->
 	<section class="block" id="contacto" ng-include="'templates/seccion/contacto.html'"></section>
 </div><!-- PAGE CONTENT -->

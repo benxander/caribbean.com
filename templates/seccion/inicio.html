@@ -1,93 +1,54 @@
-<style>
-	#section-26 {
-		background-image: url(uploads/banners/FONDO/{{seccionWeb[1].contenedor[1].imagen_bg}});
-	}
-	#section-27 {
-		background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[0].imagen_bg}});
-	}
-	@media (max-width: 767px) {
-		#section-26,#section-27 {
-			background-image: none;
-		}
-		#section-26:after, #section-27:after {
-			display: none;
-		}
-	}
-
-</style>
-
-<div class="container" ng-if="seccionWeb">
-	<div class="row">
-		<div class="col-md-9">
-			<h3>{{seccionWeb[1].contenedor[0].titulo}}</h3>
-			<h5><strong>{{seccionWeb[1].contenedor[0].subtitulo}}</strong></h5>
-			<br>
-			<div ng-bind-html="seccionWeb[1].contenedor[0].contenido"></div>
-			<br>
-			<p ng-show="seccionWeb[1].contenedor[0].tiene_boton"><a class="btn btn-default-1 waves" href="#">Discover</a></p>
-		</div><!-- col -->
-		<div class="col-md-3" ng-if="seccionWeb[1].contenedor[0].acepta_imagen">
+<section class="full-section dark-section parallax" id="section-28" data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/FONDO/{{seccionWeb[2].contenedor[2].imagen_bg}});">
+	<div class="full-section-overlay-color"></div>
+	<div class="full-section-container">
+		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
-					<p><img class="wow fadeInRight" ng-src="uploads/banners/LATERAL/{{seccionWeb[1].contenedor[0].imagen}}" alt="" data-wow-delay="0.1s"></p>
+					<div class="title text-center" style="margin-bottom:15px;">
+						<h3>{{seccionWeb[2].contenedor[2].titulo}}</h3>
+					</div><!-- headline -->
 				</div><!-- col -->
 			</div><!-- row -->
-
-		</div><!-- col -->
-	</div><!-- row -->
-</div><!-- container -->
-<section class="full-section parallax" id="section-26" data-stellar-background-ratio="0.1"  ng-if="seccionWeb">
-	<div class="full-section-container">
-
-		<div class="container-fluid">
+		</div><!-- container -->
+		<div class="container">
 			<div class="row">
-				<div class="col-md-offset-5 col-sm-offset-1 col-md-7 col-sm-10">
+				<div class="col-sm-12">
+					<h5 class="text-center"><strong>{{seccionWeb[2].contenedor[2].subtitulo}}</strong></h5>
+				</div><!-- col -->
+			</div><!-- row -->
+		</div><!-- container -->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
 
-					<h2>{{seccionWeb[1].contenedor[1].titulo}}</h2>
-					<div ng-bind-html="seccionWeb[1].contenedor[1].contenido"></div>
+					<data-owl-carousel class="owl-carousel process-slider"
+						data-options="{navigation: true, pagination: false, rewindNav : true,
+							responsive: {
+								0:  {items: 1},
+								768:{items: 2},
+								991:{items: 3}
+							},
+				            autoplay: true, loop: false
+			            }"
+			            >
+				      	<div owl-carousel-item="" ng-repeat="item in ::seccionWeb[2].contenedor[2].fichas" class="item">
+							<div class="service-box style-7">
+								<i class="{{::item.clase}}"></i>
+								<div class="service-box-content">
+									<h6><a href="">{{::item.titulo}}</a></h6>
+									<p>{{::item.descripcion}}</p>
+								</div><!-- service-box-content -->
+							</div><!-- service-box -->
+						</div><!-- item -->
 
-					<br>
-					<div id="inline" style="display:none;width:100%;">
-						<h2>Donde Estamos</h2>
-							<div class="row">
-								<div class="col-md-8 col-sm-12">
-								<iframe src="templates/popups/donde-estamos.php" width="600" height="450"></iframe>
+				    </data-owl-carousel>
 
 
-
-								</div><!-- col -->
-								<div class="col-md-4 col-sm-12">
-									<h5 class="text-uppercase"><strong>Información de Contacto</strong></h5>
-									<br>
-									<div class="widget widget-contact no-margin-bottom">
-										<ul>
-											<li ng-if="dataWeb.direccion">
-														<i class="fa fa-map-marker"></i>
-														{{dataWeb.direccion}}
-													</li>
-													<li ng-if="dataWeb.telefono">
-														<i class="fa fa-phone"></i>
-														{{dataWeb.telefono}}
-													</li>
-													<li ng-if="dataWeb.skype">
-														<i class="fa fa-skype"></i>
-														{{dataWeb.skype}}
-													</li>
-													<li ng-if="dataWeb.correo">
-														<i class="fa fa-envelope"></i>
-														<a href="mailto:{{dataWeb.correo}}">{{dataWeb.correo}}</a>
-													</li>
-										</ul>
-									</div><!-- widget-contact -->
-								</div>
-							</div><!-- row -->
-					</div>
-					<!-- <a href="templates/popups/donde-estamos.php" fancybox ng-show="seccionWeb[1].contenedor[1].tiene_boton" class="btn btn-default-1 waves"  >Donde estamos <i class="fa fa-angle-right"></i></a> -->
-					<a href="#inline" fancybox ng-show="seccionWeb[1].contenedor[1].tiene_boton" class="btn btn-default-1 waves"  >Donde estamos <i class="fa fa-angle-right"></i></a>
 
 				</div><!-- col -->
 			</div><!-- row -->
-		</div><!-- container-fluid -->
-
+		</div><!-- container -->
 	</div><!-- full-section-container -->
 </section><!-- full-section -->
+
+
