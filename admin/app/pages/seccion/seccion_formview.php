@@ -7,7 +7,7 @@
 		    <div class="row">
 		    	<div class="form-group col-md-12">
 					<div class="row">
-			            <div class="form-group col-md-12">
+			            <div class="form-group col-md-12" ng-hide="{{ms.fData.tipo_contenido == 'BG'}}">
 			              <label for="titulo" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
 			              <input type="text" name="titulo" id="titulo" class="form-control" ng-model="ms.fData.titulo" placeholder="Registre titulo" required>
 			              <div ng-messages="formSeccion.titulo.$error" ng-if="formSeccion.titulo.$dirty" role="alert" class="help-block text-red">
@@ -18,7 +18,7 @@
 			        </div>
 			        <!--  -->
 					<div class="row">
-			            <div class="form-group col-md-12">
+			            <div class="form-group col-md-12" ng-hide="{{ms.fData.tipo_contenido == 'BG'}}">
 			              <label for="subtitulo" class="control-label minotaur-label">Subtítulo </label>
 			              <input type="text" name="subtitulo" id="subtitulo" class="form-control" ng-model="ms.fData.subtitulo" placeholder="Registre subtitulo" >
 			            </div>
@@ -44,7 +44,7 @@
 	                    </div>
 			    	</div>
 			    	<div class="row" ng-if="ms.fData.acepta_background">
-			    		<div class="form-group col-md-12">
+			    		<div class="form-group col-md-12" ng-hide="{{ms.fData.tipo_contenido == 'BG'}}">
 				            <label class="control-label minotaur-label">Contenido</label>
 				            <text-angular ng-model="ms.fData.contenido"></text-angular>
 			            </div>

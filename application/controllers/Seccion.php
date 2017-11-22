@@ -128,6 +128,7 @@ class Seccion extends CI_Controller {
 					'acepta_ficha' 	=> $row['acepta_ficha'] == 'NO' ? FALSE: TRUE,
 					'nombre_boton' 	=> $row['nombre_boton'],
 					'enlace_boton' 	=> $row['enlace_boton'],
+					'tipo_contenido' 		=> $row['tipo_contenido'],
 					'imagen' 		=> $row['imagen'],
 					'imagen_bg' 	=> $row['imagen_bg'],
 				)

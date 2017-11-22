@@ -31,7 +31,7 @@ class Model_seccion extends CI_Model {
 	}
 	public function m_cargar_secciones($paramPaginate=FALSE){
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
-		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
+		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton, tipo_contenido');
 		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, acepta_ficha');
 		$this->db->from('seccion se');
 		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
