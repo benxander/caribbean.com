@@ -10,6 +10,16 @@
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
+    ConfigServices.sListarRedesWeb().then(function (rpta) {
+      if(rpta.flag == 1){
+        vm.listaRedes = rpta.datos;
+      }
+    });
+    // vm.listaRedes = [
+    //   {id:1, descripcion: 'FACEBOOK'},
+    //   {id:2, descripcion: 'YOUTUBE'},
+
+    // ];
     vm.listarConfiguracion = function(){
       ConfigServices.sListarConfig().then(function (rpta) {
         if(rpta.flag == 1){
@@ -27,6 +37,9 @@
     }
     vm.listarConfiguracion();
     vm.aceptar = function(){
+      console.log('vm.fData',vm.fData);
+      console.log('vm.listaRedes',vm.listaRedes);
+      vm.fData.redes = vm.listaRedes;
       ConfigServices.sEditarConfig(vm.fData).then(function (rpta) {
         if(rpta.flag == 1){
           var title = 'OK';
@@ -47,6 +60,7 @@
     return({
         sListarConfig: sListarConfig,
         sEditarConfig: sEditarConfig,
+        sListarRedesWeb: sListarRedesWeb,
     });
     function sListarConfig(pDatos) {
       var datos = pDatos || {};
@@ -62,6 +76,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Config/editar_configuracion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarRedesWeb(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Config/listar_redes_web",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

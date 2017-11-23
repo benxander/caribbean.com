@@ -11,7 +11,7 @@ class Model_cliente extends CI_Model {
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
-		$this->db->join('archivo a','a.idactividadcliente = c.idactividadcliente AND a.estado_arc = 1', 'left');
+		$this->db->join('archivo a','a.idactividadcliente = ac.idactividadcliente AND a.estado_arc = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		$this->db->where('ac.estado_ac', 1);
 		$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);

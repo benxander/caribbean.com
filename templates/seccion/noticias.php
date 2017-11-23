@@ -10,7 +10,7 @@
       </div><!-- row -->
     </div><!-- container -->
 
-    <div class="homepage-community-wrapper parallax"  data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/puntacana.jpg);">
+    <div class="homepage-community-wrapper parallax"  data-stellar-background-ratio="0.1" ng-if="seccionWeb" style="background-image: url(uploads/banners/FONDO/{{seccionWeb[3].contenedor[0].imagen_bg}});">
       <div class="homepage-community-items-wrapper home-toggle-area-active" id="js-home-blog-wrapper">
         <div class="row homepage-community-items-interior mt-xl">
           <div class="col-sm-4 homepage-community-item" ng-repeat="item in vm.listaNoticiasSec">

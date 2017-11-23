@@ -20,7 +20,7 @@
 	    <!-- slider parent container -->
 	    <section class="content-section" data-ng-style="{'max-width':'5120px', 'margin':'0 auto'}">
 	      <!-- slider container -->
-			<div class="rev_slider_wrapper" style="background-color:#ccc;margin:0px auto;padding:0px;margin-top:50px;margin-bottom:80px;">
+			<div class="rev_slider_wrapper rightside" style="background-color:#ccc;margin:0px auto;padding:0px;margin-top:50px;margin-bottom:80px;">
 	        	<!-- angular-revolution as attribute in div -->
 		        <div rev-slider ng-if="slides"
 		          id="rev_slider"

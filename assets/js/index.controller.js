@@ -60,7 +60,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($scope,$timeout, $location, $window, rootServices,BlogServices,$routeParams) {
+  function MainController($scope,$timeout, $location, $window, rootServices, BlogServices,$routeParams) {
     var vm = this;
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
@@ -135,6 +135,11 @@
         $scope.seccionWeb = response.datos;
       }else{
         console.log('no data');
+      }
+    });
+    rootServices.sListarRedesWeb().then(function (rpta) {
+      if(rpta.flag == 1){
+        $scope.dataRedes = rpta.datos;
       }
     });
     // SECCION BLOG
@@ -319,6 +324,7 @@
         // sCargarBanners: sCargarBanners,
         sCargarDatosWeb: sCargarDatosWeb,
         sCargarSecciones: sCargarSecciones,
+        sListarRedesWeb: sListarRedesWeb,
     });
     /*function sCargarBanners(pDatos) {
       var datos = pDatos || {};
@@ -343,6 +349,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/listar_secciones_web",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarRedesWeb(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Config/listar_redes_web",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

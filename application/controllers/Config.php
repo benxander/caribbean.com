@@ -29,6 +29,31 @@ class Config extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_redes_web()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_config->m_cargar_redes_web();
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado, array(
+					'id' => $row['idsocialweb'],
+					'descripcion' => $row['nombre_rs'],
+					'enlace' => $row['enlace'],
+					'icono_rs' => $row['icono_rs'],
+					'clase' => $row['clase'],
+				)
+			);
+		}
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+    	$arrData['datos'] = $arrListado;
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 	// MANTENIMIENTO
 	public function editar_configuracion()
@@ -80,11 +105,18 @@ class Config extends CI_Controller {
 			$ruta = 'assets/images/';
 			subir_imagen_Base64($allInputs['newWaterMark']['dataURL'], $ruta , $nombre);
 		}
-
-    	// var_dump($data); exit();
+		// foreach ($allInputs['redes'] as $row) {
+		// 	$r = $this->model_config->m_editar_red_social($row);
+  //   		var_dump($r);
+		// } exit();
 		if( $this->model_config->m_editar($data,$allInputs['idweb']) ){
-			$arrData['message'] = 'Se editaron los datos correctamente ';
-    		$arrData['flag'] = 1;
+			foreach ($allInputs['redes'] as $row) {
+				if ($this->model_config->m_editar_red_social($row)) {
+					$arrData['message'] = 'Se editaron los datos correctamente ';
+		    		$arrData['flag'] = 1;
+
+				}
+			}
 		}
 		$this->output
 		    ->set_content_type('application/json')

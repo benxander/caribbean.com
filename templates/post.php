@@ -14,8 +14,8 @@
 						<!-- in <a class="category" href="#">Uncategorized</a> -->
 						<a class="comments" href="#">{{bp.fData.posts.length}} comentario(s)</a>
 					</div>
-					<div class="blog-article-content">
-						{{bp.fData.descripcion}}
+					<div class="blog-article-content" ng-bind-html="bp.fData.descripcion">
+
 						<!-- <h6 class="text-uppercase"><strong>The author</strong></h6>
 						<blockquote>
 							<p>&quot;Nullam hendrerit, lectus eget eleifend laoreet, ex est suscipit ipsum, lobortis
