@@ -35,8 +35,10 @@
 							<div class="service-box style-7">
 								<i class="{{::item.clase}}"></i>
 								<div class="service-box-content">
-									<h6><a href="">{{::item.titulo}}</a></h6>
+									<h6><a href="#ficha{{::item.idficha}}" fancybox >{{::item.titulo}}</a></h6>
+
 									<p>{{::item.descripcion}}</p>
+									<div id="ficha{{::item.idficha}}" style="display:none;width:100%;" ng-include="'templates/popups/modal.php'"></div>
 								</div><!-- service-box-content -->
 							</div><!-- service-box -->
 						</div><!-- item -->

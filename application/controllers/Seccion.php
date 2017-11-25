@@ -195,6 +195,7 @@ class Seccion extends CI_Controller {
 					if(($rowCon['idseccioncontenido'] == $row['idseccioncontenido']) && !empty($row['idficha']) ){
 						array_push($arrAux,
 							array(
+								'idficha' => $row['idficha'],
 								'titulo' => $row['titulo_fi'],
 								'descripcion' => $row['descripcion_fi'],
 								'clase' => $row['icono_fi'],
