@@ -90,10 +90,27 @@
     $scope.isSelected = false;
     $scope.seleccionadas = 0;
     $scope.dirImages = angular.patchURL+'uploads/';
+
      // $scope.valores = [true,true,true,true,true,true];
     // console.log('$translate',$translate);
-    $scope.actualizarSeleccion = function(sel){
+    $scope.$watch('seleccionadas',function(newValue, oldValue){
+      console.log('newValue',newValue);
+      console.log('oldValue',oldValue);
+      if (newValue===oldValue) {
+        return;
+      }
+      console.log('$scope.seleccionadas',$scope.seleccionadas);
+    });
+    $scope.actualizarSeleccion = function(sel, monto){
       $scope.seleccionadas = sel;
+    }
+    $scope.actualizarSaldo = function(isSel,monto){
+      console.log('isSel',isSel);
+      if(isSel){
+        $scope.saldo = $scope.fSessionCI.monedero - monto;
+      }else{
+        $scope.saldo = $scope.fSessionCI.monedero;
+      }
     }
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
@@ -170,6 +187,7 @@
             $scope.goToUrl('/');
           }
           $scope.CargaMenu();
+          $scope.saldo = $scope.fSessionCI.monedero;
         }else{
           $scope.fSessionCI = {};
           $scope.logOut();

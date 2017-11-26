@@ -52,7 +52,10 @@
 /***********************************************************************************
  *	+ TYPOGRAPHY
  ***********************************************************************************/
-
+@font-face {
+    font-family: "PingFang";
+    src: url(../../assets/fonts/PingFang.ttc.ttf) format("truetype");
+}
 	body {
 		font: 14px/27px "Open Sans", sans-serif;
 		background-color: #fff;
@@ -65,6 +68,7 @@
 	h4,
 	h5,
 	h6 {
+		font-family: "PingFang";
 		margin: 0;
 		color: #464646;
 		font-weight: 300;
@@ -286,7 +290,7 @@
 
 	/* TRANFORMATION CLASSES */
 	.lead {
-		font: 24px/36px "Montserrat", sans-serif;
+		font: 24px/36px "PingFang", sans-serif;
 	}
 
 	.text-italic {
@@ -476,7 +480,7 @@
 
 	.headline p {
 		margin-bottom: 0;
-		font: 13px/24px "Montserrat", sans-serif;
+		font: 13px/24px "PingFang", sans-serif;
 	}
 
 	.title {
@@ -505,7 +509,7 @@
 		border: none;
 		border-radius: 0;
 		color: #fff;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		text-align: center;
 	}
 
@@ -564,7 +568,7 @@
 	.plus-list li:before {
 		margin-right: 10px;
 		color: #1574a6;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		font-weight: 700;
 		content: "+";
 	}
@@ -666,7 +670,7 @@
 		border-radius: 20px;
 		margin-bottom: 20px;
 		margin-right: 15px;
-		font: 13px/24px "Montserrat", sans-serif;
+		font: 13px/24px "PingFang", sans-serif;
 		letter-spacing: 0.3px;
 		text-transform: uppercase;
 		-webkit-transition: all 0.25s;
@@ -674,7 +678,7 @@
 	}
 	.btn-mini{
 		padding: 8px 10px;
-		font: 0.7em/1.1em "Montserrat", sans-serif;
+		font: 0.7em/1.1em "PingFang", sans-serif;
 	}
 	.btn:last-child {
 		margin-right: 0;
@@ -984,7 +988,7 @@
 
 	.image-box-2 .image-box-details h6 {
 		margin-bottom: 15px;
-		font: 16px "Montserrat", sans-serif;
+		font: 16px "PingFang", sans-serif;
 		text-transform: uppercase;
 	}
 
@@ -1059,7 +1063,7 @@
 		margin-bottom: 0;
 		color: #1574a6;
 		opacity: 0;
-		font: 12px/16px "Montserrat", sans-serif;
+		font: 12px/16px "PingFang", sans-serif;
 		text-transform: uppercase;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -1094,7 +1098,7 @@
 		position: absolute;
 		bottom: 20px;
 		left: 20px;
-		font: 30px/48px "Montserrat", sans-serif;
+		font: 30px/48px "PingFang", sans-serif;
 	}
 
 	.image-box-3 h4 a {
@@ -1388,7 +1392,7 @@
 		margin-bottom: 15px;
 		background-color: #1574a6;
 		color: #fff;
-		font: 14px/27px "Montserrat", sans-serif;
+		font: 14px/27px "PingFang", sans-serif;
 		white-space: nowrap;
 	    text-overflow: ellipsis;
 		-webkit-transform: translateZ(0);
@@ -1632,7 +1636,7 @@
 	.discount small {
 		display: block;
 		color: #fff;
-		font: 400 14px/36px "Montserrat", sans-serif;
+		font: 400 14px/36px "PingFang", sans-serif;
 	}
 
 
@@ -2851,7 +2855,7 @@
 	.progress-bar-title {
 		margin-bottom: 15px;
 		color: #464646;
-		font: 700 30px "Montserrat", sans-serif;
+		font: 700 30px "PingFang", sans-serif;
 	}
 
 	.progress-bar-title small {
@@ -2869,7 +2873,7 @@
 		top: -38px;
 		right: 0;
 		color: #464646;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 	}
 
 /***********************************************************************************
@@ -2932,7 +2936,7 @@
 	.comparison-bars .progress-bar-title-before h4 {
 		display: inline-block;
 		margin-bottom: 0;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 	}
 
 	.comparison-bars .progress-bar-title-after h4 small,
@@ -3280,7 +3284,7 @@
 	.process-steps .step i + h5,
 	.process-steps .step img + h5 {
 		margin-top: -50px;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		line-height: 26px;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -3441,7 +3445,7 @@
 	.horizontal-timeline .item h6 {
 		margin-bottom: 20px;
 		color: #1574a6;
-		font: 14px/27px "Montserrat", sans-serif;
+		font: 14px/27px "PingFang", sans-serif;
 	}
 
 	.horizontal-timeline .owl-prev,
@@ -3508,7 +3512,7 @@
 		position: relative;
 		margin-bottom: 30px;
 		color: #1574a6;
-		font: 16px "Montserrat", sans-serif;
+		font: 16px "PingFang", sans-serif;
 	}
 
 	.vertical-timeline .period-details h6:before {
@@ -3830,7 +3834,7 @@
 		display: inline-block;
 		border-bottom: 1px solid #1574a6;
 		margin: 0 auto 100px;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 	}
@@ -3847,7 +3851,7 @@
 	}
 
 	.testimonial h5 {
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		text-transform: uppercase;
 	}
 
@@ -3978,7 +3982,7 @@
 	.filter li a {
 		display: inline-block;
 		color: #8f8f8f;
-		font: 14px/27px "Montserrat", sans-serif;
+		font: 14px/27px "PingFang", sans-serif;
 		text-decoration: none;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -4029,7 +4033,7 @@
 		border: none;
 		background-color: transparent;
 		color: #464646;
-		font: 16px "Montserrat", sans-serif;
+		font: 16px "PingFang", sans-serif;
 		text-align: center;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -4853,7 +4857,7 @@
 	#section-36 .contact span {
 		margin-right: 20px;
 		color: #464646;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		text-transform: uppercase;
 	}
 
@@ -4956,7 +4960,7 @@
 		left: 75%;
 		padding-left: 35px;
 		color: #fff;
-		font-family: "Montserrat";
+		font-family: "PingFang";
 		letter-spacing: 35px;
 		text-align: center;
 		text-transform: uppercase;
@@ -5175,7 +5179,7 @@
 		top: 50%;
 		left: 0;
 		width: 100%;
-		font: 700 72px/72px "Montserrat", sans-serif;
+		font: 700 72px/72px "PingFang", sans-serif;
 		letter-spacing: 50px;
 		text-transform: uppercase;
 		text-align: center;
@@ -5695,7 +5699,7 @@
 
 	.tp-caption.title-white-bold {
 		color: #fff;
-		font: 700 72px/72px "Montserrat", sans-serif;
+		font: 700 72px/72px "PingFang", sans-serif;
 	}
 
 	.tp-caption.title-white-light {
@@ -5708,7 +5712,7 @@
 	}
 
 	.tp-caption.title-big {
-		font: 700 92px/92px "Montserrat", sans-serif;
+		font: 700 92px/92px "PingFang", sans-serif;
 	}
 
 	.tp-caption.title-big-white {
@@ -5731,14 +5735,14 @@
 
 	.tp-caption.subtitle-white {
 		color: #fff;
-		font: 30px/48px "Montserrat", sans-serif;
+		font: 30px/48px "PingFang", sans-serif;
 		letter-spacing: 15px;
 		text-transform: uppercase;
 	}
 
 	.tp-caption.subtitle-big {
 		color: #fff;
-		font: 36px/48px "Montserrat", sans-serif;
+		font: 36px/48px "PingFang", sans-serif;
 		letter-spacing: 140px;
 		text-transform: uppercase;
 	}
@@ -5774,7 +5778,7 @@
 
 	.tp-caption.icons {
 		color: #1574a6;
-		font: 14px/27px "Montserrat", sans-serif;
+		font: 14px/27px "PingFang", sans-serif;
 		letter-spacing: 5px;
 		text-align: center;
 		text-transform: uppercase;
@@ -6076,7 +6080,7 @@
 
 	.widget-title {
 		margin-bottom: 30px;
-		font: 400 13px/18px "Montserrat", sans-serif;
+		font: 400 13px/18px "PingFang", sans-serif;
 		letter-spacing: 2px;
 		text-transform: uppercase;
 	}
@@ -6162,7 +6166,7 @@
 
 	.widget-categories ul li a strong {
 		color: #464646;
-		font-family: "Montserrat", sans-serif;
+		font-family: "PingFang", sans-serif;
 		font-weight: 400;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
@@ -6344,7 +6348,7 @@
 
 	.widget-recent-posts ul li .post-title {
 		color: #464646;
-		font: 13px "Montserrat", sans-serif;
+		font: 13px "PingFang", sans-serif;
 		-webkit-transition: all 0.25s;
 				transition: all 0.25s;
 	}
@@ -6418,7 +6422,7 @@
 		margin-bottom: 5px;
 		margin-left: 80px;
 		color: #8f8f8f;
-		font: 10px "Montserrat", sans-serif;
+		font: 10px "PingFang", sans-serif;
 		letter-spacing: 2px;
 		text-decoration: none;
 		text-transform: uppercase;
@@ -6448,7 +6452,7 @@
 		padding-right: 10px;
 		border-right: 1px solid #e1e1e1;
 		color: #1574a6;
-		font: 36px/20px "Montserrat", sans-serif;
+		font: 36px/20px "PingFang", sans-serif;
 		text-align: center;
 		text-transform: uppercase;
 		text-decoration: none;

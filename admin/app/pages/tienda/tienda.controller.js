@@ -18,6 +18,7 @@
     //vm.modoSeleccionar = false;
     vm.modoPagar = false;
     vm.modoDescargaCompleta = false;
+    vm.monto = 0;
     //vm.modoDescargaCompleta = true;
     vm.cargarGaleria = function(datos){
       pageLoading.start('Cargando archivos...');
@@ -30,6 +31,7 @@
       ExcursionServices.sListarExcursionPaquetesCliente(datos).then(function(rpta){
         vm.listaExcursiones = rpta.datos;
         vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
+        vm.monto = vm.listaPaquetes[0].monto;
       });
     }
     vm.selPaquete = function(idpaquete){
@@ -37,6 +39,7 @@
       angular.forEach(vm.listaPaquetes, function(paquete,key) {
         if(paquete.idpaquete == idpaquete){
           vm.listaPaquetes[key].selected = true;
+          vm.monto = paquete.monto;
         }else{
           vm.listaPaquetes[key].selected = false;
         }
@@ -52,8 +55,8 @@
 
     vm.selectedAll = false;
     vm.isSelected = false;
-    console.log('$scope.isSelected',$scope.isSelected);
-    $scope.isSelected = vm.isSelected;
+    // console.log('$scope.isSelected',$scope.isSelected);
+    // $scope.isSelected = vm.isSelected;
 
     vm.selectAll = function () {
       var monto = 0;
@@ -90,7 +93,7 @@
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
           i++;
-          monto = monto + image.precio_float;
+          // monto = monto + image.precio_float;
         }
       });
 
@@ -98,10 +101,21 @@
         vm.isSelected = false;
       }
      vm.seleccionadas = i;
-     $scope.actualizarSeleccion(i);
+     $scope.actualizarSeleccion(i,vm.monto);
       // console.log('fSessionCI.key_grupo', $scope.fSessionCI.key_grupo);
-      vm.monto_total = monto.toFixed(2);
+      // vm.monto_total = monto.toFixed(2);
     };
+
+    // $scope.$watch('vm.monto',function(newValue,oldValue = vm.monto) {
+    //   console.log('newValue',newValue);
+    //   console.log('oldValue',oldValue);
+    //   if (newValue===oldValue) {
+    //     console.log('vm.monto',vm.monto);
+    //     return;
+    //   }
+    //   console.log('watch dif');
+    //   $scope.actualizarSaldo(newValue,vm.monto);
+    // });
     vm.monto_total = 0.00;
     vm.monto_descuento = 0.00;
     vm.monto_bonificacion = 0.00;
