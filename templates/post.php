@@ -14,19 +14,10 @@
 						<!-- in <a class="category" href="#">Uncategorized</a> -->
 						<a class="comments" href="#">{{bp.fData.posts.length}} comentario(s)</a>
 					</div>
-					<div class="blog-article-content" ng-bind-html="bp.fData.descripcion">
-
-						<!-- <h6 class="text-uppercase"><strong>The author</strong></h6>
-						<blockquote>
-							<p>&quot;Nullam hendrerit, lectus eget eleifend laoreet, ex est suscipit ipsum, lobortis
-							imperdiet eros ex non mi. Mauris efficitur congue lorem ipsum dolor amet.&quot;</p>
-							<footer>
-								<img src="images/testimonials/image-1.jpg" alt="">
-								<em>Mark Ronson, Creatika</em>
-							</footer>
-						</blockquote> -->
-
-					</div><!-- blog-article-content -->
+					<div class="blog-article-content" ng-bind-html="bp.fData.descripcion"></div>
+					<div class="blog-article-content" ng-if="bp.fData.enlace">
+	                	<youtube-video video-url="bp.fData.enlace"></youtube-video>
+					</div>
 				</div><!-- blog-article -->
 
 				<h6 class="commentlist-title">Comentarios ({{bp.fData.posts.length}})</h6>

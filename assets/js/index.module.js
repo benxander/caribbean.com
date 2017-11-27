@@ -4,6 +4,7 @@
 		'ngRoute',
 		// 'ngCookies',
 		// 'oc.lazyLoad',
+		'youtube-embed',
 		'rev.slider',
 		'ui.bootstrap',
 		'ngSanitize'

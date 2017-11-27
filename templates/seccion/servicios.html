@@ -52,27 +52,23 @@
 	<div class="container mt-xl">
 	    <div class="row">
 	        <div class="col-sm-12">
-
 	            <div class="title">
-
 					<h3>{{seccionWeb[2].contenedor[1].titulo}}</h3>
-
 				</div><!-- headline -->
-
 	        </div><!-- col -->
 	    </div><!-- row -->
 	</div>
 	<div class="container">
 	    <div class="row">
-	        <div class="col-md-4">
+	        <div class="col-md-12">
 	            <h5><strong>{{seccionWeb[2].contenedor[1].subtitulo}}</strong></h5>
 	            <div ng-bind-html="seccionWeb[2].contenedor[1].contenido"></div>
 				<p><a ng-show="seccionWeb[2].contenedor[1].tiene_boton" class="btn btn-default-1 waves" href="#">Discover</a></p>
 				<br class="hidden-lg hidden-md">
 	        </div><!-- col -->
-			<div class="col-md-8">
+			<div class="col-md-12">
 	            <div class="row">
-					<div class="col-sm-6" ng-repeat="item in seccionWeb[2].contenedor[1].fichas">
+					<div class="col-sm-6 col-md-4 col-lg-4" ng-repeat="item in seccionWeb[2].contenedor[1].fichas">
 						<div class="service-box style-4 wow fadeIn" style="height: 180px;">
 							<i class="{{item.clase}}"></i>
 							<h6 style="color: #FFF"><a href="#ficha{{::item.idficha}}" fancybox >{{::item.titulo}}</a></h6>
@@ -93,7 +89,9 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-offset-1 col-lg-4 col-md-6 col-sm-10">
-						<h3>{{seccionWeb[2].contenedor[0].titulo}}</h2>
+						<div class="title">
+							<h3>{{seccionWeb[2].contenedor[0].titulo}}</h2>
+						</div>
 						<h5><strong>{{seccionWeb[2].contenedor[0].subtitulo}}</strong></h5>
 						<div ng-bind-html="seccionWeb[2].contenedor[0].contenido"></div>
 					</div><!-- col -->
@@ -106,7 +104,9 @@
 	<div class="container" ng-if="seccionWeb">
 		<div class="row">
 			<div class="col-md-9">
-				<h3>{{seccionWeb[1].contenedor[0].titulo}}</h3>
+				<div class="title">
+					<h3>{{seccionWeb[1].contenedor[0].titulo}}</h3>
+				</div>
 				<h5><strong>{{seccionWeb[1].contenedor[0].subtitulo}}</strong></h5>
 				<br>
 				<div ng-bind-html="seccionWeb[1].contenedor[0].contenido"></div>

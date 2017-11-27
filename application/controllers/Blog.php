@@ -24,6 +24,7 @@ class Blog extends CI_Controller {
 				'descripcion' => $row['descripcion'],
 				'descripcion_f' => strip_tags($row['descripcion']),
 				'autor' => $row['autor'],
+				'enlace_video' => $row['enlace_video'],
 				'fecha' => date('Y-m-d',strtotime($row['fecha'])),
 				// 'fecha' => $row['fecha'],
 				'fecha_f' => darFormatoDMY2($row['fecha']),
@@ -133,9 +134,13 @@ class Blog extends CI_Controller {
 
 		$lista = $this->model_blog->m_cargar_post_blog($allInputs);
 		$arrListado = array();
-
 		$ruta = 'uploads/blog/';
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
+		if(!empty($lista[0]['enlace_video'])){
+			$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['enlace_video'])[1];
+		}else{
+			$enlace = NULL;
+		}
 		$arrListado = array(
 			'idblog' => $lista[0]['idblog'],
 			'titulo' => $lista[0]['titulo'],
@@ -144,6 +149,8 @@ class Blog extends CI_Controller {
 			'dia' => date('d', strtotime($lista[0]['fecha'])),
 			'mes' => $shortMonthArray[(int)date('m',strtotime($lista[0]['fecha']))],
 			'imagen' => $ruta .$lista[0]['imagen'],
+			'enlace' => empty($lista[0]['enlace_video']) ? NULL : $lista[0]['enlace_video'],
+			// 'enlace' => $enlace,
 			'posts' => array()
 		);
 
@@ -156,11 +163,8 @@ class Blog extends CI_Controller {
 						'fecha_post' => formatoFechaReporte3($row['fecha_post']),
 					)
 				);
-
 			}
 		}
-		// print_r($arrListado); exit();
-
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
@@ -199,6 +203,7 @@ class Blog extends CI_Controller {
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
+    		'enlace_video' => $allInputs['enlace_video'],
     		'imagen' => $nombre,
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
@@ -222,6 +227,7 @@ class Blog extends CI_Controller {
 
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
+    		'enlace_video' => $allInputs['enlace_video'],
     		'autor' => $allInputs['autor'],
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     		// 'fecha' => date('Y-m-d H:i:s'),

@@ -46,6 +46,11 @@
 			                </div>
 			                <!-- <span>{{mb.fData.fecha | date:'fullDate':'UTC'}}</span> -->
 			            </div>
+			            <div class="form-group col-md-12">
+			              	<label for="enlace_video" class="control-label minotaur-label">Enlace Youtube </label>
+			              	<input type="text" name="enlace_video" id="enlace_video" class="form-control" ng-model="mb.fData.enlace_video" placeholder="Enlace youtube" >
+
+			            </div>
                 	</div>
                 </div>
 			</div>
@@ -53,7 +58,13 @@
 		    <div class="row">
 	    		<div class="form-group col-md-12">
 		            <label class="control-label minotaur-label">Contenido</label>
-		            <text-angular ng-model="mb.fData.descripcion"></text-angular>
+		            <text-angular ng-model="mb.fData.descripcion"
+		            ta-toolbar="[
+			            ['h1','h2','h3'],
+			            ['bold','italics','underline'],
+			            ['justifyLeft','justifyCenter','justifyRight'],
+			            ['ul','ol'], ['redo', 'undo'],['wordcount', 'charcount']
+		            ]"></text-angular>
 	            </div>
 	    	</div>
 

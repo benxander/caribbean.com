@@ -2,7 +2,7 @@
   <!-- SLIDE  -->
   <li ng-repeat="slide in slides"
     data-index="rs-{{slide.idbanner}}"
-    data-transition="slideright"
+    data-transition="fade"
     data-easein="default"
     data-easeout="default"
     data-thumb=""
@@ -19,6 +19,10 @@
       data-bgfit="cover"
 
       data-bgrepeat="no-repeat"
+      data-kenburns="on"
+      data-duration="10000" data-scalestart="100" data-scaleend="102"
+      data-offsetstart = "-200 100"
+      data-offsetend = "200 100"
 
       data-ease="Power4.easeInOut"
       data-bgparallax="10"
