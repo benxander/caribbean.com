@@ -6,11 +6,15 @@
     .service('BlogServices', BlogServices);
 
   /** @ngInject */
-  function BlogController($scope,$uibModal,BlogServices,toastr,alertify, uiGridConstants) {
+  function BlogController($scope,$uibModal,BlogServices,toastr,alertify, uiGridConstants, FileUploader) {
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
-
+    vm.gridBlog = true;
+    var uploader = $scope.uploader = new FileUploader ({
+      url: angular.patchURLCI + 'blog/upload_galeria'
+      // url: '../application/controllers/upload.php'
+    });
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -43,9 +47,10 @@
         { field: 'titulo', name:'titulo', displayName: 'TITULO', minWidth: 100 },
         { field: 'descripcion_f', name:'descripcion', displayName: 'DESCRIPCION', minWidth: 100 },
 
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 120, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="GALERIA"> <i class="halcyon-icon-photo-camera"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '</div>'
         }
@@ -412,6 +417,193 @@
         });
 
       }
+
+    vm.btnUpload = function(row){
+      vm.gridBlog = false;
+      vm.uploadBtn = false;
+      vm.fData = {};
+      vm.fDataUpload = {};
+      vm.fDataUpload = angular.copy(row.entity);
+      vm.selectedAll = false;
+      vm.isSelected = false;
+
+      vm.subirTodo = function(){
+        console.log('subir todo');
+        uploader.uploadAll();
+      }
+
+      vm.btnVolver = function() {
+        vm.gridBlog = true;
+        vm.fDataUpload = {};
+        vm.getPaginationServerSide();
+      }
+
+      vm.btnSubir = function() {
+        vm.uploadBtn = true;
+      }
+
+      vm.btnAnularArchivo = function(row){
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            BlogServices.sAnularArchivo(row).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+                vm.cargarImagenes();
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+        });
+      }
+
+      vm.btnDeleteArchivoSelect = function(){
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            BlogServices.sDeleteArchivoSelect(vm.images).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+                vm.cargarImagenes();
+                vm.isSelected = false;
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+        });
+      }
+
+      vm.cargarImagenes = function(datos){
+        BlogServices.sListarImagenesBlog(vm.fDataUpload).then(function(rpta){
+          vm.images = rpta.datos;
+          vm.length_images = vm.images.length;
+          if (vm.length_images == 0) { vm.uploadBtn = true; };
+        });
+      }
+      vm.cargarImagenes();
+
+
+      vm.selectAll = function () {
+        if (vm.selectedAll) {
+          vm.selectedAll = false;
+          vm.isSelected = false;
+        } else {
+          vm.selectedAll = true;
+          vm.isSelected = true;
+        }
+
+        angular.forEach(vm.images, function(image) {
+          image.selected = vm.selectedAll;
+        });
+      }
+
+      vm.selectImage = function(index) {
+        var i = 0;
+
+        if (vm.images[index].selected) {
+          vm.images[index].selected = false;
+        } else {
+          vm.images[index].selected = true;
+          vm.isSelected = true;
+        }
+
+        angular.forEach(vm.images, function(image) {
+          if (image.selected) {
+            i++;
+          }
+        });
+
+        if (i === 0) {
+          vm.isSelected = false;
+        }
+      }
+      // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        /*uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+        };*/
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            item.formData.push({
+              idblog: vm.fDataUpload.idblog,
+            });
+            //console.info('onBeforeUploadItem', item);
+        };
+        /*uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };*/
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onResumen = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+
+            if(response.flag == 1){
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(response.message, title);
+              }else if( response.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(response.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+            if(response.flag == 1){
+              var title = 'OK';
+              var type = 'success';
+              toastr.success(response.message, title);
+            }else if( response.flag == 0 ){
+              var title = 'Advertencia';
+              var type = 'warning';
+              toastr.warning(response.message, title);
+            }else{
+              alert('Ocurrió un error');
+            }
+        };
+        /*uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };*/
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+            vm.uploadBtn = false;
+            uploader.clearQueue();
+            vm.cargarImagenes();
+        };
+    }
+
   }
   function BlogServices($http, $q) {
     return({
@@ -419,6 +611,7 @@
         sRegistrarNoticia: sRegistrarNoticia,
         sEditarNoticia: sEditarNoticia,
         sAnularNoticia: sAnularNoticia,
+        sListarImagenesBlog: sListarImagenesBlog,
     });
     function sListarNoticias(pDatos) {
       var datos = pDatos || {};
@@ -452,6 +645,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Blog/anular_noticia",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarImagenesBlog(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Blog/cargar_imagenes_blog",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

@@ -136,11 +136,11 @@ class Blog extends CI_Controller {
 		$arrListado = array();
 		$ruta = 'uploads/blog/';
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-		if(!empty($lista[0]['enlace_video'])){
-			$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['enlace_video'])[1];
-		}else{
-			$enlace = NULL;
-		}
+		// if(!empty($lista[0]['enlace_video'])){
+		// 	$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['enlace_video'])[1];
+		// }else{
+		// 	$enlace = NULL;
+		// }
 		$arrListado = array(
 			'idblog' => $lista[0]['idblog'],
 			'titulo' => $lista[0]['titulo'],
@@ -165,6 +165,33 @@ class Blog extends CI_Controller {
 				);
 			}
 		}
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function cargar_imagenes_blog(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_blog->m_cargar_imagenes_blog($allInputs);
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			$src_image = '../uploads/blog/'.$row['idblog'].'/'.$row['imagen'];
+			array_push($arrListado,
+				array(
+					'idblogimagen' => $row['idblogimagen'],
+					'idblog' => $row['idblog'],
+					'imagen' => $row['imagen'],
+					'src_image' => $src_image,
+				)
+			);
+		}
+
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
@@ -275,6 +302,67 @@ class Blog extends CI_Controller {
 			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	// GALERIA
+	public function upload_galeria(){
+		$arrData['message'] = 'Error al subir imagen';
+    	$arrData['flag'] = 0;
+    	// var_dump($_REQUEST); exit();
+		if(!empty( $_FILES )  && isset($_FILES['file'])){
+
+			if(!empty( $_REQUEST )){
+				$idblog = $_REQUEST['idblog'];
+
+			    $errors= array();
+			    $file_name = $_FILES['file']['name'];
+			    $file_size =$_FILES['file']['size'];
+			    $file_tmp =$_FILES['file']['tmp_name'];
+			    $file_type=$_FILES['file']['type'];
+			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+			    $extensions_image = array("jpeg","jpg");
+				// CREAR CARPETA
+		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'blog' . DIRECTORY_SEPARATOR . $idblog;
+		    	createCarpetaBlog($carpeta);
+				$random = generateRandomString();
+				$file_name = $random .'.'. $file_ext;
+
+
+				// IMAGENES
+			    if(in_array($file_ext,$extensions_image)){
+
+			    	if($file_size < 10485760){
+						move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
+
+						$allInputs = array(
+							'idblog' 	=> $idblog,
+							'imagen'=> $file_name,
+						);
+				        if($this->model_blog->m_registrar_imagen($allInputs)){
+							$arrData['message'] = 'Se subieron las imagenes correctamente. ';
+				    		$arrData['flag'] = 1;
+						}
+			    	}else{
+			    		$arrData['message'] = 'El tamaño es mayor a 10Mb';
+			    		$this->output
+						    ->set_content_type('application/json')
+						    ->set_output(json_encode($arrData));
+						return;
+			    	}
+			    }else{
+			    	$arrData['message'] = 'No es el formato correcto';
+		    		$this->output
+					    ->set_content_type('application/json')
+					    ->set_output(json_encode($arrData));
+					return;
+			    }
+			}
+		}
+
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

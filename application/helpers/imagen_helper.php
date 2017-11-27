@@ -281,12 +281,12 @@ function deleteArchivos($carpeta){
 }
 
 function deleteUnArchivo($carpeta, $archivo){
-  foreach(glob($carpeta . "/*") as $value){ 
-    print_r($value . "\n"); 
-    print_r($archivo. "\n"); 
+  foreach(glob($carpeta . "/*") as $value){
+    print_r($value . "\n");
+    print_r($archivo. "\n");
     if($value == $archivo){
         unlink($value);
-    }  
+    }
   }
 }
 
@@ -318,5 +318,24 @@ function createCarpetas($carpeta){
         mkdir($carpeta . DIRECTORY_SEPARATOR .'descargadas', 0777, true);
         file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'descargadas'. DIRECTORY_SEPARATOR .'index.html', $contenido);
     }
+}
+
+function createCarpetaBlog($carpeta){
+    $contenido = '<!DOCTYPE html><html><head>
+                    <title>403 Forbidden</title>
+                    <style type="text/css">
+                        body{background-color:#ffffff;font-family:verdana,sans-serif;
+                            font-size: 18px}
+                    </style>
+                </head>
+                <body>
+                    <h1>Acceso denegado</h1>
+                </body></html>';
+
+    if (!file_exists($carpeta)) {
+        mkdir($carpeta, 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+
 }
 

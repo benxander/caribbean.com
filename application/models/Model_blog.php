@@ -50,13 +50,19 @@ class Model_blog extends CI_Model {
 
 		return $this->db->get()->result_array();
 	}
-	public function m_registrar($data)
+	public function m_cargar_imagenes_blog($datos)
 	{
+		$this->db->select('idblogimagen, idblog, imagen, orden');
+		$this->db->from('blog_imagen');
+		$this->db->where('idblog', $datos['idblog']);
+		$this->db->order_by('orden', 'ASC');
+		return $this->db->get()->result_array();
+	}
+	public function m_registrar($data){
 		return $this->db->insert('blog', $data);
 	}
 
-	public function m_editar($data,$id)
-	{
+	public function m_editar($data,$id){
 		$this->db->where('idblog',$id);
 		return $this->db->update('blog', $data);
 	}
@@ -66,6 +72,9 @@ class Model_blog extends CI_Model {
 		);
 		$this->db->where('idblog',$datos['idblog']);
 		return $this->db->update('blog', $data);
+	}
+	public function m_registrar_imagen($data){
+		return $this->db->insert('blog_imagen', $data);
 	}
 
 
