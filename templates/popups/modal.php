@@ -3,9 +3,6 @@
 </div>
 <div class="modal-body">
 	<div class="row">
-		<div class="col-md-12">
-			{{item.descripcion}}
-
-		</div>
+		<div class="col-md-12" ng-bind-html="item.descripcion">	</div>
 	</div>
 </div>

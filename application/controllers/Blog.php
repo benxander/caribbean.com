@@ -179,14 +179,16 @@ class Blog extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_blog->m_cargar_imagenes_blog($allInputs);
 		$arrListado = array();
-		//var_dump($lista); exit();
+		// var_dump($lista); exit();
 		foreach ($lista as $row) {
 			$src_image = '../uploads/blog/'.$row['idblog'].'/'.$row['imagen'];
+			$src_image_web = 'uploads/blog/'.$row['idblog'].'/'.$row['imagen'];
 			array_push($arrListado,
 				array(
 					'idblogimagen' => $row['idblogimagen'],
 					'idblog' => $row['idblog'],
 					'imagen' => $row['imagen'],
+					'src_image_web' => $src_image_web,
 					'src_image' => $src_image,
 				)
 			);

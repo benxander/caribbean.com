@@ -197,6 +197,7 @@ class Seccion extends CI_Controller {
 							array(
 								'idficha' => $row['idficha'],
 								'titulo' => $row['titulo_fi'],
+								'descripcion_corta' => $row['descripcion_corta'],
 								'descripcion' => $row['descripcion_fi'],
 								'clase' => $row['icono_fi'],
 							)

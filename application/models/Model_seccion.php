@@ -73,7 +73,7 @@ class Model_seccion extends CI_Model {
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
 		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
 		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, sc.acepta_ficha');
-		$this->db->select('idficha, titulo_fi, descripcion_fi, icono_fi');
+		$this->db->select('idficha, titulo_fi, descripcion_corta, descripcion_fi, icono_fi');
 
 		$this->db->from('seccion se');
 		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
@@ -88,7 +88,7 @@ class Model_seccion extends CI_Model {
 		return $this->db->update('seccion_contenido', $data);
 	}
 	public function m_cargar_fichas_por_seccion($datos)	{
-		$this->db->select('idficha,idseccioncontenido,titulo_fi,descripcion_fi,icono_fi');
+		$this->db->select('idficha, idseccioncontenido, titulo_fi, descripcion_corta, descripcion_fi, icono_fi');
 		$this->db->from('ficha fi');
 		$this->db->where("fi.estado_fi",1);
 		$this->db->where("fi.idseccioncontenido",$datos['idseccioncontenido']);
