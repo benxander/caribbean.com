@@ -346,6 +346,26 @@
             ev.preventDefault();
         });
       }
+      vm.btnGaleria = function(item){
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/seccion/seccion_ficha_galeria.php',
+          controllerAs: 'mf',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                seleccion : item,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
       vm.btnVolver = function(){
         vm.boolListado = true;
       }
