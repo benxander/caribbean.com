@@ -7262,11 +7262,12 @@
  .homepage-community p,.homepage-community h2,.homepage-community h3,.homepage-community-item-interior{max-width:100%}
 
  .home-toggle-area-active{position:relative;left:auto;display:-ms-flexbox;display:flex;width:auto}
- @media (min-width:768px){
+@media (min-width:768px){
  	.homepage-community-items-interior{display:-ms-flexbox;display:flex;width: 90%;
 		margin-left: auto;
 		margin-right: auto;}
 }
+
 /* traductor */
 .skiptranslate .goog-te-banner-frame{display:none!important;}
 body{top:0px!important;}
@@ -7275,4 +7276,7 @@ body{top:0px!important;}
 	position: absolute;
 	z-index: 999999;
 	right: 20%;top: 12px;}
+@media (max-width:767px){
+	.traductor{right: initial;margin-left: 10px}
 
+}

@@ -17,11 +17,11 @@
 					<div class="blog-article-content" ng-bind-html="bp.fData.descripcion"></div>
 					<div class="blog-article-content" ng-if="bp.slides.length>0" >
 			            <div uib-carousel active="bp.active" interval="bp.myInterval" no-wrap="bp.noWrapSlides">
-			              <div uib-slide ng-repeat="slide in bp.slides track by slide.idblogimagen" index="slide.idblogimagen">
+			              <div uib-slide ng-repeat="slide in bp.slides track by slide.id" index="slide.id">
 			                <img ng-src="{{slide.src_image_web}}" style="margin:20px;">
 			                <!-- <div class="carousel-caption">
 			                  <h4 class="text-white">Slide {{slide.id}}</h4>
-			                  <p>{{slide.text}}</p>
+			                  <p>{{slide.imagen}}</p>
 			                </div> -->
 			              </div>
 			            </div>
