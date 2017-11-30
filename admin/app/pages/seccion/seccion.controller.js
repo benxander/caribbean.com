@@ -6,7 +6,7 @@
     .service('SeccionServices', SeccionServices);
 
   /** @ngInject */
-  function SeccionController($scope,tileLoading,SeccionServices,$uibModal, uiGridConstants, toastr, alertify) {
+  function SeccionController($scope,tileLoading,SeccionServices,$uibModal, uiGridConstants, toastr, alertify, FileUploader) {
     var vm = this;
     var openedToasts = [];
     //$scope.image = "";
@@ -354,7 +354,192 @@
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            var uploader = $scope.uploader = new FileUploader ({
+              url: angular.patchURLCI + 'seccion/upload_galeria'
+            });
+            vm.fData = {};
+            // vm.btnUpload = function(seleccion){
+            //   vm.fData = {};
+              vm.fDataUpload = {};
+              vm.modalTitle = 'Galeria de imagenes';
+              vm.fDataUpload = angular.copy(arrToModal.seleccion);
+              vm.selectedAll = false;
+              vm.isSelected = false;
 
+              vm.subirTodo = function(){
+                console.log('subir todo');
+                uploader.uploadAll();
+              }
+
+              vm.btnVolver = function() {
+                vm.fDataUpload = {};
+                // vm.getPaginationServerSide();
+              }
+
+              vm.btnSubir = function() {
+                vm.uploadBtn = true;
+              }
+
+              vm.btnAnularArchivo = function(row){
+                alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+                    ev.preventDefault();
+                    SeccionServices.sEliminarImagenFicha(row).then(function (rpta) {
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                        vm.cargarImagenes();
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  },
+                  function(ev){
+                    ev.preventDefault();
+                });
+              }
+
+              vm.btnDeleteArchivoSelect = function(){
+                alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+                    ev.preventDefault();
+                    SeccionServices.sEliminarImagenesFicha(vm.images).then(function (rpta) {
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                        vm.cargarImagenes();
+                        vm.isSelected = false;
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  },
+                  function(ev){
+                    ev.preventDefault();
+                });
+              }
+
+              vm.cargarImagenes = function(datos){
+                SeccionServices.sListarImagenesFicha(vm.fDataUpload).then(function(rpta){
+                  vm.images = rpta.datos;
+                  vm.length_images = vm.images.length;
+                  if (vm.length_images == 0) { vm.uploadBtn = true; };
+                });
+              }
+              vm.cargarImagenes();
+
+
+              vm.selectAll = function () {
+                if (vm.selectedAll) {
+                  vm.selectedAll = false;
+                  vm.isSelected = false;
+                } else {
+                  vm.selectedAll = true;
+                  vm.isSelected = true;
+                }
+
+                angular.forEach(vm.images, function(image) {
+                  image.selected = vm.selectedAll;
+                });
+              }
+
+              vm.selectImage = function(index) {
+                var i = 0;
+
+                if (vm.images[index].selected) {
+                  vm.images[index].selected = false;
+                } else {
+                  vm.images[index].selected = true;
+                  vm.isSelected = true;
+                }
+
+                angular.forEach(vm.images, function(image) {
+                  if (image.selected) {
+                    i++;
+                  }
+                });
+
+                if (i === 0) {
+                  vm.isSelected = false;
+                }
+              }
+              // CALLBACKS
+
+                uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+                    console.info('onWhenAddingFileFailed', item, filter, options);
+                };
+                /*uploader.onAfterAddingFile = function(fileItem) {
+                    console.info('onAfterAddingFile', fileItem);
+                };*/
+                uploader.onAfterAddingAll = function(addedFileItems) {
+                    console.info('onAfterAddingAll', addedFileItems);
+                };
+                uploader.onBeforeUploadItem = function(item) {
+                    item.formData.push({
+                      idficha: vm.fDataUpload.idficha,
+                    });
+                    //console.info('onBeforeUploadItem', item);
+                };
+                /*uploader.onProgressItem = function(fileItem, progress) {
+                    console.info('onProgressItem', fileItem, progress);
+                };*/
+                uploader.onProgressAll = function(progress) {
+                    console.info('onProgressAll', progress);
+                };
+                uploader.onResumen = function(progress) {
+                    console.info('onProgressAll', progress);
+                };
+                uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    console.info('onSuccessItem', fileItem, response, status, headers);
+
+                    if(response.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(response.message, title);
+                      }else if( response.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(response.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                };
+                uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                    if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+                /*uploader.onCancelItem = function(fileItem, response, status, headers) {
+                    console.info('onCancelItem', fileItem, response, status, headers);
+                };
+                uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                    console.info('onCompleteItem', fileItem, response, status, headers);
+                };*/
+                uploader.onCompleteAll = function() {
+                    console.info('onCompleteAll');
+                    vm.uploadBtn = false;
+                    uploader.clearQueue();
+                    vm.cargarImagenes();
+                };
+            // }
           },
           resolve: {
             arrToModal: function() {
@@ -384,6 +569,9 @@
         sEliminarFicha: sEliminarFicha,
         sListarIconos: sListarIconos,
         sListarIconosAutocomplete: sListarIconosAutocomplete,
+        sListarImagenesFicha: sListarImagenesFicha,
+        sEliminarImagenFicha: sEliminarImagenFicha,
+        sEliminarImagenesFicha: sEliminarImagenesFicha,
     });
     function sListarSeccionCbo(pDatos) {
       var datos = pDatos || {};
@@ -471,6 +659,33 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Seccion/listar_iconos",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarImagenesFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_galeria_ficha",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarImagenFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/eliminar_imagen_ficha",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarImagenesFicha(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/eliminar_imagenes_ficha",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

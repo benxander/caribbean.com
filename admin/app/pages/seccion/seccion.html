@@ -78,7 +78,7 @@
                   <i class="{{item.icono_fi}} icono"></i>
                   <h4 class="">{{item.titulo_fi}}</h4>
                   <div class="controls">
-                    <button class="btn btn-transparent" ng-click="se.btnGaleria(item)" uib-tooltip="Galeria" tooltip-placement="left" ><i class="halcyon-icon-photo-camera" aria-hidden="true"></i></button>
+                    <button class="btn btn-transparent" ng-click="se.btnGaleria(item)" uib-tooltip="Galeria" tooltip-placement="left" ng-if="item.ficha_galeria == 'SI'" ><i class="halcyon-icon-photo-camera" aria-hidden="true"></i></button>
                     <button class="btn btn-transparent" ng-click="se.btnEditarFicha(item)" uib-tooltip="Editar" tooltip-placement="left" ><i class="halcyon-icon-edit" aria-hidden="true"></i></button>
                     <button class="btn btn-transparent" ng-click="se.btnEliminarFicha(item)" uib-tooltip="Eliminar" tooltip-placement="left"><i class="fa fa-times" aria-hidden="true"></i></button>
                   </div>

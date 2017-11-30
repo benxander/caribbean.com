@@ -71,7 +71,7 @@ class Model_seccion extends CI_Model {
 	}
 	public function m_cargar_secciones_web(){
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
-		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton');
+		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton, sc.ficha_galeria');
 		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, sc.acepta_ficha');
 		$this->db->select('idficha, titulo_fi, descripcion_corta, descripcion_fi, icono_fi');
 
@@ -88,8 +88,9 @@ class Model_seccion extends CI_Model {
 		return $this->db->update('seccion_contenido', $data);
 	}
 	public function m_cargar_fichas_por_seccion($datos)	{
-		$this->db->select('idficha, idseccioncontenido, titulo_fi, descripcion_corta, descripcion_fi, icono_fi');
+		$this->db->select('fi.idficha, fi.idseccioncontenido, fi.titulo_fi, fi.descripcion_corta, fi.descripcion_fi, fi.icono_fi, sc.ficha_galeria');
 		$this->db->from('ficha fi');
+		$this->db->join('seccion_contenido sc', 'fi.idseccioncontenido = sc.idseccioncontenido');
 		$this->db->where("fi.estado_fi",1);
 		$this->db->where("fi.idseccioncontenido",$datos['idseccioncontenido']);
 		return $this->db->get()->result_array();
@@ -107,5 +108,25 @@ class Model_seccion extends CI_Model {
 		);
 		$this->db->where('idficha',$id);
 		return $this->db->update('ficha', $datos);
+	}
+	public function m_registrar_imagen_ficha($data){
+		return $this->db->insert('ficha_imagen', $data);
+	}
+	public function m_cargar_imagenes_ficha($datos)
+	{
+		$this->db->select('idfichaimagen, idficha, imagen,estado');
+		$this->db->from('ficha_imagen');
+		$this->db->where('idficha', $datos['idficha']);
+		$this->db->where('estado', 1);
+		$this->db->order_by('idfichaimagen', 'ASC');
+		return $this->db->get()->result_array();
+	}
+	public function m_eliminar_imagen_ficha($data){
+		$datos = array(
+			'estado' => 0
+		);
+		$this->db->where('idfichaimagen',$data['idfichaimagen']);
+
+		return $this->db->update('ficha_imagen', $datos);
 	}
 }

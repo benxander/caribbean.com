@@ -200,6 +200,7 @@ class Seccion extends CI_Controller {
 								'descripcion_corta' => $row['descripcion_corta'],
 								'descripcion' => $row['descripcion_fi'],
 								'clase' => $row['icono_fi'],
+								'ficha_galeria' => $row['ficha_galeria']
 							)
 						);
 					}
@@ -359,6 +360,133 @@ class Seccion extends CI_Controller {
 			$arrData['message'] = 'Se eliminó la ficha correctamente';
     		$arrData['flag'] = 1;
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	// GALERIA
+	public function upload_galeria(){
+		$arrData['message'] = 'Error al subir imagen';
+    	$arrData['flag'] = 0;
+    	// var_dump($_REQUEST); exit();
+		if(!empty( $_FILES )  && isset($_FILES['file'])){
+
+			if(!empty( $_REQUEST )){
+				$idficha = $_REQUEST['idficha'];
+
+			    $file_name = $_FILES['file']['name'];
+			    $file_size =$_FILES['file']['size'];
+			    $file_tmp =$_FILES['file']['tmp_name'];
+			    $file_type=$_FILES['file']['type'];
+			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+			    $extensions_image = array("jpeg","jpg");
+				// CREAR CARPETA
+		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'ficha' . DIRECTORY_SEPARATOR . $idficha;
+		    	createCarpetaBlog($carpeta);
+				$random = generateRandomString();
+				$file_name = $random .'.'. $file_ext;
+
+
+				// IMAGENES
+			    if(in_array($file_ext,$extensions_image)){
+
+			    	if($file_size < 10485760){
+						move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+						$allInputs = array(
+							'idficha' 	=> $idficha,
+							'imagen'=> $file_name,
+						);
+				        if($this->model_seccion->m_registrar_imagen_ficha($allInputs)){
+							$arrData['message'] = 'Se subieron las imagenes correctamente. ';
+				    		$arrData['flag'] = 1;
+						}
+			    	}else{
+			    		$arrData['message'] = 'El tamaño es mayor a 10Mb';
+			    		$this->output
+						    ->set_content_type('application/json')
+						    ->set_output(json_encode($arrData));
+						return;
+			    	}
+			    }else{
+			    	$arrData['message'] = 'No es el formato correcto';
+		    		$this->output
+					    ->set_content_type('application/json')
+					    ->set_output(json_encode($arrData));
+					return;
+			    }
+			}
+		}
+
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_galeria_ficha(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_seccion->m_cargar_imagenes_ficha($allInputs);
+		$arrListado = array();
+		// var_dump($lista); exit();
+		$i = 0;
+		foreach ($lista as $row) {
+			$src_image = '../uploads/ficha/'.$row['idficha'].'/'.$row['imagen'];
+			$src_image_web = 'uploads/ficha/'.$row['idficha'].'/'.$row['imagen'];
+			array_push($arrListado,
+				array(
+					'id' => $i++, // se usa para el carousel
+					'idfichaimagen' => $row['idfichaimagen'],
+					'idficha' => $row['idficha'],
+					'imagen' => $row['imagen'],
+					'src_image_web' => $src_image_web,
+					'src_image' => $src_image,
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function eliminar_imagen_ficha(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if($this->model_seccion->m_eliminar_imagen_ficha($allInputs)){
+			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'ficha' . DIRECTORY_SEPARATOR . $allInputs['idficha'];
+			unlink($carpeta.DIRECTORY_SEPARATOR.explode(".", $allInputs['imagen'])[0].'.jpg');
+
+			$arrData['message'] = 'Se eliminaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function eliminar_imagenes_ficha(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'ficha' . DIRECTORY_SEPARATOR;
+
+    	foreach ($allInputs as $key => $value) {
+    		if($value['selected']){
+    			if($this->model_seccion->m_eliminar_imagen_ficha($value)){
+    				unlink($carpeta.$value['idficha'].DIRECTORY_SEPARATOR.$value['imagen']);
+
+					$arrData['message'] = 'Se eliminaron los datos correctamente';
+		    		$arrData['flag'] = 1;
+				}
+    		}
+    	}
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
