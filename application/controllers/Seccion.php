@@ -309,6 +309,7 @@ class Seccion extends CI_Controller {
     	$data = array(
     		'idseccioncontenido' => $allInputs['idseccioncontenido'],
     		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
+    		'descripcion_corta' => $allInputs['descripcion_corta'],
     		'descripcion_fi' => $allInputs['descripcion_fi'],
     		'icono_fi' => 'halcyon-icon-photos',
     	);
@@ -337,6 +338,7 @@ class Seccion extends CI_Controller {
 
 		$data = array(
     		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
+    		'descripcion_corta' => $allInputs['descripcion_corta'],
     		'descripcion_fi' => $allInputs['descripcion_fi'],
     	);
 
