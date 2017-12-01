@@ -12,11 +12,17 @@
 	    <div class="row">
 	        <div class="col-md-12 col-sm-12">
 	          <div class="form-group">
-	            <h4 class="heading mt-n col-md-6">FICHA: {{mf.fDataUpload.idficha}}</h4>
+	            <h4 class="heading mt-n col-md-6">FICHA: {{mf.fDataUpload.titulo_fi}}</h4>
+	            <div class="form-group pull-right" style="position: relative;z-index: 10">
+                    <button class="btn btn-success" ng-click='mf.btnSubir()'>
+                      <i class="halcyon-icon-upload"></i> Subir Fotografias</button>
 
+                    <button class="btn btn-warning" ng-click='mf.btnVolver()'>
+                      <i class="halcyon-icon-back"></i> Salir</button>
+                </div>
 	          </div>
 	          <div class="form-group mt-lg" style="position: relative;z-index: 10">
-	            <div class="form-group" ng-show="mf.uploadBtn>
+	            <div class="form-group" ng-show="mf.uploadBtn">
 	                <label class="col-md-12 control-label minotaur-label">Seleccione</label>
 	                <div class="form-group col-md-3">
 	                <input type="file" nv-file-select="" uploader="uploader" multiple class="filestyle" filestyle="{ buttonText: 'Select file', iconName: 'fa fa-inbox' }" accept=".jpeg, .jpg, .mp4, .mkv, .avi, .dvd, .mov"/><br/>
@@ -145,6 +151,6 @@
     </section>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="mf.cancel()"><i class="fa fa-arrow-left"></i> Cancelar</button>
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formSeccionFicha.$invalid" ng-click="mf.aceptar()"><i class="fa fa-arrow-right"></i> Guardar</button>
+  <button class="btn btn-warning btn-ef btn-ef-4 btn-ef-4c" ng-click="mf.btnVolver()"><i class="fa fa-arrow-left"></i> Salir</button>
+
 </div>

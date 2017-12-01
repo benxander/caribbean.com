@@ -24,7 +24,8 @@ class Blog extends CI_Controller {
 				'descripcion' => $row['descripcion'],
 				'descripcion_f' => strip_tags($row['descripcion']),
 				'autor' => $row['autor'],
-				'enlace_video' => $row['enlace_video'],
+				'link_youtube' => $row['link_youtube'],
+				'link_vimeo' => $row['link_vimeo'],
 				'fecha' => date('Y-m-d',strtotime($row['fecha'])),
 				// 'fecha' => $row['fecha'],
 				'fecha_f' => darFormatoDMY2($row['fecha']),
@@ -136,8 +137,8 @@ class Blog extends CI_Controller {
 		$arrListado = array();
 		$ruta = 'uploads/blog/';
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-		// if(!empty($lista[0]['enlace_video'])){
-		// 	$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['enlace_video'])[1];
+		// if(!empty($lista[0]['link_youtube'])){
+		// 	$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['link_youtube'])[1];
 		// }else{
 		// 	$enlace = NULL;
 		// }
@@ -149,7 +150,9 @@ class Blog extends CI_Controller {
 			'dia' => date('d', strtotime($lista[0]['fecha'])),
 			'mes' => $shortMonthArray[(int)date('m',strtotime($lista[0]['fecha']))],
 			'imagen' => $ruta .$lista[0]['imagen'],
-			'enlace' => empty($lista[0]['enlace_video']) ? NULL : $lista[0]['enlace_video'],
+			'enlace' => empty($lista[0]['link_youtube']) ? NULL : $lista[0]['link_youtube'],
+			'link_vimeo' => empty($lista[0]['link_vimeo']) ? NULL : $lista[0]['link_vimeo'],
+			'codigo_vimeo' => '245013786',
 			// 'enlace' => $enlace,
 			'posts' => array()
 		);
@@ -234,7 +237,8 @@ class Blog extends CI_Controller {
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
-    		'enlace_video' => $allInputs['enlace_video'],
+    		'link_youtube' => $allInputs['link_youtube'],
+    		'link_vimeo' => $allInputs['link_vimeo'],
     		'imagen' => $nombre,
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
@@ -258,7 +262,8 @@ class Blog extends CI_Controller {
 
     		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
-    		'enlace_video' => $allInputs['enlace_video'],
+    		'link_youtube' => $allInputs['link_youtube'],
+    		'link_vimeo' => $allInputs['link_vimeo'],
     		'autor' => $allInputs['autor'],
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     		// 'fecha' => date('Y-m-d H:i:s'),

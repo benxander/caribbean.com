@@ -364,9 +364,10 @@
               vm.fDataUpload = {};
               vm.modalTitle = 'Galeria de imagenes';
               vm.fDataUpload = angular.copy(arrToModal.seleccion);
+              vm.uploadBtn = false;
               vm.selectedAll = false;
               vm.isSelected = false;
-
+              console.log('arrToModal.seleccion',arrToModal.seleccion);
               vm.subirTodo = function(){
                 console.log('subir todo');
                 uploader.uploadAll();
@@ -374,6 +375,7 @@
 
               vm.btnVolver = function() {
                 vm.fDataUpload = {};
+                $uibModalInstance.dismiss('cancel');
                 // vm.getPaginationServerSide();
               }
 
@@ -432,6 +434,7 @@
                 SeccionServices.sListarImagenesFicha(vm.fDataUpload).then(function(rpta){
                   vm.images = rpta.datos;
                   vm.length_images = vm.images.length;
+                  console.log('vm.length_images',vm.length_images);
                   if (vm.length_images == 0) { vm.uploadBtn = true; };
                 });
               }

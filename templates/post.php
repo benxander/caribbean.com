@@ -29,6 +29,12 @@
 					<div class="blog-article-content" ng-if="bp.fData.enlace">
 	                	<youtube-video video-url="bp.fData.enlace"></youtube-video>
 					</div>
+
+					<div class="blog-article-content" ng-if="bp.fData.link_vimeo">
+						<vimeo-video video-url="bp.fData.link_vimeo" player-width="640" player-height="360"></vimeo-video>
+						<!-- <vimeo-video player-id="video1" video-id="103384798"></vimeo-video> -->
+					</div>
+
 				</div><!-- blog-article -->
 
 				<h6 class="commentlist-title">Comentarios ({{bp.fData.posts.length}})</h6>
