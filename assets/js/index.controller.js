@@ -19,7 +19,7 @@
             width       : '80%',
             height      : '90%',
             autoSize    : false,
-            closeClick  : true,
+            closeClick  : false,
             openEffect  : 'none',
             closeEffect : 'none'
           });
@@ -133,6 +133,7 @@
     rootServices.sCargarSecciones().then(function (response) {
       if(response.flag == 1){
         $scope.seccionWeb = response.datos;
+        console.log('fichas.imagenes',$scope.seccionWeb[2].contenedor[1].fichas[0].imagenes);
       }else{
         console.log('no data');
       }

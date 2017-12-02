@@ -5,7 +5,7 @@ class Model_blog extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_noticias($paramPaginate=FALSE){
-		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen, bl.link_youtube, bl.link_vimeo');
+		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen, bl.codigo_youtube, bl.codigo_vimeo');
 		$this->db->from('blog bl');
 		$this->db->where('bl.estado_bl', 1);
 		if($paramPaginate){
@@ -41,7 +41,7 @@ class Model_blog extends CI_Model {
 		return $fData;
 	}
 	public function m_cargar_post_blog($datos){
-		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen, bl.link_youtube, bl.link_vimeo');
+		$this->db->select('bl.idblog, bl.titulo, bl.descripcion, bl.autor,bl.fecha, bl.imagen, bl.codigo_youtube, bl.codigo_vimeo');
 		$this->db->select('bp.idblogpost,bp.autor_post, bp.comentario, bp.fecha_post, bp.idblogpost_origen');
 		$this->db->from('blog bl');
 		$this->db->join('blog_post bp','bl.idblog = bp.idblog AND bp.estado_bp = 1','left');

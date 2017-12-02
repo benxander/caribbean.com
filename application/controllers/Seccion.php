@@ -193,16 +193,39 @@ class Seccion extends CI_Controller {
 				$arrAux = array();
 				foreach ($lista as $key3 => $row) {
 					if(($rowCon['idseccioncontenido'] == $row['idseccioncontenido']) && !empty($row['idficha']) ){
-						array_push($arrAux,
-							array(
-								'idficha' => $row['idficha'],
-								'titulo' => $row['titulo_fi'],
-								'descripcion_corta' => $row['descripcion_corta'],
-								'descripcion' => $row['descripcion_fi'],
-								'clase' => $row['icono_fi'],
-								'ficha_galeria' => $row['ficha_galeria']
-							)
-						);
+						if($row['ficha_galeria'] == 'SI'){
+							$listaFotos = $this->model_seccion->m_cargar_imagenes_ficha($row);
+							$arrFotos = array();
+							foreach ($listaFotos as $foto) {
+								array_push($arrFotos, array(
+									'thumb' => 'uploads/ficha/'.$row['idficha'].'/'.$foto['imagen'],
+									'img'=>'uploads/ficha/'.$row['idficha'].'/'.$foto['imagen'],
+									)
+								);
+							}
+							array_push($arrAux,
+								array(
+									'idficha' => $row['idficha'],
+									'titulo' => $row['titulo_fi'],
+									'descripcion_corta' => $row['descripcion_corta'],
+									'descripcion' => $row['descripcion_fi'],
+									'clase' => $row['icono_fi'],
+									'ficha_galeria' => $row['ficha_galeria'],
+									'imagenes' => $arrFotos,
+								)
+							);
+						}else{
+							array_push($arrAux,
+								array(
+									'idficha' => $row['idficha'],
+									'titulo' => $row['titulo_fi'],
+									'descripcion_corta' => $row['descripcion_corta'],
+									'descripcion' => $row['descripcion_fi'],
+									'clase' => $row['icono_fi'],
+									'ficha_galeria' => $row['ficha_galeria']
+								)
+							);
+						}
 					}
 				}
 				$arrSeccion[$key]['contenedor'][$key2]['fichas'] = $arrAux;

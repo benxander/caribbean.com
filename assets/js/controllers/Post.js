@@ -5,7 +5,7 @@
 	    .module('caribbean')
 	    .controller('PostController', PostController)
 	    .service('PostServices', PostServices);
-	function PostController($scope,$routeParams,$location,PostServices) {
+	function PostController($scope,$sce,$routeParams,$location,PostServices) {
 	    var vm = this;
 	    vm.fData = {}
 	    vm.slides = null;
@@ -18,6 +18,10 @@
 	    PostServices.sCargarPostBlog(searchObject).then(function (rpta) {
 	      if(rpta.flag == 1){
 	        vm.fData = rpta.datos;
+
+	        vm.html = '<iframe src="https://player.vimeo.com/video/'+vm.fData.codigo_vimeo+'" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+			vm.trustedHtml = $sce.trustAsHtml(vm.html);
+	        // vm.fData.html = '<div>video vimeo</div>';
 
 	      }else{
 	        console.log('no data');

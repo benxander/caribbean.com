@@ -7274,7 +7274,7 @@ body{top:0px!important;}
 .traductor{
 	visibility: hidden;
 	position: absolute;
-	z-index: 999999;
+	z-index: 8001;
 	right: 20%;top: 12px;}
 @media (max-width:767px){
 	.traductor{right: initial;margin-left: 10px}

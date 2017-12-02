@@ -5,7 +5,7 @@
 		// 'ngCookies',
 		// 'oc.lazyLoad',
 		'youtube-embed',
-		'vimeoEmbed',
+		'jkuri.gallery',
 		'rev.slider',
 		'ui.bootstrap',
 		'ngSanitize'

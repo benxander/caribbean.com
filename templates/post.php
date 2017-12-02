@@ -26,13 +26,14 @@
 			              </div>
 			            </div>
 			        </div>
-					<div class="blog-article-content" ng-if="bp.fData.enlace">
-	                	<youtube-video video-url="bp.fData.enlace"></youtube-video>
+					<div class="blog-article-content" ng-if="bp.fData.codigo_youtube">
+	                	<youtube-video video-id="bp.fData.codigo_youtube"></youtube-video>
 					</div>
 
-					<div class="blog-article-content" ng-if="bp.fData.link_vimeo">
-						<vimeo-video video-url="bp.fData.link_vimeo" player-width="640" player-height="360"></vimeo-video>
-						<!-- <vimeo-video player-id="video1" video-id="103384798"></vimeo-video> -->
+					<div class="blog-article-content" ng-if="bp.fData.codigo_vimeo">
+						<div class="embed-responsive embed-responsive-16by9" ng-bind-html="bp.trustedHtml">
+
+						</div>
 					</div>
 
 				</div><!-- blog-article -->
