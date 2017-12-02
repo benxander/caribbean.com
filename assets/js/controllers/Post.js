@@ -35,10 +35,10 @@
 	    var datos = {
 	    	idblog : searchObject.id
 	    }
-	    PostServices.sCargarGaleriaBlog(datos).then(function (rpta) {
+	    PostServices.sCargarGaleriaBlogWeb(datos).then(function (rpta) {
 	      if(rpta.flag == 1){
 	        vm.slides = rpta.datos;
-	        vm.active = vm.slides[0].idblogimagen;
+	        // vm.active = vm.slides[0].idblogimagen;
 
 	      }else{
 	        console.log('no data');
@@ -54,6 +54,7 @@
 		 return({
 	    	sCargarPostBlog: sCargarPostBlog,
 	    	sCargarGaleriaBlog: sCargarGaleriaBlog,
+	    	sCargarGaleriaBlogWeb: sCargarGaleriaBlogWeb,
 	    });
 	    function sCargarPostBlog(pDatos) {
 	      var datos = pDatos || {};
@@ -69,6 +70,15 @@
 	      var request = $http({
 	            method : "post",
 	            url :  angular.patchURLCI + "Blog/cargar_imagenes_blog",
+	            data : datos
+	      });
+	      return (request.then( handleSuccess,handleError ));
+	    }
+	    function sCargarGaleriaBlogWeb(pDatos) {
+	      var datos = pDatos || {};
+	      var request = $http({
+	            method : "post",
+	            url :  angular.patchURLCI + "Blog/cargar_imagenes_blog_web",
 	            data : datos
 	      });
 	      return (request.then( handleSuccess,handleError ));

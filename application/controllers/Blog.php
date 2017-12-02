@@ -208,6 +208,32 @@ class Blog extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function cargar_imagenes_blog_web(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_blog->m_cargar_imagenes_blog($allInputs);
+		$arrListado = array();
+		// var_dump($lista); exit();
+		$i = 0;
+		foreach ($lista as $row) {
+			$src_image_web = 'uploads/blog/'.$row['idblog'].'/'.$row['imagen'];
+			array_push($arrListado,
+				array(
+					'thumb' => $src_image_web,
+					'img'=>$src_image_web,
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	// MANTENIMIENTO
 	public function registrar_noticia()	{
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));

@@ -47,13 +47,13 @@
 			                <!-- <span>{{mb.fData.fecha | date:'fullDate':'UTC'}}</span> -->
 			            </div>
 			            <div class="form-group col-md-12">
-			              	<label for="link_vimeo" class="control-label minotaur-label">Enlace Vimeo </label>
-			              	<input type="text" name="link_vimeo" id="link_vimeo" class="form-control" ng-model="mb.fData.link_vimeo" placeholder="Enlace youtube" >
+			              	<label for="codigo_vimeo" class="control-label minotaur-label">Código Vimeo </label>
+			              	<input type="text" name="codigo_vimeo" id="codigo_vimeo" class="form-control" ng-model="mb.fData.codigo_vimeo" placeholder="Código Vimeo" >
 
 			            </div>
 			            <div class="form-group col-md-12">
-			              	<label for="link_youtube" class="control-label minotaur-label">Enlace Youtube </label>
-			              	<input type="text" name="link_youtube" id="link_youtube" class="form-control" ng-model="mb.fData.link_youtube" placeholder="Enlace youtube" >
+			              	<label for="codigo_youtube" class="control-label minotaur-label">Código Youtube </label>
+			              	<input type="text" name="codigo_youtube" id="codigo_youtube" class="form-control" ng-model="mb.fData.codigo_youtube" placeholder="Código Youtube" >
 
 			            </div>
                 	</div>
