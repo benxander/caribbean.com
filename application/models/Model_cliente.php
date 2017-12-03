@@ -30,7 +30,7 @@ class Model_cliente extends CI_Model {
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
 		}
-		$this->db->group_by('c.idcliente,u.codigo');
+		$this->db->group_by('c.idcliente,u.codigo, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
 		return $this->db->get()->result_array();
 	}
 

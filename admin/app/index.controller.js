@@ -105,12 +105,13 @@
       $scope.seleccionadas = sel;
     }
     $scope.actualizarSaldo = function(isSel,monto){
-      console.log('isSel',isSel);
+      console.log('actualizarSaldo',monto);
+      console.log('fSessionCI.monedero',$scope.fSessionCI.monedero);
       if(isSel){
-        $scope.saldo = $scope.fSessionCI.monedero - monto;
-      }else{
-        $scope.saldo = $scope.fSessionCI.monedero;
+        $scope.fSessionCI.monedero = parseInt($scope.fSessionCI.monedero) - parseInt(monto);
       }
+      $scope.saldo = $scope.fSessionCI.monedero;
+      
     }
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey

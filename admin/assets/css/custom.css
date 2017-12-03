@@ -316,6 +316,25 @@ minotaur-header .navbar-header .navigation-toggle{
     background: none;
 }
 
+.flecha-up{
+    position: relative;
+    top: 21px;
+    right: -16px;
+    width:0px;
+    height:0px;
+    border-left:25px solid transparent; /* izquierda flecha */
+    border-right:25px solid transparent; /* derecha flecha */
+    border-bottom:25px solid #1199D3; /* base flecha y color*/
+    font-size:0px;
+    line-height:0px;
+    float: right;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    margin-top: -24px;
+ }
+
+
 .img-controls a{
     font-size: 20px;
 }

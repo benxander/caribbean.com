@@ -76,7 +76,7 @@
             </label>
           </li>
 
-          <li ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.btnDescargarFiles();'>
+          <li ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
             <a href="javascript:;"><i class="fa fa-download" ></i> {{ 'Text.DESCARGAR' | translate }}</a>
           </li>
 
@@ -84,6 +84,7 @@
             <i class="fa fa-shopping-cart" ></i> <span style="color:#1199d3;">{{ctrl.monto_total}}</span></a>
           </li> -->
         </ul>
+
         <div class="row mix-grid">
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
@@ -98,12 +99,14 @@
            }"
           >
             <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
-              <div class="img-container">
+              
+              <div class="img-container ">
+                <div class="flecha-up" ng-if="image.descargado == 1"></div>
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
                 <div class="img-details-static">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
-                    <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)">
+                    <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)" ng-if="image.descargado == 2">
                       <i class="fa fa-square-o" ng-show="!image.selected"></i>
                       <i class="fa fa-check-square-o" ng-show="image.selected"></i>
                     </a>
