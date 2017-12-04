@@ -60,7 +60,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($scope,$timeout, $location, $window, rootServices, BlogServices,$routeParams) {
+  function MainController($scope,$sce, $timeout, $location, $window, rootServices, BlogServices,$routeParams) {
     var vm = this;
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
@@ -134,6 +134,12 @@
       if(response.flag == 1){
         $scope.seccionWeb = response.datos;
         console.log('fichas.imagenes',$scope.seccionWeb[2].contenedor[1].fichas[0].imagenes);
+        var fichas = $scope.seccionWeb[2].contenedor[1].fichas;
+        angular.forEach(fichas, function(ficha,key){
+          if(ficha.html_vimeo){
+            $scope.seccionWeb[2].contenedor[1].fichas[key].htmlVimeo = $sce.trustAsHtml(ficha.html_vimeo);
+          }
+        });
       }else{
         console.log('no data');
       }

@@ -55,6 +55,7 @@ class Model_blog extends CI_Model {
 		$this->db->select('idblogimagen, idblog, imagen, orden');
 		$this->db->from('blog_imagen');
 		$this->db->where('idblog', $datos['idblog']);
+		$this->db->where('estado', 1);
 		$this->db->order_by('orden', 'ASC');
 		return $this->db->get()->result_array();
 	}

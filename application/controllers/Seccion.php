@@ -131,6 +131,7 @@ class Seccion extends CI_Controller {
 					'tipo_contenido' 		=> $row['tipo_contenido'],
 					'imagen' 		=> $row['imagen'],
 					'imagen_bg' 	=> $row['imagen_bg'],
+					'ficha_galeria' => $row['ficha_galeria'],
 				)
 			);
 		}
@@ -203,6 +204,13 @@ class Seccion extends CI_Controller {
 									)
 								);
 							}
+							if(!empty($row['codigo_vimeo'])){
+								$codigo_vimeo = $row['codigo_vimeo'];
+								$html_vimeo = '<iframe src="https://player.vimeo.com/video/'.$codigo_vimeo.'" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+							}else{
+								$codigo_vimeo = NULL;
+								$html_vimeo = NULL;
+							}
 							array_push($arrAux,
 								array(
 									'idficha' => $row['idficha'],
@@ -211,6 +219,9 @@ class Seccion extends CI_Controller {
 									'descripcion' => $row['descripcion_fi'],
 									'clase' => $row['icono_fi'],
 									'ficha_galeria' => $row['ficha_galeria'],
+									'codigo_youtube' => empty($row['codigo_youtube']) ? NULL : $row['codigo_youtube'],
+									'codigo_vimeo' => $codigo_vimeo,
+									'html_vimeo' => $html_vimeo,
 									'imagenes' => $arrFotos,
 								)
 							);
@@ -334,6 +345,8 @@ class Seccion extends CI_Controller {
     		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
     		'descripcion_corta' => $allInputs['descripcion_corta'],
     		'descripcion_fi' => $allInputs['descripcion_fi'],
+    		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
+			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
     		'icono_fi' => 'halcyon-icon-photos',
     	);
 		if( $this->model_seccion->m_registrar_ficha($data) ){
@@ -363,6 +376,8 @@ class Seccion extends CI_Controller {
     		'titulo_fi' => trim(strtoupper_total($allInputs['titulo_fi'])),
     		'descripcion_corta' => $allInputs['descripcion_corta'],
     		'descripcion_fi' => $allInputs['descripcion_fi'],
+    		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
+			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
     	);
 
 		if( $this->model_seccion->m_editar_ficha($data,$allInputs['idficha']) ){

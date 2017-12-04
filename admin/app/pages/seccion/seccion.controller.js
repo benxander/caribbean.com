@@ -201,7 +201,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/seccion/seccion_ficha_formview.php',
           controllerAs: 'mf',
-          size: '',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -213,33 +213,31 @@
             vm.listaTiposIconos = arrToModal.scope.listaTiposIconos;
             vm.fData.tipoIcono = vm.listaTiposIconos[0];
 
-            vm.listarIconos = function(value){
-              var params = {
-                search: value,
-                tipoIcono: vm.fData.tipoIcono
-              }
-              return SeccionServices.sListarIconosAutocomplete(params).then(function(rpta) {
-                $scope.noResultsLPSC = false;
-                if( rpta.flag === 0 ){
-                  $scope.noResultsLPSC = true;
-                }
-                return rpta.datos;
-              });
-              // SeccionServices.sListarIconos(params).then(function(rpta) {
-              //   vm.listaIconos = rpta.datos;
-              // });
-            }
+            // vm.listarIconos = function(value){
+            //   var params = {
+            //     search: value,
+            //     tipoIcono: vm.fData.tipoIcono
+            //   }
+            //   return SeccionServices.sListarIconosAutocomplete(params).then(function(rpta) {
+            //     $scope.noResultsLPSC = false;
+            //     if( rpta.flag === 0 ){
+            //       $scope.noResultsLPSC = true;
+            //     }
+            //     return rpta.datos;
+            //   });
+            // }
             //vm.listarIconos(vm.fData);
 
             // vm.listarIconos =  arrToModal.scope.listarIconos;
             // vm.lista = vm.listarIconos(vm.fData);
-            console.log('iconos', vm.listaIconos);
+            // console.log('iconos', vm.listaIconos);
 
             vm.modalTitle = 'Registro de Ficha';
 
             vm.fData.idseccioncontenido = seccion.idseccioncontenido;
+            vm.ficha_galeria = seccion.ficha_galeria;
             // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
-            // console.log('seccion',seccion);
+            console.log('seccion',seccion);
             // console.log('data',vm.fData);
             vm.aceptar = function () {
               SeccionServices.sRegistrarFicha(vm.fData).then(function (rpta) {
@@ -289,9 +287,8 @@
             vm.listarFichas = arrToModal.listarFichas;
             vm.modalTitle = 'Editar Ficha';
             vm.seccion = arrToModal.scope.seccion;
-            // vm.fData.idficha = arrToModal.seleccion.idficha;
-            console.log('seccion',vm.seccion);
-            console.log('data',vm.fData);
+            vm.ficha_galeria = item.ficha_galeria;
+            console.log('item',item);
             vm.aceptar = function () {
               SeccionServices.sEditarFicha(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){

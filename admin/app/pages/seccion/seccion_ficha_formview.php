@@ -25,6 +25,16 @@
 	                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              </div>
 	            </div>
+	            <div class="form-group col-md-6" ng-if="mf.ficha_galeria == 'SI'">
+	              	<label for="codigo_vimeo" class="control-label minotaur-label">Código Vimeo </label>
+	              	<input type="text" name="codigo_vimeo" id="codigo_vimeo" class="form-control" ng-model="mf.fData.codigo_vimeo" placeholder="Código Vimeo" >
+
+	            </div>
+	            <div class="form-group col-md-6" ng-if="mf.ficha_galeria == 'SI'">
+	              	<label for="codigo_youtube" class="control-label minotaur-label">Código Youtube </label>
+	              	<input type="text" name="codigo_youtube" id="codigo_youtube" class="form-control" ng-model="mf.fData.codigo_youtube" placeholder="Código Youtube" >
+
+	            </div>
 	            <div class="form-group col-md-3" ng-if="false">
 	            	<label class="control-label minotaur-label">Tipo de Icono  </label>
 	            	<select class="form-control" ng-model="mf.fData.tipoIcono" ng-options="item as item.descripcion for item in mf.listaTiposIconos" ng-change="mf.fData.icono = null" required > </select>

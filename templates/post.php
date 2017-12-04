@@ -1,7 +1,7 @@
 <div id="page-content">
 	<div class="container">
         <div class="row">
-			<div class="col-md-offset-1 col-md-10">
+			<div class="col-md-offset-1 col-md-10 mt">
                 <div class="blog-article">
 					<div class="blog-article-thumbnail">
 						<img ng-src="{{bp.fData.imagen}}" alt="">
@@ -28,7 +28,7 @@
 							<ng-gallery images="bp.slides"></ng-gallery>
 
 			        </div>
-					<div class="blog-article-content" ng-if="bp.fData.codigo_youtube">
+					<div class="blog-article-content embed-responsive embed-responsive-16by9" ng-if="bp.fData.codigo_youtube">
 	                	<youtube-video video-id="bp.fData.codigo_youtube"></youtube-video>
 					</div>
 
