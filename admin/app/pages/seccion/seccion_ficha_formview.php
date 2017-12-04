@@ -19,11 +19,9 @@
 	              </div>
 	            </div>
 	            <div class="form-group col-md-12">
-	              <label for="descripcion_corta" class="control-label minotaur-label">Descripción Corta <small class="text-red">(*)</small> </label>
-	              <input type="text" name="descripcion_corta" id="descripcion_corta" class="form-control" ng-model="mf.fData.descripcion_corta" placeholder="Registre descripcion_corta" required>
-	              <div ng-messages="formSeccionFicha.descripcion_corta.$error" ng-if="formSeccionFicha.descripcion_corta.$dirty" role="alert" class="help-block text-red">
-	                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-	              </div>
+	              <label for="descripcion_corta" class="control-label minotaur-label">Descripción Corta </label>
+	              <input type="text" name="descripcion_corta" id="descripcion_corta" class="form-control" ng-model="mf.fData.descripcion_corta" placeholder="Registre descripcion_corta">
+
 	            </div>
 	            <div class="form-group col-md-6" ng-if="mf.ficha_galeria == 'SI'">
 	              	<label for="codigo_vimeo" class="control-label minotaur-label">Código Vimeo </label>
@@ -64,7 +62,7 @@
 		        </div>
 
 	    		<div class="form-group col-md-12">
-		            <label class="control-label minotaur-label">Contenido <small class="text-red">(*)</small> </label>
+		            <label class="control-label minotaur-label">Contenido </label>
 		            <text-angular ng-model="mf.fData.descripcion_fi"
 		            ta-toolbar="[
 			            ['h1','h2','h3'],
