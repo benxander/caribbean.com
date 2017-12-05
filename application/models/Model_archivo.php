@@ -26,7 +26,7 @@ class Model_archivo extends CI_Model {
 		$this->db->join('tipo_producto tp','tp.idtipoproducto = arc.idtipoproducto');
 		$this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->where('arc.estado_arc', 1);
-		$this->db->where('arc.descargado', 2);
+		//s$this->db->where('arc.descargado', 2);
 		$this->db->where('arc.idusuario', $pDatos['idusuario']);
 		return $this->db->get()->result_array();
 	}

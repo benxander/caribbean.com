@@ -14,7 +14,7 @@ class Model_acceso extends CI_Model {
 		// $this->db->where('us.password', $data['clave'] );
 		$this->db->where('us.password', hash('md5',$data['clave']));
 		$this->db->where('us.estado_us <>', '0');
-		$this->db->group_by('us.idusuario');
+		$this->db->group_by('us.idusuario, us.estado_us, us.username, us.idgrupo, gr.nombre_gr, gr.key_grupo, ididioma, us.nombre_foto,cli.monedero');
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}

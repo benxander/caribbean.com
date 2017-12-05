@@ -14,7 +14,6 @@ class Archivo extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_descargados($allInputs);
 		$arrListado = array();
-		//var_dump($lista); exit();
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
@@ -32,8 +31,9 @@ class Archivo extends CI_Controller {
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
-					'src_share' => base_url().'caribbean.com/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
-					'title' => '',
+					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
+					//'src_share' => "http://www.unaisangamer.com/uploads/clientes/23121970/descargadas/2oBv2IaekK.jpg",
+					'title' => ''
 				)
 			);
 		}
@@ -55,6 +55,11 @@ class Archivo extends CI_Controller {
 		$arrListado = array();
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
+			if($row['descargado'] == 1){
+				$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
+			}else{
+				$src = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
+			}
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
@@ -72,7 +77,7 @@ class Archivo extends CI_Controller {
 					'precio' => $row['precio'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
-					'src' => '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'],
+					'src' => $src,
 					'title' => '',
 				)
 			);
