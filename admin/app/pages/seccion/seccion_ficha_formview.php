@@ -23,14 +23,22 @@
 	              <input type="text" name="descripcion_corta" id="descripcion_corta" class="form-control" ng-model="mf.fData.descripcion_corta" placeholder="Registre descripcion_corta">
 
 	            </div>
-	            <div class="form-group col-md-6" ng-if="mf.ficha_galeria == 'SI'">
+	            <div class="form-group col-md-4" ng-if="mf.ficha_galeria == 'SI'">
 	              	<label for="codigo_vimeo" class="control-label minotaur-label">Código Vimeo </label>
 	              	<input type="text" name="codigo_vimeo" id="codigo_vimeo" class="form-control" ng-model="mf.fData.codigo_vimeo" placeholder="Código Vimeo" >
 
 	            </div>
-	            <div class="form-group col-md-6" ng-if="mf.ficha_galeria == 'SI'">
+	            <div class="form-group col-md-4" ng-if="mf.ficha_galeria == 'SI'">
 	              	<label for="codigo_youtube" class="control-label minotaur-label">Código Youtube </label>
 	              	<input type="text" name="codigo_youtube" id="codigo_youtube" class="form-control" ng-model="mf.fData.codigo_youtube" placeholder="Código Youtube" >
+
+	            </div>
+	             <div class="form-group col-md-4" ng-if="mf.ficha_galeria == 'SI'" ng-class="{ 'has-error' : formSeccionFicha.website.$invalid && !formSeccionFicha.website.$pristine, 'has-success' : formSeccionFicha.website.$valid && !formSeccionFicha.website.$pristine}">
+	              	<label for="website" class="control-label minotaur-label">Sitio Web </label>
+	              	<input type="text" name="website" id="website" class="form-control" ng-model="mf.fData.website"  placeholder="http://" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/" ng-model-options="{ updateOn: 'blur' }" >
+	              	<div ng-messages="formSeccionFicha.website.$error" ng-if="formSeccionFicha.website.$dirty" role="alert" class="help-block text-red">
+		                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+		            </div>
 
 	            </div>
 	            <div class="form-group col-md-3" ng-if="false">

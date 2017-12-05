@@ -5,10 +5,17 @@
 	<section class="tile-body p-0">
 		<form name="formBlog" role="form" novalidate class="form-validation">
 		    <div class="row">
-		    	<div class="form-group col-md-12">
+		    	<div class="form-group col-md-7">
 		    		<label for="titulo" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="titulo" id="titulo" class="form-control" ng-model="mb.fData.titulo" placeholder="Registre titulo" required>
 	              	<div ng-messages="formBlog.titulo.$error" ng-if="formBlog.titulo.$dirty" role="alert" class="help-block text-red">
+	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+	              	</div>
+	            </div>
+	            <div class="form-group col-md-5">
+		    		<label for="autor" class="control-label minotaur-label">Autor <small class="text-red">(*)</small> </label>
+	              	<input type="text" name="autor" id="autor" class="form-control" ng-model="mb.fData.autor" placeholder="Registre autor" required>
+	              	<div ng-messages="formBlog.autor.$error" ng-if="formBlog.autor.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
@@ -29,13 +36,6 @@
                 </div>
                 <div class="form-group col-md-5">
                 	<div class="row">
-	                	<div class="form-group col-md-12">
-			              	<label for="autor" class="control-label minotaur-label">Autor <small class="text-red">(*)</small> </label>
-			              	<input type="text" name="autor" id="autor" class="form-control" ng-model="mb.fData.autor" placeholder="Registre autor" required>
-			              	<div ng-messages="formBlog.autor.$error" ng-if="formBlog.autor.$dirty" role="alert" class="help-block text-red">
-			                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-			              	</div>
-			            </div>
 			            <div class="form-group col-md-12">
 			              	<label for="fecha" class="control-label minotaur-label">Fecha <small class="text-red">(*)</small> </label>
 			                <div class="input-group w-md">
@@ -56,20 +56,27 @@
 			              	<input type="text" name="codigo_youtube" id="codigo_youtube" class="form-control" ng-model="mb.fData.codigo_youtube" placeholder="Código Youtube" >
 
 			            </div>
+	                	<div class="form-group col-md-12" ng-class="{ 'has-error' : formBlog.website.$invalid && !formBlog.website.$pristine, 'has-success' : formBlog.website.$valid && !formBlog.website.$pristine}">
+			              	<label for="website" class="control-label minotaur-label">Sitio Web</label>
+			              	<input type="text" name="website" id="website" class="form-control" ng-model="mb.fData.website"  placeholder="http://" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/" ng-model-options="{ updateOn: 'blur' }" >
+			              	<div ng-messages="formBlog.website.$error" ng-if="formBlog.website.$dirty" role="alert" class="help-block text-red">
+				                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+				            </div>
+			            </div>
                 	</div>
                 </div>
 			</div>
 
 		    <div class="row">
 	    		<div class="form-group col-md-12">
-		            <label class="control-label minotaur-label">Contenido</label>
+		            <label class="control-label minotaur-label">Contenido <small class="text-red">(*)</small> </label>
 		            <text-angular ng-model="mb.fData.descripcion"
 		            ta-toolbar="[
 			            ['h1','h2','h3'],
 			            ['bold','italics','underline'],
 			            ['justifyLeft','justifyCenter','justifyRight'],
 			            ['ul','ol'], ['redo', 'undo'],['wordcount', 'charcount']
-		            ]"></text-angular>
+		            ]" required></text-angular>
 	            </div>
 	    	</div>
 

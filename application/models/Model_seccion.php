@@ -73,7 +73,7 @@ class Model_seccion extends CI_Model {
 		$this->db->select('se.idseccion, se.descripcion_se AS seccion, sc.titulo, sc.subtitulo');
 		$this->db->select('sc.idseccioncontenido, sc.contenido, sc.tiene_boton, sc.nombre_boton, sc.enlace_boton, sc.ficha_galeria');
 		$this->db->select('sc.acepta_imagen, sc.imagen, sc.acepta_background, sc.imagen_bg, sc.acepta_ficha');
-		$this->db->select('idficha, titulo_fi, descripcion_corta, descripcion_fi, icono_fi, codigo_youtube, codigo_vimeo');
+		$this->db->select('idficha, titulo_fi, descripcion_corta, descripcion_fi, icono_fi, codigo_youtube, codigo_vimeo, website');
 
 		$this->db->from('seccion se');
 		$this->db->join('seccion_contenido sc','se.idseccion = sc.idseccion');
@@ -88,7 +88,7 @@ class Model_seccion extends CI_Model {
 		return $this->db->update('seccion_contenido', $data);
 	}
 	public function m_cargar_fichas_por_seccion($datos)	{
-		$this->db->select('fi.idficha, fi.idseccioncontenido, fi.titulo_fi, fi.descripcion_corta, fi.descripcion_fi, fi.icono_fi, fi.codigo_vimeo, fi.codigo_youtube, sc.ficha_galeria');
+		$this->db->select('fi.idficha, fi.idseccioncontenido, fi.titulo_fi, fi.descripcion_corta, fi.descripcion_fi, fi.icono_fi, fi.codigo_vimeo, fi.codigo_youtube, sc.ficha_galeria, fi.website');
 		$this->db->from('ficha fi');
 		$this->db->join('seccion_contenido sc', 'fi.idseccioncontenido = sc.idseccioncontenido');
 		$this->db->where("fi.estado_fi",1);

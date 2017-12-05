@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Seccion extends CI_Controller {
 	public function __construct(){
@@ -217,6 +216,7 @@ class Seccion extends CI_Controller {
 									'titulo' => $row['titulo_fi'],
 									'descripcion_corta' => $row['descripcion_corta'],
 									'descripcion' => $row['descripcion_fi'],
+									'website' => $row['website'],
 									'clase' => $row['icono_fi'],
 									'ficha_galeria' => $row['ficha_galeria'],
 									'codigo_youtube' => empty($row['codigo_youtube']) ? NULL : $row['codigo_youtube'],
@@ -347,6 +347,7 @@ class Seccion extends CI_Controller {
     		'descripcion_fi' => $allInputs['descripcion_fi'],
     		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
 			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
+			'website' => empty($allInputs['website']) ? NULL : $allInputs['website'],
     		'icono_fi' => 'halcyon-icon-photos',
     	);
 		if( $this->model_seccion->m_registrar_ficha($data) ){
@@ -378,6 +379,8 @@ class Seccion extends CI_Controller {
     		'descripcion_fi' => $allInputs['descripcion_fi'],
     		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
 			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
+			'website' => empty($allInputs['website']) ? NULL : $allInputs['website'],
+
     	);
 
 		if( $this->model_seccion->m_editar_ficha($data,$allInputs['idficha']) ){

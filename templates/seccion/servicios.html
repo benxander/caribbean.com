@@ -72,6 +72,8 @@
 						<div class="service-box style-4 wow fadeIn" style="height: 180px;">
 							<i class="{{item.clase}}"></i>
 							<h6 style="color: #FFF"><a href="#ficha{{::item.idficha}}" fancybox >{{::item.titulo}}</a></h6>
+							<div class="col-sm-6" style="height: 90px;overflow: hidden;"><img ng-src="{{item.imagenes[0].thumb}}" alt=""></div>
+
 							<div class="service-box-content">
 								{{item.descripcion_corta}}
 							</div><!-- service-box-content -->

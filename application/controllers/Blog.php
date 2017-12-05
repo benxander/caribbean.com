@@ -152,7 +152,7 @@ class Blog extends CI_Controller {
 			'imagen' => $ruta .$lista[0]['imagen'],
 			'codigo_youtube' => empty($lista[0]['codigo_youtube']) ? NULL : $lista[0]['codigo_youtube'],
 			'codigo_vimeo' => empty($lista[0]['codigo_vimeo']) ? NULL : $lista[0]['codigo_vimeo'],
-			// 'codigo_vimeo' => '245013786',
+			'website' => empty($lista[0]['website']) ? NULL : $lista[0]['website'],
 			'posts' => array()
 		);
 
@@ -259,11 +259,12 @@ class Blog extends CI_Controller {
 		// data
     	$data = array(
 
-    		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
-    		'descripcion' => $allInputs['descripcion'],
+    		'titulo' => trim(strtoupper_total($allInputs['titulo'])),
+    		'descripcion' =>$allInputs['descripcion'],
     		'autor' => $allInputs['autor'],
-    		'codigo_youtube' => $allInputs['codigo_youtube'],
-    		'codigo_vimeo' => $allInputs['codigo_vimeo'],
+    		'codigo_youtube' => empty($allInputs['codigo_youtube'])? NULL : $allInputs['codigo_youtube'],
+    		'codigo_vimeo' => empty($allInputs['codigo_vimeo'])? NULL : $allInputs['codigo_vimeo'],
+    		'website' => empty($allInputs['website'])? NULL : $allInputs['website'],
     		'imagen' => $nombre,
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
@@ -285,10 +286,11 @@ class Blog extends CI_Controller {
     	// data
     	$data = array(
 
-    		'titulo' => empty($allInputs['titulo'])? NULL : trim(strtoupper_total($allInputs['titulo'])),
+    		'titulo' => trim(strtoupper_total($allInputs['titulo'])),
     		'descripcion' => $allInputs['descripcion'],
-    		'codigo_youtube' => $allInputs['codigo_youtube'],
-    		'codigo_vimeo' => $allInputs['codigo_vimeo'],
+    		'codigo_youtube' => empty($allInputs['codigo_youtube'])? NULL : $allInputs['codigo_youtube'],
+    		'codigo_vimeo' => empty($allInputs['codigo_vimeo'])? NULL : $allInputs['codigo_vimeo'],
+    		'website' => empty($allInputs['website'])? NULL : $allInputs['website'],
     		'autor' => $allInputs['autor'],
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     		// 'fecha' => date('Y-m-d H:i:s'),
