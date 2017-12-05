@@ -108,9 +108,10 @@
       console.log('actualizarSaldo',monto);
       console.log('fSessionCI.monedero',$scope.fSessionCI.monedero);
       if(isSel){
-        $scope.fSessionCI.monedero = parseInt($scope.fSessionCI.monedero) - parseInt(monto);
+        $scope.saldo = parseInt($scope.saldo) - parseInt(monto);
+      }else{
+        $scope.saldo = $scope.fSessionCI.monedero;
       }
-      $scope.saldo = $scope.fSessionCI.monedero;
       
     }
     vm.changeLanguage = function (langKey) {

@@ -80,19 +80,21 @@
       var i=0;
       angular.forEach(vm.images, function(image) {
         image.selected = vm.selectedAll;
-        if(vm.isSelected){
-          monto = monto + image.precio_float;
-
-          if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
-            vm.isPagoMonedero = true;
-            $scope.actualizarSaldo(true,vm.monto);
-          }
-          i++;
+        monto = monto + image.precio_float;
+        if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
+          vm.isPagoMonedero = true;
+          $scope.actualizarSaldo(true,vm.monto);
         }
+        i++;
       });
       if(i > vm.paqueteSeleccionado.cantidad){ 
-        var cantidad = i - vm.paqueteSeleccionado.cantidad;     
-        $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
+        var cantidad = i - vm.paqueteSeleccionado.cantidad;
+        if(vm.isSelected){     
+          $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
+        }else{
+          $scope.actualizarSaldo(true,'-'+(cantidad * vm.precio_adicional));
+          i=0;
+        }
       }
       $scope.actualizarSeleccion(i,vm.monto);
       vm.monto_total = monto.toFixed(2);
@@ -226,8 +228,12 @@
         image.selected = false;
       });
       vm.monto_total = 0.00;
-      vm.modoSeleccionar=true;
-      vm.modoPagar=false;
+      vm.modoSeleccionar = true;
+      vm.modoPagar = false;
+      vm.selectedAll = false;
+      vm.isPagoMonedero = false;
+      $scope.actualizarSeleccion(0,0);
+      $scope.actualizarSaldo(false);
     }
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;

@@ -114,7 +114,7 @@
                     <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                       <i class="fa fa-search"></i>
                     </a>
-                    <a class="img-select" ng-if="image.selected" href="javascript:;" ng-click="ctrl.btnPedidos($index)" uib-tooltip="Merchandising" tooltip-placement="top">
+                    <a class="img-select" ng-if="image.selected || image.descargado == 1" href="javascript:;" ng-click="ctrl.btnPedidos($index)" uib-tooltip="Merchandising" tooltip-placement="top">
                       <i class="fa fa-gift"></i>
                     </a>
                   </div>
