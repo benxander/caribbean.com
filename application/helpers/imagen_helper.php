@@ -236,6 +236,33 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
     imagedestroy($image_p);
     imagedestroy($watermark);
 }
+function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
+    // el archivo o imagen
+    $filename = $file_tmp;
+    // Asignar el ancho y alto maximos
+    $width = $maxsize;
+    $height = $maxsize;
+    // mandando las cabeceras correspondientes
+    header('Content-type: image/jpeg');
+
+    // obteniendo las dimensiones actuales
+    list($width_orig, $height_orig) = getimagesize($filename);
+    if ($width && ($width_orig < $height_orig)) {
+        $width = ($height / $height_orig) * $width_orig;
+    } else {
+        $height = ($width / $width_orig) * $height_orig;
+    }
+
+    // Cambiando el tamano de la imagen o resample
+    $image = imagecreatefromjpeg($filename);
+    $image_p = imagecreatetruecolor($width, $height);
+    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+     // Salida
+    imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+    imagedestroy($image);
+    imagedestroy($image_p);
+}
 
 function imagenVideo($file_name, $name, $carpeta_destino){
 
@@ -335,6 +362,10 @@ function createCarpetaBlog($carpeta){
     if (!file_exists($carpeta)) {
         mkdir($carpeta, 0777, true);
         file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+    if (!file_exists($carpeta . DIRECTORY_SEPARATOR .'thumbs')) {
+        mkdir($carpeta . DIRECTORY_SEPARATOR . 'thumbs', 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR . 'thumbs'. DIRECTORY_SEPARATOR .'index.html', $contenido);
     }
 
 }

@@ -216,9 +216,10 @@ class Blog extends CI_Controller {
 		$i = 0;
 		foreach ($lista as $row) {
 			$src_image_web = 'uploads/blog/'.$row['idblog'].'/'.$row['imagen'];
+			$src_thumb_web = 'uploads/blog/'.$row['idblog'].'/thumbs/'.$row['imagen'];
 			array_push($arrListado,
 				array(
-					'thumb' => $src_image_web,
+					'thumb' => $src_thumb_web,
 					'img'=>$src_image_web,
 				)
 			);
@@ -370,8 +371,8 @@ class Blog extends CI_Controller {
 			    if(in_array($file_ext,$extensions_image)){
 
 			    	if($file_size < 10485760){
-						move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
-				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
+						redimenciona(100, $file_tmp, $carpeta. DIRECTORY_SEPARATOR .'thumbs', $file_name);
+			    		redimenciona(800, $file_tmp, $carpeta, $file_name);
 
 						$allInputs = array(
 							'idblog' 	=> $idblog,

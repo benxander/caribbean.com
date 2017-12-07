@@ -144,29 +144,22 @@
 	        hideThumbsOnMobile: "off",
 	      };
 	    // SECCION BLOG
-	      // $scope.verBlog = function(){
-	      //   $scope.pageInicio = false;
-	      //   $scope.ruta = 'templates/blog.php';
-	      //   $("html, body").animate({
-	      //         scrollTop: 0
-	      //     }, 800, 'linear');
-	      // }
-	      if( $location.path() == '/' ){
-	        var paramDatos = {
-	          'limit': 3,
-	          'sortName': 'fecha',
-	          'sort' : 'DESC'
-	        }
-	        BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
-	          if(rpta.flag == 1){
-	            vm.listaNoticiasSec = rpta.datos;
-	            console.log(vm.listaNoticiasSec);
+		    if( $location.path() == '/' ){
+		        var paramDatos = {
+		          'limit': 3,
+		          'sortName': 'fecha',
+		          'sort' : 'DESC'
+		        }
+		        BlogServices.sCargarNoticiasSeccion(paramDatos).then(function (rpta) {
+		          if(rpta.flag == 1){
+		            vm.listaNoticiasSec = rpta.datos;
+		            console.log(vm.listaNoticiasSec);
 
-	          }else{
-	            console.log('no data');
-	          }
-	        });
-	      }
+		          }else{
+		            console.log('no data');
+		          }
+		        });
+		    }
 	    // SECCION CONTACTO
 		    $scope.captchaValido = false;
 		    window.recaptchaResponse = function(token) {

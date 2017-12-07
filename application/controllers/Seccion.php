@@ -198,7 +198,7 @@ class Seccion extends CI_Controller {
 							$arrFotos = array();
 							foreach ($listaFotos as $foto) {
 								array_push($arrFotos, array(
-									'thumb' => 'uploads/ficha/'.$row['idficha'].'/'.$foto['imagen'],
+									'thumb' => 'uploads/ficha/'.$row['idficha'].'/thumbs/'.$foto['imagen'],
 									'img'=>'uploads/ficha/'.$row['idficha'].'/'.$foto['imagen'],
 									)
 								);
@@ -434,7 +434,9 @@ class Seccion extends CI_Controller {
 			    if(in_array($file_ext,$extensions_image)){
 
 			    	if($file_size < 10485760){
-						move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+			    		redimenciona(100, $file_tmp, $carpeta. DIRECTORY_SEPARATOR .'thumbs', $file_name);
+			    		redimenciona(800, $file_tmp, $carpeta, $file_name);
+						// move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
 						$allInputs = array(
 							'idficha' 	=> $idficha,
 							'imagen'=> $file_name,
