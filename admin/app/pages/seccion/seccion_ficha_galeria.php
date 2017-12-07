@@ -107,7 +107,7 @@
 	                  </li>
 	                </ul>
 	              </div>
-	              <div class="row mix-grid">
+	              <div class="row mix-grid" masonry>
 	                <div class="gallery" ng-mixitup magnific-popup="{
 	                  delegate: 'a.img-preview',
 	                  type: 'image',
@@ -119,7 +119,7 @@
 	                    preload: [0,1]
 	                  }}" >
 
-	                  <div class="col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in mf.images">
+	                  <div class="masonry-brick col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in mf.images">
 	                  <div class="img-container">
 	                    <img class="img-responsive" ng-src="{{image.src_image}}" alt="" >
 	                    <div class="img-details">
