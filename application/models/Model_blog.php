@@ -77,6 +77,14 @@ class Model_blog extends CI_Model {
 	public function m_registrar_imagen($data){
 		return $this->db->insert('blog_imagen', $data);
 	}
+	public function m_eliminar_imagen_blog($data){
+		$datos = array(
+			'estado' => 0
+		);
+		$this->db->where('idblogimagen',$data['idblogimagen']);
+
+		return $this->db->update('blog_imagen', $datos);
+	}
 
 
 

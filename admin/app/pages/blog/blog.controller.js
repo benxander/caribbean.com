@@ -443,53 +443,51 @@
       }
 
       vm.btnAnularArchivo = function(row){
-        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
-            ev.preventDefault();
-            BlogServices.sAnularArchivo(row).then(function (rpta) {
-              if(rpta.flag == 1){
-                vm.getPaginationServerSide();
-                var title = 'OK';
-                var type = 'success';
-                toastr.success(rpta.message, title);
-                vm.cargarImagenes();
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var type = 'warning';
-                toastr.warning(rpta.message, title);
-              }else{
-                alert('Ocurrió un error');
+                alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+                    ev.preventDefault();
+                    BlogServices.sEliminarImagenBlog(row).then(function (rpta) {
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                        vm.cargarImagenes();
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  },
+                  function(ev){
+                    ev.preventDefault();
+                });
               }
-            });
-          },
-          function(ev){
-            ev.preventDefault();
-        });
-      }
 
-      vm.btnDeleteArchivoSelect = function(){
-        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
-            ev.preventDefault();
-            BlogServices.sDeleteArchivoSelect(vm.images).then(function (rpta) {
-              if(rpta.flag == 1){
-                vm.getPaginationServerSide();
-                var title = 'OK';
-                var type = 'success';
-                toastr.success(rpta.message, title);
-                vm.cargarImagenes();
-                vm.isSelected = false;
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var type = 'warning';
-                toastr.warning(rpta.message, title);
-              }else{
-                alert('Ocurrió un error');
+              vm.btnDeleteArchivoSelect = function(){
+                alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+                    ev.preventDefault();
+                    BlogServices.sEliminarImagenesBlog(vm.images).then(function (rpta) {
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                        vm.cargarImagenes();
+                        vm.isSelected = false;
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  },
+                  function(ev){
+                    ev.preventDefault();
+                });
               }
-            });
-          },
-          function(ev){
-            ev.preventDefault();
-        });
-      }
 
       vm.cargarImagenes = function(datos){
         BlogServices.sListarImagenesBlog(vm.fDataUpload).then(function(rpta){
@@ -612,6 +610,8 @@
         sEditarNoticia: sEditarNoticia,
         sAnularNoticia: sAnularNoticia,
         sListarImagenesBlog: sListarImagenesBlog,
+        sEliminarImagenBlog: sEliminarImagenBlog,
+        sEliminarImagenesBlog: sEliminarImagenesBlog,
     });
     function sListarNoticias(pDatos) {
       var datos = pDatos || {};
@@ -654,6 +654,24 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Blog/cargar_imagenes_blog",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarImagenBlog(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Blog/eliminar_imagen_blog",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarImagenesBlog(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Blog/eliminar_imagenes_blog",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

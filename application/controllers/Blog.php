@@ -404,5 +404,43 @@ class Blog extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function eliminar_imagen_blog(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if($this->model_blog->m_eliminar_imagen_blog($allInputs)){
+			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'blog' . DIRECTORY_SEPARATOR . $allInputs['idblog'];
+			unlink($carpeta.DIRECTORY_SEPARATOR.explode(".", $allInputs['imagen'])[0].'.jpg');
+
+			$arrData['message'] = 'Se eliminaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function eliminar_imagenes_blog(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'blog' . DIRECTORY_SEPARATOR;
+
+    	foreach ($allInputs as $key => $value) {
+    		if($value['selected']){
+    			if($this->model_blog->m_eliminar_imagen_blog($value)){
+    				unlink($carpeta.$value['idblog'].DIRECTORY_SEPARATOR.$value['imagen']);
+
+					$arrData['message'] = 'Se eliminaron los datos correctamente';
+		    		$arrData['flag'] = 1;
+				}
+    		}
+    	}
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 }
