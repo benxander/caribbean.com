@@ -7294,3 +7294,6 @@ body{top:0px!important;}
 .tacos_azules img{
 	max-height: 100%;
 }
+.tacos_azules .service-box-content{
+	line-height: 18px;
+}

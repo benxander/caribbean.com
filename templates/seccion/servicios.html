@@ -72,14 +72,14 @@
 						<div class="service-box style-4 wow fadeIn" style="height: 180px;">
 							<i class="{{item.clase}}"></i>
 							<h6 style="color: #FFF"><a href="#ficha{{::item.idficha}}" fancybox >{{::item.titulo}}</a></h6>
-							<div class="col-sm-6" style="height: 90px;overflow: hidden;" ng-if="item.imagenes.length > 0"><img ng-src="{{item.imagenes[0].thumb}}" alt=""></div>
-							<div class="col-sm-6 text-center" style="height: 90px;" ng-if="item.imagenes.length <= 0 && item.codigo_youtube">
+							<div class="col-sm-5" style="height: 90px;overflow: hidden;" ng-if="item.imagenes.length > 0"><img ng-src="{{item.imagenes[0].thumb}}" alt=""></div>
+							<div class="col-sm-5 text-center" style="height: 90px;" ng-if="item.imagenes.length <= 0 && item.codigo_youtube">
 								<a href="#ficha{{::item.idficha}}" fancybox >
 									<i class="halcyon-icon-play-button-1 video_icono"></i>
 									<img ng-src="https://img.youtube.com/vi/{{item.codigo_youtube}}/hqdefault.jpg" alt="">
 								</a>
 							</div>
-							<div class="col-sm-6 text-center" style="height: 90px;" ng-if="item.imagenes.length <= 0 && item.codigo_vimeo">
+							<div class="col-sm-5 text-center" style="height: 90px;" ng-if="item.imagenes.length <= 0 && item.codigo_vimeo">
 								<a href="#ficha{{::item.idficha}}" fancybox >
 									<i class="halcyon-icon-play-button-1 video_icono"></i>
 									<img ng-src="{{item.img_vimeo}}" alt="">
