@@ -220,6 +220,7 @@ class Seccion extends CI_Controller {
 									'descripcion_corta' => $row['descripcion_corta'],
 									'descripcion' => $row['descripcion_fi'],
 									'website' => $row['website'],
+									'texto_link' => $row['texto_link'],
 									'clase' => $row['icono_fi'],
 									'ficha_galeria' => $row['ficha_galeria'],
 									'codigo_youtube' => empty($row['codigo_youtube']) ? NULL : $row['codigo_youtube'],
@@ -352,6 +353,7 @@ class Seccion extends CI_Controller {
     		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
 			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
 			'website' => empty($allInputs['website']) ? NULL : $allInputs['website'],
+			'texto_link' => empty($allInputs['texto_link']) ? NULL : $allInputs['texto_link'],
     		'icono_fi' => 'halcyon-icon-photos',
     	);
 		if( $this->model_seccion->m_registrar_ficha($data) ){
@@ -384,6 +386,7 @@ class Seccion extends CI_Controller {
     		'codigo_youtube' => empty($allInputs['codigo_youtube']) ? NULL : $allInputs['codigo_youtube'],
 			'codigo_vimeo' => empty($allInputs['codigo_vimeo']) ? NULL : $allInputs['codigo_vimeo'],
 			'website' => empty($allInputs['website']) ? NULL : $allInputs['website'],
+			'texto_link' => empty($allInputs['texto_link']) ? NULL : $allInputs['texto_link'],
 
     	);
 
