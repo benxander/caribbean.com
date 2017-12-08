@@ -49,10 +49,21 @@
           vm.listaPaquetes[key].selected = true;
           vm.paqueteSeleccionado = paquete;
           vm.monto = paquete.monto;
+          vm.actualizaMontoPaquete();
         }else{
           vm.listaPaquetes[key].selected = false;
         }
       });
+    }
+    vm.actualizaMontoPaquete =  function(){
+      if(vm.isPagoMonedero){
+        $scope.actualizarSaldo(false);
+        $scope.actualizarSaldo(true,vm.monto);
+        if($scope.seleccionadas > vm.paqueteSeleccionado.cantidad){ 
+          var cantidad = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+          $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
+        }
+      }
     }
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
@@ -85,7 +96,9 @@
           vm.isPagoMonedero = true;
           $scope.actualizarSaldo(true,vm.monto);
         }
-        i++;
+        if(image.descargado == 2){
+          i++;
+        }
       });
       if(i > vm.paqueteSeleccionado.cantidad){ 
         var cantidad = i - vm.paqueteSeleccionado.cantidad;
