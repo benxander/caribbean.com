@@ -1,9 +1,9 @@
 <div id="page-content">
 	<div class="container">
         <div class="row">
-			<div class="col-md-offset-1 col-md-10 mt">
+			<div class="col-md-offset-1 col-md-10 mt-xxl">
                 <div class="blog-article">
-					<div class="blog-article-thumbnail">
+					<div class="blog-article-thumbnail mt-xxl">
 						<img ng-src="{{bp.fData.imagen}}" alt="">
 					</div><!-- blog-article-thumbnail -->
 					<a class="date" href="#">{{bp.fData.dia}} <small>{{bp.fData.mes}}</small></a>
