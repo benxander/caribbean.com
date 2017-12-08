@@ -196,6 +196,7 @@ class Seccion extends CI_Controller {
 						if($row['ficha_galeria'] == 'SI'){
 							$listaFotos = $this->model_seccion->m_cargar_imagenes_ficha($row);
 							$arrFotos = array();
+
 							foreach ($listaFotos as $foto) {
 								array_push($arrFotos, array(
 									'thumb' => 'uploads/ficha/'.$row['idficha'].'/thumbs/'.$foto['imagen'],
@@ -220,7 +221,7 @@ class Seccion extends CI_Controller {
 									'descripcion_corta' => $row['descripcion_corta'],
 									'descripcion' => $row['descripcion_fi'],
 									'website' => $row['website'],
-									'texto_link' => $row['texto_link'],
+									'texto_link' => empty($row['texto_link'])?'Visita el sitio web':$row['texto_link'],
 									'clase' => $row['icono_fi'],
 									'ficha_galeria' => $row['ficha_galeria'],
 									'codigo_youtube' => empty($row['codigo_youtube']) ? NULL : $row['codigo_youtube'],

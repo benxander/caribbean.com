@@ -9,7 +9,7 @@
 		<ng-gallery images="item.imagenes"></ng-gallery>
 	</div>
 	<div ng-if="item.ficha_galeria == 'SI'">
-		<a class="btn btn-mini btn-default-2 waves mt-lg mb-lg" ng-href="{{item.website}}" target="_blank" >{{item.texto_link}}</a>
+		<a class="btn btn-mini btn-default-2 waves mt-lg mb-lg" ng-href="{{item.website}}" target="_blank" ng-if="item.website">{{item.texto_link}}</a>
 
 
 		<div class="blog-article-content embed-responsive embed-responsive-16by9" ng-if="item.codigo_youtube">
