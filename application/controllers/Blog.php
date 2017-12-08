@@ -134,14 +134,11 @@ class Blog extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 
 		$lista = $this->model_blog->m_cargar_post_blog($allInputs);
+		// $lista = $this->model_blog->m_cargar_noticias();
+
 		$arrListado = array();
 		$ruta = 'uploads/blog/';
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-		// if(!empty($lista[0]['codigo_youtube'])){
-		// 	$enlace = 'https://www.youtube.com/embed/' . explode('=', $lista[0]['codigo_youtube'])[1];
-		// }else{
-		// 	$enlace = NULL;
-		// }
 		$arrListado = array(
 			'idblog' => $lista[0]['idblog'],
 			'titulo' => $lista[0]['titulo'],
@@ -153,6 +150,7 @@ class Blog extends CI_Controller {
 			'codigo_youtube' => empty($lista[0]['codigo_youtube']) ? NULL : $lista[0]['codigo_youtube'],
 			'codigo_vimeo' => empty($lista[0]['codigo_vimeo']) ? NULL : $lista[0]['codigo_vimeo'],
 			'website' => empty($lista[0]['website']) ? NULL : $lista[0]['website'],
+			'texto_link' => empty($lista[0]['texto_link']) ? 'Visita el sitio Web' : $lista[0]['texto_link'],
 			'posts' => array()
 		);
 
@@ -266,6 +264,7 @@ class Blog extends CI_Controller {
     		'codigo_youtube' => empty($allInputs['codigo_youtube'])? NULL : $allInputs['codigo_youtube'],
     		'codigo_vimeo' => empty($allInputs['codigo_vimeo'])? NULL : $allInputs['codigo_vimeo'],
     		'website' => empty($allInputs['website'])? NULL : $allInputs['website'],
+    		'texto_link' => empty($allInputs['texto_link'])? NULL : $allInputs['texto_link'],
     		'imagen' => $nombre,
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     	);
@@ -292,6 +291,7 @@ class Blog extends CI_Controller {
     		'codigo_youtube' => empty($allInputs['codigo_youtube'])? NULL : $allInputs['codigo_youtube'],
     		'codigo_vimeo' => empty($allInputs['codigo_vimeo'])? NULL : $allInputs['codigo_vimeo'],
     		'website' => empty($allInputs['website'])? NULL : $allInputs['website'],
+    		'texto_link' => empty($allInputs['texto_link'])? NULL : $allInputs['texto_link'],
     		'autor' => $allInputs['autor'],
     		'fecha' => date('Y-m-d',strtotime($allInputs['fecha']))
     		// 'fecha' => date('Y-m-d H:i:s'),
@@ -420,7 +420,6 @@ class Blog extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function eliminar_imagenes_blog(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
