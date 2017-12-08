@@ -206,9 +206,12 @@ class Seccion extends CI_Controller {
 							if(!empty($row['codigo_vimeo'])){
 								$codigo_vimeo = $row['codigo_vimeo'];
 								$html_vimeo = '<iframe src="https://player.vimeo.com/video/'.$codigo_vimeo.'" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+								$hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$codigo_vimeo.".php"));
+								$img_vimeo =  $hash[0]['thumbnail_medium'];
 							}else{
 								$codigo_vimeo = NULL;
 								$html_vimeo = NULL;
+								$img_vimeo = NULL;
 							}
 							array_push($arrAux,
 								array(
@@ -223,6 +226,7 @@ class Seccion extends CI_Controller {
 									'codigo_vimeo' => $codigo_vimeo,
 									'html_vimeo' => $html_vimeo,
 									'imagenes' => $arrFotos,
+									'img_vimeo' => $img_vimeo,
 								)
 							);
 						}else{

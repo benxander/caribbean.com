@@ -75,7 +75,7 @@
 			            ['h1','h2','h3'],
 			            ['bold','italics','underline'],
 			            ['justifyLeft','justifyCenter','justifyRight'],
-			            ['ul','ol'], ['redo', 'undo'],['wordcount', 'charcount']
+			            ['ul','ol'], ['redo', 'undo'],['html','insertVideo','wordcount', 'charcount']
 		            ]" required></text-angular>
 	            </div>
 	    	</div>
