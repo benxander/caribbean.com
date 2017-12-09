@@ -56,8 +56,13 @@
 			              	<input type="text" name="codigo_youtube" id="codigo_youtube" class="form-control" ng-model="mb.fData.codigo_youtube" placeholder="Código Youtube" >
 
 			            </div>
+			            <div class="form-group col-md-12">
+			              	<label for="texto_link" class="control-label minotaur-label">Texto Link Externo </label>
+			              	<input type="text" name="texto_link" id="texto_link" class="form-control" ng-model="mb.fData.texto_link" placeholder="Texto Link" >
+
+			            </div>
 	                	<div class="form-group col-md-12" ng-class="{ 'has-error' : formBlog.website.$invalid && !formBlog.website.$pristine, 'has-success' : formBlog.website.$valid && !formBlog.website.$pristine}">
-			              	<label for="website" class="control-label minotaur-label">Sitio Web</label>
+			              	<label for="website" class="control-label minotaur-label">Link Externo</label>
 			              	<input type="text" name="website" id="website" class="form-control" ng-model="mb.fData.website"  placeholder="http://" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/" ng-model-options="{ updateOn: 'blur' }" >
 			              	<div ng-messages="formBlog.website.$error" ng-if="formBlog.website.$dirty" role="alert" class="help-block text-red">
 				                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>

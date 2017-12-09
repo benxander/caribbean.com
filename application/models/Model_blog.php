@@ -23,6 +23,8 @@ class Model_blog extends CI_Model {
 			if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
+		}else{
+			$this->db->order_by('fecha','DESC');
 		}
 		return $this->db->get()->result_array();
 	}

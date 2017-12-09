@@ -10,8 +10,7 @@ class Blog extends CI_Controller {
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_blog'));
     }
-	public function listar_noticias()
-	{
+	public function listar_noticias(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
 		$lista = $this->model_blog->m_cargar_noticias($paramPaginate);
@@ -134,7 +133,25 @@ class Blog extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 
 		$lista = $this->model_blog->m_cargar_post_blog($allInputs);
-		// $lista = $this->model_blog->m_cargar_noticias();
+		$listaNoticias = $this->model_blog->m_cargar_noticias();
+
+		$previo = NULL;
+		$next = NULL;
+		$cantidad = count($listaNoticias);
+		// var_dump($listaNoticias);
+		for ($i=0; $i < $cantidad; $i++) {
+			if($listaNoticias[$i]['idblog'] == $allInputs['id']){
+				if($i > 0 && $i < ($cantidad-1)){
+					$previo = $listaNoticias[$i-1]['idblog'];
+					$next = $listaNoticias[$i+1]['idblog'];
+				}elseif($i > 0 && $i == ($cantidad-1)){
+					$previo = $listaNoticias[$i-1]['idblog'];
+				}elseif($i == 0 && $i < ($cantidad-1)){
+					$next = $listaNoticias[$i+1]['idblog'];
+				}
+				break;
+			}
+		}
 
 		$arrListado = array();
 		$ruta = 'uploads/blog/';
@@ -151,7 +168,9 @@ class Blog extends CI_Controller {
 			'codigo_vimeo' => empty($lista[0]['codigo_vimeo']) ? NULL : $lista[0]['codigo_vimeo'],
 			'website' => empty($lista[0]['website']) ? NULL : $lista[0]['website'],
 			'texto_link' => empty($lista[0]['texto_link']) ? 'Visita el sitio Web' : $lista[0]['texto_link'],
-			'posts' => array()
+			'posts' => array(),
+			'previo' => $previo,
+			'next' => $next,
 		);
 
 		foreach ($lista as $row) {

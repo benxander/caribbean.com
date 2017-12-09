@@ -15,7 +15,10 @@
 						<a class="comments" href="#">{{bp.fData.posts.length}} comentario(s)</a>
 					</div>
 					<div class="blog-article-content" ng-bind-html="bp.fData.descripcion"></div>
-					<div class="blog-article-subtitle"><a href="{{bp.fData.website}}" target="_blank">{{bp.fData.website}}</a></div>
+
+					<div style="margin-left: 130px;" ng-if="bp.fData.website" >
+						<a class="btn btn-mini btn-default-2 waves mt-lg mb-lg" ng-href="{{bp.fData.website}}" target="_blank">{{bp.fData.texto_link}}</a>
+					</div>
 					<div class="blog-article-content" ng-if="bp.slides.length>0" >
 						<ng-gallery images="bp.slides"></ng-gallery>
 			        </div>
@@ -96,8 +99,8 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="portfolio-navigation">
-							<a class="prev" href="#"><i class="fa fa-angle-left"></i> Previous post</a>
-							<a class="next" href="#">Next post <i class="fa fa-angle-right"></i></a>
+							<a ng-if="bp.fData.previo" class="prev" ng-href="{{dirWeb}}post?id={{bp.fData.previo}}"><i class="fa fa-angle-left"></i> Previous post</a>
+							<a ng-if="bp.fData.next" class="next" ng-href="{{dirWeb}}post?id={{bp.fData.next}}">Next post <i class="fa fa-angle-right"></i></a>
 						</div><!-- portfolio-navigation -->
 					</div><!-- col -->
 				</div><!-- row -->
