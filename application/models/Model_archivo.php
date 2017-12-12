@@ -7,10 +7,10 @@ class Model_archivo extends CI_Model {
 
 	public function m_cargar_galeria_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
-							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.idtipoproducto,
-							us.codigo, tp.descripcion_tp as producto, tp.precio');
+							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
+							us.codigo');
 		$this->db->from('archivo arc');
-		$this->db->join('tipo_producto tp','tp.idtipoproducto = arc.idtipoproducto');
+		// $this->db->join('tipo_producto tp','tp.tipo_archivo = arc.tipo_archivo');
 		$this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 1);
@@ -20,10 +20,10 @@ class Model_archivo extends CI_Model {
 
 	public function m_cargar_galeria_no_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
-							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.idtipoproducto,
-							us.codigo, tp.descripcion_tp as producto, tp.precio');
+							arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
+							us.codigo');
 		$this->db->from('archivo arc');
-		$this->db->join('tipo_producto tp','tp.idtipoproducto = arc.idtipoproducto');
+		// $this->db->join('tipo_producto tp','tp.tipo_archivo = arc.tipo_archivo');
 		$this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->where('arc.estado_arc', 1);
 		//s$this->db->where('arc.descargado', 2);
@@ -32,7 +32,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_archivo($paramPaginate=FALSE){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
+		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
 		$this->db->from('archivo a');
 		$this->db->where('a.estado_ar', 1);
 		if($paramPaginate){
@@ -69,7 +69,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_imagenes($data){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.idtipoproducto,
+		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo,
 		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, u.codigo');
 		$this->db->from('archivo a');
 		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
@@ -95,7 +95,7 @@ class Model_archivo extends CI_Model {
 			'idactividadcliente' => $data['idactividadcliente'],
 			'nombre_archivo' => $data['nombre_archivo'],
 			'size' => $data['size'],
-			'idtipoproducto' => $data['idtipoproducto'],
+			'tipo_archivo' => $data['tipo_archivo'],
 			'estado_arc' => 1,
 			'fecha_subida' => date('Y-m-d H:i:s')
 		 );

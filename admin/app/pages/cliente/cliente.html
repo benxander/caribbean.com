@@ -185,33 +185,34 @@
                       gallery: {
                         enabled: true,
                         navigateByImgClick: true,
-                        preload: [0,1]
+                        preload: [0,2]
                       }}" >
 
                       <div class="masonry-brick col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in c.images">
-                      <div class="img-container">
-                        <img class="img-responsive" ng-src="{{image.src}}" alt="" ng-if="image.idtipoproducto == 1">
-                        <img class="img-responsive" ng-src="{{image.src_image}}" alt="" ng-if="image.idtipoproducto == 2">
-                        <div class="img-details">
-                          <h4>{{image.title}}</h4>
-                          <div class="img-controls">
-                            <a href="javascript:;" class="img-select" ng-click="c.selectImage($index)">
-                              <i class="fa fa-circle-o" ng-show="!image.selected"></i>
-                              <i class="fa fa-circle" ng-show="image.selected"></i>
-                            </a>
-                            <a href="javascript:;" class="img-link" ng-click="c.btnAnularArchivo(image)">
-                              <i class="fa fa-trash"></i>
-                            </a>
-                            <a class="img-preview" href="{{image.src}}" title="{{image.title}}" ng-if="image.idtipoproducto == 1">
-                              <i class="fa fa-search"></i>
-                            </a>
-                            <a href="javascript:;" class="img-link" ng-if="image.idtipoproducto == 2" ng-click="c.videosView(image)">
-                              <i class="fa fa-search"></i>
-                            </a>
+                        <div class="img-container">
+                          <div class="ribbon-wrapper-green" ng-if="image.descargado"><div class="ribbon-green">SOLD!</div></div>
+                          <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="" ng-if="image.tipo_archivo == 1">
+                          <img class="img-responsive" ng-src="{{image.src_image}}" alt="" ng-if="image.tipo_archivo == 2">
+                          <div class="img-details">
+                            <h4>{{image.title}}</h4>
+                            <div class="img-controls">
+                              <a href="javascript:;" class="img-select" ng-click="c.selectImage($index)">
+                                <i class="fa fa-circle-o" ng-show="!image.selected"></i>
+                                <i class="fa fa-circle" ng-show="image.selected"></i>
+                              </a>
+                              <a href="javascript:;" class="img-link" ng-click="c.btnAnularArchivo(image)">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                              <a class="img-preview" href="{{image.src}}" title="{{image.title}}" ng-if="image.tipo_archivo == 1">
+                                <i class="fa fa-search"></i>
+                              </a>
+                              <a href="javascript:;" class="img-link" ng-if="image.tipo_archivo == 2" ng-click="c.videosView(image)">
+                                <i class="fa fa-search"></i>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
                     </div>
                   </div>

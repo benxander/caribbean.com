@@ -25,13 +25,13 @@ class Compra extends CI_Controller {
 			$arrData['mostrar_productos'] = TRUE;
 			$lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
 			foreach ($lista_productos as $iProd => $prod) {
-				$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];	
+				$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];
 			}
 			$arrData['lista_productos'] = $lista_productos;
 		}
 
 		/*verifica bonificacion*/
-		$archivos = $this->model_archivo->m_cargar_galeria_descargados($cliente);		
+		$archivos = $this->model_archivo->m_cargar_galeria_descargados($cliente);
 		if(!empty($archivos) && count($archivos) > 1){
 			$arrData['tiene_bonificacion'] = FALSE;
 		}else{
@@ -65,23 +65,23 @@ class Compra extends CI_Controller {
 		foreach ($allInputs as $key => $image) {
 			if($image['selected']){
 
-				foreach ($image['lista_productos'] as $iProd => $prod) {
-					if((int)$prod['cantidad'] > 0){
-						/*registro en pedido*/
-						$pDatos =  array(
-							'idarchivo' 		=> $image['idarchivo'],
-							'idcliente' 		=> $image['idcliente'],
-							'idtipoproducto' 	=> $prod['idtipoproducto'],
-							'precio_unitario' 	=> $prod['precio'],
-							'cantidad' 			=> $prod['cantidad'],
-						);
-						if(!$this->model_pedido->m_registrar_pedido($pDatos)){
-							$error = TRUE;
-						}
-					}
-				}
+				// foreach ($image['lista_productos'] as $iProd => $prod) {
+				// 	if((int)$prod['cantidad'] > 0){
+				// 		/*registro en pedido*/
+				// 		$pDatos =  array(
+				// 			'idarchivo' 		=> $image['idarchivo'],
+				// 			'idcliente' 		=> $image['idcliente'],
+				// 			'tipo_archivo' 		=> $prod['tipo_archivo'],
+				// 			'precio_unitario' 	=> $prod['precio'],
+				// 			'cantidad' 			=> $prod['cantidad'],
+				// 		);
+				// 		if(!$this->model_pedido->m_registrar_pedido($pDatos)){
+				// 			$error = TRUE;
+				// 		}
+				// 	}
+				// }
 
-				if(!$error){					
+				if(!$error){
 					$urloriginal = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
 					$urldestino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
 

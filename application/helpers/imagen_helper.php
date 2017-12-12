@@ -237,6 +237,7 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
     imagedestroy($watermark);
 }
 function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
+    // ini_set('memory_limit', '100M');
     // el archivo o imagen
     $filename = $file_tmp;
     // Asignar el ancho y alto maximos
@@ -256,6 +257,7 @@ function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
     // Cambiando el tamano de la imagen o resample
     $image = imagecreatefromjpeg($filename);
     $image_p = imagecreatetruecolor($width, $height);
+    // imageresolution($image_p, 92);
     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
      // Salida

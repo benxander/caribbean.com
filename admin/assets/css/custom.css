@@ -439,3 +439,7 @@ minotaur-header .navbar-header .navigation-toggle{
 .ribbon-green:after {
   right: 0;
 }​
+
+.ui-grid-icon-cancel:before {
+    content: "\c353";
+}

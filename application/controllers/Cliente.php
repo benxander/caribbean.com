@@ -201,7 +201,7 @@ class Cliente extends CI_Controller {
     	}
 		if($this->model_archivo->m_anular_archivo($allInputs)){
 			unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
-			if($allInputs['idtipoproducto'] == 2){
+			if($allInputs['tipo_archivo'] == 2){
 				unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $allInputs['nombre_archivo'])[0].'.jpg');
 			}else{
 				unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
@@ -241,7 +241,7 @@ class Cliente extends CI_Controller {
     		if($value['selected'] && !$value['descargado']){
     			if($this->model_archivo->m_anular_archivo($value)){
     				unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
-					if($value['idtipoproducto'] == 2){
+					if($value['tipo_archivo'] == 2){
 						unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $value['nombre_archivo'])[0].'.jpg');
 					}else{
 						unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
@@ -290,10 +290,13 @@ class Cliente extends CI_Controller {
 			    if(in_array($file_ext,$extensions_image)){
 
 			    	if($file_size < 10485760){
-
-
+			    		list($width_orig, $height_orig) = getimagesize($file_tmp);
 				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
-						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+			    		if($width_orig > 3000 || $height_orig > 3000){
+				        	redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
+			    		}else{
+							move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+			    		}
 				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
 						$allInputs = array(
@@ -302,9 +305,9 @@ class Cliente extends CI_Controller {
 							'idactividadcliente' 	=> $idactividadcliente,
 							'nombre_archivo'=> $file_name,
 							'size'			=> $file_size,
-							'idtipoproducto'=> 1
+							'tipo_archivo'=> 1
 						);
-						array_push($allInputs,array('idtipoproducto'=> 1));
+						array_push($allInputs,array('tipo_archivo'=> 1));
 				        if($this->model_archivo->m_registrar_archivo($allInputs)){
 							$arrData['message'] = 'Se subieron las imagenes correctamente. ';
 				    		$arrData['flag'] = 1;
@@ -331,7 +334,7 @@ class Cliente extends CI_Controller {
 							'idactividadcliente' 	=> $idactividadcliente,
 							'nombre_archivo'=> $file_name,
 							'size'			=> $file_size,
-							'idtipoproducto'=> 2
+							'tipo_archivo'=> 2
 						);
 						if($this->model_archivo->m_registrar_archivo($allInputs)){
 							$arrData['message'] = 'Se subieron videos correctamente. ';
@@ -368,16 +371,18 @@ class Cliente extends CI_Controller {
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
 			$src_image ='';
-			if($row['idtipoproducto'] == 2){
+			if($row['tipo_archivo'] == 2){
 				$src_image = '../uploads/clientes/'.$row['codigo'].'/originales/'.explode(".", $row['nombre_archivo'])[0].'.jpg';
 			}
 
 			if($row['descargado'] == 1){
 				$descargado = TRUE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
+				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
 			}else{
 				$descargado = FALSE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'];
+				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
 			}
 			array_push($arrListado,
 				array(
@@ -386,12 +391,13 @@ class Cliente extends CI_Controller {
 					'idcliente' => $row['idcliente'],
 					'nombre_archivo' => $row['nombre_archivo'],
 					'size' => $row['size'],
-					'idtipoproducto' => $row['idtipoproducto'],
+					'tipo_archivo' => $row['tipo_archivo'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'descargado' => $descargado,
 					'src' => $src,
 					'src_image' => $src_image,
+					'src_thumb' => $src_thumb,
 					'title' => '',
 				)
 			);
@@ -453,9 +459,9 @@ class Cliente extends CI_Controller {
             		$allInputs['nombre_archivo'] = $archivo;
 					$allInputs['size'] = $var;
 					if(in_array($file_ext,$extensions_image)){
-						$allInputs['idtipoproducto'] = 1;
+						$allInputs['tipo_archivo'] = 1;
 					}else{
-						$allInputs['idtipoproducto'] = 2;
+						$allInputs['tipo_archivo'] = 2;
 					}
 
 				   	if(in_array($file_ext,$extensions_image)){
