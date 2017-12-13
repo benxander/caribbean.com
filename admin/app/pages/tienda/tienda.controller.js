@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, $uibModal, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading, alertify) {
+  function TiendaController($scope, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
@@ -20,7 +20,7 @@
     vm.modoDescargaCompleta = false;
     vm.monto = 0;
     vm.alertAdicionales = false;
-    
+
     vm.isPagoMonedero = false;
     vm.paqueteSeleccionado = {};
     //vm.modoDescargaCompleta = true;
@@ -59,7 +59,7 @@
       if(vm.isPagoMonedero){
         $scope.actualizarSaldo(false);
         $scope.actualizarSaldo(true,vm.monto);
-        if($scope.seleccionadas > vm.paqueteSeleccionado.cantidad){ 
+        if($scope.seleccionadas > vm.paqueteSeleccionado.cantidad){
           var cantidad = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
           $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
         }
@@ -100,9 +100,9 @@
           i++;
         }
       });
-      if(i > vm.paqueteSeleccionado.cantidad){ 
+      if(i > vm.paqueteSeleccionado.cantidad){
         var cantidad = i - vm.paqueteSeleccionado.cantidad;
-        if(vm.isSelected){     
+        if(vm.isSelected){
           $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
         }else{
           $scope.actualizarSaldo(true,'-'+(cantidad * vm.precio_adicional));
@@ -149,7 +149,7 @@
           alert("Apartir de ahora se cobrara "+vm.precio_adicional+" adiacionales");
           vm.alertAdicionales = true;
         }
-        
+
         $scope.actualizarSaldo(true,vm.precio_adicional);
       }else if(!add && vm.seleccionadas > vm.paqueteSeleccionado.cantidad){
         $scope.actualizarSaldo(true,'-'+ vm.precio_adicional);
@@ -183,7 +183,7 @@
         });
       }else{
         vm.btnDescargarFiles();
-      }      
+      }
     }
 
     vm.btnDescargarFiles = function(){
@@ -210,7 +210,7 @@
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
         pageLoading.stop();
-      }); 
+      });
     }
 
     vm.calculaDescuentos = function(){
@@ -292,56 +292,7 @@
         }
       });
     }
-    vm.btnPedidos = function(index){
-      var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/tienda/pedido_formview.php',
-          controllerAs: 'mp',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-16',
-          windowClass: 'splash splash-2 splash-ef-16',
-          backdrop: 'static',
-          keyboard:false,
-          scope: $scope,
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            vm.fData = {};
-            vm.modoEdicion = false;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Merchandise';
 
-            // botones
-              vm.aceptar = function () {
-                // ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
-                //   if(rpta.flag == 1){
-                //     $uibModalInstance.close(vm.fData);
-                //     vm.getPaginationServerSide();
-                //     var title = 'OK';
-                //     var type = 'success';
-                //     toastr.success(rpta.message, title);
-                //   }else if( rpta.flag == 0 ){
-                //     var title = 'Advertencia';
-                //     var type = 'warning';
-                //     toastr.warning(rpta.message, title);
-                //   }else{
-                //     alert('Ocurrió un error');
-                //   }
-                // });
-
-              };
-              vm.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-              };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                scope : vm,
-              }
-            }
-          }
-        });
-    }
   }
 
   function TiendaServices($http, $q) {

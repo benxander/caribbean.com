@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope, PagesGalleryServices, rootServices, Socialshare) {
+  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, Socialshare) {
     var vm = this;
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
@@ -60,13 +60,63 @@
         vm.isSelected = false;
       }
     };
+    vm.btnPedidos = function(index){
+      var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/tienda/pedido_formview.php',
+          controllerAs: 'mp',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
+          scope: $scope,
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.modoEdicion = false;
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Merchandising';
+
+            // botones
+              vm.aceptar = function () {
+                // ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
+                //   if(rpta.flag == 1){
+                //     $uibModalInstance.close(vm.fData);
+                //     vm.getPaginationServerSide();
+                //     var title = 'OK';
+                //     var type = 'success';
+                //     toastr.success(rpta.message, title);
+                //   }else if( rpta.flag == 0 ){
+                //     var title = 'Advertencia';
+                //     var type = 'warning';
+                //     toastr.warning(rpta.message, title);
+                //   }else{
+                //     alert('Ocurrió un error');
+                //   }
+                // });
+
+              };
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                scope : vm,
+              }
+            }
+          }
+        });
+    }
   }
 
   function PagesGalleryServices($http, $q) {
     return({
         sListarGaleriaDescargados: sListarGaleriaDescargados,
     });
-    
+
     function sListarGaleriaDescargados(pDatos) {
       var datos = pDatos || {};
       var request = $http({

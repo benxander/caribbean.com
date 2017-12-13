@@ -7,7 +7,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
-		$this->db->select('u.codigo, u.ididioma, c.fecha_final, COUNT(a.idarchivo) as archivo');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_salida, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
@@ -53,7 +53,7 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 	public function m_cargar_cliente_por_idusuario($idusuario){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_final, c.createdat as fecha_creacion');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
 		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','c.idusuario = u.idusuario');
@@ -65,7 +65,7 @@ class Model_cliente extends CI_Model {
 	}
 	public function m_cargar_cliente_cbo($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
-		$this->db->select('u.codigo, u.ididioma, u.fecha_final');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_salida');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);
@@ -89,7 +89,7 @@ class Model_cliente extends CI_Model {
 			'idusuario'  => $data['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
-			'fecha_final'=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
+			'fecha_salida'=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
 		 );
 		$this->db->insert('cliente', $datos);
 		$insert_id = $this->db->insert_id();
@@ -107,7 +107,7 @@ class Model_cliente extends CI_Model {
 			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
-			'fecha_final'	=> $data['fecha'],
+			'fecha_salida'	=> $data['fecha'],
 			// 'idactividad'	=> $data['idactividad'],
 
 		 );

@@ -34,7 +34,7 @@ class Cliente extends CI_Controller {
 					'idactividadcliente' 	=> $row['idactividadcliente'],
 					// 'descripcion' 	=> $row['descripcion'],
 					'fecha' 	=> $row['createdat'],
-					'fecha_final' 	=> $row['fecha_final'],
+					'fecha_salida' 	=> $row['fecha_salida'],
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
 			);

@@ -76,7 +76,7 @@
                   socialshare-hashtags="Caribean"
                   socialshare-popup-height="300"
                   socialshare-popup-width="400"
-                  socialshare-trigger="click" 
+                  socialshare-trigger="click"
                     class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
                     <i class="fa fa-facebook"></i>
                   </a>
@@ -106,9 +106,12 @@
                   <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                     <i class="fa fa-search"></i>
                   </a>
+                  <a class="img-select" ng-if="image.descargado == 1" href="javascript:;" ng-click="ga.btnPedidos($index)" uib-tooltip="Merchandising" tooltip-placement="top">
+                    <i class="fa fa-gift"></i>
+                  </a>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>

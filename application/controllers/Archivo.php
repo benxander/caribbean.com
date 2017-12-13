@@ -33,7 +33,8 @@ class Archivo extends CI_Controller {
 					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					//'src_share' => "http://www.unaisangamer.com/uploads/clientes/23121970/descargadas/2oBv2IaekK.jpg",
-					'title' => ''
+					'title' => '',
+					'fecha_salida' => $row['fecha_salida']
 				)
 			);
 		}

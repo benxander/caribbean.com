@@ -18,10 +18,10 @@ class Compra extends CI_Controller {
 
 		/*verifica si sigue en isla*/
 		$hoy = strtotime(date('Y-m-d'));
-		$fecha_final = strtotime($cliente['fecha_final']);
+		$fecha_salida = strtotime($cliente['fecha_salida']);
 		$arrData['mostrar_productos'] = FALSE;
 		$arrData['lista_productos'] = [];
-		if($hoy  <= $fecha_final){
+		if($hoy  <= $fecha_salida){
 			$arrData['mostrar_productos'] = TRUE;
 			$lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
 			foreach ($lista_productos as $iProd => $prod) {
