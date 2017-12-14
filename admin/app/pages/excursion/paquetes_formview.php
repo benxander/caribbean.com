@@ -7,7 +7,7 @@
 			<div class="row">
 				<div class="form-group col-sm-6">
 					<label for="cantidad" class="control-label minotaur-label">Excursión: </label>
-					<span>{{mb.fData.descripcion}}</span>
+					<span>{{mb.fData.titulo_act}}</span>
 				</div>
 				<div class="form-group col-sm-3">
 					<label for="cantidad" class="control-label minotaur-label">Cantidad de fotos: </label>

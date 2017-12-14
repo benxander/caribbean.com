@@ -154,9 +154,7 @@
             <div class="col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images" ng-if="image.selected">
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                <div class="img-details-price form-group">
-                  <label class="col-sm-12 control-label minotaur-label pl-0 mt-5"><i class="fa fa-money"></i> {{image.precio}} </label>
-                </div>
+
                 <div class="otros-productos" ng-if="ctrl.datosVista.mostrar_productos">
                   <form class="form-inline">
                     <div class="form-group" ng-repeat="(ind, prod) in image.lista_productos" style="margin-bottom: 5px;">

@@ -201,6 +201,7 @@ class Cliente extends CI_Controller {
     	}
 		if($this->model_archivo->m_anular_archivo($allInputs)){
 			unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
+			unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR.$allInputs['nombre_archivo']);
 			if($allInputs['tipo_archivo'] == 2){
 				unlink($carpeta.$allInputs['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $allInputs['nombre_archivo'])[0].'.jpg');
 			}else{
@@ -221,6 +222,7 @@ class Cliente extends CI_Controller {
 
 		if($this->model_archivo->m_delete_archivo($allInputs)){
 			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
+			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales'. DIRECTORY_SEPARATOR .'thumbs');
 			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales');
 			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'thumbs');
 			$arrData['message'] = 'Se eliminaron los datos correctamente';
@@ -240,6 +242,7 @@ class Cliente extends CI_Controller {
     	foreach ($allInputs as $key => $value) {
     		if($value['selected'] && !$value['descargado']){
     			if($this->model_archivo->m_anular_archivo($value)){
+    				unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales/thumbs'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
     				unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.$value['nombre_archivo']);
 					if($value['tipo_archivo'] == 2){
 						unlink($carpeta.$value['codigo_usuario'].DIRECTORY_SEPARATOR.'originales'.DIRECTORY_SEPARATOR.explode(".", $value['nombre_archivo'])[0].'.jpg');
@@ -292,11 +295,13 @@ class Cliente extends CI_Controller {
 			    	if($file_size < 10485760){
 			    		list($width_orig, $height_orig) = getimagesize($file_tmp);
 				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
-			    		if($width_orig > 3000 || $height_orig > 3000){
-				        	redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
-			    		}else{
-							move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
-			    		}
+			    // 		if($width_orig > 3000 || $height_orig > 3000){
+				   //      	redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
+			    // 		}else{
+							// move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+			    // 		}
+				        redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
+				       	redimenciona(300, $file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR .'thumbs', $file_name);
 				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
 						$allInputs = array(
@@ -378,11 +383,11 @@ class Cliente extends CI_Controller {
 			if($row['descargado'] == 1){
 				$descargado = TRUE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
-				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
+				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/descargadas/thumbs/'.$row['nombre_archivo'];
 			}else{
 				$descargado = FALSE;
 				$src = '../uploads/clientes/'.$row['codigo'].'/originales/'.$row['nombre_archivo'];
-				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
+				$src_thumb = '../uploads/clientes/'.$row['codigo'].'/originales/thumbs/'.$row['nombre_archivo'];
 			}
 			array_push($arrListado,
 				array(
@@ -453,7 +458,7 @@ class Cliente extends CI_Controller {
 		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
             	if(!in_array(explode(".", $archivo)[0],$archivos)){
             		$carpeta = './uploads/clientes/'.$allInputs['codigo'];
-				    $archivo_dest = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
+				    $archivo_or = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
 				    $var = filesize($carpeta);
 
             		$allInputs['nombre_archivo'] = $archivo;
@@ -465,9 +470,10 @@ class Cliente extends CI_Controller {
 					}
 
 				   	if(in_array($file_ext,$extensions_image)){
-		   				redimencionMarcaAgua(600, $archivo_dest, $carpeta, $archivo);
+		   				redimencionMarcaAgua(600, $archivo_or, $carpeta, $archivo);
+		   				redimenciona(300, $archivo_or, $carpeta .'/originales/thumbs', $archivo);
 				   	}else{
-				   		imagenVideo($archivo_dest, explode(".", $archivo)[0], $carpeta.'/originales/');
+				   		imagenVideo($archivo_or, explode(".", $archivo)[0], $carpeta.'/originales/');
 				   	}
 
             		if($this->model_archivo->m_registrar_archivo($allInputs)){

@@ -108,10 +108,10 @@ class Model_excursion extends CI_Model {
 	}
 	public function m_anular($datos){
 		$data = array(
-			'estado_bl' => 0
+			'estado' => 0
 		);
-		$this->db->where('idblog',$datos['idblog']);
-		return $this->db->update('blog', $data);
+		$this->db->where('idactividad',$datos['idactividad']);
+		return $this->db->update('actividad', $data);
 	}
 	public function m_habilitar($id){
 		$data = array(

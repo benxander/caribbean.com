@@ -42,7 +42,7 @@ class Compra extends CI_Controller {
 		$arrData['tiene_descuento'] = FALSE;
 		$arrData['descuento']['descuento'] = 0;
 		foreach ($descuentos as $key => $desc) {
-			$nuevafecha = strtotime ( '+'.$desc['dias'].' day' , strtotime ( $cliente['fecha_creacion'] ) );
+			$nuevafecha = strtotime ( '+'.$desc['dias'].' day' , strtotime ( $cliente['fecha_salida'] ) );
 			if( $hoy >= $nuevafecha ){
 				$arrData['descuento'] = $desc;
 				$arrData['tiene_descuento'] = TRUE;
@@ -82,10 +82,15 @@ class Compra extends CI_Controller {
 				// }
 
 				if(!$error){
-					$urloriginal = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
-					$urldestino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
+					$url_origen = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
+					$url_destino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
+					$url_origen_thumb = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/thumbs/'.$image['nombre_archivo'];
+					$url_destino_thumb = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/thumbs/'.$image['nombre_archivo'];
 
-					if(!rename($urloriginal,$urldestino)){
+					if(!rename($url_origen,$url_destino)){
+						$error = TRUE;
+					}
+					if(!rename($url_origen_thumb,$url_destino_thumb)){
 						$error = TRUE;
 					}
 				}
