@@ -150,6 +150,29 @@
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
                   if(rpta.flag == 1){
                     $uibModalInstance.close(vm.fData);
+
+
+                    var paramDatos = {
+                      idtipoemail : 1,
+                      ididioma : vm.fData.ididioma,
+                      codigo : vm.fData.codigo,
+                      email : vm.fData.email,
+                    }
+                    UsuarioServices.sEnviarMailUsuario(paramDatos).then(function(rpta){
+                      if(rpta.flag == 1){
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+
+
                     vm.getPaginationServerSide();
                     var title = 'OK';
                     var type = 'success';

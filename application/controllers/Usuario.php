@@ -301,20 +301,21 @@ class Usuario extends CI_Controller {
     	$arrData['flag'] = 0;
 
     	$lista = $this->model_email->m_cargar_email($allInputs);
-    	var_dump($lista); exit();
-		$mensaje = '<div style="font-size:16px; color: #000000">
-		        Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
-  		$mensaje .= '<div style="font-size:16px;">
-		         Se ha creado un usuario para que pueda ver sus imagenes : <br />
-		         Usuario: '.$allInputs['email'].'<br />
-		         Contraseña: '.$allInputs['codigo'];
-		$mensaje .= '<br /><br /> Ingrese en esta <a href="http://www.unaisangamer.com/admin" target="_blank">página</a> para iniciar session. <br />';
-		$mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
+    	// var_dump($lista); exit();
+    	$mensaje = $lista[0]['contenido'];
+		// $mensaje = '<div style="font-size:16px; color: #000000">
+		//         Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
+  // 		$mensaje .= '<div style="font-size:16px;">
+		//          Se ha creado un usuario para que pueda ver sus imagenes : <br />
+		//          Usuario: '.$allInputs['email'].'<br />
+		//          Contraseña: '.$allInputs['codigo'];
+		// $mensaje .= '<br /><br /> Ingrese en esta <a href="http://www.unaisangamer.com/admin" target="_blank">página</a> para iniciar session. <br />';
+		// $mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
 
 
 		$from = 'soporte@unaisangamer.com';
 		$to = $allInputs['email'];
-		$asunto = 'Creacion de Usuario en Caribbean';
+		$asunto = $lista[0]['asunto'];
 
 		if(comprobar_email($allInputs['email'])){
 			if(envio_email($to, "",$asunto, $mensaje, $from)){
