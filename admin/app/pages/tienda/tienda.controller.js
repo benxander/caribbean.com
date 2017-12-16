@@ -146,7 +146,7 @@
       console.log(vm.paqueteSeleccionado);
       if(add && (vm.seleccionadas > vm.paqueteSeleccionado.cantidad)){
         if(!vm.alertAdicionales){
-          alert("Apartir de ahora se cobrara "+vm.precio_adicional+" adiacionales");
+          alert("Apartir de ahora se cobrará USD$ "+vm.precio_adicional+" por cada foto adicional");
           vm.alertAdicionales = true;
         }
 

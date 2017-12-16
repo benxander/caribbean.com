@@ -32,7 +32,7 @@
           <a href="javascript:;"><i class="fa fa-download" ></i> Descargar</a>
         </li>
       </ul>
-      <div class="row mix-grid">
+      <div class="row mix-grid" masonry>
         <div class="gallery" ng-mixitup magnific-popup="{
           delegate: 'a.img-preview',
           type: 'image',
@@ -45,7 +45,7 @@
           }
          }"
         >
-          <div class="col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
+          <div class="masonry-brick col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container">
               <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="">
               <div class="img-details-hover" style="float: right;">

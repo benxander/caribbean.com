@@ -22,7 +22,7 @@
         }
         a{text-decoration: none;}
         a, a:visited, a:active{color: #4C7727;}
-        a:hover{color: #FFF;}          
+        a:hover{color: #FFF;}
     </style>
     <body>
 
@@ -30,7 +30,7 @@
             <tr bgcolor="#fff">
                 <td width="30%" style="white-space: nowrap;font-size: 34px;font-family: verdana,arial;font-weight: normal;margin: 0;font-family: verdana,arial;font-weight: normal;">
                     <a href="">
-                        <img style="width:240px" src ="http://www.unaisangamer.com/assets/images/logo-dark.png"> <!-- assets/images/logo-dark.png -->
+                        <img style="width:240px" src ="<?= URL ?>assets/images/logo-dark.png"> <!-- assets/images/logo-dark.png -->
                     </a>
                 </td>
                 <td></td>
@@ -42,7 +42,7 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr style="padding:15px;"; bgcolor="#ccc">
                 <td style="color:#727272; padding:15px;" height="67px" class="pie">
-					&copy; <?=date("Y")?> - 
+					&copy; <?=date("Y")?> - <?= DESCRIPCION ?>
 				</td>
             </tr>
         </table>

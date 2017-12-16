@@ -309,8 +309,13 @@ class Usuario extends CI_Controller {
 		//          Se ha creado un usuario para que pueda ver sus imagenes : <br />
 		//          Usuario: '.$allInputs['email'].'<br />
 		//          Contraseña: '.$allInputs['codigo'];
-		// $mensaje .= '<br /><br /> Ingrese en esta <a href="http://www.unaisangamer.com/admin" target="_blank">página</a> para iniciar session. <br />';
-		// $mensaje .= '<br /> Atte: <br /> CARIBBEAN </div></div>';
+		if($allInputs['idtipoemail'] != 1){
+			$mensaje .= '<br /><br /> <a href="http://www.unaisangamer.com/admin" target="_blank">http://www.unaisangamer.com/admin</a> <br />';
+			$mensaje .= 'Username: '.$allInputs['email'].'<br />';
+			$mensaje .= 'Pass: '.$allInputs['codigo'].'<br />';
+		}
+
+		$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
 
 
 		$from = 'soporte@unaisangamer.com';

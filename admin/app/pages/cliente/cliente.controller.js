@@ -149,7 +149,6 @@
               vm.aceptar = function () {
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
                   if(rpta.flag == 1){
-                    $uibModalInstance.close(vm.fData);
 
 
                     var paramDatos = {
@@ -163,6 +162,10 @@
                         var title = 'OK';
                         var type = 'success';
                         toastr.success(rpta.message, title);
+                        $uibModalInstance.close(vm.fData);
+                        vm.getPaginationServerSide();
+
+
                       }else if( rpta.flag == 0 ){
                         var title = 'Advertencia';
                         var type = 'warning';
@@ -173,10 +176,6 @@
                     });
 
 
-                    vm.getPaginationServerSide();
-                    var title = 'OK';
-                    var type = 'success';
-                    toastr.success(rpta.message, title);
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
