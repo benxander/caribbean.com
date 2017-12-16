@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, Socialshare) {
+  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, Socialshare, pageLoading) {
     var vm = this;
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
@@ -109,6 +109,25 @@
             }
           }
         });
+    }
+    vm.btnDescargarFiles = function(){
+      if(!vm.isSelected){
+        return;
+      }
+
+      angular.forEach(vm.images, function(image,key) {
+        if (image.selected) {
+
+          var enlace = document.createElement('a');
+          enlace.style.display = "none";
+          enlace.href = image.src_share;
+          enlace.download = image.nombre_archivo;
+          document.body.appendChild(enlace);
+          enlace.click();
+          enlace.parentNode.removeChild(enlace);
+        }
+      });
+
     }
   }
 
