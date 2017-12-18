@@ -137,6 +137,12 @@
         templateUrl: 'app/pages/email/email.html',
         controller: 'EmailController',
         controllerAs: 'em'
+      })
+      .state('producto', {
+        url: '/app/producto',
+        templateUrl: 'app/pages/producto/producto.html',
+        controller: 'ProductoController',
+        controllerAs: 'pr'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

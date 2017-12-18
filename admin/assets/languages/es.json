@@ -18,7 +18,9 @@
     "ROLES": "Roles",
     "DESCARGAR": "Tienda",
     "GALERIA": "Mi Galeria",
-    "PERFIL": "Mi Perfil"
+    "PERFIL": "Mi Perfil",
+    "PRODUCTO": "Producto",
+    "PEDIDOS": "Pedidos"
   },
   "Form": {
     "PREVIOUS":"Atras",

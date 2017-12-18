@@ -22,37 +22,50 @@
         <i class="fa fa-users"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('banner')}" ng-show="valores[2]">
-      <a ng-click="$state.reload();" ui-sref="banner">
-        <span class="nav-text">{{ 'Menu.BANNERS' | translate }}  </span>
-        <i class="icon-picture icons"></i>
-      </a>
-    </li>
-    <li ng-class="{'active':$state.includes('excursion')}" ng-show="valores[3]">
+    <li ng-class="{'active':$state.includes('excursion')}" ng-show="valores[2]">
       <a ng-click="$state.reload();" ui-sref="excursion">
         <span class="nav-text">{{ 'Menu.EXCURSION' | translate }}  </span>
         <i class="icon-event icons"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('seccion')}" ng-show="valores[4]">
+    <li ng-class="{'active':$state.includes('pedidos')}" ng-show="valores[3]">
+      <a ng-click="$state.reload();" ui-sref="pedidos">
+        <span class="nav-text">{{ 'Menu.PEDIDOS' | translate }}  </span>
+        <i class="icon-event icons"></i>
+      </a>
+    </li>
+    <li ng-class="{'active':$state.includes('banner')}" ng-show="valores[4]">
+      <a ng-click="$state.reload();" ui-sref="banner">
+        <span class="nav-text">{{ 'Menu.BANNERS' | translate }}  </span>
+        <i class="icon-picture icons"></i>
+      </a>
+    </li>
+    <li ng-class="{'active':$state.includes('seccion')}" ng-show="valores[5]">
       <a ng-click="$state.reload();" ui-sref="seccion">
         <span class="nav-text">{{ 'Menu.SECCION' | translate }}  </span>
         <i class="fa fa-list-alt"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('blog')}" ng-show="valores[5]">
+    <li ng-class="{'active':$state.includes('blog')}" ng-show="valores[6]">
       <a ng-click="$state.reload();" ui-sref="blog">
         <span class="nav-text">{{ 'Menu.BLOG' | translate }}  </span>
         <i class="icon-event icons"></i>
       </a>
     </li>
-    <li ng-show="valores[6]">
+    <!-- ROLES SUPERUSUARIO -->
+    <li ng-show="valores[7]">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.MANTENIMIENTO' | translate }}</span>
         <i class="fa fa-columns"></i>
       </a>
       <ul>
         <li ui-sref-active="active">
+          <a ng-click="$state.reload();" ui-sref="producto">
+            <span class="nav-text">{{ 'Menu.PRODUCTO' | translate }}</span>
+            <i>{{ 'Menu.PRODUCTO' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
+        <li ui-sref-active="active" ng-show="false">
           <a ng-click="$state.reload();" ui-sref="idioma">
             <span class="nav-text">{{ 'Menu.IDIOMAS' | translate }}</span>
             <i>{{ 'Menu.IDIOMAS' | translate | limitTo: 2}}</i>
@@ -61,7 +74,8 @@
 
       </ul>
     </li>
-    <li ng-class="{'open active':$state.includes('config')}" ng-show="valores[7]">
+    <!-- ROLES ADMIN -->
+    <li ng-class="{'open active':$state.includes('config')}" ng-show="valores[8]">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.CONFIG' | translate }}</span>
         <i class="fa fa-cogs"></i>
@@ -87,7 +101,8 @@
         </li>
       </ul>
     </li>
-    <li ng-show="valores[8]">
+    <!-- ROLES SUPERUSUARIO -->
+    <li ng-show="valores[9]">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.SEGURIDAD' | translate }}</span>
         <i class="fa fa-key"></i>
@@ -113,19 +128,20 @@
         </li>
       </ul>
     </li>
-    <li ng-class="{'active':$state.includes('tienda')}" ng-show="valores[9]">
+    <!-- ROLES DEL CLIENTE -->
+    <li ng-class="{'active':$state.includes('tienda')}" ng-show="valores[10]">
       <a ng-click="$state.reload();" ui-sref="tienda">
         <span class="nav-text">{{ 'Menu.DESCARGAR' | translate }}</span>
         <i class="fa fa-shopping-cart"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('mi-galeria')}" ng-show="valores[10]">
+    <li ng-class="{'active':$state.includes('mi-galeria')}" ng-show="valores[11]">
       <a ng-click="$state.reload();" ui-sref="mi-galeria">
         <span class="nav-text">{{ 'Menu.GALERIA' | translate }}</span>
         <i class="fa fa-image"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('perfil')}" ng-show="valores[11]">
+    <li ng-class="{'active':$state.includes('perfil')}" ng-show="valores[12]">
       <a ng-click="$state.reload();" ui-sref="perfil">
         <span class="nav-text">{{ 'Menu.PERFIL' | translate }}</span>
         <i class="fa fa-user"></i>

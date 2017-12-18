@@ -112,7 +112,7 @@
       }else{
         $scope.saldo = $scope.fSessionCI.monedero;
       }
-      
+
     }
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
@@ -166,13 +166,13 @@
         'opMiGaleria'
       ];
       if($scope.fSessionCI.idgrupo == 1){
-        $scope.valores = [true,true,true,true,true,true,true,true,true,false,false,false];
+        $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true,true,false,true,false,false,false,false];
+        $scope.valores = [true,true,true,true,true,true,true,true,true,false,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [true,false,false,false,false,false,false,false,false,true,true,true];
+        $scope.valores = [true,false,false,false,false,false,false,false,false,false,true,true,true];
       }
       else{
         console.log('No tiene grupo');

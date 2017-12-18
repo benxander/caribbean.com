@@ -379,4 +379,21 @@ function createCarpetaBlog($carpeta){
     }
 
 }
+function createCarpeta($carpeta){
+    $contenido = '<!DOCTYPE html><html><head>
+                    <title>403 Forbidden</title>
+                    <style type="text/css">
+                        body{background-color:#ffffff;font-family:verdana,sans-serif;
+                            font-size: 18px}
+                    </style>
+                </head>
+                <body>
+                    <h1>Acceso denegado</h1>
+                </body></html>';
+
+    if (!file_exists($carpeta)) {
+        mkdir($carpeta, 0777, true);
+        file_put_contents($carpeta . DIRECTORY_SEPARATOR .'index.html', $contenido);
+    }
+}
 
