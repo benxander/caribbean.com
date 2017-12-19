@@ -7,7 +7,7 @@ class Model_producto extends CI_Model {
 
 	public function m_cargar_productos($paramPaginate=FALSE){
 		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.imagen, pm.estado_pm");
-		$this->db->select('pm.si_genero, pm.si_color');
+		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida');
 		$this->db->from('producto_master pm');
 		$this->db->where_in('estado_pm',array(1,2));
 		if($paramPaginate){
@@ -41,6 +41,24 @@ class Model_producto extends CI_Model {
 		}
 		$fData = $this->db->get()->row_array();
 		return $fData;
+	}
+	public function m_cargar_colores_cbo(){
+		$this->db->select('co.idcolor, co.nombre, co.rgba, co.estado_co');
+		$this->db->from('color co');
+		$this->db->where('estado_co', 1);
+		$this->db->order_by('nombre', 'ASC');
+		return $this->db->get()->result_array();
+	}
+	public function m_cargar_precios_por_producto($datos){
+		$this->db->select('m.idmedida, m.denominacion as medida, m.idtipomedida');
+		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5, p.estado_p');
+		$this->db->from('medida m');
+		// $this->db->join('producto_master pm', 'm.ç = pm.ç');
+		$this->db->join('producto p', 'm.idmedida = p.idmedida AND idproductomaster = ' . $datos['idproductomaster'],'left');
+		$this->db->where('idtipomedida', $datos['idtipomedida']);
+		$this->db->order_by('idmedida','ASC');
+		$this->db->order_by('idproducto','ASC');
+		return $this->db->get()->result_array();
 	}
 	public function m_registrar_producto($data){
 		$this->db->insert('producto_master', $data);

@@ -52,6 +52,7 @@ class Producto extends CI_Controller {
 					'imagen' 		=> $row['imagen'],
 					'si_genero' 		=> $row['si_genero'],
 					'si_color' 		=> $row['si_color'],
+					'idtipomedida' => $row['idtipomedida'],
 					'estado' => array(
 						'id'	 =>$row['idproductomaster'],
 						'valor'  =>$row['estado_pm'],
@@ -72,6 +73,64 @@ class Producto extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_producto_precios(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_producto->m_cargar_precios_por_producto($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado, array(
+				'idproducto' => $row['idproducto'],
+				'medida' => $row['medida'],
+				'categoria' => $row['categoria'] == '2'?'PREMIUM':'BASICO',
+				'precio_unitario' => (int)$row['precio_unitario'],
+				'precio_2_5' => (int)$row['precio_2_5'],
+				'precio_mas_5' => (int)$row['precio_mas_5'],
+				'estado_p' => $row['estado_p'],
+				// 'estado_pq' => array(
+				// 		'id'	 =>$row['idactividad'],
+				// 		'valor'  =>$row['estado_pq'],
+				// 		'bool'   =>$bool
+				// 	)
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_colores_cbo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_producto->m_cargar_colores_cbo();
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idcolor'],
+					'descripcion' => $row['nombre'],
+
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	// MANTENIMIENTO
 	public function registrar_producto(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';

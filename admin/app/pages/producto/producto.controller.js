@@ -48,7 +48,7 @@
                   '</label></div>' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
-          // '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPrecios(row)" tooltip-placement="left" uib-tooltip="PRECIOS" > <i class="icon-grid"></i> </button>' +
+          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPrecios(row)" tooltip-placement="left" uib-tooltip="PRECIOS" > <i class="icon-grid"></i> </button>' +
 
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
@@ -93,7 +93,15 @@
         });
       }
       vm.getPaginationServerSide();
-
+      vm.fBusqueda = {}
+      // COLORES
+      ProductoServices.sListarColoresCbo().then(function (rpta) {
+        vm.listaColores = angular.copy(rpta.datos);
+        vm.listaColores.splice(0,0,{ id : '', descripcion:''});
+        vm.listaColoresFiltro = angular.copy(rpta.datos);
+        vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
+        vm.getPaginationServerSide(true);
+      });
     // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
@@ -227,6 +235,7 @@
             vm.fData.temporal = {};
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.listaColores = arrToModal.scope.listaColores;
             vm.modalTitle = 'Precio por Tamaños';
             // vm.fData.canvas = false;
             // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
@@ -237,55 +246,55 @@
                 appScopeProvider: vm
               }
               vm.gridOptions.columnDefs = [
-                { field: 'titulo_pq',displayName: 'TITULO', minWidth: 80,},
-                { field: 'porc_cantidad',displayName: 'CANT %', minWidth: 60,width:90,cellClass:'ui-editCell'},
-                { field: 'cantidad',displayName: 'CANT.', minWidth: 60,width:90,enableCellEdit: false},
-                { field: 'porc_monto',displayName: 'MONTO %', minWidth: 60,width:90,cellClass:'ui-editCell'},
-                { field: 'monto',displayName: 'MONTO $', minWidth: 60,width:90,enableCellEdit: false },
+                { field: 'categoria',displayName: 'CATEGORIA', minWidth: 60,width:160},
+                { field: 'medida', displayName: 'TALLA', minWidth: 80,},
+                { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
+                { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
+                { field: 'precio_mas_5',displayName: 'DE 6 A MAS', minWidth: 60,width:90,cellClass:'ui-editCell'},
 
               ];
               vm.gridOptions.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
-                gridApi.edit.on.afterCellEdit($scope,function (rowEntity, colDef, newValue, oldValue){
-                  rowEntity.column = colDef.field;
-                  if(rowEntity.column == 'porc_cantidad'){
-                    if( !(rowEntity.porc_cantidad > 0 && rowEntity.porc_cantidad < 100) ){
-                      var title = 'Advertencia!';
-                      var pType = 'warning';
-                      rowEntity.porc_cantidad = oldValue;
-                      toastr.warning('El porcentaje debe ser numero mayor a cero', title);
-                      return false;
-                    }
-                    rowEntity.cantidad = Math.ceil(rowEntity.porc_cantidad*vm.fData.cantidad_fotos/100);
-                  }
-                  else if(rowEntity.column == 'porc_monto'){
-                    if( !(rowEntity.porc_monto > 0 && rowEntity.porc_monto < 100) ){
-                      var title = 'Advertencia!';
-                      var pType = 'warning';
-                      rowEntity.porc_monto = oldValue;
-                      toastr.warning('El porcentaje debe ser numero mayor a cero', title);
-                      return false;
-                    }
-                    rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.monto_total/100);
-                  }
-                  if(!rowEntity.es_nuevo){
-                    ProductoServices.sEditarPaquete(rowEntity).then(function (rpta) {
-                      if(rpta.flag == 1){
-                        vm.getPaginationServerSide();
-                        var title = 'OK';
-                        var type = 'success';
-                        toastr.success(rpta.message, title);
-                      }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var type = 'warning';
-                        toastr.warning(rpta.message, title);
-                      }else{
-                        alert('Ocurrió un error');
-                      }
-                    });
-                  }
-                  $scope.$apply();
-                });
+                // gridApi.edit.on.afterCellEdit($scope,function (rowEntity, colDef, newValue, oldValue){
+                //   rowEntity.column = colDef.field;
+                //   if(rowEntity.column == 'porc_cantidad'){
+                //     if( !(rowEntity.porc_cantidad > 0 && rowEntity.porc_cantidad < 100) ){
+                //       var title = 'Advertencia!';
+                //       var pType = 'warning';
+                //       rowEntity.porc_cantidad = oldValue;
+                //       toastr.warning('El porcentaje debe ser numero mayor a cero', title);
+                //       return false;
+                //     }
+                //     rowEntity.cantidad = Math.ceil(rowEntity.porc_cantidad*vm.fData.cantidad_fotos/100);
+                //   }
+                //   else if(rowEntity.column == 'porc_monto'){
+                //     if( !(rowEntity.porc_monto > 0 && rowEntity.porc_monto < 100) ){
+                //       var title = 'Advertencia!';
+                //       var pType = 'warning';
+                //       rowEntity.porc_monto = oldValue;
+                //       toastr.warning('El porcentaje debe ser numero mayor a cero', title);
+                //       return false;
+                //     }
+                //     rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.monto_total/100);
+                //   }
+                //   if(!rowEntity.es_nuevo){
+                //     ProductoServices.sEditarPaquete(rowEntity).then(function (rpta) {
+                //       if(rpta.flag == 1){
+                //         vm.getPaginationServerSide();
+                //         var title = 'OK';
+                //         var type = 'success';
+                //         toastr.success(rpta.message, title);
+                //       }else if( rpta.flag == 0 ){
+                //         var title = 'Advertencia';
+                //         var type = 'warning';
+                //         toastr.warning(rpta.message, title);
+                //       }else{
+                //         alert('Ocurrió un error');
+                //       }
+                //     });
+                //   }
+                //   $scope.$apply();
+                // });
               }
                 // paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
               vm.getPaginationServerSide = function() {
@@ -297,48 +306,48 @@
               }
               vm.getPaginationServerSide();
 
-            vm.calcularCantidad = function(){
-              if( vm.fData.cantidad_fotos > 0 ){
-                vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad_fotos/100);
-              }
-            }
-            vm.calcularMonto = function(){
-              if( vm.fData.monto_total > 0 ){
-                vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto_total/100);
-              }
-            }
-            vm.agregarItem = function(){
-              if( !vm.fData.temporal.titulo_pq ){
-                var title = 'Advertencia';
-                openedToasts.push(toastr['warning']('Agregue un título', title));
-                return false;
-              }
-              if( !vm.fData.temporal.cantidad ){
-                var title = 'Advertencia';
-                openedToasts.push(toastr['warning']('La cantidad no puede ser nula', title));
-                return false;
-              }
-              if( !vm.fData.temporal.monto ){
-                var title = 'Advertencia';
-                openedToasts.push(toastr['warning']('El monto no puede ser nulo', title));
-                return false;
-              }
-              vm.arrTemporal = {
-                'idactividad' : vm.fData.idactividad,
-                'titulo_pq' : vm.fData.temporal.titulo_pq,
-                'porc_cantidad' : vm.fData.temporal.porc_cantidad,
-                'cantidad' : vm.fData.temporal.cantidad,
-                'porc_monto' : vm.fData.temporal.porc_monto,
-                'monto' : vm.fData.temporal.monto,
-                'es_nuevo' : true
+            // vm.calcularCantidad = function(){
+            //   if( vm.fData.cantidad_fotos > 0 ){
+            //     vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad_fotos/100);
+            //   }
+            // }
+            // vm.calcularMonto = function(){
+            //   if( vm.fData.monto_total > 0 ){
+            //     vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto_total/100);
+            //   }
+            // }
+            // vm.agregarItem = function(){
+            //   if( !vm.fData.temporal.titulo_pq ){
+            //     var title = 'Advertencia';
+            //     openedToasts.push(toastr['warning']('Agregue un título', title));
+            //     return false;
+            //   }
+            //   if( !vm.fData.temporal.cantidad ){
+            //     var title = 'Advertencia';
+            //     openedToasts.push(toastr['warning']('La cantidad no puede ser nula', title));
+            //     return false;
+            //   }
+            //   if( !vm.fData.temporal.monto ){
+            //     var title = 'Advertencia';
+            //     openedToasts.push(toastr['warning']('El monto no puede ser nulo', title));
+            //     return false;
+            //   }
+            //   vm.arrTemporal = {
+            //     'idactividad' : vm.fData.idactividad,
+            //     'titulo_pq' : vm.fData.temporal.titulo_pq,
+            //     'porc_cantidad' : vm.fData.temporal.porc_cantidad,
+            //     'cantidad' : vm.fData.temporal.cantidad,
+            //     'porc_monto' : vm.fData.temporal.porc_monto,
+            //     'monto' : vm.fData.temporal.monto,
+            //     'es_nuevo' : true
 
-              };
-              vm.gridOptions.data.push(vm.arrTemporal);
-              vm.fData.temporal = {}
-              vm.fData.temporal.porc_cantidad = 0;
-              vm.fData.temporal.porc_monto = 0;
-              $("#titulo").focus();
-            }
+            //   };
+            //   vm.gridOptions.data.push(vm.arrTemporal);
+            //   vm.fData.temporal = {}
+            //   vm.fData.temporal.porc_cantidad = 0;
+            //   vm.fData.temporal.porc_monto = 0;
+            //   $("#titulo").focus();
+            // }
             vm.aceptar = function () {
               ProductoServices.sRegistrarPaquetes(vm.gridOptions.data).then(function (rpta) {
                 if(rpta.flag == 1){
@@ -421,6 +430,7 @@
       sRegistrarPaquetes: sRegistrarPaquetes,
       sAnularProducto: sAnularProducto,
       sHabilitarDeshabilitarProducto: sHabilitarDeshabilitarProducto,
+      sListarColoresCbo: sListarColoresCbo,
     });
     function sListarProductoCbo(pDatos) {
       var datos = pDatos || {};
@@ -499,6 +509,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/habilitar_deshabilitar_producto",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarColoresCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/listar_colores_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
