@@ -7,7 +7,7 @@ class Compra extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_archivo','model_descuento','model_cliente','model_tipo_producto','model_pedido'));
+        $this->load->model(array('model_archivo','model_descuento','model_cliente','model_pedido'));
     }
 
 	public function verificar_archivos_seleccion(){
@@ -22,12 +22,12 @@ class Compra extends CI_Controller {
 		$arrData['mostrar_productos'] = FALSE;
 		$arrData['lista_productos'] = [];
 		if($hoy  <= $fecha_salida){
-			$arrData['mostrar_productos'] = TRUE;
-			$lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
-			foreach ($lista_productos as $iProd => $prod) {
-				$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];
-			}
-			$arrData['lista_productos'] = $lista_productos;
+			// $arrData['mostrar_productos'] = TRUE;
+			// $lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
+			// foreach ($lista_productos as $iProd => $prod) {
+			// 	$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];
+			// }
+			// $arrData['lista_productos'] = $lista_productos;
 		}
 
 		/*verifica bonificacion*/
