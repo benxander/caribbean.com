@@ -179,6 +179,7 @@ class Producto extends CI_Controller {
     		'imagen' => $nombre,
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
+    		'idtipomedida' => $allInputs['tipo_medida']['id'],
     	);
 		if( $this->model_producto->m_registrar_producto($data) ){
 			$arrData['message'] = 'Se registraron los datos correctamente ';
@@ -196,6 +197,7 @@ class Producto extends CI_Controller {
     		'descripcion_pm' => strtoupper_total(trim($allInputs['descripcion_pm'])),
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
+    		'idtipomedida' => $allInputs['tipo_medida']['id'],
     	);
     	// VALIDACIONES
     	if( $allInputs['canvas']){
