@@ -505,4 +505,21 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
+	public function actualizar_monedero(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al actualizar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	
+		if($this->model_cliente->m_actulizar_monedero($allInputs)){
+			$cliente = $this->model_cliente->m_cargar_cliente_cbo($allInputs);
+			$arrData['message'] = 'Se actalizaron los datos correctamente';
+    		$arrData['cliente'] = $cliente;
+    		$arrData['flag'] = 1;
+		}
+		
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

@@ -45,7 +45,7 @@
           }
          }"
         >
-          <div class="masonry-brick col-md-4 col-sm-6 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
+          <div class="masonry-brick  m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container">
               <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="">
               <div class="img-details-hover" style="float: right;">
@@ -77,7 +77,7 @@
                   socialshare-popup-height="300"
                   socialshare-popup-width="400"
                   socialshare-trigger="click"
-                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
                     <i class="fa fa-facebook"></i>
                   </a>
                   <a href="" socialshare
@@ -90,13 +90,13 @@
                     socialshare-popup-height="300"
                     socialshare-popup-width="400"
                     socialshare-trigger="click"
-                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
                     <i class="fa fa-twitter"></i>
                   </a>
                 </div>
               </div>
-              <div class="img-details-static" style="float: left; position: relative; top: 8px;">
-                <h4>{{image.title}}</h4>
+              <div class="img-details-static" style="float: left; position: relative; top: 5px;">
+                <!-- <h4>{{image.title}}</h4> -->
                 <div class="img-controls">
                   <a href="javascript:;" class="img-select" ng-click="ga.selectImage($index)">
                     <i class="fa fa-square-o" ng-show="!image.selected"></i>

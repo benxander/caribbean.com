@@ -443,3 +443,14 @@ minotaur-header .navbar-header .navigation-toggle{
 .ui-grid-icon-cancel:before {
     content: "\c353";
 }
+
+.icon-share {
+  width: 25px;
+  height: 25px;
+  margin: 10px 4px !important;
+}
+
+.icon.icon-share > .fa {
+    font-size: 15px;
+    line-height: 26px;
+}

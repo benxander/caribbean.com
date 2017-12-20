@@ -76,8 +76,8 @@
             </label>
           </li>
 
-          <li ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
-            <a href="javascript:;"><i class="fa fa-download" ></i> {{ 'Text.DESCARGAR' | translate }}</a>
+          <li class="btn" ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+            <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
 
          <!--  <li class="pull-right select-all" style="font-size: 15px;font-weight: 600">
@@ -121,6 +121,12 @@
             </div>
           </div>
         </div>
+
+        <ul class="mix-controls">
+          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+            <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
+          </li>
+        </ul>
       </div>
 
       <div class="tile p-15" ng-if="ctrl.modoPagar">
@@ -168,14 +174,28 @@
             </div>
           </div>
         </div>
-        <div class="pull-right text-right">
+        <div class=" pull-right text-right">
+          <p style="font-size: 16px;font-weight: bold;color:#5cb85c;"
+              ng-if="ctrl.datosVista.tiene_descuento">Saldo Inicial: {{fSessionCI.monedero}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_descuento">Total productos: {{ctrl.monto_total}}</p>
+              ng-if="ctrl.datosVista.tiene_descuento">Paquete {{ctrl.paqueteSeleccionado.titulo_pq}}: -{{ctrl.monto}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_bonificacion">Total bonificacion: {{ctrl.monto_bonificacion}}</p>
+              ng-if="ctrl.datosVista.tiene_descuento">Foto Adicional ({{ctrl.cantidad_adic}} x {{ctrl.precio_adicional}}$): -{{ctrl.monto_adicionales}}</p>
+
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_descuento">Total descuento: {{ctrl.monto_descuento}}</p>
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a pagar: {{ctrl.monto_neto}}</p>
+              ng-if="ctrl.datosVista.tiene_descuento">Video Adicional ({{ctrl.cantidad_video}} x {{ctrl.precio_video}}$): -{{ctrl.monto_adicionales_video}}</p>
+          
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
+              ng-if="ctrl.datosVista.tiene_bonificacion">Bonificacion: -{{ctrl.monto_bonificacion}}</p>
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
+              ng-if="ctrl.datosVista.tiene_descuento">Descuento: -{{ctrl.monto_descuento}}</p>
+
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
+              ng-if="ctrl.datosVista.tiene_descuento">Total : {{ctrl.monto_total}}</p>
+          
+          <hr>
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a Pagar: {{ctrl.monto_a_pagar}}</p>
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Restante Monedero: {{ctrl.restante}}</p>
           <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnPagar();">Pagar</button>
         </div>
       </div>
