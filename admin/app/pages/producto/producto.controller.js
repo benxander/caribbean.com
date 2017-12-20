@@ -308,7 +308,9 @@
               vm.getPaginationServerSidePremium();
 
             vm.aceptar = function () {
-              ProductoServices.sRegistrarProductoPrecios(vm.gridOptions.data).then(function (rpta) {
+              vm.fData.basico = vm.gridOptions.data;
+              vm.fData.premium = vm.gridOptionsPremium.data;
+              ProductoServices.sRegistrarProductoPrecios(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
@@ -318,7 +320,7 @@
                   var title = 'Advertencia';
                   var type = 'warning';
                 }else{
-                  alert('Ocurrió un error');
+                  alert('Aun no implementado');
                 }
                 openedToasts.push(toastr[type](rpta.message, title));
               });
@@ -387,7 +389,7 @@
       sEditarProducto: sEditarProducto,
       sListarProductoPrecios: sListarProductoPrecios,
       sEditarPaquete: sEditarPaquete,
-      sRegistrarPaquetes: sRegistrarPaquetes,
+      sRegistrarProductoPrecios: sRegistrarProductoPrecios,
       sAnularProducto: sAnularProducto,
       sHabilitarDeshabilitarProducto: sHabilitarDeshabilitarProducto,
       sListarColoresCbo: sListarColoresCbo,
@@ -455,11 +457,11 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sRegistrarPaquetes(pDatos) {
+    function sRegistrarProductoPrecios(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Producto/registrar_paquetes",
+            url :  angular.patchURLCI + "Producto/registrar_producto_precios",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

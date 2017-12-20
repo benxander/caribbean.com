@@ -266,4 +266,16 @@ class Producto extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	/*precios*/
+	public function registrar_producto_precios(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+    	var_dump($allInputs); exit();
+
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

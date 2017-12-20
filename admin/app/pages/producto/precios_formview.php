@@ -23,10 +23,12 @@
 
 				<div class="row">
 		            <div class="col-md-6 col-sm-12">
-		              <div ui-grid="mp.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
+						<span>Básico</span>
+		              	<div ui-grid="mp.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
 		            </div>
 		            <div class="col-md-6 col-sm-12">
-		              <div ui-grid="mp.gridOptionsPremium" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
+						<span>Premium</span>
+		              	<div ui-grid="mp.gridOptionsPremium" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
 		            </div>
 				</div>
 			</fieldset>
