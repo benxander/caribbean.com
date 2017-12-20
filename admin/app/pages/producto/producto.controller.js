@@ -102,6 +102,13 @@
         vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
         vm.getPaginationServerSide(true);
       });
+      // TIPO MEDIDA
+        ProductoServices.sListarTipoMedidaCbo().then(function (rpta) {
+          vm.listaTipoMedida = angular.copy(rpta.datos);
+          vm.listaTipoMedida.splice(0,0,{ id : '', descripcion:'Seleccione una opción'});
+
+
+        });
     // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
@@ -119,7 +126,8 @@
             vm.fData.canvas = true;
             vm.fData.si_genero = '2';
             vm.fData.si_color = '2';
-
+            vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
+            vm.fData.tipo_medida = vm.listaTipoMedida[0];
             // vm.rutaImagen = arrToModal.scope.dirImagesProducto + vm.fData.tipo_banner +'/';
 
             vm.aceptar = function () {
@@ -172,6 +180,11 @@
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
+
+            vm.fData.tipo_medida = vm.listaTipoMedida.filter(function(obj) {
+              return obj.id == vm.fData.idtipomedida;
+            }).shift();
             vm.modalTitle = 'Edición de producto';
             vm.fData.canvas = false;
 
@@ -239,15 +252,14 @@
             vm.modalTitle = 'Precio por Tamaños';
             // vm.fData.canvas = false;
             // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
-            // GRILLA PAQUETES
+            // GRILLA BASICO
               vm.gridOptions = {
                 enableFullRowSelection: false,
                 multiSelect: false,
                 appScopeProvider: vm
               }
               vm.gridOptions.columnDefs = [
-                { field: 'categoria',displayName: 'CATEGORIA', minWidth: 60,width:160},
-                { field: 'medida', displayName: 'TALLA', minWidth: 80,},
+                { field: 'medida', displayName: 'TAMAÑO', minWidth: 80,},
                 { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
                 { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
                 { field: 'precio_mas_5',displayName: 'DE 6 A MAS', minWidth: 60,width:90,cellClass:'ui-editCell'},
@@ -255,49 +267,11 @@
               ];
               vm.gridOptions.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
-                // gridApi.edit.on.afterCellEdit($scope,function (rowEntity, colDef, newValue, oldValue){
-                //   rowEntity.column = colDef.field;
-                //   if(rowEntity.column == 'porc_cantidad'){
-                //     if( !(rowEntity.porc_cantidad > 0 && rowEntity.porc_cantidad < 100) ){
-                //       var title = 'Advertencia!';
-                //       var pType = 'warning';
-                //       rowEntity.porc_cantidad = oldValue;
-                //       toastr.warning('El porcentaje debe ser numero mayor a cero', title);
-                //       return false;
-                //     }
-                //     rowEntity.cantidad = Math.ceil(rowEntity.porc_cantidad*vm.fData.cantidad_fotos/100);
-                //   }
-                //   else if(rowEntity.column == 'porc_monto'){
-                //     if( !(rowEntity.porc_monto > 0 && rowEntity.porc_monto < 100) ){
-                //       var title = 'Advertencia!';
-                //       var pType = 'warning';
-                //       rowEntity.porc_monto = oldValue;
-                //       toastr.warning('El porcentaje debe ser numero mayor a cero', title);
-                //       return false;
-                //     }
-                //     rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.monto_total/100);
-                //   }
-                //   if(!rowEntity.es_nuevo){
-                //     ProductoServices.sEditarPaquete(rowEntity).then(function (rpta) {
-                //       if(rpta.flag == 1){
-                //         vm.getPaginationServerSide();
-                //         var title = 'OK';
-                //         var type = 'success';
-                //         toastr.success(rpta.message, title);
-                //       }else if( rpta.flag == 0 ){
-                //         var title = 'Advertencia';
-                //         var type = 'warning';
-                //         toastr.warning(rpta.message, title);
-                //       }else{
-                //         alert('Ocurrió un error');
-                //       }
-                //     });
-                //   }
-                //   $scope.$apply();
-                // });
+
               }
                 // paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
               vm.getPaginationServerSide = function() {
+                vm.fData.categoria = '1';
                 ProductoServices.sListarProductoPrecios(vm.fData).then(function (rpta) {
                   vm.gridOptions.data = rpta.datos;
                   // vm.gridOptions.totalItems = rpta.paginate.totalRows;
@@ -305,51 +279,36 @@
                 });
               }
               vm.getPaginationServerSide();
+            // GRILLA PREMIUM
+              vm.gridOptionsPremium = {
+                enableFullRowSelection: false,
+                multiSelect: false,
+                appScopeProvider: vm
+              }
+              vm.gridOptionsPremium.columnDefs = [
+                { field: 'medida', displayName: 'TAMAÑO', minWidth: 80,},
+                { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
+                { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
+                { field: 'precio_mas_5',displayName: 'DE 6 A MAS', minWidth: 60,width:90,cellClass:'ui-editCell'},
 
-            // vm.calcularCantidad = function(){
-            //   if( vm.fData.cantidad_fotos > 0 ){
-            //     vm.fData.temporal.cantidad = Math.ceil(vm.fData.temporal.porc_cantidad*vm.fData.cantidad_fotos/100);
-            //   }
-            // }
-            // vm.calcularMonto = function(){
-            //   if( vm.fData.monto_total > 0 ){
-            //     vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto_total/100);
-            //   }
-            // }
-            // vm.agregarItem = function(){
-            //   if( !vm.fData.temporal.titulo_pq ){
-            //     var title = 'Advertencia';
-            //     openedToasts.push(toastr['warning']('Agregue un título', title));
-            //     return false;
-            //   }
-            //   if( !vm.fData.temporal.cantidad ){
-            //     var title = 'Advertencia';
-            //     openedToasts.push(toastr['warning']('La cantidad no puede ser nula', title));
-            //     return false;
-            //   }
-            //   if( !vm.fData.temporal.monto ){
-            //     var title = 'Advertencia';
-            //     openedToasts.push(toastr['warning']('El monto no puede ser nulo', title));
-            //     return false;
-            //   }
-            //   vm.arrTemporal = {
-            //     'idactividad' : vm.fData.idactividad,
-            //     'titulo_pq' : vm.fData.temporal.titulo_pq,
-            //     'porc_cantidad' : vm.fData.temporal.porc_cantidad,
-            //     'cantidad' : vm.fData.temporal.cantidad,
-            //     'porc_monto' : vm.fData.temporal.porc_monto,
-            //     'monto' : vm.fData.temporal.monto,
-            //     'es_nuevo' : true
+              ];
+              vm.gridOptionsPremium.onRegisterApi = function(gridApi) {
+                vm.gridApi = gridApi;
 
-            //   };
-            //   vm.gridOptions.data.push(vm.arrTemporal);
-            //   vm.fData.temporal = {}
-            //   vm.fData.temporal.porc_cantidad = 0;
-            //   vm.fData.temporal.porc_monto = 0;
-            //   $("#titulo").focus();
-            // }
+              }
+                // paginationOptions.sortName = vm.gridOptionsPremium.columnDefs[0].name;
+              vm.getPaginationServerSidePremium = function() {
+                vm.fData.categoria = '1';
+                ProductoServices.sListarProductoPrecios(vm.fData).then(function (rpta) {
+                  vm.gridOptionsPremium.data = rpta.datos;
+                  // vm.gridOptionsPremium.totalItems = rpta.paginate.totalRows;
+                  // vm.mySelectionGrid = [];
+                });
+              }
+              vm.getPaginationServerSidePremium();
+
             vm.aceptar = function () {
-              ProductoServices.sRegistrarPaquetes(vm.gridOptions.data).then(function (rpta) {
+              ProductoServices.sRegistrarProductoPrecios(vm.gridOptions.data).then(function (rpta) {
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
@@ -422,6 +381,7 @@
   function ProductoServices($http, $q) {
     return({
       sListarProductoCbo: sListarProductoCbo,
+      sListarTipoMedidaCbo: sListarTipoMedidaCbo,
       sListarProductos: sListarProductos,
       sRegistrarProducto: sRegistrarProducto,
       sEditarProducto: sEditarProducto,
@@ -437,6 +397,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/listar_producto_cbo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarTipoMedidaCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/listar_tipo_medida_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

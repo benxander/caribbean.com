@@ -15,16 +15,18 @@
 			<fieldset ng-if="true">
 				<legend class="f-16 text-left">Características y precios</legend>
 				<div class="row">
-					<div class="form-group col-sm-4">
-			    		<label for="color" class="control-label minotaur-label">Color</label>
-						<span>Elige y agrega los colores que deseas para tu producto</span>
+					<div class="form-group col-sm-4" ng-if="mp.fData.si_color == 1">
+			    		<label for="color" class="control-label minotaur-label block">Color</label>
 		              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mp.fData.colores" ng-options="item.id as item.descripcion for item in mp.listaColores" required> </select>
 		            </div>
 				</div>
 
 				<div class="row">
-		            <div class="col-md-12 col-sm-12">
+		            <div class="col-md-6 col-sm-12">
 		              <div ui-grid="mp.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
+		            </div>
+		            <div class="col-md-6 col-sm-12">
+		              <div ui-grid="mp.gridOptionsPremium" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
 		            </div>
 				</div>
 			</fieldset>

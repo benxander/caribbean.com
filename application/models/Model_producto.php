@@ -49,12 +49,19 @@ class Model_producto extends CI_Model {
 		$this->db->order_by('nombre', 'ASC');
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_tipo_medida_cbo(){
+		$this->db->select('tm.idtipomedida, tm.descripcion_tm');
+		$this->db->from('tipo_medida tm');
+		// $this->db->where('estado_co', 1);
+		$this->db->order_by('idtipomedida', 'ASC');
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_precios_por_producto($datos){
 		$this->db->select('m.idmedida, m.denominacion as medida, m.idtipomedida');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5, p.estado_p');
 		$this->db->from('medida m');
 		// $this->db->join('producto_master pm', 'm.ç = pm.ç');
-		$this->db->join('producto p', 'm.idmedida = p.idmedida AND idproductomaster = ' . $datos['idproductomaster'],'left');
+		$this->db->join('producto p', 'm.idmedida = p.idmedida AND idproductomaster = ' . $datos['idproductomaster'] . ' AND p.categoria = ' . $datos['categoria'],'left');
 		$this->db->where('idtipomedida', $datos['idtipomedida']);
 		$this->db->order_by('idmedida','ASC');
 		$this->db->order_by('idproducto','ASC');

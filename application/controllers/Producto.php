@@ -32,6 +32,31 @@ class Producto extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_tipo_medida_cbo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_producto->m_cargar_tipo_medida_cbo();
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idtipomedida'],
+					'descripcion' => $row['descripcion_tm'],
+
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
     public function listar_productos(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];

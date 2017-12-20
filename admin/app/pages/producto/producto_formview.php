@@ -17,8 +17,8 @@
 				<div class="form-group col-md-6">
                 	<label class="control-label minotaur-label">Imagen<small class="text-red">(*)</small></label>
 	            	<div ng-show="mp.fData.canvas">
-				        <img src="../images/logos/logo-1.png" ng-if="!image">
-						<img ng-if="image" ng-src="{{image}}" alt="" style="width: 100%">
+				        <img src="../images/logos/logo-1.png" class="mb-md" ng-if="!image">
+						<img ng-if="image" ng-src="{{image}}" class="mb-md" style="width: 100%">
 				        <input upload-me type="file" name="upload" accept=".gif, .jpg, .png, .jpeg">
 				        <a href="" class="block text-red" style="width: 60px" ng-click="mp.fData.canvas=false;" ng-if="mp.modoEdicion">Cancelar</a>
 	            	</div>
@@ -28,6 +28,12 @@
 	            	</div>
                 </div>
 				<div class="form-group col-md-6">
+					<div class="row">
+						<div class="form-group col-sm-12">
+				    		<label for="color" class="control-label minotaur-label">Tipo Medida<small class="text-red">(*)</small></label>
+			              	<select class="form-control input-sm" ng-model="mp.fData.tipo_medida" ng-options="item as item.descripcion for item in mp.listaTipoMedida" required> </select>
+			            </div>
+					</div>
 					<div>
 	                	<label class="control-label minotaur-label">¿Por género? (Hombre/Mujer)</label>
 		            	<label class="radio ml-lg mt-n" >
