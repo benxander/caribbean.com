@@ -65,7 +65,7 @@ class Model_cliente extends CI_Model {
 	}
 	public function m_cargar_cliente_cbo($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
-		$this->db->select('u.codigo, u.ididioma, c.fecha_salida');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_salida, c.monedero');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);
@@ -164,6 +164,14 @@ class Model_cliente extends CI_Model {
 		$this->db->where('idcliente',$data['idcliente']);
 
 		return $this->db->update('cliente', $datos);
+	}
+
+	public function m_actulizar_monedero($datos){
+		$data = array(
+			'monedero' => (float)$datos['monedero']
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
 	}
 
 }

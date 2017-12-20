@@ -91,6 +91,14 @@ class Acceso extends CI_Controller {
 
 		if( $this->session->has_userdata( 'sess_cp_'.substr(base_url(),-14,9) ) &&
 			!empty($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario']) ){
+
+			$idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
+			$fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
+			if( !empty($fila) ){
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
+			}
+
+
 			$arrData['flag'] = 1;
 			$arrData['datos'] = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ];
 		}

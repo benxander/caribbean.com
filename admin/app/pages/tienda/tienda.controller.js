@@ -15,15 +15,33 @@
     console.log('scope',scope);
     vm.seleccionadas = 0;
     vm.modoSeleccionar = true;
-    //vm.modoSeleccionar = false;
     vm.modoPagar = false;
     vm.modoDescargaCompleta = false;
     vm.monto = 0;
     vm.alertAdicionales = false;
-
     vm.isPagoMonedero = false;
     vm.paqueteSeleccionado = {};
-    //vm.modoDescargaCompleta = true;
+    vm.selectedAll = false;
+    vm.isSelected = false;
+
+    vm.cantidad_adic = 0;
+    vm.cantidad_video = 0;
+    vm.monto_total = 0.00;
+    vm.monto_a_pagar = 0.00;
+    vm.monto_descuento = 0.00;
+    vm.monto_bonificacion = 0.00;
+    vm.monto_adicionales = 0.00;
+    vm.monto_adicionales_video = 0.00;
+    vm.precio_video = 0;
+    vm.precio_adicional = 0;
+
+    rootServices.sGetSessionCI().then(function (response) {
+      if(response.flag == 1){
+        vm.fDataUsuario = response.datos;
+        vm.cargarExcursiones(vm.fDataUsuario);
+        vm.cargarGaleria(vm.fDataUsuario);
+      }
+    });
     vm.cargarGaleria = function(datos){
       pageLoading.start('Cargando archivos...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
@@ -43,12 +61,11 @@
       });
     }
     vm.selPaquete = function(idpaquete){
-      console.log('idpaquete',idpaquete);
       angular.forEach(vm.listaPaquetes, function(paquete,key) {
         if(paquete.idpaquete == idpaquete){
           vm.listaPaquetes[key].selected = true;
           vm.paqueteSeleccionado = paquete;
-          vm.monto = paquete.monto;
+          vm.monto = parseFloat(paquete.monto);
           vm.actualizaMontoPaquete();
         }else{
           vm.listaPaquetes[key].selected = false;
@@ -65,21 +82,7 @@
         }
       }
     }
-    rootServices.sGetSessionCI().then(function (response) {
-      if(response.flag == 1){
-        vm.fDataUsuario = response.datos;
-        vm.cargarExcursiones(vm.fDataUsuario);
-        vm.cargarGaleria(vm.fDataUsuario);
-      }
-    });
-
-    vm.selectedAll = false;
-    vm.isSelected = false;
-    // console.log('$scope.isSelected',$scope.isSelected);
-    // $scope.isSelected = vm.isSelected;
-
     vm.selectAll = function () {
-      var monto = 0;
       if (vm.selectedAll) {
         vm.selectedAll = false;
         vm.isSelected = false;
@@ -90,16 +93,16 @@
       }
       var i=0;
       angular.forEach(vm.images, function(image) {
-        image.selected = vm.selectedAll;
-        monto = monto + image.precio_float;
         if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
           vm.isPagoMonedero = true;
           $scope.actualizarSaldo(true,vm.monto);
         }
         if(image.descargado == 2){
+          image.selected = vm.selectedAll;
           i++;
         }
       });
+
       if(i > vm.paqueteSeleccionado.cantidad){
         var cantidad = i - vm.paqueteSeleccionado.cantidad;
         if(vm.isSelected){
@@ -109,14 +112,11 @@
           i=0;
         }
       }
-      $scope.actualizarSeleccion(i,vm.monto);
-      vm.monto_total = monto.toFixed(2);
+      $scope.actualizarSeleccion(i);
     };
-
     vm.selectImage = function(index) {
       var i = 0;
-      var monto = 0;
-      var add = true;
+      var add = false;
 
       if (vm.images[index].selected) {
         vm.images[index].selected = false;
@@ -134,7 +134,6 @@
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
           i++;
-          // monto = monto + image.precio_float;
         }
       });
 
@@ -142,39 +141,33 @@
         vm.isSelected = false;
       }
       vm.seleccionadas = i;
-      $scope.actualizarSeleccion(i,vm.monto);
-      console.log(vm.paqueteSeleccionado);
+      $scope.actualizarSeleccion(i);
       if(add && (vm.seleccionadas > vm.paqueteSeleccionado.cantidad)){
         if(!vm.alertAdicionales){
           alert("Apartir de ahora se cobrará USD$ "+vm.precio_adicional+" por cada foto adicional");
           vm.alertAdicionales = true;
         }
-
         $scope.actualizarSaldo(true,vm.precio_adicional);
-      }else if(!add && vm.seleccionadas > vm.paqueteSeleccionado.cantidad){
+      }else if(!add && vm.seleccionadas >= vm.paqueteSeleccionado.cantidad){
         $scope.actualizarSaldo(true,'-'+ vm.precio_adicional);
       }
-      // console.log('fSessionCI.key_grupo', $scope.fSessionCI.key_grupo);
-      // vm.monto_total = monto.toFixed(2);
     };
 
-    // $scope.$watch('vm.monto',function(newValue,oldValue = vm.monto) {
-    //   console.log('newValue',newValue);
-    //   console.log('oldValue',oldValue);
-    //   if (newValue===oldValue) {
-    //     console.log('vm.monto',vm.monto);
-    //     return;
-    //   }
-    //   console.log('watch dif');
-    //   $scope.actualizarSaldo(newValue,vm.monto);
-    // });
-    vm.monto_total = 0.00;
-    vm.monto_descuento = 0.00;
-    vm.monto_bonificacion = 0.00;
-
+   /* $scope.$watch('vm.monto',function(newValue,oldValue = vm.monto) {
+      console.log('newValue',newValue);
+      console.log('oldValue',oldValue);
+      if (newValue===oldValue) {
+        console.log('vm.monto',vm.monto);
+        return;
+      }
+      console.log('watch dif');
+      $scope.actualizarSaldo(newValue,vm.monto);
+    });*/
+    
     vm.confirmDescarga = function(){
-      console.log($scope.seleccionadas);
-      console.log(vm.paqueteSeleccionado.cantidad);
+      if(!vm.isSelected){
+        return;
+      }
       if($scope.seleccionadas < vm.paqueteSeleccionado.cantidad){
         alertify.confirm('¿Esta seguro de continuar? <br/>'+
           'Aun tiene '+ (vm.paqueteSeleccionado.cantidad - vm.seleccionadas)
@@ -185,7 +178,6 @@
         vm.btnDescargarFiles();
       }
     }
-
     vm.btnDescargarFiles = function(){
       if(!vm.isSelected){
         return;
@@ -198,7 +190,8 @@
 
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
         vm.datosVista = rpta;
-        vm.calculaDescuentos();
+        vm.calcularTotales();
+        //vm.calculaDescuentos();
 
         if(vm.datosVista.mostrar_productos){
           angular.forEach(vm.images, function(image,key) {
@@ -212,7 +205,6 @@
         pageLoading.stop();
       });
     }
-
     vm.calculaDescuentos = function(){
       if(vm.datosVista.tiene_bonificacion){
         var encontrado = false;
@@ -229,13 +221,28 @@
         vm.monto_neto = (parseFloat(vm.monto_total) - parseFloat(vm.monto_descuento)).toFixed(2);
       }
     }
+ 
+    vm.calcularTotales = function(){
+      vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+      console.log(vm.precio_adicional,vm.precio_video );
+      if(vm.cantidad_adic > 0){
+        vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
+      }else{
+        vm.cantidad_adic = 0;
+      }     
+      vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
+      if(vm.datosVista.tiene_descuento){
+        vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
+      }
 
-    vm.updatePrecio = function(producto){
-      var productos = (parseInt(producto.cantidad) * parseFloat(producto.precio)).toFixed(2);
-      vm.monto_total = (parseFloat(vm.monto_total) + parseFloat(productos)).toFixed(2);
-      vm.calculaDescuentos();
+      vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
+      vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
+
+      if(vm.restante < 0){
+        vm.monto_a_pagar = abs(vm.restante);
+        vm.restante = 0;
+      }
     }
-
     vm.btnVolver = function(){
       angular.forEach(vm.images, function(image) {
         image.selected = false;
@@ -248,18 +255,53 @@
       $scope.actualizarSeleccion(0,0);
       $scope.actualizarSaldo(false);
     }
+    vm.limpiar = function(){
+      vm.cantidad_adic = 0;
+      vm.cantidad_video = 0;
+      vm.monto_total = 0.00;
+      vm.monto_a_pagar = 0.00;
+      vm.monto_descuento = 0.00;
+      vm.monto_bonificacion = 0.00;
+      vm.monto_adicionales = 0.00;
+      vm.monto_adicionales_video = 0.00;
+      vm.modoPagar = false;
+      vm.selectedAll = false;
+      vm.isPagoMonedero = false;
+      $scope.actualizarSeleccion(0);
+      $scope.actualizarSaldo(false);
+    }
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;
-      vm.modoPagar=false;
-      /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
-      vm.irCompraExitosa();
-    }
+      vm.modoPagar = false;
+      if(vm.monto_a_pagar > 0){
+        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
+      }
 
+      var datos = { monedero: vm.restante, idcliente: $scope.fSessionCI.idcliente };
+      TiendaServices.sActualizarMonedero(datos).then(function(rpta){
+        if(rpta.flag == 1){
+          rootServices.sGetSessionCI().then(function (response) {
+            if(response.flag == 1){
+              $scope.fSessionCI = response.datos;
+              $scope.saldo = $scope.fSessionCI.monedero;
+              vm.irCompraExitosa();
+            }else{
+              $scope.fSessionCI = {};
+              $scope.logOut();
+              console.log('logOut ->',response);
+              $scope.goToUrl('/app/pages/login');
+            }
+          });
+        }
+      });
+      
+    }
     vm.irCompraExitosa = function(){
       pageLoading.start('Procesando descarga...');
       TiendaServices.sDescargarArchivosPagados(vm.images).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
+          vm.limpiar();
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
@@ -273,7 +315,6 @@
         pageLoading.stop();
       });
     }
-
     vm.calificar = function(value){
       vm.calificacion = value;
       vm.fDataUsuario.puntos = value;
@@ -292,14 +333,14 @@
         }
       });
     }
-
   }
 
   function TiendaServices($http, $q) {
     return({
         sListarNoDescargados: sListarNoDescargados,
         sDescargarArchivosPagados: sDescargarArchivosPagados,
-        sVerificarSeleccion:sVerificarSeleccion,
+        sVerificarSeleccion: sVerificarSeleccion,
+        sActualizarMonedero: sActualizarMonedero
     });
 
     function sListarNoDescargados(pDatos) {
@@ -327,6 +368,16 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Compra/verificar_archivos_seleccion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+
+    function sActualizarMonedero(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/actualizar_monedero",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
