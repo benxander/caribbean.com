@@ -163,7 +163,7 @@
       console.log('watch dif');
       $scope.actualizarSaldo(newValue,vm.monto);
     });*/
-    
+
     vm.confirmDescarga = function(){
       if(!vm.isSelected){
         return;
@@ -189,6 +189,7 @@
       }
 
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
+        pageLoading.stop();
         vm.datosVista = rpta;
         vm.calcularTotales();
         //vm.calculaDescuentos();
@@ -202,7 +203,6 @@
         }
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
-        pageLoading.stop();
       });
     }
     vm.calculaDescuentos = function(){
@@ -221,7 +221,7 @@
         vm.monto_neto = (parseFloat(vm.monto_total) - parseFloat(vm.monto_descuento)).toFixed(2);
       }
     }
- 
+
     vm.calcularTotales = function(){
       vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
       console.log(vm.precio_adicional,vm.precio_video );
@@ -229,7 +229,7 @@
         vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
       }else{
         vm.cantidad_adic = 0;
-      }     
+      }
       vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
       if(vm.datosVista.tiene_descuento){
         vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
@@ -239,7 +239,7 @@
       vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
 
       if(vm.restante < 0){
-        vm.monto_a_pagar = abs(vm.restante);
+        vm.monto_a_pagar = Math.abs(vm.restante);
         vm.restante = 0;
       }
     }
@@ -294,7 +294,7 @@
           });
         }
       });
-      
+
     }
     vm.irCompraExitosa = function(){
       pageLoading.start('Procesando descarga...');
