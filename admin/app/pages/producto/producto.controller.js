@@ -93,14 +93,14 @@
         });
       }
       vm.getPaginationServerSide();
-      vm.fBusqueda = {}
+      // vm.fBusqueda = {}
       // COLORES
       ProductoServices.sListarColoresCbo().then(function (rpta) {
         vm.listaColores = angular.copy(rpta.datos);
         vm.listaColores.splice(0,0,{ id : '', descripcion:''});
-        vm.listaColoresFiltro = angular.copy(rpta.datos);
-        vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
-        vm.getPaginationServerSide(true);
+        // vm.listaColoresFiltro = angular.copy(rpta.datos);
+        // vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
+        // vm.getPaginationServerSide(true);
       });
       // TIPO MEDIDA
         ProductoServices.sListarTipoMedidaCbo().then(function (rpta) {
@@ -245,13 +245,18 @@
             var vm = this;
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
-            vm.fData.temporal = {};
-            vm.modoEdicion = true;
+            // vm.fData.temporal = {};
+            // vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.listaColores = arrToModal.scope.listaColores;
+            vm.fData.cambio_color = false;
+
             vm.modalTitle = 'Precio por Tamaños';
             // vm.fData.canvas = false;
             // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
+            ProductoServices.sListarColoresProducto(vm.fData).then(function(rpta){
+              vm.fData.colores = rpta.datos;
+            });
             // GRILLA BASICO
               vm.gridOptions = {
                 enableFullRowSelection: false,
@@ -271,11 +276,11 @@
               }
                 // paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
               vm.getPaginationServerSide = function() {
-                vm.fData.categoria = '1';
-                ProductoServices.sListarProductoPrecios(vm.fData).then(function (rpta) {
-                  vm.gridOptions.data = rpta.datos;
-                  // vm.gridOptions.totalItems = rpta.paginate.totalRows;
-                  // vm.mySelectionGrid = [];
+                var paramDatos = angular.copy(vm.fData);
+                paramDatos.categoria = 1;
+                ProductoServices.sListarProductoPrecios(paramDatos).then(function (rpta) {
+                  vm.gridOptions.data = angular.copy(rpta.datos);
+                  console.log('data',vm.gridOptions.data);
                 });
               }
               vm.getPaginationServerSide();
@@ -298,15 +303,22 @@
               }
                 // paginationOptions.sortName = vm.gridOptionsPremium.columnDefs[0].name;
               vm.getPaginationServerSidePremium = function() {
-                vm.fData.categoria = '1';
-                ProductoServices.sListarProductoPrecios(vm.fData).then(function (rpta) {
-                  vm.gridOptionsPremium.data = rpta.datos;
-                  // vm.gridOptionsPremium.totalItems = rpta.paginate.totalRows;
-                  // vm.mySelectionGrid = [];
+                var paramDatos = angular.copy(vm.fData);
+                paramDatos.categoria = 2;
+                // var paramDatos = {
+                //   'datos' : vm.fData,
+                //   'categoria' : 2
+                // }
+                ProductoServices.sListarProductoPrecios(paramDatos).then(function (rpta) {
+                  vm.gridOptionsPremium.data = angular.copy(rpta.datos);
+                  console.log('data',vm.gridOptionsPremium.data);
                 });
               }
               vm.getPaginationServerSidePremium();
 
+            vm.cambioColor = function(){
+              vm.fData.cambio_color = true;
+            }
             vm.aceptar = function () {
               vm.fData.basico = vm.gridOptions.data;
               vm.fData.premium = vm.gridOptionsPremium.data;
@@ -316,6 +328,7 @@
                   vm.getPaginationServerSide();
                   var title = 'OK';
                   var type = 'success';
+                  $uibModalInstance.close(vm.fData);
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
                   var type = 'warning';
@@ -324,7 +337,6 @@
                 }
                 openedToasts.push(toastr[type](rpta.message, title));
               });
-              $uibModalInstance.close(vm.fData);
             };
             vm.cancel = function () {
               $uibModalInstance.dismiss('cancel');
@@ -388,11 +400,12 @@
       sRegistrarProducto: sRegistrarProducto,
       sEditarProducto: sEditarProducto,
       sListarProductoPrecios: sListarProductoPrecios,
-      sEditarPaquete: sEditarPaquete,
       sRegistrarProductoPrecios: sRegistrarProductoPrecios,
+      sEditarProductoPrecios: sEditarProductoPrecios,
       sAnularProducto: sAnularProducto,
       sHabilitarDeshabilitarProducto: sHabilitarDeshabilitarProducto,
       sListarColoresCbo: sListarColoresCbo,
+      sListarColoresProducto: sListarColoresProducto,
     });
     function sListarProductoCbo(pDatos) {
       var datos = pDatos || {};
@@ -448,11 +461,11 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sEditarPaquete(pDatos) {
+    function sEditarProductoPrecios(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Producto/editar_paquete",
+            url :  angular.patchURLCI + "Producto/editar_producto_precios",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -489,6 +502,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/listar_colores_cbo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarColoresProducto(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/listar_colores_producto",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

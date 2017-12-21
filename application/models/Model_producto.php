@@ -105,4 +105,28 @@ class Model_producto extends CI_Model {
 		$this->db->where('idproductomaster',$datos['idproductomaster']);
 		return $this->db->update('producto_master', $data);
 	}
+	public function m_cargar_colores_producto($datos){
+		$this->db->select('idproductomastercolor, idproductomaster, idcolor');
+		$this->db->from('producto_master_color pmc');
+		$this->db->where('estado_pmc', 1);
+		$this->db->where('idproductomaster', $datos['idproductomaster']);
+		return $this->db->get()->result_array();
+	}
+	public function m_registrar_producto_precio($datos){
+		return $this->db->insert('producto', $datos);
+	}
+	public function m_editar_producto_precio($data,$id){
+		$this->db->where('idproducto',$id);
+		return $this->db->update('producto', $data);
+	}
+	public function m_registrar_colores_producto($datos){
+		return $this->db->insert('producto_master_color', $datos);
+	}
+	public function m_eliminar_colores_producto($datos){
+		$data = array(
+			'estado_pmc' => 0
+		);
+		$this->db->where('idproductomaster',$datos['idproductomaster']);
+		return $this->db->update('producto_master_color', $data);
+	}
 }

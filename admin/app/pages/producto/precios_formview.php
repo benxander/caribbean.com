@@ -17,7 +17,7 @@
 				<div class="row">
 					<div class="form-group col-sm-4" ng-if="mp.fData.si_color == 1">
 			    		<label for="color" class="control-label minotaur-label block">Color</label>
-		              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mp.fData.colores" ng-options="item.id as item.descripcion for item in mp.listaColores" required> </select>
+		              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mp.fData.colores" ng-options="item.id as item.descripcion for item in mp.listaColores" ng-change="mp.cambioColor();" required> </select>
 		            </div>
 				</div>
 
