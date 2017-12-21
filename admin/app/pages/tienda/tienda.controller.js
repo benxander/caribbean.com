@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading, alertify) {
+  function TiendaController($scope,$timeout, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
@@ -23,6 +23,7 @@
     vm.paqueteSeleccionado = {};
     vm.selectedAll = false;
     vm.isSelected = false;
+    vm.selectedTerminos = false;
 
     vm.cantidad_adic = 0;
     vm.cantidad_video = 0;
@@ -111,6 +112,8 @@
           $scope.actualizarSaldo(true,'-'+(cantidad * vm.precio_adicional));
           i=0;
         }
+      }else if(!vm.isSelected){
+        i=0;
       }
       $scope.actualizarSeleccion(i);
     };
@@ -238,10 +241,15 @@
       vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
       vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
 
+
       if(vm.restante < 0){
         vm.monto_a_pagar = Math.abs(vm.restante);
         vm.restante = 0;
       }
+
+      console.log(vm.monto_total);
+      console.log(vm.monto_a_pagar);
+      console.log(vm.restante);
     }
     vm.btnVolver = function(){
       angular.forEach(vm.images, function(image) {
@@ -270,28 +278,32 @@
       $scope.actualizarSeleccion(0);
       $scope.actualizarSaldo(false);
     }
+    vm.btnValidar = function(){
+      if(!vm.selectedTerminos){
+        alert("Debe aceptar los Términos y Condiciones");
+        return false;
+      }
+      $scope.getValidateSession();
+      $timeout(function() { 
+        $scope.actualizarSaldo(false);
+        vm.calcularTotales();
+        vm.btnPagar();
+      },1000);
+    
+    }
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;
       vm.modoPagar = false;
       if(vm.monto_a_pagar > 0){
-        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
+       /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
       }
-
+    
       var datos = { monedero: vm.restante, idcliente: $scope.fSessionCI.idcliente };
       TiendaServices.sActualizarMonedero(datos).then(function(rpta){
         if(rpta.flag == 1){
-          rootServices.sGetSessionCI().then(function (response) {
-            if(response.flag == 1){
-              $scope.fSessionCI = response.datos;
-              $scope.saldo = $scope.fSessionCI.monedero;
-              vm.irCompraExitosa();
-            }else{
-              $scope.fSessionCI = {};
-              $scope.logOut();
-              console.log('logOut ->',response);
-              $scope.goToUrl('/app/pages/login');
-            }
-          });
+          vm.irCompraExitosa();
+          $scope.getValidateSession();
+          $scope.actualizarSaldo(false);
         }
       });
 
