@@ -209,15 +209,15 @@
       });
     }
     vm.calculaDescuentos = function(){
-      if(vm.datosVista.tiene_bonificacion){
-        var encontrado = false;
-        angular.forEach(vm.images, function(image) {
-          if (image.selected && !encontrado) {
-            vm.monto_bonificacion = image.precio_float;
-            encontrado = true;
-          }
-        });
-      }
+      // if(vm.datosVista.tiene_bonificacion){
+      //   var encontrado = false;
+      //   angular.forEach(vm.images, function(image) {
+      //     if (image.selected && !encontrado) {
+      //       vm.monto_bonificacion = image.precio_float;
+      //       encontrado = true;
+      //     }
+      //   });
+      // }
 
       if(vm.datosVista.tiene_descuento){
         vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100).toFixed(2);
@@ -284,12 +284,12 @@
         return false;
       }
       $scope.getValidateSession();
-      $timeout(function() { 
+      $timeout(function() {
         $scope.actualizarSaldo(false);
         vm.calcularTotales();
         vm.btnPagar();
       },1000);
-    
+
     }
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;
@@ -297,7 +297,7 @@
       if(vm.monto_a_pagar > 0){
        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
       }
-    
+
       var datos = { monedero: vm.restante, idcliente: $scope.fSessionCI.idcliente };
       TiendaServices.sActualizarMonedero(datos).then(function(rpta){
         if(rpta.flag == 1){

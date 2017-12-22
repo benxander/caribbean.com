@@ -15,6 +15,11 @@ class Archivo extends CI_Controller {
 		$lista = $this->model_archivo->m_cargar_galeria_descargados($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
+			if( strtotime($row['fecha_salida'])<=strtotime(date('Y-m-d')) ){
+				$salida = TRUE;
+			}else{
+				$salida = FALSE;
+			}
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
@@ -35,7 +40,8 @@ class Archivo extends CI_Controller {
 					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
 					//'src_share' => "http://www.unaisangamer.com/uploads/clientes/23121970/descargadas/2oBv2IaekK.jpg",
 					'title' => '',
-					'fecha_salida' => $row['fecha_salida']
+					'fecha_salida' => $row['fecha_salida'],
+					'es_salida' => $salida,
 				)
 			);
 		}

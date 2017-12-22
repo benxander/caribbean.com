@@ -174,7 +174,7 @@
             </div>
           </div>
         </div>
-        <div class=" pull-right text-right">
+        <div class=" pull-right text-right mr-lg">
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
               ng-if="true">Paquete {{ctrl.paqueteSeleccionado.titulo_pq}}: {{ctrl.monto}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
@@ -186,26 +186,28 @@
           <!-- <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
               ng-if="ctrl.datosVista.tiene_bonificacion">Bonificacion: -{{ctrl.monto_bonificacion}}</p> -->
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_descuento">Descuento: -{{ctrl.monto_descuento}}</p>
+              ng-if="ctrl.datosVista.tiene_descuento">Descuento({{ctrl.datosVista.descuento.descuento}}%): -{{ctrl.monto_descuento}}</p>
 
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
               ng-if="ctrl.datosVista.tiene_descuento">Total : {{ctrl.monto_total}}</p>
 
           <hr>
-          <!-- <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a Pagar: {{ctrl.monto_a_pagar}}</p> -->
           <p style="font-size: 16px;font-weight: bold;color:#5cb85c;"
               ng-if="ctrl.datosVista.tiene_descuento">Saldo Inicial: {{fSessionCI.monedero}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Saldo Final: {{ctrl.restante}}</p>
 
+          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a Pagar: {{ctrl.monto_a_pagar}}</p>
         </div>
         <div class="col-xs-12 pl-n">
-          <label class="checkbox minotaur-checkbox inline-block m-0">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
+          <label class="pull-right checkbox minotaur-checkbox inline-block m-0">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
             <input type="checkbox" ng-model="ctrl.selectedTerminos"><div class="input-indicator"></div>
           </label>
-         
+        </div>
+
+        <div class="col-xs-12 pl-n">
           <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnValidar();">Pagar</button>
         </div>
-        
+
       </div>
 
       <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
