@@ -15,8 +15,8 @@ class Producto extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'id' => $row['idproducto'],
-					'descripcion' => $row['descripcion'],
+					'id' => $row['idproductomaster'],
+					'descripcion' => $row['descripcion_pm'],
 
 				)
 			);
@@ -89,6 +89,76 @@ class Producto extends CI_Controller {
 
     	$arrData['datos'] = $arrListado;
     	$arrData['paginate']['totalRows'] = $totalRows['contador'];
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_producto_pedido(){
+		ini_set('xdebug.var_display_max_depth', 8);
+	    ini_set('xdebug.var_display_max_children', 256);
+	    ini_set('xdebug.var_display_max_data', 1024);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_producto->m_cargar_producto_pedido();
+		$arrListado = array();
+		foreach ($lista as $row) {
+			$arrListado[$row['idproductomaster']] =	array(
+				'idproductomaster' 	=> $row['idproductomaster'],
+				'descripcion_pm' 	=> $row['descripcion_pm'],
+				'imagen' 			=> $row['imagen'],
+				'si_genero' 		=> $row['si_genero'],
+				'si_color' 			=> $row['si_color'],
+				'idtipomedida' 		=> $row['idtipomedida'],
+				'colores'			=> array(),
+				'categorias' 		=> array()
+			);
+		}
+		foreach ($arrListado as $key => $value) {
+			$arrAuxColor = array();
+			$arrAuxCat = array();
+			foreach ($lista as $row) {
+				if( $row['idproductomaster'] == $key ){
+					$arrAuxColor[$row['idcolor']] = array(
+						'idcolor' => $row['idcolor'],
+						'nombre' => $row['nombre'],
+						'rgba' => $row['rgba']
+					);
+					$arrAuxCat[$row['categoria']] = array(
+						'categoria' => $row['categoria'],
+						'descripcion_ca' => $row['categoria'] == '1'? 'BASICO':'PREMIUM',
+						'medidas' => array()
+					);
+				}
+			}
+			$arrListado[$key]['colores'] = $arrAuxColor;
+			$arrListado[$key]['categorias'] = $arrAuxCat;
+		}
+		foreach ($arrListado as $key => $value) {
+			foreach ($value['categorias'] as $key2 => $value2) {
+				$arrAuxMedida = array();
+				foreach ($lista as $row) {
+					if($row['idproductomaster'] == $key && $row['categoria'] == $key2){
+						$arrAuxMedida[$row['idmedida']] = array(
+							'idmedida' => $row['idmedida'],
+							'idproducto' => $row['idproducto'],
+							'denominacion' => $row['denominacion'],
+							'precio' => $row['precio_unitario'],
+							'precio_2_5' => $row['precio_2_5'],
+							'precio_mas_5' => $row['precio_mas_5'],
+						);
+					}
+				}
+				$arrListado[$key]['categorias'][$key2]['medidas'] = $arrAuxMedida;
+			}
+		}
+
+		// var_dump($arrListado); exit();
+
+    	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($lista)){

@@ -439,7 +439,7 @@ minotaur-header .navbar-header .navigation-toggle{
 .ribbon-green:after {
   right: 0;
 }​
-
+/*icon*/
 .ui-grid-icon-cancel:before {
     content: "\c353";
 }
@@ -453,4 +453,51 @@ minotaur-header .navbar-header .navigation-toggle{
 .icon.icon-share > .fa {
     font-size: 15px;
     line-height: 26px;
+}
+/*merchandising*/
+.color-list{
+  margin: 0 -.25em;
+  list-style: none;
+  padding-left: 0;
+}
+.color-list li {
+  margin-bottom: .25em;
+  margin-right: .25em;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  color: #fff;
+}
+.color-list li.white {
+    color: #595959;
+}
+.color>div {
+  border: 1px solid lightgrey;
+  border-radius: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 34px;
+  height: 34px;
+}
+.color>div>div {
+  display: inline-block;
+  height: 34px;
+}
+.color.active>div:after {
+    text-align: center;
+    content: "\f00c";
+    font-family: FontAwesome;
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 34px;
+    vertical-align: middle;
+}
+.btn-info.active{
+  background-color: #20326b;
 }

@@ -7,6 +7,8 @@
     <div class="tile p-15">
       <section class="tile-header pl-0">
         <h1 class="heading">Mi Galeria</h1>
+        <p>Ahora puede descargar sus fotos.</p>
+        <p ng-if="!image.es_salida">Haga un pedido de producto.</p>
         <div class="controls">
           <div class="btn-group" uib-dropdown>
             <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
@@ -106,7 +108,7 @@
                   <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                     <i class="fa fa-search"></i>
                   </a>
-                  <a class="img-select" ng-if="image.descargado == 1 && !image.es_salida" href="javascript:;" ng-click="ga.btnPedidos($index)" uib-tooltip="Merchandising" tooltip-placement="top">
+                  <a class="img-select" ng-if="image.descargado == 1 && !image.es_salida" href="javascript:;" ng-click="ga.btnPedidos(image)" uib-tooltip="Merchandising" tooltip-placement="top">
                     <i class="fa fa-gift"></i>
                   </a>
                 </div>
@@ -116,6 +118,6 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 </div>

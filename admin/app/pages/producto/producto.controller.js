@@ -397,6 +397,7 @@
       sListarProductoCbo: sListarProductoCbo,
       sListarTipoMedidaCbo: sListarTipoMedidaCbo,
       sListarProductos: sListarProductos,
+      sListarProductoPedido: sListarProductoPedido,
       sRegistrarProducto: sRegistrarProducto,
       sEditarProducto: sEditarProducto,
       sListarProductoPrecios: sListarProductoPrecios,
@@ -430,6 +431,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/listar_productos",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarProductoPedido(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/listar_producto_pedido",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

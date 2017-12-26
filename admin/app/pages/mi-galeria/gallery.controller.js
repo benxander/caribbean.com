@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, Socialshare, pageLoading) {
+  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, ProductoServices, Socialshare, pageLoading) {
     var vm = this;
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
@@ -60,55 +60,118 @@
         vm.isSelected = false;
       }
     };
-    vm.btnPedidos = function(index){
+    vm.btnPedidos = function(imagen){
       var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/tienda/pedido_formview.php',
-          controllerAs: 'mp',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-16',
-          windowClass: 'splash splash-2 splash-ef-16',
-          backdrop: 'static',
-          keyboard:false,
-          scope: $scope,
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            vm.fData = {};
-            vm.modoEdicion = false;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Merchandising';
+        templateUrl: 'app/pages/tienda/pedido_formview.php',
+        controllerAs: 'mp',
+        size: 'lg',
+        backdropClass: 'splash splash-2 splash-ef-16',
+        windowClass: 'splash splash-2 splash-ef-16',
+        backdrop: 'static',
+        keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.categoria = 1;
+          vm.fData = {};
+          vm.producto = {};
+          vm.modoEdicion = false;
+          vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+          vm.modalTitle = 'Merchandising';
+          vm.dirImagesProducto = $scope.dirImages + "producto/";
+          vm.fData.imagen = imagen;
+          // PRODUCTOS
+            pageLoading.start('Procesando...');
+            ProductoServices.sListarProductoPedido().then(function (rpta) {
+              vm.listaProductos = angular.copy(rpta.datos);
+              // vm.listaProductos.splice(0,0,{ id : '', descripcion:'Seleccione un producto'});
+              // vm.listaExcursionesFiltro = angular.copy(rpta.datos);
+              // vm.fData.producto = vm.listaProductos[0];
+              pageLoading.stop();
 
-            // botones
-              vm.aceptar = function () {
-                // ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
-                //   if(rpta.flag == 1){
-                //     $uibModalInstance.close(vm.fData);
-                //     vm.getPaginationServerSide();
-                //     var title = 'OK';
-                //     var type = 'success';
-                //     toastr.success(rpta.message, title);
-                //   }else if( rpta.flag == 0 ){
-                //     var title = 'Advertencia';
-                //     var type = 'warning';
-                //     toastr.warning(rpta.message, title);
-                //   }else{
-                //     alert('Ocurrió un error');
-                //   }
-                // });
+            });
+          vm.cambiaColor = function(color,idproductomaster){
+            console.log('color',color);
+            vm.producto[idproductomaster].activo = true;
+          }
+          vm.cambiaProducto = function(size,idproductomaster){
+            var cantidad = vm.producto[idproductomaster].cantidad || 1;
+            vm.producto[idproductomaster].size = size;
+            if( cantidad== 1 ){
+              vm.producto[idproductomaster].precio = size.precio;
+            }else
+            if( cantidad > 1 && cantidad < 6 ){
+              vm.producto[idproductomaster].precio = size.precio_2_5;
+            }else
+            if( cantidad >= 6 ){
+              vm.producto[idproductomaster].precio = size.precio_mas_5;
+            }else{
+              vm.producto[idproductomaster].precio = 0;
+            }
+            // vm.calcularTotales(idproductomaster);
+            vm.producto[idproductomaster].total_detalle = vm.producto[idproductomaster].precio * cantidad;
+            vm.producto[idproductomaster].activo = true;
 
-              };
-              vm.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-              };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                scope : vm,
+          }
+          vm.cambiaCantidad = function(idproductomaster){
+            var cantidad = vm.producto[idproductomaster].cantidad || 1;
+            var size = vm.producto[idproductomaster].size || null;
+            console.log('size',size);
+            // var precio = 0;
+            if(size){
+              if( cantidad== 1 ){
+                vm.producto[idproductomaster].precio = size.precio;
+              }else
+              if( cantidad > 1 && cantidad < 6 ){
+                vm.producto[idproductomaster].precio = size.precio_2_5;
+                console.log('size.precio_2_5',size.precio_2_5);
+              }else
+              if( cantidad >= 6 ){
+                vm.producto[idproductomaster].precio = size.precio_mas_5;
+              }else{
+                vm.producto[idproductomaster].precio = 0;
               }
+              vm.producto[idproductomaster].total_detalle = vm.producto[idproductomaster].precio * cantidad;
             }
           }
-        });
+          vm.desactivar = function(idproductomaster){
+            vm.producto[idproductomaster] = {};
+          }
+          // botones
+            vm.aceptar = function () {
+              console.log('vm.producto',vm.producto);
+              console.log('vm.fData',vm.fData);
+              // ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
+              //   if(rpta.flag == 1){
+              //     $uibModalInstance.close(vm.fData);
+              //     vm.getPaginationServerSide();
+              //     var title = 'OK';
+              //     var type = 'success';
+              //     toastr.success(rpta.message, title);
+              //   }else if( rpta.flag == 0 ){
+              //     var title = 'Advertencia';
+              //     var type = 'warning';
+              //     toastr.warning(rpta.message, title);
+              //   }else{
+              //     alert('Ocurrió un error');
+              //   }
+              // });
+
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              getPaginationServerSide : vm.getPaginationServerSide,
+              scope : vm,
+            }
+          }
+        }
+      });
     }
     vm.btnDescargarFiles = function(){
       if(!vm.isSelected){
