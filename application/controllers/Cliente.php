@@ -27,14 +27,14 @@ class Cliente extends CI_Controller {
 					'email' 	=> $row['email'],
 					'whatsapp' 	=> $row['whatsapp'],
 					'telefono' 	=> $row['telefono'],
-					'monedero' 	=> $row['monedero'],
+					'monedero' 	=> (int)$row['monedero'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
 					'idactividadcliente' 	=> $row['idactividadcliente'],
 					// 'descripcion' 	=> $row['descripcion'],
 					'fecha' 	=> $row['createdat'],
-					'fecha_salida' 	=> $row['fecha_salida'],
+					'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
 			);
@@ -292,7 +292,7 @@ class Cliente extends CI_Controller {
 				// IMAGENES
 			    if(in_array($file_ext,$extensions_image)){
 
-			    	if($file_size < 10485760){
+			    	if($file_size < 12582912){ //12MB
 			    		list($width_orig, $height_orig) = getimagesize($file_tmp);
 				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
 			    // 		if($width_orig > 3000 || $height_orig > 3000){
@@ -300,7 +300,7 @@ class Cliente extends CI_Controller {
 			    // 		}else{
 							// move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
 			    // 		}
-				        redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
+				        redimenciona(4000, $file_tmp, $carpeta_destino, $file_name);
 				       	redimenciona(300, $file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR .'thumbs', $file_name);
 				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
@@ -510,14 +510,14 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al actualizar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	
+
 		if($this->model_cliente->m_actulizar_monedero($allInputs)){
 			$cliente = $this->model_cliente->m_cargar_cliente_cbo($allInputs);
 			$arrData['message'] = 'Se actalizaron los datos correctamente';
     		$arrData['cliente'] = $cliente;
     		$arrData['flag'] = 1;
 		}
-		
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

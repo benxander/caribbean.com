@@ -215,6 +215,7 @@
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
+            console.log('vm.fData',vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';

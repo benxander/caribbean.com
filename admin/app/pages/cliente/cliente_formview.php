@@ -48,7 +48,7 @@
 	            </div>
 	            <div class="form-group col-md-3" >
 					<label for="fecha" class="control-label minotaur-label">Fecha de Salida <small class="text-red">(*)</small> </label>
-	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
+	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha_salida" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="idioma" class="control-label minotaur-label">Idioma <small class="text-red">(*)</small> </label>

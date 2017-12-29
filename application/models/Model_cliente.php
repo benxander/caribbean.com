@@ -89,7 +89,7 @@ class Model_cliente extends CI_Model {
 			'idusuario'  => $data['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
-			'fecha_salida'=> date ('Y-m-d H:i:s', strtotime($data['fecha']))
+			'fecha_salida'=> date ('Y-m-d', strtotime($data['fecha_salida']))
 		 );
 		$this->db->insert('cliente', $datos);
 		$insert_id = $this->db->insert_id();
@@ -107,7 +107,7 @@ class Model_cliente extends CI_Model {
 			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
-			'fecha_salida'	=> $data['fecha'],
+			'fecha_salida'	=> date ('Y-m-d', strtotime($data['fecha_salida']))
 			// 'idactividad'	=> $data['idactividad'],
 
 		 );
