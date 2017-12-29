@@ -138,6 +138,7 @@
     $scope.btnLogoutToSystem = function () {
       rootServices.sLogoutSessionCI().then(function () {
         $scope.fSessionCI = {};
+        $scope.seleccionadas = 0;
         // $scope.listaUnidadesNegocio = {};
         // $scope.listaModulos = {};
         $scope.logOut();
