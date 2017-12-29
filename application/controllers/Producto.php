@@ -113,6 +113,7 @@ class Producto extends CI_Controller {
 				'si_genero' 		=> $row['si_genero'],
 				'si_color' 			=> $row['si_color'],
 				'idtipomedida' 		=> $row['idtipomedida'],
+				'tipo_medida' 		=> $row['descripcion_tm'],
 				'colores'			=> array(),
 				'categorias' 		=> array()
 			);
@@ -155,7 +156,14 @@ class Producto extends CI_Controller {
 				$arrListado[$key]['categorias'][$key2]['medidas'] = $arrAuxMedida;
 			}
 		}
-
+		foreach ($arrListado as $key1 => $row) {
+			foreach ($row['categorias'] as $key2 => $categoria) {
+				$arrListado[$key1]['categorias'][$key2]['medidas'] = array_values($arrListado[$key1]['categorias'][$key2]['medidas']);
+			}
+			$arrListado[$key1]['colores'] = array_values($arrListado[$key1]['colores']);
+			$arrListado[$key1]['categorias'] = array_values($arrListado[$key1]['categorias']);
+		}
+		$arrListado = array_values($arrListado);
 		// var_dump($arrListado); exit();
 
     	$arrData['datos'] = $arrListado;

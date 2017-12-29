@@ -3,7 +3,7 @@
     <li><a ui-sref="dashboard">Inicio</a></li>
     <li class="active">Mi Galeria</li>
   </ol>
-  <div class="row">
+  <div class="row" ng-show="!ga.pedidoBool">
     <div class="tile p-15">
       <section class="tile-header pl-0">
         <h1 class="heading">Mi Galeria</h1>
@@ -32,6 +32,9 @@
 
         <li ng-class="{'disabled': !ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
           <a href="javascript:;"><i class="fa fa-download" ></i> Descargar</a>
+        </li>
+        <li ng-click='ga.selectPedido();'>
+          <a href="javascript:;"><i class="fa fa-gift" ></i> Merchandising</a>
         </li>
       </ul>
       <div class="row mix-grid" masonry>
@@ -75,7 +78,7 @@
                   socialshare-via="145634995501895"
                   socialshare-url="{{image.src_share}}"
                   socialshare-text="Mira mi foto"
-                  socialshare-hashtags="Caribean"
+                  socialshare-hashtags="Caribbean"
                   socialshare-popup-height="300"
                   socialshare-popup-width="400"
                   socialshare-trigger="click"
@@ -87,7 +90,7 @@
                     socialshare-type="sharer"
                     socialshare-text="Mira mi foto en"
                     socialshare-via="caribbean.com"
-                    socialshare-hashtags="Caribean"
+                    socialshare-hashtags="Caribbean"
                     socialshare-url="{{image.src_share}}"
                     socialshare-popup-height="300"
                     socialshare-popup-width="400"
@@ -119,5 +122,9 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="row" ng-show="ga.pedidoBool" ng-include="'app/pages/mi-galeria/pedidos.php'">
+
   </div>
 </div>

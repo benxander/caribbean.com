@@ -9,22 +9,35 @@
   /** @ngInject */
   function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, ProductoServices, Socialshare, pageLoading) {
     var vm = this;
+    vm.dirImagesProducto = $scope.dirImages + "producto/";
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
         vm.images = rpta.datos;
       });
     }
-
+    vm.cargarProductos = function(){
+      pageLoading.start('Procesando...');
+      ProductoServices.sListarProductoPedido().then(function (rpta) {
+        vm.listaProductos = angular.copy(rpta.datos);
+        console.log('data',vm.listaProductos);
+        pageLoading.stop();
+      });
+    }
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
         vm.fDataUsuario = response.datos;
         vm.cargarGaleria(vm.fDataUsuario);
+        vm.cargarProductos();
+
       }
     });
 
     vm.selectedAll = false;
     vm.isSelected = false;
+    vm.pedidoBool = false;
+    vm.productoBool = false;
+    vm.producto = {};
 
     vm.selectAll = function () {
       if (vm.selectedAll) {
@@ -60,6 +73,97 @@
         vm.isSelected = false;
       }
     };
+    vm.selectPedido = function(){
+      if(vm.pedidoBool){
+        vm.pedidoBool = false;
+        vm.productoBool = false;
+
+      }else{
+        vm.pedidoBool = true;
+        // vm.cargarProductos();
+      }
+    }
+    vm.selectSize = function(categoria){
+      vm.productoBool = true;
+      vm.categoriaSel = categoria;
+      console.log('categoriaSel',vm.categoriaSel);
+    }
+    vm.cambiaProducto = function(idproductomaster){
+      vm.producto[idproductomaster] = {};
+      vm.productoBool = false;
+
+    }
+    vm.cambiaColor = function(color,idproductomaster){
+      console.log('color',color);
+      vm.producto[idproductomaster].activo = true;
+    }
+    vm.cambiaMedida = function(size,idproductomaster){
+      var cantidad = vm.producto[idproductomaster].cantidad || 1;
+      vm.producto[idproductomaster].size = size;
+      if( cantidad== 1 ){
+        vm.producto[idproductomaster].precio = size.precio;
+      }else
+      if( cantidad > 1 && cantidad < 6 ){
+        vm.producto[idproductomaster].precio = size.precio_2_5;
+      }else
+      if( cantidad >= 6 ){
+        vm.producto[idproductomaster].precio = size.precio_mas_5;
+      }else{
+        vm.producto[idproductomaster].precio = 0;
+      }
+      // vm.calcularTotales(idproductomaster);
+      vm.producto[idproductomaster].total_detalle = vm.producto[idproductomaster].precio * cantidad;
+      vm.producto[idproductomaster].activo = true;
+    }
+    vm.cambiaCantidad = function(idproductomaster){
+      var cantidad = vm.producto[idproductomaster].cantidad || 1;
+      var size = vm.producto[idproductomaster].size || null;
+      console.log('size',size);
+      // var precio = 0;
+      if(size){
+        if( cantidad== 1 ){
+          vm.producto[idproductomaster].precio = size.precio;
+        }else
+        if( cantidad > 1 && cantidad < 6 ){
+          vm.producto[idproductomaster].precio = size.precio_2_5;
+          console.log('size.precio_2_5',size.precio_2_5);
+        }else
+        if( cantidad >= 6 ){
+          vm.producto[idproductomaster].precio = size.precio_mas_5;
+        }else{
+          vm.producto[idproductomaster].precio = 0;
+        }
+        vm.producto[idproductomaster].total_detalle = vm.producto[idproductomaster].precio * cantidad;
+      }
+    }
+    vm.selectFotografia = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/mi-galeria/galeria_modal.php',
+        controllerAs: 'gm',
+        size: 'lg',
+        backdropClass: 'splash splash-2 splash-info splash-ef-13',
+        windowClass: 'splash splash-2 splash-info splash-ef-13',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.modalTitle = 'Selecciona Fotografía';
+
+          vm.aceptar = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+
+    }
     vm.btnPedidos = function(imagen){
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/tienda/pedido_formview.php',

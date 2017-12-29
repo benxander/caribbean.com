@@ -52,7 +52,7 @@ class Model_producto extends CI_Model {
 	}
 	public function m_cargar_producto_pedido(){
 		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.imagen, pm.estado_pm");
-		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida');
+		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida, tm.descripcion_tm');
 		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5');
 		$this->db->from('producto_master pm');
@@ -60,12 +60,16 @@ class Model_producto extends CI_Model {
 		$this->db->join('color co', 'pmc.idcolor = co.idcolor');
 		$this->db->join('producto p', 'pm.idproductomaster = p.idproductomaster');
 		$this->db->join('medida me', 'p.idmedida = me.idmedida');
+		$this->db->join('tipo_medida tm', 'pm.idtipomedida = tm.idtipomedida');
 		$this->db->where('estado_pm',1);
 		$this->db->where('estado_pmc',1);
 		$this->db->where('estado_co',1);
 		$this->db->where('estado_p',1);
 		$this->db->where('estado_me',1);
 		$this->db->where('si_seleccion', 1);
+		$this->db->order_by('pm.idproductomaster','ASC');
+		$this->db->order_by('p.categoria','ASC');
+		$this->db->order_by('me.idmedida','ASC');
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_colores_cbo(){
