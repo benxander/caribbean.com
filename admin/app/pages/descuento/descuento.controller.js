@@ -39,8 +39,9 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'iddescuento', name:'iddescuento', displayName: 'ID', enableCellEdit: false, width:90, sort: { direction: uiGridConstants.ASC} },
-        { field: 'dias', name:'dias', displayName: 'DIAS DESDE SALIDA',cellClass:'ui-editCell' },
-        { field: 'descuento', name: 'descuento', displayName: 'DESCUENTO (%)',cellClass:'ui-editCell'},
+        { field: 'dias', name:'dias', displayName: 'DIAS DESDE SALIDA',cellClass:'ui-editCell',
+          editableCellTemplate: '<div><form name="inputForm"><input type="number" ng-class="\'colt\' + col.uid" ui-grid-editor ng-model="MODEL_COL_FIELD"></form></div>' },
+        { field: 'descuento', name: 'descuento', displayName: 'DESCUENTO (%)',cellClass:'ui-editCell',editableCellTemplate: '<div><form name="inputForm"><input type="number" ng-class="\'colt\' + col.uid" ui-grid-editor ng-model="MODEL_COL_FIELD"></form></div>'},
 
 
       ];

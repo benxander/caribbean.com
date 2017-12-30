@@ -18,15 +18,10 @@
         >
           <div class="masonry-brick  m-20" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container">
-              <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="">
-              <div class="img-details-static" style="float: left; position: relative; top: 5px;">
+              <img class="img-responsive btn btn-rounded btn-ef btn-ef-2 btn-ef-2-danger btn-ef-2b" ng-src="{{image.src_thumb}}" alt="" ng-click="gm.selectFoto(image)">
+              <div class="img-details-static">
                 <!-- <h4>{{image.title}}</h4> -->
                 <div class="img-controls">
-                  <a href="javascript:;" class="img-select" ng-click="gm.selectImage($index)">
-                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
-                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
-                  </a>
-
                   <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                     <i class="fa fa-search"></i>
                   </a>
@@ -41,5 +36,5 @@
 	</section>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary btn-ef btn-ef-3 btn-ef-3c" ng-click="gm.aceptar()"><i class="fa fa-arrow-right"></i> Continuar</button>
+  <button class="btn btn-warning btn-ef btn-ef-3 btn-ef-3c" ng-click="gm.aceptar()"><i class="fa fa-arrow-right"></i> Salir</button>
 </div>

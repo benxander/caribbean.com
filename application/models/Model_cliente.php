@@ -7,7 +7,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
-		$this->db->select('u.codigo, u.ididioma, c.fecha_salida, COUNT(a.idarchivo) as archivo');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo');
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
@@ -63,6 +63,14 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_cliente_por_email($datos){
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
+		$this->db->from('cliente c');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('c.email', $datos['email']);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_cliente_cbo($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_salida, c.monedero');
@@ -89,6 +97,7 @@ class Model_cliente extends CI_Model {
 			'idusuario'  => $data['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
+			'fecha_excursion'=> date ('Y-m-d', strtotime($data['fecha_excursion'])),
 			'fecha_salida'=> date ('Y-m-d', strtotime($data['fecha_salida']))
 		 );
 		$this->db->insert('cliente', $datos);
@@ -107,6 +116,7 @@ class Model_cliente extends CI_Model {
 			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
+			'fecha_excursion'=> date ('Y-m-d', strtotime($data['fecha_excursion'])),
 			'fecha_salida'	=> date ('Y-m-d', strtotime($data['fecha_salida']))
 			// 'idactividad'	=> $data['idactividad'],
 

@@ -6,8 +6,8 @@
     .service('ClienteServices', ClienteServices);
 
   /** @ngInject */
-  function ClienteController($scope, $uibModal, uiGridConstants, toastr, alertify,tileLoading,
-    ClienteServices, ExcursionServices, UsuarioServices, FileUploader) {
+  function ClienteController($scope, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading,
+    ClienteServices, ExcursionServices, UsuarioServices, FileUploader,i18nService) {
     var vm = this;
     vm.fBusqueda = {}
     var openedToasts = [];
@@ -16,6 +16,9 @@
       url: angular.patchURLCI + 'cliente/upload_cliente'
       // url: '../application/controllers/upload.php'
     });
+    vm.langs = i18nService.getAllLangs();
+    vm.lang = 'es';
+    vm.description = 'Hola mundo';
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -39,16 +42,18 @@
         enableRowHeaderSelection: true,
         enableFullRowSelection: false,
         multiSelect: false,
+        exporterMenuCsv: false,
+        enableGridMenu: true,
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:80, visible:true },
-        { field: 'fecha', name:'fecha', displayName: 'FECHA'},
+        { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA'},
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
-        { field: 'monedero', name: 'monedero', displayName: 'MONEDERO',width: 110, enableFiltering: false, enableSorting: false },
+        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 110, enableFiltering: false, enableSorting: false },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
@@ -80,7 +85,7 @@
           paginationOptions.searchColumn = {
             'c.idcliente' : grid.columns[1].filters[0].term,
             'u.codigo' : grid.columns[2].filters[0].term,
-            'fecha' : grid.columns[3].filters[0].term,
+            'fecha_excursion' : grid.columns[3].filters[0].term,
             'c.nombres' : grid.columns[4].filters[0].term,
             'c.apellidos' : grid.columns[5].filters[0].term,
           }
@@ -143,8 +148,8 @@
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData.ididioma = vm.listaIdiomas[0].id;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
-            // vm.fData.idactividad = vm.listaExcursiones[0].id;
-
+            var hoy = new Date();
+            vm.fData.fecha_excursion = $filter('date')(hoy,'dd-MM-yyyy');
             // botones
               vm.aceptar = function () {
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {

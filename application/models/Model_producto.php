@@ -66,7 +66,7 @@ class Model_producto extends CI_Model {
 		$this->db->where('estado_co',1);
 		$this->db->where('estado_p',1);
 		$this->db->where('estado_me',1);
-		$this->db->where('si_seleccion', 1);
+		// $this->db->where('si_seleccion', 1);
 		$this->db->order_by('pm.idproductomaster','ASC');
 		$this->db->order_by('p.categoria','ASC');
 		$this->db->order_by('me.idmedida','ASC');

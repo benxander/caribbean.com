@@ -42,9 +42,10 @@
                 <button class="btn btn-success" ng-click='c.btnNuevo()'>Nuevo</button>
               </div>
             </div>
-            <div class="col-md-12 col-sm-12">
+            <select ng-model="c.lang" ng-options="l for l in c.langs"></select><br>
+            <div class="col-md-12 col-sm-12" ui-i18n="{{c.lang}}">
+              <p ui-t="groupPanel.description"></p>
               <div ui-grid="c.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear">
-
               </div>
             </div>
           </div>

@@ -38,13 +38,17 @@
 
 
 
-	            <div class="form-group col-md-6">
+	            <div class="form-group col-md-3">
 					<label for="hotel" class="control-label minotaur-label">Hotel</label>
 	              	<input type="text" name="hotel" id="hotel" class="form-control" ng-model="mc.fData.hotel" placeholder="Registre Hotel" >
 	            </div>
 	            <div class="form-group col-md-3">
 					<label for="habitacion" class="control-label minotaur-label">Habitación</label>
 	              	<input type="text" name="habitacion" id="habitacion" class="form-control" ng-model="mc.fData.habitacion" placeholder="Registre Habitación" >
+	            </div>
+	            <div class="form-group col-md-3" >
+					<label for="fecha_excursion" class="control-label minotaur-label">Fecha de Excursión <small class="text-red">(*)</small> </label>
+	                <input type="text" class="form-control" id="fecha_excursion" ng-model="mc.fData.fecha_excursion" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
 	            <div class="form-group col-md-3" >
 					<label for="fecha" class="control-label minotaur-label">Fecha de Salida <small class="text-red">(*)</small> </label>
@@ -55,7 +59,7 @@
 	              	<select class="form-control" ng-model="mc.fData.ididioma" ng-options="item.id as item.descripcion for item in mc.listaIdiomas" required > </select>
 	            </div>
 	            <div class="form-group col-md-6" >
-					<label for="monedero" class="control-label minotaur-label">Monedero </label>
+					<label for="monedero" class="control-label minotaur-label">Depósito </label>
 	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
 	            </div>
 		    </div>

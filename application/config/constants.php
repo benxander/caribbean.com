@@ -86,3 +86,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 defined('DESCRIPCION') OR define('DESCRIPCION', 'CARIBBEAN PHOTO STUDIO');
 defined('URL') OR define('URL', 'http://www.unaisangamer.com/');
+defined('_1MB') OR define('_1MB', 1048576);

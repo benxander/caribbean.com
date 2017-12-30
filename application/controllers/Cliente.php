@@ -32,8 +32,7 @@ class Cliente extends CI_Controller {
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
 					'idactividadcliente' 	=> $row['idactividadcliente'],
-					// 'descripcion' 	=> $row['descripcion'],
-					'fecha' 	=> $row['createdat'],
+					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
 				)
@@ -91,6 +90,13 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
+    	if(empty($allInputs['email'])){
+    		$arrData['message'] = 'Debe seleccionar un email.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
     	if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
@@ -100,6 +106,13 @@ class Cliente extends CI_Controller {
     	}
     	if(empty($allInputs['actividades'])){
     		$arrData['message'] = 'Debe seleccionar una excursión.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
+    		$arrData['message'] = 'Ya existe un cliente registrado con el email: '.$allInputs['email'];
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -261,8 +274,19 @@ class Cliente extends CI_Controller {
 	}
 
 	public function upload_cliente(){
+		ini_set('memory_limit','1G');
 		$arrData['message'] = 'Error al subir imagenes/videos';
     	$arrData['flag'] = 0;
+    	$errors = array(
+		    '0' => 'There is no error, the file uploaded with success',
+		    '1' => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+		    '2' => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		    '3' => 'The uploaded file was only partially uploaded',
+		    '4' => 'No file was uploaded',
+		    '6' => 'Missing a temporary folder',
+		    '7' => 'Failed to write file to disk.',
+		    '8' => 'A PHP extension stopped the file upload.',
+		);
     	$cliente = "";
 		if(!empty( $_FILES )  && isset($_FILES['file'])){
 
@@ -272,11 +296,19 @@ class Cliente extends CI_Controller {
 				$idusuario = $_REQUEST['idusuario'];
 				$idactividadcliente = $_REQUEST['idactividadcliente'];
 
-			    $errors= array();
 			    $file_name = $_FILES['file']['name'];
 			    $file_size =$_FILES['file']['size'];
 			    $file_tmp =$_FILES['file']['tmp_name'];
 			    $file_type=$_FILES['file']['type'];
+			    $file_error=$_FILES['file']['error'];
+
+			    if($file_error > 0){
+			    	$arrData['message'] = $errors[$file_error];
+		    		$this->output
+					    ->set_content_type('application/json')
+					    ->set_output(json_encode($arrData));
+					return;
+			    }
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 			    $extensions_image = array("jpeg","jpg");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
@@ -288,20 +320,17 @@ class Cliente extends CI_Controller {
 				$random = generateRandomString();
 				$file_name = $random .'.'. $file_ext;
 
-
 				// IMAGENES
 			    if(in_array($file_ext,$extensions_image)){
-
-			    	if($file_size < 12582912){ //12MB
+			    	if($file_size < 13*_1MB){ //12MB (1 MB = 1048576)
 			    		list($width_orig, $height_orig) = getimagesize($file_tmp);
 				        redimencionMarcaAgua(600, $file_tmp, $carpeta, $file_name);
-			    // 		if($width_orig > 3000 || $height_orig > 3000){
-				   //      	redimenciona(3000, $file_tmp, $carpeta_destino, $file_name);
-			    // 		}else{
-							// move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
-			    // 		}
-				        redimenciona(4000, $file_tmp, $carpeta_destino, $file_name);
 				       	redimenciona(300, $file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR .'thumbs', $file_name);
+				        if($file_size > 2*_1MB){
+				        	redimenciona(4000, $file_tmp, $carpeta_destino, $file_name);
+				        }else{
+				        	move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
+				        }
 				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
 						$allInputs = array(
@@ -318,7 +347,7 @@ class Cliente extends CI_Controller {
 				    		$arrData['flag'] = 1;
 						}
 			    	}else{
-			    		$arrData['message'] = 'El tamaño es mayor a 10Mb';
+			    		$arrData['message'] = 'El tamaño es mayor a 13Mb';
 			    		$this->output
 						    ->set_content_type('application/json')
 						    ->set_output(json_encode($arrData));
