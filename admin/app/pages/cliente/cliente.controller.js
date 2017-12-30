@@ -16,9 +16,9 @@
       url: angular.patchURLCI + 'cliente/upload_cliente'
       // url: '../application/controllers/upload.php'
     });
-    vm.langs = i18nService.getAllLangs();
-    vm.lang = 'es';
-    vm.description = 'Hola mundo';
+    // vm.langs = i18nService.getAllLangs();
+    // vm.lang = 'es';
+    // vm.description = 'Hola mundo';
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,

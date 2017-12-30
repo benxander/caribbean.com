@@ -261,7 +261,7 @@ function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
      // Salida
-    imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+    imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR . $file_name, 92);
     imagedestroy($image);
     imagedestroy($image_p);
 }
