@@ -9,6 +9,9 @@
   /** @ngInject */
   function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, Socialshare, pageLoading) {
     var vm = this;
+    $scope.actualizarSeleccion(0,0);
+    $scope.actualizarSaldo(false);
+
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);

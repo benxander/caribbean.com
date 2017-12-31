@@ -239,7 +239,7 @@
       vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
 
       if(vm.restante < 0){
-        vm.monto_a_pagar = abs(vm.restante);
+        vm.monto_a_pagar = Math.abs(vm.restante);
         vm.restante = 0;
       }
     }

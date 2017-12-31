@@ -11,7 +11,9 @@
   /** @ngInject */
   function DashboardController(moment) {
     var vm = this;
-
+    $scope.actualizarSeleccion(0,0);
+    $scope.actualizarSaldo(false);
+    
     vm.datePicker = {
       date: {
         startDate: moment().subtract(1, "days"),
