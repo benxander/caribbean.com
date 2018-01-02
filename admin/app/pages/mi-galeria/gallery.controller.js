@@ -172,12 +172,35 @@
           // vm.seleccion = arrToModal.scope.seleccion;
           // console.log('vm.seleccion',vm.seleccion);
           vm.modalTitle = 'Selecciona Fotografía';
-          vm.selectFoto = function(imagen){
+          vm.selectFoto = function(imagen, index){
             arrToModal.scope.temporal.imagen = imagen;
             arrToModal.scope.temporal.isSel = true;
-            // arrToModal.scope.temporal.imagen = imagen.src_thumb;
             $uibModalInstance.dismiss('cancel');
-            // $uibModalInstance.close(vm.seleccion);
+
+
+
+
+            // var i = 0;
+
+            // if (vm.images[index].selected) {
+            //   vm.images[index].selected = false;
+            // } else {
+            //   vm.images[index].selected = true;
+            //   vm.isSelected = true;
+            // }
+
+            // angular.forEach(vm.images, function(image) {
+            //   if (image.selected) {
+            //     i++;
+            //   }
+            // });
+
+            // if (i === 0) {
+            //   vm.isSelected = false;
+            // }
+
+
+
           }
           vm.aceptar = function () {
             $uibModalInstance.dismiss('cancel');
