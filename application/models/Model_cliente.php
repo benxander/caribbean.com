@@ -6,8 +6,9 @@ class Model_cliente extends CI_Model {
 	}
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
-		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero, c.telefono, c.createdat, ac.idactividadcliente');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo');
+		$this->db->select('c.hotel, c.habitacion');
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
 		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
@@ -55,6 +56,7 @@ class Model_cliente extends CI_Model {
 	public function m_cargar_cliente_por_idusuario($idusuario){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
 		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
+		$this->db->select('c.hotel, c.habitacion');
 		$this->db->from('cliente c');
 		$this->db->join('usuario u','c.idusuario = u.idusuario');
 		$this->db->join('idioma id','u.ididioma = id.ididioma');
@@ -91,6 +93,7 @@ class Model_cliente extends CI_Model {
 			'telefono' 	 => empty($data['telefono']) ? NULL : $data['telefono'],
 			'whatsapp' 	 => empty($data['whatsapp']) ? NULL : $data['whatsapp'],
 			'hotel' 	 => empty($data['hotel']) ? NULL : $data['hotel'],
+			'habitacion' 	 => empty($data['habitacion']) ? NULL : $data['habitacion'],
 			'monedero' 	 => empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'estado_cl'  => 1,
 			// 'idactividad'=> $data['idactividad'],
@@ -114,6 +117,7 @@ class Model_cliente extends CI_Model {
 			'telefono' 		=> empty($data['telefono']) ? NULL : $data['telefono'],
 			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
 			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
+			'habitacion' 	 => empty($data['habitacion']) ? NULL : $data['habitacion'],
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
 			'fecha_excursion'=> date ('Y-m-d', strtotime($data['fecha_excursion'])),

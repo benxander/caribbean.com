@@ -15,7 +15,7 @@
         <uib-tab heading="{{item.descripcion_pm}}" ng-repeat="item in ga.listaProductos" ng-click="ga.cambiaProducto(item);">
           <div class= "mt-lg" ng-show="!ga.productoBool">
             <div class="m" ng-repeat="categoria in item.categorias" style="display: inline-block;">
-              <button class="btn btn-ef btn-ef-1 btn-ef-1f mb-10" ng-click="ga.selectCat(categoria,item);">
+              <button class="btn btn-cyan btn-border" ng-click="ga.selectCat(categoria,item);">
                 <div class="text-center p" style="height: 213px;">
                   <h4 class="text-info">{{categoria.descripcion_ca}}</h4>
                   <p ng-bind-html="categoria.texto_ca"></p>
@@ -56,7 +56,7 @@
                 <label ng-repeat="itemSize in ga.categoriaSel.medidas" class="btn btn-info" ng-model="ga.temporal.idproducto" uib-btn-radio="'{{itemSize.idproducto}}'" ng-click="ga.cambiaMedida(itemSize)">{{itemSize.denominacion}}</label>
               </div>
             </div>
-            <div class="col-md-4" style="min-height: 120px;">
+            <div class="col-md-4" style="min-height: 140px;">
               <label class="minotaur-label block">Seleccione una fotografía</label>
               <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia();"><i class="fa fa-image"></i></a>
               <div ng-if="ga.temporal.isSel">

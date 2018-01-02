@@ -6,7 +6,7 @@
     .service('ProductoServices', ProductoServices);
 
   /** @ngInject */
-  function ProductoController($scope,$uibModal,ProductoServices,toastr,alertify, uiGridConstants) {
+  function ProductoController($scope,$uibModal,ProductoServices,toastr,alertify, pageLoading, uiGridConstants) {
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
@@ -137,8 +137,9 @@
               }
               vm.fData.imagen = $scope.image;
               vm.fData.nombre_imagen = $scope.file.name;
-
+              pageLoading.start('Procesando...');
               ProductoServices.sRegistrarProducto(vm.fData).then(function (rpta) {
+                pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
@@ -202,8 +203,9 @@
                 vm.fData.imagen = $scope.image;
                 vm.fData.nombre_imagen = $scope.file.name;
               }
-
+              pageLoading.start('Procesando...');
               ProductoServices.sEditarProducto(vm.fData).then(function (rpta) {
+                pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
@@ -322,7 +324,9 @@
             vm.aceptar = function () {
               vm.fData.basico = vm.gridOptions.data;
               vm.fData.premium = vm.gridOptionsPremium.data;
+              pageLoading.start('Procesando...');
               ProductoServices.sRegistrarProductoPrecios(vm.fData).then(function (rpta) {
+                pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();

@@ -5,7 +5,7 @@ class Cliente extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion'));
+        $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion','model_email'));
     }
 
     public function listar_clientes(){
@@ -26,6 +26,8 @@ class Cliente extends CI_Controller {
 					'apellidos'	=> $row['apellidos'],
 					'email' 	=> $row['email'],
 					'whatsapp' 	=> $row['whatsapp'],
+					'hotel' 	=> $row['hotel'],
+					'habitacion'=> $row['habitacion'],
 					'telefono' 	=> $row['telefono'],
 					'monedero' 	=> (int)$row['monedero'],
 					'estado_cl'	=> $row['estado_cl'],
@@ -64,6 +66,8 @@ class Cliente extends CI_Controller {
 				'cliente' => strtoupper_total($row['nombres'] . ' ' .$row['apellidos']),
 				'email' => $row['email'],
 				'whatsapp' => $row['whatsapp'],
+				'hotel' 	=> $row['hotel'],
+				'habitacion'=> $row['habitacion'],
 				'telefono' 	=> $row['telefono'],
 				'estado_cl' => $row['estado_cl'],
 				'ididioma' => $row['ididioma'],
@@ -82,11 +86,20 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
-	// MANTENIMIENTO
-	public function registrar_cliente(){
-		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+	public function reg_cliente(){
+		$allInputs['nombres'] = $this->input->post_get('nombres');
+		$allInputs['apellidos'] = $this->input->post_get('apellidos');
+		$allInputs['email'] = $this->input->post_get('email');
+		$allInputs['codigo'] = $this->input->post_get('codigo');
+		$allInputs['telefono'] = $this->input->post_get('telefono');
+		$allInputs['actividades'][] = $this->input->post_get('idexcursion');
+		$allInputs['hotel'] = $this->input->post_get('hotel');
+		$allInputs['habitacion'] = $this->input->post_get('habitacion');
+		$allInputs['ididioma'] = $this->input->post_get('ididioma');
+		$allInputs['fecha_excursion'] = $this->input->post_get('fecha_excursion');
+		$allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
+		$allInputs['monedero'] = $this->input->post_get('deposito');
+		// var_dump($allInputs); exit();
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
@@ -146,10 +159,120 @@ class Cliente extends CI_Controller {
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+		// http://localhost/caribbean.com/ci.php/cliente/reg_cliente?nombres=Ruben&email=rguevara@hotmail.es&codigo=1122
+	}
+	// MANTENIMIENTO
+	public function registrar_cliente($origen=''){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		if($origen == 'externo'){
+			$allInputs['nombres'] = $this->input->post_get('nombres');
+			$allInputs['apellidos'] = $this->input->post_get('apellidos');
+			$allInputs['email'] = $this->input->post_get('email');
+			$allInputs['codigo'] = $this->input->post_get('codigo');
+			$allInputs['telefono'] = $this->input->post_get('telefono');
+			$allInputs['actividades'][] = $this->input->post_get('idexcursion');
+			$allInputs['hotel'] = $this->input->post_get('hotel');
+			$allInputs['habitacion'] = $this->input->post_get('habitacion');
+			$allInputs['ididioma'] = $this->input->post_get('ididioma');
+			$allInputs['fecha_excursion'] = $this->input->post_get('fecha_excursion');
+			$allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
+			$allInputs['monedero'] = $this->input->post_get('deposito');
+		}else{
+			$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		}
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+    	if(empty($allInputs['email'])){
+    		$arrData['message'] = 'Debe seleccionar un email.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(empty($allInputs['ididioma'])){
+    		$arrData['message'] = 'Debe seleccionar un idioma.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(empty($allInputs['actividades'])){
+    		$arrData['message'] = 'Debe seleccionar una excursión.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(!comprobar_email($allInputs['email'])){
+    		$arrData['message'] = 'Correo de Cliente inválido.';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
+    		$arrData['message'] = 'Ya existe un cliente registrado con el email: '.$allInputs['email'];
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+    	$this->db->trans_start();
+    	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
+		if($idusuario){
+			$allInputs['idusuario'] = $idusuario;
+			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
+			// var_dump($allInputs);
+			if($idcliente){
+				foreach ($allInputs['actividades'] as $row) {
+					$data = array(
+						'idcliente' => $idcliente,
+						'idactividad' => $row
+					);
+					$this->model_cliente->m_registrar_actividad_cliente($data);
+				}
+				$arrData['message'] = 'Se registraron los datos correctamente';
+    			$arrData['flag'] = 1;
+
+    			/*envio de correo*/
+    			$allInputs['idtipoemail'] = 1;
+    			$lista = $this->model_email->m_cargar_email($allInputs);
+    			if(empty($lista)){
+    				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
+    				$arrData['flag2'] = 0;
+    			}else{
+			    	$mensaje = $lista[0]['contenido'];
+					$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
+					$from = 'soporte@unaisangamer.com';
+					$to = $allInputs['email'];
+					$asunto = $lista[0]['asunto'];
+					// if(false){
+					if(envio_email($to, "",$asunto, $mensaje, $from)){
+						$arrData['message2'] = 'Notificación de correo enviada exitosamente.';
+	    				$arrData['flag2'] = 1;
+					}else{
+						$arrData['message2'] = 'Error en envio de correo';
+	    				$arrData['flag2'] = 0;
+					}
+    			}
+
+			}
+		}
+		$this->db->trans_complete();
+
+		if($arrData['flag'] == 1){
+			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
+		    createCarpetas($carpeta);
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
 	}
 
 	public function editar_cliente(){
-		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;

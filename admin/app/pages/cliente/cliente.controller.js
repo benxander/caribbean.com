@@ -6,7 +6,7 @@
     .service('ClienteServices', ClienteServices);
 
   /** @ngInject */
-  function ClienteController($scope, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading,
+  function ClienteController($scope, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading, pageLoading,
     ClienteServices, ExcursionServices, UsuarioServices, FileUploader,i18nService) {
     var vm = this;
     vm.fBusqueda = {}
@@ -152,11 +152,20 @@
             vm.fData.fecha_excursion = $filter('date')(hoy,'dd-MM-yyyy');
             // botones
               vm.aceptar = function () {
+                pageLoading.start('Procesando...');
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
+                  pageLoading.stop();
                   if(rpta.flag == 1){
+                    if(rpta.flag2 == 1){
+                      toastr.success(rpta.message2, 'OK');
+                    }else{
+                      toastr.warning(rpta.message2, 'Advertencia');
+                    }
+                    toastr.success(rpta.message, 'OK');
+                    $uibModalInstance.close(vm.fData);
+                    vm.getPaginationServerSide();
 
-
-                    var paramDatos = {
+                    /*var paramDatos = {
                       idtipoemail : 1,
                       ididioma : vm.fData.ididioma,
                       codigo : vm.fData.codigo,
@@ -178,7 +187,7 @@
                       }else{
                         alert('Ocurrió un error');
                       }
-                    });
+                    });*/
 
 
                   }else if( rpta.flag == 0 ){
@@ -231,7 +240,9 @@
             // vm.fData.actividades = ["1","5"];
 
             vm.aceptar = function () {
+              pageLoading.start('Procesando...');
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {
+                pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
                   vm.getPaginationServerSide();
