@@ -70,7 +70,11 @@
   }
 
 })();
-
+function googleTranslateElementInit() {
+  var idiomas = 'en,es,fr,de,ru';
+  // var idiomas = 'en,es,ca,fr,it,de,ja,pt,ru,zh-TW';
+  new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: idiomas, layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
 function handleError(error) {
   return function () {
     return {success: false, message: Notification.warning({message: error})};

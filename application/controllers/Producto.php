@@ -77,6 +77,9 @@ class Producto extends CI_Controller {
 					'imagen' 		=> $row['imagen'],
 					'si_genero' 		=> $row['si_genero'],
 					'si_color' 		=> $row['si_color'],
+					'si_seleccion' 		=> $row['si_seleccion'],
+					'descripcion_basico' 		=> $row['descripcion_basico'],
+					'descripcion_premium' 		=> $row['descripcion_premium'],
 					'idtipomedida' => $row['idtipomedida'],
 					'estado' => array(
 						'id'	 =>$row['idproductomaster'],
@@ -131,6 +134,7 @@ class Producto extends CI_Controller {
 					$arrAuxCat[$row['categoria']] = array(
 						'categoria' => $row['categoria'],
 						'descripcion_ca' => $row['categoria'] == '1'? 'BASICO':'PREMIUM',
+						'texto_ca' => $row['categoria'] == '1'? $row['descripcion_basico']:$row['descripcion_premium'],
 						'medidas' => array()
 					);
 				}
@@ -273,7 +277,11 @@ class Producto extends CI_Controller {
     		'imagen' => $nombre,
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
+    		'si_seleccion' => $allInputs['si_seleccion'],
     		'idtipomedida' => $allInputs['tipo_medida']['id'],
+    		'descripcion_basico' => $allInputs['descripcion_basico'],
+    		'descripcion_premium' => $allInputs['descripcion_premium'],
+
     	);
 		if( $this->model_producto->m_registrar_producto($data) ){
 			$arrData['message'] = 'Se registraron los datos correctamente ';
@@ -291,7 +299,10 @@ class Producto extends CI_Controller {
     		'descripcion_pm' => strtoupper_total(trim($allInputs['descripcion_pm'])),
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
+    		'si_seleccion' => $allInputs['si_seleccion'],
     		'idtipomedida' => $allInputs['tipo_medida']['id'],
+    		'descripcion_basico' => $allInputs['descripcion_basico'],
+    		'descripcion_premium' => $allInputs['descripcion_premium'],
     	);
     	// VALIDACIONES
     	if( $allInputs['canvas']){
@@ -310,7 +321,7 @@ class Producto extends CI_Controller {
 			$ruta = 'uploads/producto/';
 			subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
 			$data_imagen = array(
-				'imagen_ba' => $nombre,
+				'imagen' => $nombre,
 			);
 			$data = array_merge($data,$data_imagen);
     	}

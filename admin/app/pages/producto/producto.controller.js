@@ -114,7 +114,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/producto/producto_formview.php',
           controllerAs: 'mp',
-          size: '',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -171,7 +171,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/producto/producto_formview.php',
           controllerAs: 'mp',
-          size: '',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           controller: function($scope, $uibModalInstance, arrToModal ){

@@ -18,6 +18,7 @@
               <button class="btn btn-ef btn-ef-1 btn-ef-1f mb-10" ng-click="ga.selectCat(categoria,item);">
                 <div class="text-center p" style="height: 213px;">
                   <h4 class="text-info">{{categoria.descripcion_ca}}</h4>
+                  <p ng-bind-html="categoria.texto_ca"></p>
                   <span>Desde</span>
                   <h1 class="mt-0"><span class="f-18">US $ </span>{{categoria.medidas[0].precio}}</h1>
                   <div class="col-md-12" style="width: 80px">
@@ -85,13 +86,16 @@
 
         </uib-tab>
       </uib-tabset>
-      <div class="col-md-12 col-sm-12 mt-lg" ng-show="ga.gridOptions.data.length > 0">
+      <div class="col-md-12 col-sm-12 mt-lg" >
         <div ui-grid="ga.gridOptions" ui-grid-auto-resize class="grid table-responsive clear">
         </div>
       </div>
       <div class="form-inline col-md-12 col-sm-12 mt-lg text-right">
         <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> IMPORTE A PAGAR</label>
-        <input type="text" class="form-control input-sm pull-right text-center f-18" disabled ng-model="ga.fData.total_a_pagar" style="width: 160px; font-weight: bolder;"/>
+        <div class="input-group mb-10">
+          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.total_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+        </div>
+
       </div>
     </div>
   </section>

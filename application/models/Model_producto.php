@@ -7,7 +7,8 @@ class Model_producto extends CI_Model {
 
 	public function m_cargar_productos($paramPaginate=FALSE){
 		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.imagen, pm.estado_pm");
-		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida');
+		$this->db->select('pm.si_genero, pm.si_color, pm.si_seleccion, pm.idtipomedida');
+		$this->db->select('pm.descripcion_basico, pm.descripcion_premium');
 		$this->db->from('producto_master pm');
 		$this->db->where_in('estado_pm',array(1,2));
 		if($paramPaginate){
@@ -53,6 +54,7 @@ class Model_producto extends CI_Model {
 	public function m_cargar_producto_pedido(){
 		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.imagen, pm.estado_pm");
 		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida, tm.descripcion_tm');
+		$this->db->select('pm.descripcion_basico, pm.descripcion_premium');
 		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5');
 		$this->db->from('producto_master pm');

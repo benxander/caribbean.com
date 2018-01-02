@@ -105,7 +105,7 @@
       });
     })(jQuery);
 function googleTranslateElementInit() {
-  var idiomas = 'en,es,fr,it,de,pt';
+  var idiomas = 'en,es,fr,de,ru';
   // var idiomas = 'en,es,ca,fr,it,de,ja,pt,ru,zh-TW';
   new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: idiomas, layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
 }

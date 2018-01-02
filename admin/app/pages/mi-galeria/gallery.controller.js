@@ -206,6 +206,7 @@
         // enableRowHeaderSelection: true,
         // enableFullRowSelection: false,
         // multiSelect: false,
+        minRowsToShow: 3,
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
@@ -241,10 +242,13 @@
       }
       // console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}
-
+      var adicional = '';
+      if(vm.temporal.si_genero == 1){
+        adicional = vm.temporal.genero == 'H'? ' - Hombre' : ' - Mujer';
+      }
       vm.arrTemporal = {
         'idproducto' : vm.temporal.idproducto,
-        'producto' : vm.temporal.producto,
+        'producto' : vm.temporal.producto + adicional,
         'categoria' : vm.temporal.categoria.descripcion_ca,
         'idcolor' : vm.temporal.idcolor,
         'color' : vm.temporal.color,
@@ -261,7 +265,6 @@
       var si_genero = vm.temporal.si_genero;
       vm.temporal = {};
       vm.temporal.cantidad = 1;
-      vm.temporal.imagen = {};
       vm.temporal.isSel = false;
       // vm.temporal.idproductomaster = producto.idproductomaster;
       vm.temporal.producto = producto;
