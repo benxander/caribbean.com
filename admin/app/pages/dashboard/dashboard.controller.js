@@ -9,11 +9,11 @@
     .controller('ProjectsController', ProjectsController);
 
   /** @ngInject */
-  function DashboardController(moment) {
+  function DashboardController(moment, $scope) {
     var vm = this;
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
-    
+
     vm.datePicker = {
       date: {
         startDate: moment().subtract(1, "days"),

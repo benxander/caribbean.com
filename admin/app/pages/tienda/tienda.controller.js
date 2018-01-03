@@ -252,16 +252,16 @@
       console.log(vm.restante);
     }
     vm.btnVolver = function(){
-      angular.forEach(vm.images, function(image) {
+      /*angular.forEach(vm.images, function(image) {
         image.selected = false;
-      });
+      });*/
       vm.monto_total = 0.00;
       vm.modoSeleccionar = true;
       vm.modoPagar = false;
-      vm.selectedAll = false;
-      vm.isPagoMonedero = false;
-      $scope.actualizarSeleccion(0,0);
-      $scope.actualizarSaldo(false);
+      // vm.selectedAll = false;
+      //vm.isPagoMonedero = false;
+      /*$scope.actualizarSeleccion(0,0);
+      $scope.actualizarSaldo(false);*/
     }
     vm.limpiar = function(){
       vm.cantidad_adic = 0;
