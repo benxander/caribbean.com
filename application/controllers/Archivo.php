@@ -61,13 +61,7 @@ class Archivo extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_no_descargados($allInputs);
 		$arrListado = array();
-		//var_dump($lista); exit();
 		foreach ($lista as $row) {
-			// if($row['descargado'] == 1){
-			// 	$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
-			// }else{
-			// 	$src = '../uploads/clientes/'.$row['codigo'].'/descargadas/thumbs/'.$row['nombre_archivo'];
-			// }
 			$src = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
 			array_push($arrListado,
 				array(
@@ -81,9 +75,6 @@ class Archivo extends CI_Controller {
 					'fecha_descarga' => $row['fecha_descarga'],
 					'es_bonificacion' => $row['es_bonificacion'],
 					'tipo_archivo' => $row['tipo_archivo'],
-					// 'producto' => $row['producto'],
-					// 'precio_float' => (float)$row['precio'],
-					// 'precio' => $row['precio'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
 					'src' => $src,

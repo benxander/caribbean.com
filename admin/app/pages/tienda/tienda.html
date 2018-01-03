@@ -101,7 +101,7 @@
             <div class="masonry-brick col-md-3 col-sm-6 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
 
               <div class="img-container ">
-                <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div>
+                <!-- <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div> -->
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
                 <div class="img-details-static">
                   <h4>{{image.title}}</h4>
