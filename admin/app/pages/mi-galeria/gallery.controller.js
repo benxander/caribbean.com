@@ -160,7 +160,11 @@
         // vm.temporal.total_detalle = vm.producto[idproductomaster].total_detalle;
       }
     }
-    vm.selectFotografia = function(){
+    vm.selectFotografia = function(item){
+      if(item.tipo_seleccion == '2' && !angular.isObject(vm.temporal.size)){
+        toastr.warning('Seleccione primero un tamaño', 'Advertencia');
+        return false;
+      }
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/mi-galeria/galeria_modal.php',
         controllerAs: 'gm',
@@ -173,34 +177,42 @@
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
           // vm.seleccion = arrToModal.scope.seleccion;
-          // console.log('vm.seleccion',vm.seleccion);
+          console.log('seleccion',item.tipo_seleccion);
+          vm.images = arrToModal.scope.images;
+          vm.tipo_seleccion = item.tipo_seleccion;
           vm.modalTitle = 'Selecciona Fotografía';
           vm.selectFoto = function(imagen, index){
-            arrToModal.scope.temporal.imagen = imagen;
-            arrToModal.scope.temporal.isSel = true;
-            $uibModalInstance.dismiss('cancel');
+            if(vm.tipo_seleccion == '1'){
+              arrToModal.scope.temporal.imagen = imagen;
+              arrToModal.scope.temporal.isSel = true;
+              $uibModalInstance.dismiss('cancel');
+            }else{
+              var i = 0;
+
+              if (vm.images[index].selected) {
+                vm.images[index].selected = false;
+              } else {
+                vm.images[index].selected = true;
+                // vm.isSelected = true;
+              }
+
+              angular.forEach(vm.images, function(image) {
+                if (image.selected) {
+                  i++;
+                }
+              });
+
+              if (i >= arrToModal.scope.temporal.size.cantidad_fotos) {
+                arrToModal.scope.temporal.imagen = imagen;
+                arrToModal.scope.temporal.isSel = true;
+                $uibModalInstance.dismiss('cancel');
+              }
+
+            }
 
 
 
 
-            // var i = 0;
-
-            // if (vm.images[index].selected) {
-            //   vm.images[index].selected = false;
-            // } else {
-            //   vm.images[index].selected = true;
-            //   vm.isSelected = true;
-            // }
-
-            // angular.forEach(vm.images, function(image) {
-            //   if (image.selected) {
-            //     i++;
-            //   }
-            // });
-
-            // if (i === 0) {
-            //   vm.isSelected = false;
-            // }
 
 
 
@@ -239,7 +251,7 @@
         { field: 'producto', displayName: 'PRODUCTO' },
         { field: 'categoria', displayName: 'CATEGORIA',  width:100 },
         { field: 'color',  displayName: 'COLOR',  width:80 },
-        { field: 'talla',  displayName: 'TALLA',  width:80 },
+        { field: 'talla',  displayName: 'TALLA',  width:120 },
         { field: 'cantidad',  displayName: 'CANTIDAD',  width:80 },
         { field: 'precio',  displayName: 'PRECIO',  width:80 },
         { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },

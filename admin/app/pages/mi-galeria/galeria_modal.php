@@ -22,6 +22,10 @@
               <div class="img-details-static">
                 <!-- <h4>{{image.title}}</h4> -->
                 <div class="img-controls">
+                  <a href="javascript:;" class="img-select" ng-click="gm.selectFoto(image,$index)" ng-if="gm.tipo_seleccion == 2">
+                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
+                  </a>
                   <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                     <i class="fa fa-search"></i>
                   </a>

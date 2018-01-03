@@ -59,12 +59,12 @@
 						<div class="col-md-2">
 		                	<label class="control-label minotaur-label">Fotografías</label>
 			            	<label class="radio ml-lg mt-n" >
-								<input type="radio" name="optionsRadioFot" id="optionsRadioFot1" value="1" ng-model="mp.fData.si_seleccion">
+								<input type="radio" name="optionsRadioFot" id="optionsRadioFot1" value="1" ng-model="mp.fData.tipo_seleccion">
 								Única.
 							</label>
 
 							<label class="radio ml-lg" >
-								<input type="radio" name="optionsRadioFot" id="optionsRadioFot2" value="2" ng-model="mp.fData.si_seleccion" >
+								<input type="radio" name="optionsRadioFot" id="optionsRadioFot2" value="2" ng-model="mp.fData.tipo_seleccion" >
 								Múltiple.
 							</label>
 						</div>

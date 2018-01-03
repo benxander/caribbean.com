@@ -58,7 +58,7 @@
             </div>
             <div class="col-md-4" style="min-height: 140px;">
               <label class="minotaur-label block">Seleccione una fotografía</label>
-              <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia();"><i class="fa fa-image"></i></a>
+              <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia(item);"><i class="fa fa-image"></i></a>
               <div ng-if="ga.temporal.isSel">
                 <img class="img-responsive" ng-src="{{ga.temporal.imagen.src_thumb}}" alt="" style="width: 100px;">
               </div>

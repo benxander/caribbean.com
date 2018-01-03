@@ -195,15 +195,15 @@
         pageLoading.stop();
         vm.datosVista = rpta;
         vm.calcularTotales();
-        //vm.calculaDescuentos();
+        vm.calculaDescuentos();
 
-        if(vm.datosVista.mostrar_productos){
-          angular.forEach(vm.images, function(image,key) {
-            if (image.selected) {
-              vm.images[key].lista_productos = angular.copy(vm.datosVista.lista_productos);
-            }
-          });
-        }
+        // if(vm.datosVista.mostrar_productos){
+        //   angular.forEach(vm.images, function(image,key) {
+        //     if (image.selected) {
+        //       vm.images[key].lista_productos = angular.copy(vm.datosVista.lista_productos);
+        //     }
+        //   });
+        // }
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
       });
