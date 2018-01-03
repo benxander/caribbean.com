@@ -12,7 +12,9 @@
     vm.fotoCrop = false;
     vm.cambiarClave = false;
     vm.fDataPerfil = {};
-
+    $scope.actualizarSeleccion(0,0);
+    $scope.actualizarSaldo(false);
+    
     IdiomaServices.sListarIdiomaCbo().then(function(rpta){
       vm.listaIdiomas = rpta.datos;
     });

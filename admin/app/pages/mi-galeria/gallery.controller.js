@@ -10,6 +10,9 @@
   function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, ProductoServices, Socialshare, pageLoading,toastr) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
+    $scope.actualizarSeleccion(0,0);
+    $scope.actualizarSaldo(false);
+
     vm.cargarGaleria = function(datos){
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
