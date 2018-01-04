@@ -73,6 +73,14 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_cliente_por_sesion(){
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
+		$this->db->from('cliente c');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('c.idcliente', $this->sessionCP['idcliente']);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_cliente_cbo($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, u.codigo');
 		$this->db->select('u.codigo, u.ididioma, c.fecha_salida, c.monedero');

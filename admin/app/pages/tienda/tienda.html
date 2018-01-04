@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class=" pull-right text-right mr-lg">
+        <div class="text-right" style=" margin:20px auto;width:200px">
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
               ng-if="true">Paquete {{ctrl.paqueteSeleccionado.titulo_pq}}: {{ctrl.monto}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
@@ -199,16 +199,17 @@
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Saldo Final: {{ctrl.restante}}</p>
 
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a Pagar: {{ctrl.monto_a_pagar}}</p>
-        </div>
-        <div class="col-xs-12 pl-n">
-          <label class="pull-right checkbox minotaur-checkbox inline-block m-0">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
+          <label class="checkbox minotaur-checkbox inline-block m-0">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
             <input type="checkbox" ng-model="ctrl.selectedTerminos"><div class="input-indicator"></div>
           </label>
+          <button class="btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnValidar();">Pagar</button>
+
+        </div>
+        <!-- <div class="col-xs-12 pl-n">
         </div>
 
         <div class="col-xs-12 pl-n">
-          <button class="pull-right btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnValidar();">Pagar</button>
-        </div>
+        </div> -->
 
       </div>
 

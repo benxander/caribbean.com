@@ -16,11 +16,11 @@
           }
          }"
         >
-          <div class="masonry-brick  m-20" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
+          <div class="masonry-brick col-md-3 m-20" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container">
               <img class="img-responsive btn btn-rounded btn-ef btn-ef-2 btn-ef-2-danger btn-ef-2b" ng-src="{{image.src_thumb}}" alt="" ng-click="gm.selectFoto(image,$index)">
               <div class="img-details-static">
-                <!-- <h4>{{image.title}}</h4> -->
+                <h4>{{image.title}}</h4>
                 <div class="img-controls">
                   <a href="javascript:;" class="img-select" ng-click="gm.selectFoto(image,$index)" ng-if="gm.tipo_seleccion == 2">
                     <i class="fa fa-square-o" ng-show="!image.selected"></i>

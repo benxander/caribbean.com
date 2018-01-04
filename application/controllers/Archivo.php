@@ -25,6 +25,7 @@ class Archivo extends CI_Controller {
 					'idarchivo' => $row['idarchivo'],
 					'idusuario' => $row['idusuario'],
 					'idcliente' => $row['idcliente'],
+					'idactividadcliente' => $row['idactividadcliente'],
 					'nombre_archivo' => $row['nombre_archivo'],
 					'size' => $row['size'],
 					'fecha_subida' => $row['fecha_subida'],

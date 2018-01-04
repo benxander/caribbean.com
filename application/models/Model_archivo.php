@@ -8,9 +8,8 @@ class Model_archivo extends CI_Model {
 	public function m_cargar_galeria_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
 			arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
-			us.codigo, cl.fecha_salida');
+			us.codigo, cl.fecha_salida, arc.idactividadcliente');
 		$this->db->from('archivo arc');
-		// $this->db->join('tipo_producto tp','tp.tipo_archivo = arc.tipo_archivo');
 		$this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
 		$this->db->where('arc.estado_arc', 1);

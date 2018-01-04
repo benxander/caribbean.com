@@ -91,11 +91,31 @@
         </div>
       </div>
       <div class="form-inline col-md-12 col-sm-12 mt-lg text-right">
-        <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> IMPORTE A PAGAR</label>
+        <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> IMPORTE TOTAL</label>
+        <div class="input-group mb-10">
+          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.total_pedido" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+        </div>
+      </div>
+      <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
+        <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> SALDO INICIAL</label>
+        <div class="input-group mb-10">
+          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.saldo_inicial" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+        </div>
+      </div>
+      <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
+        <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> SALDO FINAL</label>
+        <div class="input-group mb-10">
+          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.saldo_final" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+        </div>
+      </div>
+      <div class="form-inline col-md-12 col-sm-12 mt-xs text-right" ng-show="ga.fData.total_a_pagar > 0">
+        <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> TOTAL A PAGAR</label>
         <div class="input-group mb-10">
           <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.total_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
         </div>
-
+      </div>
+      <div class="col-md-12 mt">
+        <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ga.PagarPedido()"><i class="fa fa-dollar"></i> <span>Pagar</span></button>
       </div>
     </div>
   </section>

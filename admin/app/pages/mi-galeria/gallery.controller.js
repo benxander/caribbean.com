@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, PagesGalleryServices, rootServices, ProductoServices, Socialshare, pageLoading,toastr) {
+  function PagesGalleryController($scope,$uibModal, $state, PagesGalleryServices, rootServices, ProductoServices, Socialshare, pageLoading,toastr) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
@@ -86,7 +86,7 @@
       if(vm.pedidoBool){
         vm.pedidoBool = false;
         vm.productoBool = false;
-
+        $state.reload();
       }else{
         vm.pedidoBool = true;
         // vm.cargarProductos();
@@ -287,6 +287,7 @@
       vm.arrTemporal = {
         'idproducto' : vm.temporal.idproducto,
         'producto' : vm.temporal.producto + adicional,
+        'genero' : vm.temporal.si_genero == 1 ? vm.temporal.genero : null,
         'categoria' : vm.temporal.categoria.descripcion_ca,
         'idcolor' : vm.temporal.idcolor,
         'color' : vm.temporal.color,
@@ -294,6 +295,7 @@
         'cantidad' : vm.temporal.cantidad,
         'precio' : vm.temporal.precio,
         'total_detalle' : vm.temporal.total_detalle,
+        'imagenes': vm.temporal.imagen,
       }
       vm.gridOptions.data.push(vm.arrTemporal);
       // console.log('data',vm.gridOptions.data);
@@ -321,9 +323,38 @@
       angular.forEach(vm.gridOptions.data,function (value, key) {
         total += parseFloat(vm.gridOptions.data[key].total_detalle);
       });
-      vm.fData.total_a_pagar = total;
+      vm.fData.total_pedido = total;
+      if($scope.fSessionCI.monedero > 0){
+        vm.fData.saldo_inicial = $scope.fSessionCI.monedero;
+        vm.restante = vm.fData.saldo_inicial - vm.fData.total_pedido;
+        console.log('vm.restante',vm.restante);
+        if(vm.restante < 0){
+          vm.total_a_pagar = Math.abs(vm.restante);
+          vm.fData.saldo_final = 0;
+        }else{
+          vm.fData.saldo_final = vm.restante;
+          vm.fData.total_a_pagar = 0;
+        }
+      }
     }
-
+    vm.PagarPedido = function(){
+      vm.fData.detalle = vm.gridOptions.data;
+      PagesGalleryServices.sRegistrarPedido(vm.fData).then(function(rpta){
+        if(rpta.flag == 1){
+          // vm.modoDescargaCompleta=true;
+          // vm.limpiar();
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
+        }else if(rpta.flag == 0){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+        }else{
+          alert('Error de desarrollo');
+        }
+      });
+    }
 
     vm.btnDescargarFiles = function(){
       if(!vm.isSelected){
@@ -349,6 +380,7 @@
   function PagesGalleryServices($http, $q) {
     return({
         sListarGaleriaDescargados: sListarGaleriaDescargados,
+        sRegistrarPedido: sRegistrarPedido,
     });
 
     function sListarGaleriaDescargados(pDatos) {
@@ -356,6 +388,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Archivo/listar_galeria_descargados",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sRegistrarPedido(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Movimiento/registrar_pedido",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
