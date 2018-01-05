@@ -196,4 +196,13 @@ class Model_cliente extends CI_Model {
 		return $this->db->update('cliente', $data);
 	}
 
+	public function m_monedero_cliente_cbo($datos){
+		$this->db->select('c.monedero');
+		$this->db->from('cliente c');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('c.idcliente', $datos['idcliente']);
+		$result = $this->db->get()->row_array();
+		return $result['monedero'];
+	}
+
 }

@@ -282,14 +282,9 @@
       if(!vm.selectedTerminos){
         alert("Debe aceptar los Términos y Condiciones");
         return false;
-      }
-      $scope.getValidateSession();
-      $timeout(function() {
-        $scope.actualizarSaldo(false);
-        vm.calcularTotales();
+      }else{
         vm.btnPagar();
-      },1000);
-
+      }
     }
     vm.btnPagar = function(){
       vm.modoSeleccionar = false;
@@ -298,12 +293,20 @@
        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
       }
 
-      var datos = { monedero: vm.restante, idcliente: $scope.fSessionCI.idcliente };
+      var datos = { 
+        monedero: vm.restante, 
+        idcliente: $scope.fSessionCI.idcliente,
+        saldo: $scope.fSessionCI.monedero 
+      };
       TiendaServices.sActualizarMonedero(datos).then(function(rpta){
         if(rpta.flag == 1){
           vm.irCompraExitosa();
           $scope.getValidateSession();
           $scope.actualizarSaldo(false);
+        }else{
+          alert(rpta.message);
+          $scope.getValidateSession();
+          location.reload();
         }
       });
 
@@ -342,6 +345,7 @@
           toastr.warning(rpta.message, title);
         }else{
           alert('Error inesperado');
+
         }
       });
     }
