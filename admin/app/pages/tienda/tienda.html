@@ -1,7 +1,7 @@
 <div class="page page-extra pull-to-header">
   <ol class="breadcrumb bg-white">
-    <li><a ui-sref="dashboard">Inicio</a></li>
-    <li class="active">Tienda</li>
+    <li><a ui-sref="dashboard">{{ 'Menu.DASHBOARD' | translate }}</a></li>
+    <li class="active">{{ 'Menu.TIENDA' | translate }}</li>
   </ol>
   <div class="row">
     <div class="col-md-12">
@@ -29,7 +29,7 @@
                       </div>
                       <div class="col-xs-6">
                         <div><i class="fa fa-usd fa-2x"></i></div>
-                        <div>USD {{item.monto}}</div>
+                        <div>US$ {{item.monto}}</div>
                       </div>
                     </div>
                   </div>
@@ -37,13 +37,13 @@
                     <div class="row">
                       <div class="col-xs-12" style="height: 25%">
                         <p class="text-lg line-lg text-strong">{{item.titulo_pq}}</p>
-                        <p class="text-md line-md">{{item.cantidad}} fotos al precio de USD {{item.monto}}</p>
+                        <p class="text-md line-md">{{item.cantidad}} fotos al precio de US$ {{item.monto}}</p>
                       </div>
                       <div class="col-xs-6" style="height: 60%">
-                        <a href=javascript:;><i class="fa fa-camera fa-2x"></i> + USD {{ctrl.listaExcursiones[0].precio_por_adicional}}</a>
+                        <a href=javascript:;><i class="fa fa-camera fa-2x"></i> + US$ {{ctrl.listaExcursiones[0].precio_por_adicional}}</a>
                       </div>
                       <div class="col-xs-6" style="height: 60%">
-                        <a href=javascript:;><i class="fa fa-video-camera fa-2x"></i> + USD {{ctrl.listaExcursiones[0].precio_video}}</a>
+                        <a href=javascript:;><i class="fa fa-video-camera fa-2x"></i> + US$ {{ctrl.listaExcursiones[0].precio_video}}</a>
                       </div>
                     </div>
                   </div>
@@ -215,7 +215,7 @@
 
       <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
         <section class="tile-header pl-0">
-          <h1 class="heading">Compra Exitosa</h1>
+          <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>
           <div class="controls">
             <!-- <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
@@ -231,9 +231,9 @@
         </section>
         <div class="row">
           <div class="col-md-12 col-sm-12">
-            <h2 class="text-custom text-center mb-5">Gracias por tu compra!</h2>
-            <h3 ng-if="!ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Califica nuestro servicio.</h3>
-            <h3 ng-if="ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">Gracias por calificar nuestro servicio.</h3>
+            <h2 class="text-custom text-center mb-5">{{ 'Text.GRACIAS' | translate }}</h2>
+            <h3 ng-if="!ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.CALIFICA' | translate }}</h3>
+            <h3 ng-if="!ctrl.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.GRACIAS_CALIFICA' | translate }}</h3>
             <div class="rating-stars" ng-if="!ctrl.modoCalificacionOk" >
               <span ng-click="ctrl.calificar(5);" >☆</span>
               <span ng-click="ctrl.calificar(4);">☆</span>
@@ -248,6 +248,25 @@
               <span ng-class="{'califica': 4 <= ctrl.calificacion}">★</span>
               <span ng-class="{'califica': 5 == ctrl.calificacion}">★</span>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rating-stars-calificado" style="width: 260px">
+              <div class="row m">
+                <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.EXCELENTE' | translate }}</label>
+              </div>
+              <div class="row m">
+                <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.BUENO' | translate }}</label>
+              </div>
+              <div class="row m">
+                <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.REGULAR' | translate }}</label>
+              </div>
+              <div class="row m">
+                <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.MALO' | translate }}</label>
+              </div>
+              <div class="row m">
+                <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.MUY_MALO' | translate }}</label>
+              </div>
           </div>
         </div>
       </div>

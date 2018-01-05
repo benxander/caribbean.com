@@ -1,5 +1,6 @@
 {
   "Menu": {
+    "MENU_PRINCIPAL": "MENÚ PRINCIPAL",
     "DASHBOARD": "Inicio",
     "CLIENTES": "Clientes",
     "BANNERS": "Banners",
@@ -16,7 +17,7 @@
     "USUARIOS": "Usuarios",
     "GRUPOS": "Grupos",
     "ROLES": "Roles",
-    "DESCARGAR": "Tienda",
+    "TIENDA": "Tienda",
     "GALERIA": "Mi Galeria",
     "PERFIL": "Mi Perfil",
     "PRODUCTO": "Producto",
@@ -29,11 +30,36 @@
   },
   "Text": {
     "MONEDERO":"Saldo",
+    "SELECCIONADAS":"Seleccionadas",
     "LOGOUT":"Cerrar Sesión",
+    "REGRESAR":"Regresar",
+    "MERCHANDISING":"Merchandising",
+    "COLOR":"Color",
+    "CANTIDAD":"Cantidad",
+    "HOMBRE":"Hombre",
+    "MUJER":"Mujer",
+    "SELECCIONAR":"Seleccione una fotografía",
+    "PRECIO":"Precio",
+    "TOTAL":"Total",
+    "CESTA":"Añadir a la cesta",
+    "IMPORTE":"IMPORTE TOTAL",
+    "SALDO_INICIAL":"Saldo Inicial",
+    "SALDO_FINAL":"Saldo Final",
+    "TOTAL_PAGAR":"Total a pagar",
+    "PAGAR":"Pagar",
     "SEL_PAQUETE":"Seleccione un paquete",
     "SEL_PRODUCTO":"Seleccionar Productos",
     "TODOS":"Todos",
-    "DESCARGAR":"Descargar"
+    "DESCARGAR":"Descargar",
+    "COMPRA_EXITOSA":"Compra Exitosa",
+    "GRACIAS":"Gracias por tu compra!",
+    "CALIFICA":"Califica nuestro servicio.",
+    "GRACIAS_CALIFICA":"Gracias por calificar nuestro servicio.",
+    "EXCELENTE":"Excelente",
+    "BUENO":"Bueno",
+    "REGULAR":"Regular",
+    "MALO":"Malo",
+    "MUY_MALO":"Muy malo"
   }
 }
 

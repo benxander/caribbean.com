@@ -1,5 +1,6 @@
 {
   "Menu": {
+    "MENU_PRINCIPAL": "MENU PRINCIPAL",
     "DASHBOARD": "Tableau de bord",
     "CLIENTES": "Les clients",
     "BANNERS": "Banners",
@@ -16,9 +17,11 @@
     "USUARIOS": "Utilisateurs",
     "GRUPOS": "Groupes",
     "ROLES": "Les rôles",
-    "PERFIL": "Mon profil",
+    "TIENDA": "Boutique",
     "GALERIA": "Ma galerie",
-    "DESCARGAR": "Boutique"
+    "PERFIL": "Mon profil",
+    "PRODUCTO": "Producto",
+    "PEDIDOS": "Pedidos"
   },
   "Form": {
     "PREVIOUS":"Précédent",
@@ -27,10 +30,35 @@
   },
   "Text": {
     "MONEDERO":"Solde disponible",
+    "SELECCIONADAS":"Sélectionné",
     "LOGOUT":"Connectez - Out",
+    "REGRESAR":"Retour",
+    "MERCHANDISING":"Merchandising",
+    "COLOR":"Couleur",
+    "CANTIDAD":"Quantité",
+    "HOMBRE":"Homme",
+    "MUJER":"Femme",
+    "SELECCIONAR":"Sélectionnez une photo",
+    "PRECIO":"Prix",
+    "TOTAL":"Total",
+    "CESTA":"Ajouter au panier",
+    "IMPORTE":"MONTANT TOTAL",
+    "SALDO_INICIAL":"SOLDE D'OUVERTURE",
+    "SALDO_FINAL":"SOLDE FINAL",
+    "TOTAL_PAGAR":"LE TOTAL À PAYER",
+    "PAGAR":"Payer",
     "SEL_PAQUETE":"Sélectionnez un paquet",
     "SEL_PRODUCTO":"Sélectionnez des produits",
-    "TODOS":"Tout le monde",
-    "DESCARGAR":"Télécharger"
+    "TODOS":"Tout sélectionner",
+    "DESCARGAR":"Télécharger",
+    "COMPRA_EXITOSA":"Achat Réussi",
+    "GRACIAS":"Merci pour ton achat!",
+    "CALIFICA":"Évaluer notre service.",
+    "GRACIAS_CALIFICA":"Merci de votre évaluation de notre service.",
+    "EXCELENTE":"Excellent",
+    "BUENO":"Bon",
+    "REGULAR":"Régulier",
+    "MALO":"Mauvais",
+    "MUY_MALO":"Très mauvais"
   }
 }

@@ -1,5 +1,6 @@
 {
   "Menu": {
+    "MENU_PRINCIPAL": "ГЛАВНОЕ МЕНЮ",
     "DASHBOARD": "Панель приборов",
     "CLIENTES": "Клиенты",
     "BANNERS": "Баннеры",
@@ -16,9 +17,11 @@
     "USUARIOS": "пользователей",
     "GRUPOS": "группы",
     "ROLES": "Роли",
-    "PERFIL": "Мой профайл",
+    "TIENDA": "Магазин",
     "GALERIA": "Моя галерея",
-    "DESCARGAR": "Магазин"
+    "PERFIL": "Мой профайл",
+    "PRODUCTO": "Producto",
+    "PEDIDOS": "Pedidos"
   },
   "Form": {
     "PREVIOUS":"предыдущий",
@@ -27,10 +30,35 @@
   },
   "Text": {
     "MONEDERO":"Доступные средства",
+    "SELECCIONADAS":"Выбрано",
     "LOGOUT":"Выйти",
+    "REGRESAR":" возвращение",
+    "MERCHANDISING":"Мерчендайзинг",
+    "COLOR":"Цвет",
+    "CANTIDAD":"количество",
+    "HOMBRE":"человек ",
+    "MUJER":"женщина ",
+    "SELECCIONAR":"Выберите картинку",
+    "PRECIO":"Цена",
+    "TOTAL":"общий",
+    "CESTA":"Добавить в корзину",
+    "IMPORTE":"ОБЩАЯ СУММА",
+    "SALDO_INICIAL":"ОТКРЫТИЕ БАЛАНС",
+    "SALDO_FINAL":"КОНЕЧНЫЙ БАЛАНС",
+    "TOTAL_PAGAR":"Всего платить",
+    "PAGAR":"Платить",
     "SEL_PAQUETE":"Выберите пакет",
     "SEL_PRODUCTO":"Выбрать продукты",
-    "TODOS":"все",
-    "DESCARGAR":"скачать"
+    "TODOS":"выбрать все",
+    "DESCARGAR":"скачать",
+    "COMPRA_EXITOSA":"Успешная покупка",
+    "GRACIAS":"Благодарим Вас за покупку!",
+    "CALIFICA":"Оцените наш сервис.",
+    "GRACIAS_CALIFICA":"Спасибо за оценку нашего сервиса.",
+    "EXCELENTE":"Отлично",
+    "BUENO":"Хорошо",
+    "REGULAR":"Регулярный",
+    "MALO":"Плохой",
+    "MUY_MALO":"Очень плохо"
   }
 }

@@ -1,5 +1,5 @@
 <div class="nav-heading">
-  <h3 class="text-center">MENÚ PRINCIPAL</h3>
+  <h3 class="text-center">{{ 'Menu.MENU_PRINCIPAL' | translate }}</h3>
 </div>
 
 <div slimscroll="{
@@ -131,7 +131,7 @@
     <!-- ROLES DEL CLIENTE -->
     <li ng-class="{'active':$state.includes('tienda')}" ng-show="valores[10]">
       <a ng-click="$state.reload();" ui-sref="tienda">
-        <span class="nav-text">{{ 'Menu.DESCARGAR' | translate }}</span>
+        <span class="nav-text">{{ 'Menu.TIENDA' | translate }}</span>
         <i class="fa fa-shopping-cart"></i>
       </a>
     </li>

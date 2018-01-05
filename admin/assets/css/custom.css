@@ -30,8 +30,13 @@
 	.f-16{font-size: 16px;}
 	.f-18{font-size: 18px;}
 	.f-24{font-size: 24px;}
+/*BORDER RADIUS*/
+  .br-10 {
+    border-radius: 10px!important;
+  }
 /* OTHERS */
 	.clear {clear: both;}
+  .bold{font-weight: 700}
 	.demo-options {top: 70px;}
 	ul.demo-btns > li.pull-right{ margin-left: 4px;}
 	ul.demo-btns li > label { line-height: 0.7;}

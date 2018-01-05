@@ -1,5 +1,6 @@
 {
   "Menu": {
+    "MENU_PRINCIPAL": "HAUPTMENÜ",
     "DASHBOARD": "Instrumententafel",
     "CLIENTES": "Kunden",
     "BANNERS": "Banners",
@@ -16,9 +17,11 @@
     "USUARIOS": "Benutzer",
     "GRUPOS": "Gruppen",
     "ROLES": "Rollen",
-    "PERFIL": "Mein Profil",
+    "TIENDA": "Geschäft",
     "GALERIA": "Meine Gallerie",
-    "DESCARGAR": "Geschäft"
+    "PERFIL": "Mein Profil",
+    "PRODUCTO": "Producto",
+    "PEDIDOS": "Pedidos"
   },
   "Form": {
     "PREVIOUS":"Zurück",
@@ -27,10 +30,35 @@
   },
   "Text": {
     "MONEDERO":"Verfügbares Guthaben",
+    "SELECCIONADAS":"Ausgewählt",
     "LOGOUT":"Ausloggen",
+    "REGRESAR":"Rückkehr",
+    "MERCHANDISING":"Merchandising",
+    "COLOR":"Farbe",
+    "CANTIDAD":"Menge",
+    "HOMBRE":"Mann",
+    "MUJER":"Frau",
+    "SELECCIONAR":"Wählen Sie ein Bild",
+    "PRECIO":"Preis",
+    "TOTAL":"Gesamt",
+    "CESTA":"In den Warenkorb",
+    "IMPORTE":"GESAMTBETRAG",
+    "SALDO_INICIAL":"ÖFFNUNGS BALANCE",
+    "SALDO_FINAL":"FINAL BALANCE ",
+    "TOTAL_PAGAR":"GESAMTBETRAG",
+    "PAGAR":"Zahlen",
     "SEL_PAQUETE":"Wählen Sie ein Paket aus",
     "SEL_PRODUCTO":"Produkte auswählen",
-    "TODOS":"Jeder",
-    "DESCARGAR":"Herunterladen"
+    "TODOS":"Wählen Sie Alle",
+    "DESCARGAR":"Herunterladen",
+    "COMPRA_EXITOSA":"Erfolgreicher Kauf",
+    "GRACIAS":"Vielen Dank für Ihren Einkauf!",
+    "CALIFICA":"Bewerten Sie unseren Service.",
+    "GRACIAS_CALIFICA":"Danke für die Bewertung unseres Service.",
+    "EXCELENTE":"Ausgezeichnet",
+    "BUENO":"Gut",
+    "REGULAR":"Regelmäßig",
+    "MALO":"Schlecht",
+    "MUY_MALO":"Sehr schlecht"
   }
 }

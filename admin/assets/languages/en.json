@@ -1,5 +1,6 @@
 {
   "Menu": {
+    "MENU_PRINCIPAL": "MAIN MENU",
     "DASHBOARD": "Dashboard",
     "CLIENTES": "Customers",
     "BANNERS": "Banners",
@@ -16,9 +17,11 @@
     "USUARIOS": "Users",
     "GRUPOS": "Groups",
     "ROLES": "Roles",
-    "PERFIL": "My Profile",
+    "TIENDA": "Shop",
     "GALERIA": "My Galery",
-    "DESCARGAR": "Shop"
+    "PERFIL": "My Profile",
+    "PRODUCTO": "Producto",
+    "PEDIDOS": "Pedidos"
   },
   "Form": {
     "PREVIOUS":"Previous",
@@ -27,10 +30,35 @@
   },
   "Text": {
     "MONEDERO":"Available balance",
+    "SELECCIONADAS":"Selected",
     "LOGOUT":"Log Out",
+    "REGRESAR":"To Return",
+    "MERCHANDISING":"Merchandising",
+    "COLOR":"Color",
+    "CANTIDAD":"Quantity",
+    "HOMBRE":"Man",
+    "MUJER":"Woman",
+    "SELECCIONAR":"Select a picture",
+    "PRECIO":"Price",
+    "TOTAL":"Total",
+    "CESTA":"Add to cart",
+    "IMPORTE":"TOTAL",
+    "SALDO_INICIAL":"BEGINNING BALANCE",
+    "SALDO_FINAL":"FINAL BALANCE",
+    "TOTAL_PAGAR":"TOTAL TO PAY",
+    "PAGAR":"Pay",
     "SEL_PAQUETE":"Select a package",
     "SEL_PRODUCTO":"Select Products",
-    "TODOS":"Everybody",
-    "DESCARGAR":"Download"
+    "TODOS":"Select all",
+    "DESCARGAR":"Download",
+    "COMPRA_EXITOSA":"Successful purchase",
+    "GRACIAS":"Thanks for your purchase!",
+    "CALIFICA":"Rate our service.",
+    "GRACIAS_CALIFICA":"Thanks for rating our service.",
+    "EXCELENTE":"Excellent",
+    "BUENO":"Good",
+    "REGULAR":"Regular",
+    "MALO":"Bad",
+    "MUY_MALO":"Very bad"
   }
 }
