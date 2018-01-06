@@ -394,10 +394,35 @@
 
         vm.cargarImagenes = function(datos){
           ClienteServices.sListarImagenes(vm.fDataUpload).then(function(rpta){
-            vm.images = rpta.datos;
-            vm.length_images = vm.images.length;
+            vm.imgs = rpta.datos;
+            vm.images = [];
+            // vm.images = rpta.datos;
+            vm.length_images = vm.imgs.length;
+            // vm.length_images = vm.images.length;
             if (vm.length_images == 0) { vm.uploadBtn = true; };
+
+            if(vm.imgs.length>=10){
+              for (var i = 0; i < 10; i++) {
+                vm.images.push(vm.imgs[i]);
+              }
+            }else{
+              vm.images = rpta.datos;
+            }
           });
+        }
+        vm.loadMore = function(){
+          console.log('cargando mas...');
+          var last = vm.images.length;
+          var dif = vm.imgs.length - vm.images.length;
+          if( dif >= 10 ){
+            for (var i = 0; i < 10; i++) {
+              vm.images.push(vm.imgs[last+i]);
+            }
+          }else{
+            for (var i = 0; i < dif; i++) {
+              vm.images.push(vm.imgs[last+i]);
+            }
+          }
         }
         vm.cargarImagenes();
 

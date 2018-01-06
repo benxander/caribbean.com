@@ -64,6 +64,7 @@
       'ui.calendar',
       'angular-flot',
       '720kb.socialshare',
+      'infinite-scroll'
       // 'Descuento.controller'
     ]);
 
