@@ -103,7 +103,7 @@
               <div class="img-container ">
                 <!-- <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div> -->
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                <div class="img-details-static">
+                <div class="img-details">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
                     <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)" ng-if="image.descargado == 2">
@@ -177,6 +177,7 @@
           </div>
         </div>
         <div class="text-right" style=" margin:20px auto;width:200px">
+          <h3>Resumen de su compra</h3>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
               ng-if="true">Paquete {{ctrl.paqueteSeleccionado.titulo_pq}}: {{ctrl.monto}}</p>
           <p style="font-size: 16px;font-weight: bold;color:#1199d3;"

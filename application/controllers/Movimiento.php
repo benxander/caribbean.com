@@ -17,7 +17,6 @@ class Movimiento extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	var_dump($allInputs); exit();
 
     	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
     	if($cliente['monedero'] != $allInputs['saldo_inicial']){
@@ -35,6 +34,7 @@ class Movimiento extends CI_Controller {
     		'total' => $allInputs['total_pedido'],
     		'estado'=> 1
     	);
+    	var_dump($allInputs); exit();
     	$this->db->trans_start();
     	$idmovimiento = $this->model_movimiento->m_registrar_pedido($datos);
 		if( $idmovimiento ){

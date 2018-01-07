@@ -75,6 +75,8 @@ class Producto extends CI_Controller {
 					'idproductomaster' => $row['idproductomaster'],
 					'descripcion_pm' => $row['descripcion_pm'],
 					'imagen' 		=> $row['imagen'],
+					'imagen_bas' 		=> $row['imagen_bas'],
+					'imagen_pre' 		=> $row['imagen_pre'],
 					'si_genero' 		=> $row['si_genero'],
 					'si_color' 		=> $row['si_color'],
 					'tipo_seleccion' 		=> $row['tipo_seleccion'],
@@ -267,16 +269,42 @@ class Producto extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	if(empty($allInputs['imagen_bas'])){
+    		$arrData['message'] = 'Debe subir una imagen para Básico';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(empty($allInputs['imagen_pre'])){
+    		$arrData['message'] = 'Debe subir una imagen para Premium';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
     	// var_dump($allInputs); exit();
+		$ruta = 'uploads/producto/';
     	// preparacion y subida de imagen
 		$extension = strrchr($allInputs['nombre_imagen'], ".");
 		$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
 		$nombre .= '-'. date('YmdHis') . $extension;
-		$ruta = 'uploads/producto/';
+		// preparacion y subida de imagen
+		$extension = strrchr($allInputs['nombre_imagen_bas'], ".");
+		$nombre_bas = substr($allInputs['nombre_imagen_bas'], 0, -strlen($extension));
+		$nombre_bas .= '-'. date('YmdHis') . $extension;
+		// preparacion y subida de imagen
+		$extension = strrchr($allInputs['nombre_imagen_pre'], ".");
+		$nombre_pre = substr($allInputs['nombre_imagen_pre'], 0, -strlen($extension));
+		$nombre_pre .= '-'. date('YmdHis') . $extension;
 		subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
+		subir_imagen_Base64($allInputs['imagen_bas'], $ruta , $nombre_bas);
+		subir_imagen_Base64($allInputs['imagen_pre'], $ruta , $nombre_pre);
     	$data = array(
     		'descripcion_pm' => strtoupper_total(trim($allInputs['descripcion_pm'])),
     		'imagen' => $nombre,
+    		'imagen_bas' => $nombre_bas,
+    		'imagen_pre' => $nombre_pre,
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
     		'tipo_seleccion' => $allInputs['tipo_seleccion'],
@@ -307,6 +335,7 @@ class Producto extends CI_Controller {
     		'descripcion_premium' => $allInputs['descripcion_premium'],
     	);
     	// VALIDACIONES
+		$ruta = 'uploads/producto/';
     	if( $allInputs['canvas']){
     		if( empty($allInputs['imagen']) ){
 	    		$arrData['message'] = 'Debe subir una imagen';
@@ -315,15 +344,49 @@ class Producto extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 	    	}
-
 	    	// preparacion y subida de imagen
 			$extension = strrchr($allInputs['nombre_imagen'], ".");
 			$nombre = substr($allInputs['nombre_imagen'], 0, -strlen($extension));
 			$nombre .= '-'. date('YmdHis') . $extension;
-			$ruta = 'uploads/producto/';
 			subir_imagen_Base64($allInputs['imagen'], $ruta , $nombre);
 			$data_imagen = array(
 				'imagen' => $nombre,
+			);
+			$data = array_merge($data,$data_imagen);
+    	}
+    	if( $allInputs['canvas_bas']){
+    		if( empty($allInputs['imagen_bas']) ){
+	    		$arrData['message'] = 'Debe subir una imagen para Básico';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+	    	}
+	    	// preparacion y subida de imagen
+			$extension = strrchr($allInputs['nombre_imagen_bas'], ".");
+			$nombre = substr($allInputs['nombre_imagen_bas'], 0, -strlen($extension));
+			$nombre .= '-'. date('YmdHis') . $extension;
+			subir_imagen_Base64($allInputs['imagen_bas'], $ruta , $nombre);
+			$data_imagen = array(
+				'imagen_bas' => $nombre,
+			);
+			$data = array_merge($data,$data_imagen);
+    	}
+    	if( $allInputs['canvas_pre']){
+    		if( empty($allInputs['imagen_pre']) ){
+	    		$arrData['message'] = 'Debe subir una imagen para Premium';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+	    	}
+	    	// preparacion y subida de imagen
+			$extension = strrchr($allInputs['nombre_imagen_pre'], ".");
+			$nombre = substr($allInputs['nombre_imagen_pre'], 0, -strlen($extension));
+			$nombre .= '-'. date('YmdHis') . $extension;
+			subir_imagen_Base64($allInputs['imagen_pre'], $ruta , $nombre);
+			$data_imagen = array(
+				'imagen_pre' => $nombre,
 			);
 			$data = array_merge($data,$data_imagen);
     	}

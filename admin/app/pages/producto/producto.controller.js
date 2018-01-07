@@ -124,10 +124,14 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de producto';
             vm.fData.canvas = true;
+            vm.fData.canvas_bas = true;
+            vm.fData.canvas_pre = true;
             vm.fData.si_genero = '2';
             vm.fData.si_color = '2';
+            vm.fData.tipo_seleccion = '1';
             vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
             vm.fData.tipo_medida = vm.listaTipoMedida[0];
+
             // vm.rutaImagen = arrToModal.scope.dirImagesProducto + vm.fData.tipo_banner +'/';
 
             vm.aceptar = function () {
@@ -135,8 +139,20 @@
                 alert('Debe seleccionar una imagen');
                 return false;
               }
+              if(angular.isUndefined(vm.image2)){
+                alert('Debe seleccionar una imagen para Básico');
+                return false;
+              }
+              if(angular.isUndefined(vm.image3)){
+                alert('Debe seleccionar una imagen para Premium');
+                return false;
+              }
               vm.fData.imagen = $scope.image;
+              vm.fData.imagen_bas = vm.image2;
+              vm.fData.imagen_pre = vm.image3;
               vm.fData.nombre_imagen = $scope.file.name;
+              vm.fData.nombre_imagen_bas = vm.file2;
+              vm.fData.nombre_imagen_pre = vm.file3;
               pageLoading.start('Procesando...');
               ProductoServices.sRegistrarProducto(vm.fData).then(function (rpta) {
                 pageLoading.stop();
@@ -188,6 +204,8 @@
             }).shift();
             vm.modalTitle = 'Edición de producto';
             vm.fData.canvas = false;
+            vm.fData.canvas_bas = false;
+            vm.fData.canvas_pre = false;
 
             console.log('vm.fData',vm.fData);
 
@@ -202,6 +220,23 @@
                 }
                 vm.fData.imagen = $scope.image;
                 vm.fData.nombre_imagen = $scope.file.name;
+              }
+
+              if(vm.fData.canvas_bas){
+                if(angular.isUndefined(vm.image2)){
+                  alert('Debe seleccionar una imagen para Básico');
+                  return false;
+                }
+                vm.fData.imagen_bas = vm.image2;
+                vm.fData.nombre_imagen_bas = vm.file2;
+              }
+              if(vm.fData.canvas_pre){
+                if(angular.isUndefined(vm.image3)){
+                  alert('Debe seleccionar una imagen para Premium');
+                  return false;
+                }
+                vm.fData.imagen_pre = vm.image3;
+                vm.fData.nombre_imagen_pre = vm.file3;
               }
               pageLoading.start('Procesando...');
               ProductoServices.sEditarProducto(vm.fData).then(function (rpta) {

@@ -440,8 +440,8 @@ class Cliente extends CI_Controller {
 		    	$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $codigo;
 		    	createCarpetas($carpeta);
 				$carpeta_destino = $carpeta . DIRECTORY_SEPARATOR .'originales';
-				$random = generateRandomString();
-				$file_name = $random .'.'. $file_ext;
+				// $random = generateRandomString();
+				// $file_name = $random .'.'. $file_ext;
 
 				// IMAGENES
 			    if(in_array($file_ext,$extensions_image)){
