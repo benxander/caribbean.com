@@ -32,15 +32,22 @@
           <div class= "mt-lg" ng-if="ga.productoBool">
             <div class="col-md-3" >
               <label class="minotaur-label">{{ga.categoriaSel.descripcion_ca}}</label>
-              <img ng-src="{{ ga.dirImagesProducto + item.imagen }}" alt="" class="thumb">
+              <div>
+                <img ng-src="{{ ga.dirImagesProducto + ga.categoriaSel.imagen_ca }}" alt="" style="width: 100%;">
+              </div>
+            </div>
+            <div class="col-md-3" >
+              <label class="minotaur-label block">{{ 'Text.DESCRIPCION' | translate }}</label>
               <p ng-bind-html="ga.categoriaSel.texto_ca"></p>
             </div>
             <div class="col-md-3">
-              <label class="minotaur-label">{{ 'Text.COLOR' | translate }}</label>
+              <label class="minotaur-label block">{{ 'Text.COLOR' | translate }}</label>
               <ul class="color-list">
-                  <li ng-repeat="itemColor in item.colores" class="color" ng-class="{ 'white': itemColor.rgba == 'rgba(255,255,255,1)' }" title="{{itemColor.nombre}}" ng-model="ga.temporal.idcolor" uib-btn-radio="'{{itemColor.idcolor}}'" ng-click="ga.cambiaColor(itemColor);"><div><div style="background-color: {{itemColor.rgba}}; width: 100%;"></div></div></li>
+                <li ng-repeat="itemColor in item.colores" class="color" ng-class="{ 'white': itemColor.rgba == 'rgba(255,255,255,1)' }" title="{{itemColor.nombre}}" ng-model="ga.temporal.idcolor" uib-btn-radio="'{{itemColor.idcolor}}'" ng-click="ga.cambiaColor(itemColor);"><div><div style="background-color: {{itemColor.rgba}}; width: 100%;"></div></div>
+                </li>
               </ul>
               <div ng-if="item.si_genero == 1">
+                <label class="minotaur-label block">{{ 'Text.GENERO' | translate }}</label>
                 <label class="checkbox minotaur-radio minotaur-radio-sm"> {{ 'Text.HOMBRE' | translate }}
                   <input name="customRadio" type="radio" id="optionsRadios1{{item.idproductomaster}}"  ng-model="ga.temporal.genero" value="H">
                   <div class="input-indicator"></div>
@@ -50,13 +57,24 @@
                   <div class="input-indicator"></div>
                 </label>
               </div>
-            </div>
-            <div class="col-md-3">
               <label class="minotaur-label block">{{item.tipo_medida}}</label>
               <div class="btn-group mb-5">
                 <label ng-repeat="itemSize in ga.categoriaSel.medidas" class="btn btn-info" ng-model="ga.temporal.idproducto" uib-btn-radio="'{{itemSize.idproducto}}'" ng-click="ga.cambiaMedida(itemSize)">{{itemSize.denominacion}}</label>
               </div>
+              <label class="minotaur-label block">{{ 'Text.CANTIDAD' | translate }}</label>
+              <div touch-spin ng-model="ga.temporal.cantidad" options="{min: 1, max: 100}" ng-change="ga.cambiaCantidad()" style="width: 110px;"></div>
+              <label class="minotaur-label">{{ 'Text.PRECIO' | translate }}(US$)</label>
+              <div style="min-height: 34px;">
+                <span>{{ga.temporal.precio}}</span>
+              </div>
+              <label class="minotaur-label block">{{ 'Text.TOTAL' | translate }}(US$)</label>
+              <div style="min-height: 34px;">
+                <span>{{ga.temporal.total_detalle}}</span>
+              </div>
+              <button class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10" ng-click="ga.agregarItem(ga.temporal)"><i class="fa fa-shopping-cart"></i> <span>{{ 'Text.CESTA' | translate }}</span></button>
             </div>
+           <!--  <div class="col-md-3">
+            </div> -->
             <div class="col-md-3" style="min-height: 140px;">
               <label class="minotaur-label block">{{ 'Text.SELECCIONAR' | translate }}</label>
               <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia(item);"><i class="fa fa-image"></i></a>
@@ -64,25 +82,7 @@
                 <img class="img-responsive" ng-src="{{ga.temporal.imagen.src_thumb}}" alt="" style="width: 100px;">
               </div>
             </div>
-            <div class="col-md-2">
-              <label class="minotaur-label">{{ 'Text.CANTIDAD' | translate }}</label>
-              <div touch-spin ng-model="ga.temporal.cantidad" options="{min: 1, max: 100}" ng-change="ga.cambiaCantidad()"></div>
-            </div>
-            <div class="col-md-2">
-              <label class="minotaur-label">{{ 'Text.PRECIO' | translate }}(US$)</label>
-              <div style="min-height: 34px;">
-                <span>{{ga.temporal.precio}}</span>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <label class="minotaur-label">{{ 'Text.TOTAL' | translate }}</label>
-              <div style="min-height: 34px;">
-                <span>{{ga.temporal.total_detalle}}</span>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10" ng-click="ga.agregarItem(ga.temporal)"><i class="fa fa-shopping-cart"></i> <span>{{ 'Text.CESTA' | translate }}</span></button>
-            </div>
+
           </div>
 
         </uib-tab>

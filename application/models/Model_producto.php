@@ -52,9 +52,10 @@ class Model_producto extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_producto_pedido(){
-		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.imagen, pm.estado_pm");
+		$this->db->select("pm.idproductomaster, pm.descripcion_pm, pm.estado_pm");
 		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida, tm.descripcion_tm');
 		$this->db->select('pm.descripcion_basico, pm.descripcion_premium, tipo_seleccion');
+		$this->db->select('pm.imagen, pm.imagen_bas, pm.imagen_pre');
 		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion, me.cantidad_fotos');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5');
 		$this->db->from('producto_master pm');

@@ -136,6 +136,7 @@ class Producto extends CI_Controller {
 					);
 					$arrAuxCat[$row['categoria']] = array(
 						'categoria' => $row['categoria'],
+						'imagen_ca' => $row['categoria'] == '1'?$row['imagen_bas']:$row['imagen_pre'],
 						'descripcion_ca' => $row['categoria'] == '1'? 'BASICO':'PREMIUM',
 						'texto_ca' => $row['categoria'] == '1'? $row['descripcion_basico']:$row['descripcion_premium'],
 						'medidas' => array()
