@@ -73,13 +73,19 @@
               </div>
               <button class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10" ng-click="ga.agregarItem(ga.temporal)"><i class="fa fa-shopping-cart"></i> <span>{{ 'Text.CESTA' | translate }}</span></button>
             </div>
-           <!--  <div class="col-md-3">
-            </div> -->
             <div class="col-md-3" style="min-height: 140px;">
-              <label class="minotaur-label block">{{ 'Text.SELECCIONAR' | translate }}</label>
+              <label class="minotaur-label block" ng-show="item.tipo_seleccion == '1'">{{ 'Text.SELECCIONAR' | translate }}</label>
+              <label class="minotaur-label block" ng-show="item.tipo_seleccion == '2'">{{ 'Text.SELECCIONE' | translate }} {{ga.temporal.size.cantidad_fotos}} {{ 'Text.FOTOGRAFIAS' | translate }}</label>
               <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia(item);"><i class="fa fa-image"></i></a>
-              <div ng-if="ga.temporal.isSel">
-                <img class="img-responsive" ng-src="{{ga.temporal.imagen.src_thumb}}" alt="" style="width: 100px;">
+              <div ng-if="ga.temporal.isSel && item.tipo_seleccion == '1'">
+                <div>
+                  <img class="img-responsive" ng-src="{{ga.temporal.imagen.src_thumb}}" alt="" style="width: 100px;">
+                </div>
+              </div>
+              <div ng-if="ga.temporal.isSel && item.tipo_seleccion == '2'">
+                <div class="m-xs inline-block" ng-repeat="image in ga.images | filter: { selected: true }">
+                  <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="" style="max-width: 80px;max-height: 53px;">
+                </div>
               </div>
             </div>
 

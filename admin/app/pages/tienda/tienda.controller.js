@@ -352,7 +352,8 @@
         sListarNoDescargados: sListarNoDescargados,
         sDescargarArchivosPagados: sDescargarArchivosPagados,
         sVerificarSeleccion: sVerificarSeleccion,
-        sActualizarMonedero: sActualizarMonedero
+        sActualizarMonedero: sActualizarMonedero,
+        sRegistrarMovimiento: sRegistrarMovimiento,
     });
 
     function sListarNoDescargados(pDatos) {
@@ -390,6 +391,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/actualizar_monedero",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sRegistrarMovimiento(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Movimiento/registrar_movimiento",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

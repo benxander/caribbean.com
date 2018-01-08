@@ -117,7 +117,7 @@ class Producto extends CI_Controller {
 				'imagen' 			=> $row['imagen'],
 				'si_genero' 		=> $row['si_genero'],
 				'si_color' 			=> $row['si_color'],
-				'tipo_seleccion' 			=> $row['tipo_seleccion'],
+				'tipo_seleccion' 	=> $row['tipo_seleccion'],
 				'idtipomedida' 		=> $row['idtipomedida'],
 				'tipo_medida' 		=> $row['descripcion_tm'],
 				'colores'			=> array(),

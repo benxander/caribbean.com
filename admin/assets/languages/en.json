@@ -41,6 +41,8 @@
     "HOMBRE":"Man",
     "MUJER":"Woman",
     "SELECCIONAR":"Select a picture",
+    "SELECCIONE":"Select",
+    "FOTOGRAFIAS":"pictures",
     "PRECIO":"Price",
     "TOTAL":"Total",
     "CESTA":"Add to cart",

@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{gm.modalTitle}}</h4>
+  <h4 class="modal-title" ng-show="gm.tipo_seleccion == 1">{{ 'Text.SELECCIONAR' | translate }}</h4>
+  <h4 class="modal-title" ng-show="gm.tipo_seleccion == 2">{{ 'Text.SELECCIONE' | translate }} {{gm.cantidad_fotos}} {{ 'Text.FOTOGRAFIAS' | translate }}</h4>
 </div>
 <div class="modal-body">
 	<section class="tile-body">
