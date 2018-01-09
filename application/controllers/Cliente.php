@@ -663,6 +663,17 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al actualizar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
+    	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
+    	// print_r($allInputs);
+    	// print_r($monedero);
+    	if($monedero != $allInputs['saldo']){
+    		$arrData['message'] = 'El saldo no coincide';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
 		if($this->model_cliente->m_actulizar_monedero($allInputs)){
 			$cliente = $this->model_cliente->m_cargar_cliente_cbo($allInputs);
 			$arrData['message'] = 'Se actalizaron los datos correctamente';
