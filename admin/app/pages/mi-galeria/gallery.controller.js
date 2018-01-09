@@ -99,7 +99,9 @@
       vm.temporal.idproductomaster = producto.idproductomaster;
       vm.temporal.producto = producto.descripcion_pm;
       vm.temporal.si_genero = producto.si_genero;
+      vm.temporal.si_color = producto.si_color;
       vm.temporal.tipo_seleccion = producto.tipo_seleccion;
+      vm.temporal.color = null;
     }
     vm.cambiaProducto = function(producto){ // pestaña productos
       // vm.producto[idproductomaster] = {};
@@ -246,7 +248,7 @@
         }
       ];
     vm.agregarItem = function(temp){
-      if( !vm.temporal.color ){
+      if( !vm.temporal.color && vm.temporal.si_color == 1){
         toastr.warning('Seleccione un color', 'Advertencia');
         return false;
       }

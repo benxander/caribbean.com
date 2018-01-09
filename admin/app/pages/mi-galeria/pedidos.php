@@ -41,7 +41,7 @@
               <p ng-bind-html="ga.categoriaSel.texto_ca"></p>
             </div>
             <div class="col-md-3">
-              <label class="minotaur-label block">{{ 'Text.COLOR' | translate }}</label>
+              <label class="minotaur-label block" ng-if="item.si_color == 1">{{ 'Text.COLOR' | translate }}</label>
               <ul class="color-list">
                 <li ng-repeat="itemColor in item.colores" class="color" ng-class="{ 'white': itemColor.rgba == 'rgba(255,255,255,1)' }" title="{{itemColor.nombre}}" ng-model="ga.temporal.idcolor" uib-btn-radio="'{{itemColor.idcolor}}'" ng-click="ga.cambiaColor(itemColor);"><div><div style="background-color: {{itemColor.rgba}}; width: 100%;"></div></div>
                 </li>

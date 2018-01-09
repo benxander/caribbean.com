@@ -129,11 +129,13 @@ class Producto extends CI_Controller {
 			$arrAuxCat = array();
 			foreach ($lista as $row) {
 				if( $row['idproductomaster'] == $key ){
-					$arrAuxColor[$row['idcolor']] = array(
-						'idcolor' => $row['idcolor'],
-						'nombre' => $row['nombre'],
-						'rgba' => $row['rgba']
-					);
+					if($value['si_color'] == 1){
+						$arrAuxColor[$row['idcolor']] = array(
+							'idcolor' => $row['idcolor'],
+							'nombre' => $row['nombre'],
+							'rgba' => $row['rgba']
+						);
+					}
 					$arrAuxCat[$row['categoria']] = array(
 						'categoria' => $row['categoria'],
 						'imagen_ca' => $row['categoria'] == '1'?$row['imagen_bas']:$row['imagen_pre'],

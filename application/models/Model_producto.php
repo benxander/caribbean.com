@@ -59,14 +59,12 @@ class Model_producto extends CI_Model {
 		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion, me.cantidad_fotos');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5');
 		$this->db->from('producto_master pm');
-		$this->db->join('producto_master_color pmc', 'pm.idproductomaster = pmc.idproductomaster');
-		$this->db->join('color co', 'pmc.idcolor = co.idcolor');
+		$this->db->join('producto_master_color pmc', 'pm.idproductomaster = pmc.idproductomaster AND estado_pmc = 1','left');
+		$this->db->join('color co', 'pmc.idcolor = co.idcolor AND estado_co = 1','left');
 		$this->db->join('producto p', 'pm.idproductomaster = p.idproductomaster');
 		$this->db->join('medida me', 'p.idmedida = me.idmedida');
 		$this->db->join('tipo_medida tm', 'pm.idtipomedida = tm.idtipomedida');
 		$this->db->where('estado_pm',1);
-		$this->db->where('estado_pmc',1);
-		$this->db->where('estado_co',1);
 		$this->db->where('estado_p',1);
 		$this->db->where('estado_me',1);
 		// $this->db->where('tipo_seleccion', 1);

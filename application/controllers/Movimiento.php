@@ -72,13 +72,13 @@ class Movimiento extends CI_Controller {
     	$arrData['flag'] = 0;
 
     	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
-    	if($cliente['monedero'] != $allInputs['saldo_inicial']){
-    		$arrData['message'] = 'El saldo no concuerda. Vuelva a intentarlo';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
+   //  	if($cliente['monedero'] != $allInputs['saldo_inicial']){
+   //  		$arrData['message'] = 'El saldo no concuerda. Vuelva a intentarlo';
+   //  		$this->output
+			//     ->set_content_type('application/json')
+			//     ->set_output(json_encode($arrData));
+			// return;
+   //  	}
     	$datos = array(
     		'idcliente' => $cliente['idcliente'],
     		'idactividadcliente' => $allInputs['detalle'][0]['imagenes']['idactividadcliente'],
@@ -103,6 +103,7 @@ class Movimiento extends CI_Controller {
 					'idcolor' => $row['idcolor'],
 					'genero' => $row['genero'],
 					'tipo_detalle' => 2, // 1: compra online; 2: merchandising (pedido)
+					'estado_det' => 1, // pendiente
 				);
 				$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
 				if( $row['tipo_seleccion'] == 1 ){
