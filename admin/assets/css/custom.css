@@ -508,6 +508,8 @@ minotaur-header .navbar-header .navigation-toggle{
 .btn-info.active{
   background-color: #20326b;
 }
+.input-group-addon{line-height: 0.5!important}
+.input-group .form-control{text-align: right!important;}
 /* traductor */
 .skiptranslate .goog-te-banner-frame{display:none!important;}
 body{top:0px!important;}

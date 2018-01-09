@@ -13,10 +13,17 @@
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
 
-    vm.cargarGaleria = function(datos){
+    vm.cargarGaleria = function(datos,loader){
+      var loader = loader || false;
+      if(loader){
+        pageLoading.start('Procesando...');
+      }
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
         vm.images = rpta.datos;
+        if(loader){
+          pageLoading.stop();
+        }
       });
     }
     vm.cargarProductos = function(){
@@ -81,16 +88,26 @@
         vm.isSelected = false;
       }
     };
-    vm.btnPedidos = function(imagen){ // merchandising
+    vm.btnPedidos = function(imagen){ // btn merchandising
       var imagen = imagen || null;
-      if(vm.pedidoBool){
+      if(vm.pedidoBool){ // regresar
         vm.pedidoBool = false;
         vm.productoBool = false;
-        $state.reload();
-      }else{
+        //$state.reload();
+        vm.cargarGaleria(vm.fDataUsuario,true);
+      }else{ // merchandising
         vm.pedidoBool = true;
-        // vm.cargarProductos();
+        vm.imagen = imagen;
       }
+    }
+    vm.cambiaProducto = function(producto){ // pestaña productos
+      // vm.producto[idproductomaster] = {};
+      vm.productoBool = false;
+      vm.temporal = {};
+      vm.temporal.cantidad = 1;
+      vm.temporal.isSel = false;
+      vm.temporal.idproductomaster = producto.idproductomaster;
+      vm.temporal.producto = producto.descripcion_pm;
     }
     vm.selectCat = function(categoria, producto){ //basico - premium
       vm.productoBool = true;
@@ -102,24 +119,18 @@
       vm.temporal.si_color = producto.si_color;
       vm.temporal.tipo_seleccion = producto.tipo_seleccion;
       vm.temporal.color = null;
-    }
-    vm.cambiaProducto = function(producto){ // pestaña productos
-      // vm.producto[idproductomaster] = {};
-      vm.productoBool = false;
-      vm.temporal = {};
-      vm.temporal.cantidad = 1;
-      vm.temporal.isSel = false;
-      vm.temporal.idproductomaster = producto.idproductomaster;
-      vm.temporal.producto = producto.descripcion_pm;
+      if( vm.temporal.tipo_seleccion == 1 && vm.imagen ){
+        vm.temporal.imagen = vm.imagen;
+        vm.temporal.isSel = true;
+      }else{
+        vm.temporal.imagen = [];
+      }
     }
     vm.cambiaColor = function(color,idproductomaster){
       vm.temporal.color = color.nombre;
     }
     vm.cambiaMedida = function(size){
-      // var cantidad = vm.producto[idproductomaster].cantidad || 1;
       var cantidad = vm.temporal.cantidad;
-
-      // vm.producto[idproductomaster].size = size;
       vm.temporal.size = size;
       if( cantidad== 1 ){
         vm.temporal.precio = size.precio;
@@ -132,7 +143,6 @@
       }else{
         vm.temporal.precio = 0;
       }
-
       if(vm.temporal.tipo_seleccion == '2'){
         vm.temporal.isSel = false;
         angular.forEach(vm.images, function(image) {
@@ -141,18 +151,11 @@
       }
       vm.temporal.total_detalle = vm.temporal.precio * cantidad;
       vm.temporal.talla = size.denominacion;
-      // vm.temporal.idproducto = size.idproducto;
-      // vm.temporal.cantidad = cantidad;
-      // vm.temporal.precio = vm.producto[idproductomaster].precio;
-      // vm.temporal.total_detalle = vm.producto[idproductomaster].total_detalle;
-
     }
     vm.cambiaCantidad = function(){
-      // var cantidad = vm.producto[idproductomaster].cantidad || 1;
       var cantidad = vm.temporal.cantidad;
       var size = vm.temporal.size || null;
       console.log('size',size);
-      // var precio = 0;
       if(size){
         if( cantidad== 1 ){
           vm.temporal.precio = size.precio;
@@ -164,9 +167,6 @@
           vm.temporal.precio = 0;
         }
         vm.temporal.total_detalle = vm.temporal.precio * cantidad;
-        // vm.temporal.cantidad = cantidad;
-        // vm.temporal.precio = vm.producto[idproductomaster].precio;
-        // vm.temporal.total_detalle = vm.producto[idproductomaster].total_detalle;
       }
     }
     vm.selectFotografia = function(item){
@@ -272,6 +272,10 @@
             vm.temporal.imagen.push(image);
           }
         });
+        if(vm.temporal.imagen.length <= 0){
+          toastr.warning('Seleccione fotografías', 'Advertencia');
+          return false;
+        }
       }
       // console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}

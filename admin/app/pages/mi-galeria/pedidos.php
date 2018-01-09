@@ -61,19 +61,20 @@
               <div class="btn-group mb-5">
                 <label ng-repeat="itemSize in ga.categoriaSel.medidas" class="btn btn-info" ng-model="ga.temporal.idproducto" uib-btn-radio="'{{itemSize.idproducto}}'" ng-click="ga.cambiaMedida(itemSize)">{{itemSize.denominacion}}</label>
               </div>
-              <label class="minotaur-label block">{{ 'Text.CANTIDAD' | translate }}</label>
-              <div touch-spin ng-model="ga.temporal.cantidad" options="{min: 1, max: 100}" ng-change="ga.cambiaCantidad()" style="width: 110px;"></div>
-              <label class="minotaur-label">{{ 'Text.PRECIO' | translate }}(US$)</label>
-              <div style="min-height: 34px;">
-                <span>{{ga.temporal.precio}}</span>
+              <label class="minotaur-label block mt">{{ 'Text.CANTIDAD' | translate }}</label>
+              <div touch-spin ng-model="ga.temporal.cantidad" options="{min: 1, max: 100}" ng-change="ga.cambiaCantidad()" class="text-right" style="width: 145px;"></div>
+              <label class="minotaur-label block mt">{{ 'Text.PRECIO' | translate }}(US$)</label>
+              <div class="input-group" style="min-height: 34px;width: 145px;">
+                <span class="input-group-addon">US$</span>
+                <input type="text" ng-model="ga.temporal.precio" class="text-right" ng-disabled="true" style="width: 100%"> <span class="input-group-addon">.00</span>
               </div>
-              <label class="minotaur-label block">{{ 'Text.TOTAL' | translate }}(US$)</label>
-              <div style="min-height: 34px;">
-                <span>{{ga.temporal.total_detalle}}</span>
+              <label class="minotaur-label block mt">{{ 'Text.TOTAL' | translate }}(US$)</label>
+              <div class="input-group" style="min-height: 34px;width: 145px;">
+                <span class="input-group-addon">US$</span>
+                <input type="text" ng-model="ga.temporal.total_detalle" class="text-right" ng-disabled="true" style="width: 100%"> <span class="input-group-addon">.00</span>
               </div>
-              <button class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10" ng-click="ga.agregarItem(ga.temporal)"><i class="fa fa-shopping-cart"></i> <span>{{ 'Text.CESTA' | translate }}</span></button>
             </div>
-            <div class="col-md-3" style="min-height: 140px;">
+            <div class="col-md-3" style="min-height: 315px;">
               <label class="minotaur-label block" ng-show="item.tipo_seleccion == '1'">{{ 'Text.SELECCIONAR' | translate }}</label>
               <label class="minotaur-label block" ng-show="item.tipo_seleccion == '2'">{{ 'Text.SELECCIONE' | translate }} {{ga.temporal.size.cantidad_fotos}} {{ 'Text.FOTOGRAFIAS' | translate }}</label>
               <a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="ga.selectFotografia(item);"><i class="fa fa-image"></i></a>
@@ -88,7 +89,7 @@
                 </div>
               </div>
             </div>
-
+            <button class="pull-right btn btn-primary btn-ef btn-ef-5 btn-ef-5b mb-10 mr-md" ng-click="ga.agregarItem(ga.temporal)"><i class="fa fa-shopping-cart"></i> <span>{{ 'Text.CESTA' | translate }}</span></button>
           </div>
 
         </uib-tab>
@@ -100,25 +101,25 @@
       <div class="form-inline col-md-12 col-sm-12 mt-lg text-right">
         <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.IMPORTE' | translate }}</label>
         <div class="input-group mb-10">
-          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.total_pedido" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ga.fData.total_pedido" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
         </div>
       </div>
       <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
         <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.SALDO_INICIAL' | translate }}</label>
         <div class="input-group mb-10">
-          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.saldo_inicial" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ga.fData.saldo_inicial" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
         </div>
       </div>
       <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
         <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;">{{ 'Text.SALDO_FINAL' | translate }}</label>
         <div class="input-group mb-10">
-          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.saldo_final" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ga.fData.saldo_final" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
         </div>
       </div>
       <div class="form-inline col-md-12 col-sm-12 mt-xs text-right" ng-show="ga.fData.total_a_pagar > 0">
         <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.TOTAL_PAGAR' | translate }}</label>
         <div class="input-group mb-10">
-          <span class="input-group-addon">US$</span> <input type="text" class="form-control input-sm pull-right text-right f-18" ng-readonly="true" ng-model="ga.fData.total_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ga.fData.total_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
         </div>
       </div>
       <div class="col-md-12 mt">

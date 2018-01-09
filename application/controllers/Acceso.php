@@ -95,7 +95,14 @@ class Acceso extends CI_Controller {
 			$idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
 			$fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
 			if( !empty($fila) ){
+				if( strtotime($fila['fecha_salida'])<strtotime(date('Y-m-d')) ){
+					$salida = TRUE;
+				}else{
+					$salida = FALSE;
+				}
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['fecha_salida'] = $fila['fecha_salida'];
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['es_salida'] = $salida;
 			}
 
 
