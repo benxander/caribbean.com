@@ -143,11 +143,18 @@
         templateUrl: 'app/pages/producto/producto.html',
         controller: 'ProductoController',
         controllerAs: 'pr'
-      }).state('pedido', {
+      })
+      .state('pedido', {
         url: '/app/pedido',
         templateUrl: 'app/pages/pedido/pedido.html',
         controller: 'PedidoController',
         controllerAs: 'pe'
+      })
+      .state('medida', {
+        url: '/app/medida',
+        templateUrl: 'app/pages/medida/medida.html',
+        controller: 'MedidaController',
+        controllerAs: 'me'
       });
 
     $urlRouterProvider.otherwise('/app/dashboard');

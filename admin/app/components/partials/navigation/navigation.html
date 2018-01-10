@@ -65,6 +65,12 @@
             <i>{{ 'Menu.PRODUCTO' | translate | limitTo: 2}}</i>
           </a>
         </li>
+        <li ui-sref-active="active">
+          <a ng-click="$state.reload();" ui-sref="medida">
+            <span class="nav-text">{{ 'Menu.MEDIDA' | translate }}</span>
+            <i>{{ 'Menu.MEDIDA' | translate | limitTo: 2}}</i>
+          </a>
+        </li>
         <li ui-sref-active="active" ng-show="false">
           <a ng-click="$state.reload();" ui-sref="idioma">
             <span class="nav-text">{{ 'Menu.IDIOMAS' | translate }}</span>
