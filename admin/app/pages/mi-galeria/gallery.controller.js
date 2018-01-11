@@ -103,27 +103,33 @@
     vm.cambiaProducto = function(producto){ // pestaña productos
       // vm.producto[idproductomaster] = {};
       vm.productoBool = false;
+
+    }
+    vm.selectCat = function(categoria, producto){ //basico - premium
+      vm.productoBool = true;
+      vm.categoriaSel = categoria;
+
       vm.temporal = {};
       vm.temporal.cantidad = 1;
       vm.temporal.isSel = false;
       vm.temporal.idproductomaster = producto.idproductomaster;
       vm.temporal.producto = producto.descripcion_pm;
-    }
-    vm.selectCat = function(categoria, producto){ //basico - premium
-      vm.productoBool = true;
-      vm.categoriaSel = categoria;
       vm.temporal.categoria = categoria;
       vm.temporal.idproductomaster = producto.idproductomaster;
       vm.temporal.producto = producto.descripcion_pm;
       vm.temporal.si_genero = producto.si_genero;
       vm.temporal.si_color = producto.si_color;
       vm.temporal.tipo_seleccion = producto.tipo_seleccion;
-      vm.temporal.color = null;
+      // vm.temporal.color = null;
+      // vm.temporal.idcolor = null;
+      // vm.temporal.idcolor = null;
       if( vm.temporal.tipo_seleccion == 1 && vm.imagen ){
         vm.temporal.imagen = vm.imagen;
         vm.temporal.isSel = true;
-      }else{
+      }else if( vm.temporal.tipo_seleccion == 2 ){
         vm.temporal.imagen = [];
+      }else{
+        vm.temporal.imagen = null;
       }
     }
     vm.cambiaColor = function(color,idproductomaster){
@@ -187,8 +193,12 @@
           var vm = this;
           // vm.seleccion = arrToModal.scope.seleccion;
           console.log('seleccion',item.tipo_seleccion);
+          console.log('size',arrToModal.scope.temporal.size.cantidad_fotos);
           vm.images = arrToModal.scope.images;
           vm.tipo_seleccion = item.tipo_seleccion;
+          if(vm.tipo_seleccion == '2'){
+            vm.cantidad_fotos = arrToModal.scope.temporal.size.cantidad_fotos;
+          }
           vm.modalTitle = 'Selecciona Fotografía';
           vm.selectFoto = function(imagen, index){
             if(vm.tipo_seleccion == '1'){
@@ -248,7 +258,7 @@
         }
       ];
     vm.agregarItem = function(temp){
-      if( !vm.temporal.color && vm.temporal.si_color == 1){
+      if( !vm.temporal.idcolor && vm.temporal.si_color == 1){
         toastr.warning('Seleccione un color', 'Advertencia');
         return false;
       }
@@ -261,11 +271,13 @@
         return false;
       }
       if( vm.temporal.tipo_seleccion == 1 ){
+        console.log('unica');
         if( !angular.isObject(vm.temporal.imagen) ){
           toastr.warning('Seleccione una fotografía', 'Advertencia');
           return false;
         }
       }else{
+        console.log('multiple');
         vm.temporal.imagen = [];
         angular.forEach(vm.images, function(image,key) {
           if (image.selected) {
@@ -277,11 +289,11 @@
           return false;
         }
       }
-      // console.log('vm.temporal',vm.temporal);
+      console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}
       var adicional = '';
       if(vm.temporal.si_genero == 1){
-        adicional = vm.temporal.genero == 'H'? ' - Hombre' : ' - Mujer';
+        adicional = vm.temporal.genero == 'H'? ' - HOMBRE' : ' - MUJER';
       }
       vm.arrTemporal = {
         'idproducto' : vm.temporal.idproducto,
@@ -303,6 +315,7 @@
       var producto = vm.temporal.producto;
       var categoria = vm.temporal.categoria;
       var si_genero = vm.temporal.si_genero;
+      var tipo_seleccion = vm.temporal.tipo_seleccion;
       vm.temporal = {};
       vm.temporal.cantidad = 1;
       vm.temporal.isSel = false;
@@ -310,6 +323,7 @@
       vm.temporal.producto = producto;
       vm.temporal.categoria = categoria;
       vm.temporal.si_genero = si_genero;
+      vm.temporal.tipo_seleccion = tipo_seleccion;
       vm.calcularTotales();
 
     }

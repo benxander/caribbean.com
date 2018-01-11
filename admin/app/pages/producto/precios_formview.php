@@ -19,18 +19,21 @@
 			    		<label for="color" class="control-label minotaur-label block">Color</label>
 		              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mp.fData.colores" ng-options="item.id as item.descripcion for item in mp.listaColores" ng-change="mp.cambioColor();" required> </select>
 		            </div>
+		            <div class="col-sm-8">
+		            	<uib-tabset class="mt-10 mb-10" justified="true">
+		        			<uib-tab heading="Básico">
+		              			<div ui-grid="mp.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 200px"></div>
+
+		        			</uib-tab>
+		        			<uib-tab heading="Premium">
+		              			<div ui-grid="mp.gridOptionsPremium" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 200px"></div>
+
+		        			</uib-tab>
+		      			</uib-tabset>
+		            </div>
 				</div>
 
-				<div class="row">
-		            <div class="col-md-6 col-sm-12">
-						<span>Básico</span>
-		              	<div ui-grid="mp.gridOptions" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
-		            </div>
-		            <div class="col-md-6 col-sm-12">
-						<span>Premium</span>
-		              	<div ui-grid="mp.gridOptionsPremium" ui-grid-auto-resize ui-grid-edit class="grid table-responsive" style="height: 150px"></div>
-		            </div>
-				</div>
+
 			</fieldset>
 		</form>
 	</section>

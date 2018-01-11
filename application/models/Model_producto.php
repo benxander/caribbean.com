@@ -56,7 +56,7 @@ class Model_producto extends CI_Model {
 		$this->db->select('pm.si_genero, pm.si_color, pm.idtipomedida, tm.descripcion_tm');
 		$this->db->select('pm.descripcion_basico, pm.descripcion_premium, tipo_seleccion');
 		$this->db->select('pm.imagen, pm.imagen_bas, pm.imagen_pre');
-		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion, me.cantidad_fotos');
+		$this->db->select('co.idcolor, co.nombre, co.rgba, me.idmedida, me.denominacion, p.cantidad_fotos');
 		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5');
 		$this->db->from('producto_master pm');
 		$this->db->join('producto_master_color pmc', 'pm.idproductomaster = pmc.idproductomaster AND estado_pmc = 1','left');
@@ -89,11 +89,12 @@ class Model_producto extends CI_Model {
 	}
 	public function m_cargar_precios_por_producto($datos){
 		$this->db->select('m.idmedida, m.denominacion as medida, m.idtipomedida');
-		$this->db->select('p.idproducto, p.categoria, p.precio_unitario, p.precio_2_5, p.precio_mas_5, p.estado_p');
+		$this->db->select('p.idproducto, p.categoria,p.cantidad_fotos, p.precio_unitario, p.precio_2_5, p.precio_mas_5, p.estado_p');
 		$this->db->from('medida m');
 		// $this->db->join('producto_master pm', 'm.ç = pm.ç');
 		$this->db->join('producto p', 'm.idmedida = p.idmedida AND idproductomaster = ' . $datos['idproductomaster'] . ' AND p.categoria = ' . $datos['categoria'],'left');
 		$this->db->where('idtipomedida', $datos['idtipomedida']);
+		$this->db->where('p.estado_p', 1);
 		$this->db->order_by('idmedida','ASC');
 		$this->db->order_by('idproducto','ASC');
 		return $this->db->get()->result_array();
@@ -159,5 +160,12 @@ class Model_producto extends CI_Model {
 		);
 		$this->db->where('idproductomaster',$datos['idproductomaster']);
 		return $this->db->update('producto_master_color', $data);
+	}
+	public function m_anular_producto_precios($datos){
+		$data = array(
+			'estado_p' => 0
+		);
+		$this->db->where('idproducto',$datos['idproducto']);
+		return $this->db->update('producto', $data);
 	}
 }

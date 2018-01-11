@@ -153,10 +153,15 @@ class Producto extends CI_Controller {
 				$arrAuxMedida = array();
 				foreach ($lista as $row) {
 					if($row['idproductomaster'] == $key && $row['categoria'] == $key2){
-						$arrAuxMedida[$row['idmedida']] = array(
+						if($value['tipo_seleccion'] == 2){
+							$nombre = $row['denominacion'] . '-' . $row['cantidad_fotos'];
+						}else{
+							$nombre = $row['denominacion'];
+						}
+						$arrAuxMedida[$row['idproducto']] = array(
 							'idmedida' => $row['idmedida'],
 							'idproducto' => $row['idproducto'],
-							'denominacion' => $row['denominacion'],
+							'denominacion' => $nombre,
 							'cantidad_fotos' => $row['cantidad_fotos'],
 							'precio' => $row['precio_unitario'],
 							'precio_2_5' => $row['precio_2_5'],
@@ -214,6 +219,7 @@ class Producto extends CI_Controller {
 				'idproductomaster' => $allInputs['idproductomaster'],
 				'idmedida' => $row['idmedida'],
 				'medida' => $row['medida'],
+				'cantidad_fotos' => $row['cantidad_fotos'],
 				'categoria' => $allInputs['categoria'],
 				// 'categoria' => $row['categoria'] == '2'?'PREMIUM':'BASICO',
 				'precio_unitario' => (int)$row['precio_unitario'],
@@ -474,6 +480,7 @@ class Producto extends CI_Controller {
 	    			'idproductomaster' => $row['idproductomaster'],
 	    			'categoria' => $row['categoria'],
 	    			'idmedida' => $row['idmedida'],
+	    			'cantidad_fotos' => $row['cantidad_fotos'],
 	    			'precio_unitario' => $row['precio_unitario'],
 	    			'precio_2_5' => $row['precio_2_5'],
 	    			'precio_mas_5' => $row['precio_mas_5'],
@@ -483,6 +490,7 @@ class Producto extends CI_Controller {
 		    	}
     		}else{
     			$data = array(
+	    			'cantidad_fotos' => $row['cantidad_fotos'],
 	    			'precio_unitario' => $row['precio_unitario'],
 	    			'precio_2_5' => $row['precio_2_5'],
 	    			'precio_mas_5' => $row['precio_mas_5'],
@@ -582,6 +590,19 @@ class Producto extends CI_Controller {
     	}
 
     	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function anular_producto_precios(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+		if($this->model_producto->m_anular_producto_precios($allInputs)){
+			$arrData['message'] = 'Se anularon los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}

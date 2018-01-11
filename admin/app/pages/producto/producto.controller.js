@@ -288,7 +288,7 @@
             vm.listaColores = arrToModal.scope.listaColores;
             vm.fData.cambio_color = false;
 
-            vm.modalTitle = 'Precio por Tamaños';
+            vm.modalTitle = 'Precios por Medida';
             // vm.fData.canvas = false;
             // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
             ProductoServices.sListarColoresProducto(vm.fData).then(function(rpta){
@@ -301,12 +301,22 @@
                 appScopeProvider: vm
               }
               vm.gridOptions.columnDefs = [
-                { field: 'medida', displayName: 'TAMAÑO', minWidth: 80,},
+                { field: 'medida', displayName: 'MEDIDAS', minWidth: 80,},
+                { field: 'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 80, width:90},
                 { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
                 { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
                 { field: 'precio_mas_5',displayName: 'DE 6 A MAS', minWidth: 60,width:90,cellClass:'ui-editCell'},
+                { field: 'accion', displayName: '', width: 60,
+                  cellTemplate: '<div>' +
+                  '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+                  '</div>'
+                }
 
               ];
+              if(vm.fData.tipo_seleccion == 2){
+                vm.gridOptions.columnDefs[1].enableCellEdit = true;
+                vm.gridOptions.columnDefs[1].cellClass = 'ui-editCell';
+              }
               vm.gridOptions.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
 
@@ -329,11 +339,20 @@
               }
               vm.gridOptionsPremium.columnDefs = [
                 { field: 'medida', displayName: 'TAMAÑO', minWidth: 80,},
+                { field: 'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 80, width:90},
                 { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
                 { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
                 { field: 'precio_mas_5',displayName: 'DE 6 A MAS', minWidth: 60,width:90,cellClass:'ui-editCell'},
-
+                { field: 'accion', displayName: '', width: 60,
+                  cellTemplate: '<div>' +
+                  '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+                  '</div>'
+                }
               ];
+              if(vm.fData.tipo_seleccion == 2){
+                vm.gridOptionsPremium.columnDefs[1].enableCellEdit = true;
+                vm.gridOptionsPremium.columnDefs[1].cellClass = 'ui-editCell';
+              }
               vm.gridOptionsPremium.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
 
@@ -353,6 +372,36 @@
               }
               vm.getPaginationServerSidePremium();
 
+            vm.btnQuitarDeLaCesta = function(row){
+              if(row.entity.es_nuevo){
+                var index = vm.gridOptionsPremium.data.indexOf(row.entity);
+                vm.gridOptionsPremium.data.splice(index,1);
+              }else{
+                alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+                  ev.preventDefault();
+                    console.log('eliminando...');
+                    ProductoServices.sAnularProductoPrecios(row.entity).then(function(rpta){
+                      if(rpta.flag == 1){
+                        vm.getPaginationServerSide();
+                        vm.getPaginationServerSidePremium();
+                        var title = 'OK';
+                        var type = 'success';
+                        toastr.success(rpta.message, title);
+                      }else if( rpta.flag == 0 ){
+                        var title = 'Advertencia';
+                        var type = 'warning';
+                        toastr.warning(rpta.message, title);
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                    });
+                  },
+                  function(ev){
+                    ev.preventDefault();
+                });
+              }
+
+            }
             vm.cambioColor = function(){
               vm.fData.cambio_color = true;
             }
@@ -442,6 +491,7 @@
       sListarProductoPrecios: sListarProductoPrecios,
       sRegistrarProductoPrecios: sRegistrarProductoPrecios,
       sEditarProductoPrecios: sEditarProductoPrecios,
+      sAnularProductoPrecios: sAnularProductoPrecios,
       sAnularProducto: sAnularProducto,
       sHabilitarDeshabilitarProducto: sHabilitarDeshabilitarProducto,
       sListarColoresCbo: sListarColoresCbo,
@@ -515,6 +565,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/editar_producto_precios",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sAnularProductoPrecios(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/anular_producto_precios",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
