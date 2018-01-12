@@ -74,7 +74,7 @@ class Model_medida extends CI_Model {
 			return false;
 		}
 	}
-	public function m_anular($datos){
+	public function m_anular_medida($datos){
 		$data = array(
 			'estado_me' => 0
 		);

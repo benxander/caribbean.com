@@ -14,23 +14,23 @@ class Medida extends CI_Controller {
 		$totalRows = $this->model_medida->m_count_medidas($paramPaginate);
 		$arrListado = array();
 		foreach ($lista as $row) {
-			if( $row['estado_me'] == 1 ){
-				$bool = true;
-			}
-			elseif( $row['estado_me'] == 2 ){
-				$bool = false;
-			}
+			// if( $row['estado_me'] == 1 ){
+			// 	$bool = true;
+			// }
+			// elseif( $row['estado_me'] == 2 ){
+			// 	$bool = false;
+			// }
 			array_push($arrListado,
 				array(
 					'idtipomedida' => $row['idtipomedida'],
 					'descripcion_tm' => $row['descripcion_tm'],
 					'denominacion' => $row['denominacion'],
 					'idmedida' 		=> $row['idmedida'],
-					'estado' => array(
-						'id'	 =>$row['idmedida'],
-						'valor'  =>$row['estado_me'],
-						'bool'   =>$bool
-					)
+					// 'estado' => array(
+					// 	'id'	 =>$row['idmedida'],
+					// 	'valor'  =>$row['estado_me'],
+					// 	'bool'   =>$bool
+					// )
 				)
 			);
 		}
@@ -50,16 +50,47 @@ class Medida extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-
+    	// var_dump($allInputs); exit();
     	$data = array(
-    		'descripcion_tm' => strtoupper_total(trim($allInputs['descripcion_pm'])),
     		'idtipomedida' => $allInputs['tipo_medida']['id'],
-
-
+    		'denominacion' => strtoupper_total(trim($allInputs['denominacion'])),
     	);
 
     	if( $this->model_medida->m_registrar_medida($data) ){
 			$arrData['message'] = 'Se registraron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_medida(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+    	$data = array(
+    		'idtipomedida' => $allInputs['tipo_medida']['id'],
+    		'denominacion' => strtoupper_total(trim($allInputs['denominacion'])),
+    	);
+
+    	if( $this->model_medida->m_editar_medida($data,$allInputs['idmedida']) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+    	// var_dump($allInputs); exit();
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+
+    }
+	public function anular_medida(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+		if($this->model_medida->m_anular_medida($allInputs)){
+			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output

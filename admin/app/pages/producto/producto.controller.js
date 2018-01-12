@@ -185,11 +185,11 @@
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
+            // vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
 
-            vm.fData.tipo_medida = vm.listaTipoMedida.filter(function(obj) {
-              return obj.id == vm.fData.idtipomedida;
-            }).shift();
+            // vm.fData.tipo_medida = vm.listaTipoMedida.filter(function(obj) {
+            //   return obj.id == vm.fData.idtipomedida;
+            // }).shift();
             vm.modalTitle = 'Edición de producto';
             vm.fData.canvas = false;
             vm.fData.canvas_bas = false;

@@ -6,7 +6,7 @@
     .service('MedidaServices', MedidaServices);
 
   /** @ngInject */
-  function MedidaController($scope,$uibModal,MedidaServices,toastr,alertify, pageLoading, uiGridConstants) {
+  function MedidaController($scope,$uibModal,MedidaServices, ProductoServices, toastr,alertify, pageLoading, uiGridConstants) {
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
@@ -40,12 +40,12 @@
         { field: 'idmedida', name:'idmedida', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
         { field: 'descripcion_tm', name:'descripcion_tm', displayName: 'TIPO MEDIDA', minWidth: 100,width:120},
         { field: 'denominacion', name:'denominacion', displayName: 'MEDIDA', minWidth: 100},
-        { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100,width:80, enableFiltering: false,
-          cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
-                  '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
-                  '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
-                    '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
-                  '</label></div>' },
+        // { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100,width:80, enableFiltering: false,
+        //   cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
+        //           '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
+        //           '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
+        //             '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
+        //           '</label></div>' },
        { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
 
@@ -96,14 +96,23 @@
       vm.getPaginationServerSide();
       // vm.fBusqueda = {}
 
+    // TIPO MEDIDA
+      ProductoServices.sListarTipoMedidaCbo().then(function (rpta) {
+        vm.listaTipoMedida = angular.copy(rpta.datos);
+        vm.listaTipoMedida.splice(0,0,{ id : '', descripcion:'Seleccione una opción'});
+        // vm.temporal.tipo_medida = vm.listaTipoMedida[0];
+
+      });
     // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/medida/medida_formview.php',
           controllerAs: 'mp',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -111,14 +120,15 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de medidas';
 
-            // vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
-            // vm.fData.tipo_medida = vm.listaTipoMedida[0];
+            vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
+            vm.fData.tipo_medida = vm.listaTipoMedida[0];
 
             vm.aceptar = function () {
-              // if(angular.isUndefined($scope.image)){
-              //   alert('Debe seleccionar una imagen');
-              //   return false;
-              // }
+              if(vm.fData.tipo_medida.id ==''){
+                // alert('Debe seleccionar una imagen');
+                toastr.warning('Seleccione tipo de medida', 'Advertencia');
+                return false;
+              }
               pageLoading.start('Procesando...');
               MedidaServices.sRegistrarMedida(vm.fData).then(function (rpta) {
                 pageLoading.stop();
@@ -152,11 +162,13 @@
       }
       vm.btnEditar = function(row){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/producto/producto_formview.php',
+          templateUrl: 'app/pages/medida/medida_formview.php',
           controllerAs: 'mp',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -168,44 +180,14 @@
             vm.fData.tipo_medida = vm.listaTipoMedida.filter(function(obj) {
               return obj.id == vm.fData.idtipomedida;
             }).shift();
-            vm.modalTitle = 'Edición de producto';
-            vm.fData.canvas = false;
-            vm.fData.canvas_bas = false;
-            vm.fData.canvas_pre = false;
-
-            console.log('vm.fData',vm.fData);
-
-            vm.rutaImagen = arrToModal.scope.dirImagesProducto;
-
-
+            vm.modalTitle = 'Edición de Medida';
             vm.aceptar = function () {
-              if(vm.fData.canvas){
-                if(angular.isUndefined($scope.image)){
-                  alert('Debe seleccionar una imagen');
-                  return false;
-                }
-                vm.fData.imagen = $scope.image;
-                vm.fData.nombre_imagen = $scope.file.name;
-              }
-
-              if(vm.fData.canvas_bas){
-                if(angular.isUndefined(vm.image2)){
-                  alert('Debe seleccionar una imagen para Básico');
-                  return false;
-                }
-                vm.fData.imagen_bas = vm.image2;
-                vm.fData.nombre_imagen_bas = vm.file2;
-              }
-              if(vm.fData.canvas_pre){
-                if(angular.isUndefined(vm.image3)){
-                  alert('Debe seleccionar una imagen para Premium');
-                  return false;
-                }
-                vm.fData.imagen_pre = vm.image3;
-                vm.fData.nombre_imagen_pre = vm.file3;
+               if(vm.fData.tipo_medida.id ==''){
+                toastr.warning('Seleccione tipo de medida', 'Advertencia');
+                return false;
               }
               pageLoading.start('Procesando...');
-              ProductoServices.sEditarProducto(vm.fData).then(function (rpta) {
+              MedidaServices.sEditarMedida(vm.fData).then(function (rpta) {
                 pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
@@ -237,12 +219,52 @@
           }
         });
       }
-
+      vm.btnAnular = function(row){
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            MedidaServices.sAnularMedida(row.entity).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+              }else{
+                alert('Ocurrió un error');
+              }
+              openedToasts.push(toastr[type](rpta.message, title));
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+            // alertify.error('Cancel');
+        });
+      }
+      // vm.btnHabilitarDeshabilitar = function (row) {
+      //   MedidaServices.sHabilitarDeshabilitarMedida(row.entity).then(function (rpta) {
+      //     if(rpta.flag == 1){
+      //       vm.getPaginationServerSide();
+      //       var title = 'OK';
+      //       var type = 'success';
+      //       toastr.success(rpta.message, title);
+      //     }else if( rpta.flag == 0 ){
+      //       var title = 'Advertencia';
+      //       var type = 'warning';
+      //       toastr.warning(rpta.message, title);
+      //     }else{
+      //       alert('Ocurrió un error');
+      //     }
+      //   });
+      // }
   }
   function MedidaServices($http, $q) {
     return({
       sListarMedida: sListarMedida,
       sRegistrarMedida: sRegistrarMedida,
+      sEditarMedida: sEditarMedida,
+      sAnularMedida: sAnularMedida,
+      // sHabilitarDeshabilitarMedida: sHabilitarDeshabilitarMedida,
 
     });
     function sListarMedida(pDatos) {
@@ -263,6 +285,33 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
+    function sEditarMedida(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Medida/editar_medida",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sAnularMedida(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Medida/anular_medida",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    // function sHabilitarDeshabilitarMedida(pDatos) {
+    //   var datos = pDatos || {};
+    //   var request = $http({
+    //         method : "post",
+    //         url :  angular.patchURLCI + "Medida/habilitar_deshabilitar_medida",
+    //         data : datos
+    //   });
+    //   return (request.then( handleSuccess,handleError ));
+    // }
 
   }
 })();
