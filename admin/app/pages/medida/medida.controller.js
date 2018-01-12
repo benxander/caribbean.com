@@ -40,14 +40,19 @@
         { field: 'idmedida', name:'idmedida', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
         { field: 'descripcion_tm', name:'descripcion_tm', displayName: 'TIPO MEDIDA', minWidth: 100,width:120},
         { field: 'denominacion', name:'denominacion', displayName: 'MEDIDA', minWidth: 100},
-        { field: 'cantidad_fotos', name:'cantidad_fotos', displayName: 'FOTOS', minWidth: 100, width:60 },
         { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100,width:80, enableFiltering: false,
           cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
                   '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
                   '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
                     '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
                   '</label></div>' },
-        // { field: 'imagen', name: 'imagen', displayName: 'IMAGEN',width: 120, enableFiltering: false, enableSorting: false, cellTemplate:'<img style="height:inherit;" class="center-block" ng-src="{{ grid.appScope.dirImagesProducto + COL_FIELD }}" /> </div>' },
+       { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
+          cellTemplate: '<div class="text-center">' +
+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+          '</div>'
+        }
 
 
 
@@ -126,7 +131,7 @@
                   var title = 'Advertencia';
                   var type = 'warning';
                 }else{
-                  alert('Ocurrió un error');
+                  alert('En proceso');
                 }
                 openedToasts.push(toastr[type](rpta.message, title));
               });

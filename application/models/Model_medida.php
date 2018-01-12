@@ -5,7 +5,7 @@ class Model_medida extends CI_Model {
 	}
 
 	public function m_cargar_medidas($paramPaginate=FALSE){
-		$this->db->select("me.idmedida, me.denominacion, me.cantidad_fotos, me.estado_me, tm.idtipomedida, tm.descripcion_tm");
+		$this->db->select("me.idmedida, me.denominacion, me.estado_me, tm.idtipomedida, tm.descripcion_tm");
 		$this->db->from('medida me');
 		$this->db->join('tipo_medida tm', 'me.idtipomedida = tm.idtipomedida');
 		$this->db->where_in('estado_me',array(1,2));

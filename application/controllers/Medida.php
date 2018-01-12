@@ -26,8 +26,6 @@ class Medida extends CI_Controller {
 					'descripcion_tm' => $row['descripcion_tm'],
 					'denominacion' => $row['denominacion'],
 					'idmedida' 		=> $row['idmedida'],
-					'cantidad_fotos' 		=> $row['cantidad_fotos'],
-
 					'estado' => array(
 						'id'	 =>$row['idmedida'],
 						'valor'  =>$row['estado_me'],
