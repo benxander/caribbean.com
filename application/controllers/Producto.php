@@ -57,6 +57,32 @@ class Producto extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_medida_cbo(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		// var_dump($allInputs); exit();
+		$lista = $this->model_producto->m_cargar_medida_cbo($allInputs);
+		$arrListado = array();
+		//var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'id' => $row['idmedida'],
+					'descripcion' => $row['denominacion'],
+
+				)
+			);
+		}
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
     public function listar_productos(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
@@ -82,7 +108,7 @@ class Producto extends CI_Controller {
 					'tipo_seleccion' 		=> $row['tipo_seleccion'],
 					'descripcion_basico' 		=> $row['descripcion_basico'],
 					'descripcion_premium' 		=> $row['descripcion_premium'],
-					'idtipomedida' => $row['idtipomedida'],
+					// 'idtipomedida' => $row['idtipomedida'],
 					'estado' => array(
 						'id'	 =>$row['idproductomaster'],
 						'valor'  =>$row['estado_pm'],
@@ -154,7 +180,7 @@ class Producto extends CI_Controller {
 				foreach ($lista as $row) {
 					if($row['idproductomaster'] == $key && $row['categoria'] == $key2){
 						if($value['tipo_seleccion'] == 2){
-							$nombre = $row['denominacion'] . '-' . $row['cantidad_fotos'];
+							$nombre = $row['denominacion'] . '-' . $row['cantidad_fotos'] . ' FOTOS';
 						}else{
 							$nombre = $row['denominacion'];
 						}
@@ -217,6 +243,7 @@ class Producto extends CI_Controller {
 			array_push($arrListado, array(
 				'idproducto' => $row['idproducto'],
 				'idproductomaster' => $allInputs['idproductomaster'],
+				'idtipomedida' => $row['idtipomedida'],
 				'idmedida' => $row['idmedida'],
 				'medida' => $row['medida'],
 				'cantidad_fotos' => $row['cantidad_fotos'],
@@ -226,7 +253,7 @@ class Producto extends CI_Controller {
 				'precio_2_5' => (int)$row['precio_2_5'],
 				'precio_mas_5' => (int)$row['precio_mas_5'],
 				'estado_p' => $row['estado_p'],
-				'es_nuevo' => empty($row['idproducto'])? TRUE:FALSE,
+				'es_nuevo' => FALSE,
 				)
 			);
 		}
@@ -317,9 +344,8 @@ class Producto extends CI_Controller {
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
     		'tipo_seleccion' => $allInputs['tipo_seleccion'],
-    		'idtipomedida' => $allInputs['tipo_medida']['id'],
-    		'descripcion_basico' => $allInputs['descripcion_basico'],
-    		'descripcion_premium' => $allInputs['descripcion_premium'],
+    		'descripcion_basico' => empty($allInputs['descripcion_basico'])? NULL : $allInputs['descripcion_basico'],
+    		'descripcion_premium' => empty($allInputs['descripcion_premium'])? NULL : $allInputs['descripcion_premium'],
 
     	);
 		if( $this->model_producto->m_registrar_producto($data) ){
@@ -339,9 +365,8 @@ class Producto extends CI_Controller {
     		'si_genero' => $allInputs['si_genero'],
     		'si_color' => $allInputs['si_color'],
     		'tipo_seleccion' => $allInputs['tipo_seleccion'],
-    		'idtipomedida' => $allInputs['tipo_medida']['id'],
-    		'descripcion_basico' => $allInputs['descripcion_basico'],
-    		'descripcion_premium' => $allInputs['descripcion_premium'],
+    		'descripcion_basico' => empty($allInputs['descripcion_basico'])? NULL : $allInputs['descripcion_basico'],
+    		'descripcion_premium' => empty($allInputs['descripcion_premium'])? NULL : $allInputs['descripcion_premium'],
     	);
     	// VALIDACIONES
 		$ruta = 'uploads/producto/';
@@ -479,6 +504,7 @@ class Producto extends CI_Controller {
 	    		$data = array(
 	    			'idproductomaster' => $row['idproductomaster'],
 	    			'categoria' => $row['categoria'],
+	    			// 'idtipomedida' => $row['idtipomedida'],
 	    			'idmedida' => $row['idmedida'],
 	    			'cantidad_fotos' => $row['cantidad_fotos'],
 	    			'precio_unitario' => $row['precio_unitario'],
@@ -505,7 +531,9 @@ class Producto extends CI_Controller {
 	    		$data = array(
 	    			'idproductomaster' => $row['idproductomaster'],
 	    			'categoria' => $row['categoria'],
+	    			// 'idtipomedida' => $row['idtipomedida'],
 	    			'idmedida' => $row['idmedida'],
+	    			'cantidad_fotos' => $row['cantidad_fotos'],
 	    			'precio_unitario' => $row['precio_unitario'],
 	    			'precio_2_5' => $row['precio_2_5'],
 	    			'precio_mas_5' => $row['precio_mas_5'],
@@ -515,6 +543,7 @@ class Producto extends CI_Controller {
 		    	}
     		}else{
     			$data = array(
+	    			'cantidad_fotos' => $row['cantidad_fotos'],
 	    			'precio_unitario' => $row['precio_unitario'],
 	    			'precio_2_5' => $row['precio_2_5'],
 	    			'precio_mas_5' => $row['precio_mas_5'],

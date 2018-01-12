@@ -7,17 +7,14 @@
 		    <div class="row">
 		    	<div class="form-group col-md-8">
 		    		<div class="row">
-		    			<div class="col-md-8">
+		    			<div class="col-md-12">
 				    		<label for="descripcion_pm" class="control-label minotaur-label">Denominación <small class="text-red">(*)</small> </label>
 			              	<input type="text" name="descripcion_pm" id="descripcion_pm" class="form-control" ng-model="mp.fData.descripcion_pm" placeholder="Registre descripcion_pm" required>
 			              	<div ng-messages="formBlog.descripcion_pm.$error" ng-if="formBlog.descripcion_pm.$dirty" role="alert" class="help-block text-red">
 			                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 			              	</div>
 		    			</div>
-		    			<div class="col-md-4">
-				    		<label for="color" class="control-label minotaur-label">Tipo Medida<small class="text-red">(*)</small></label>
-			              	<select class="form-control input-sm" ng-model="mp.fData.tipo_medida" ng-options="item as item.descripcion for item in mp.listaTipoMedida" required> </select>
-		    			</div>
+
 		    		</div>
 		    		<div class="row mt">
 						<div class="col-md-3">

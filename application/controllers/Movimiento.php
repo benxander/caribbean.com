@@ -79,9 +79,14 @@ class Movimiento extends CI_Controller {
 			//     ->set_output(json_encode($arrData));
 			// return;
    //  	}
+    	if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
+	    	$idactividadcliente = $allInputs['detalle'][0]['imagenes'][0]['idactividadcliente'];
+    	}else{
+	    	$idactividadcliente = $allInputs['detalle'][0]['imagenes']['idactividadcliente'];
+    	}
     	$datos = array(
     		'idcliente' => $cliente['idcliente'],
-    		'idactividadcliente' => $allInputs['detalle'][0]['imagenes']['idactividadcliente'],
+    		'idactividadcliente' => $idactividadcliente,
     		'tipo_movimiento' => 2, // pedido
     		'fecha_movimiento' => date('Y-m-d H:i:s'),
     		'total' => $allInputs['total_pedido'],

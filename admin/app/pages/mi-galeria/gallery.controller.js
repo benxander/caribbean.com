@@ -342,8 +342,8 @@
         vm.fData.saldo_inicial = $scope.fSessionCI.monedero;
         vm.restante = vm.fData.saldo_inicial - vm.fData.total_pedido;
         console.log('vm.restante',vm.restante);
-        if(vm.restante < 0){
-          vm.total_a_pagar = Math.abs(vm.restante);
+        if(vm.restante <= 0){
+          vm.fData.total_a_pagar = Math.abs(vm.restante);
           vm.fData.saldo_final = 0;
         }else{
           vm.fData.saldo_final = vm.restante;

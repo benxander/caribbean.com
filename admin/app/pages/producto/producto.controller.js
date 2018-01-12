@@ -93,22 +93,7 @@
         });
       }
       vm.getPaginationServerSide();
-      // vm.fBusqueda = {}
-      // COLORES
-      ProductoServices.sListarColoresCbo().then(function (rpta) {
-        vm.listaColores = angular.copy(rpta.datos);
-        vm.listaColores.splice(0,0,{ id : '', descripcion:''});
-        // vm.listaColoresFiltro = angular.copy(rpta.datos);
-        // vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
-        // vm.getPaginationServerSide(true);
-      });
-      // TIPO MEDIDA
-        ProductoServices.sListarTipoMedidaCbo().then(function (rpta) {
-          vm.listaTipoMedida = angular.copy(rpta.datos);
-          vm.listaTipoMedida.splice(0,0,{ id : '', descripcion:'Seleccione una opción'});
 
-
-        });
     // MANTENIMIENTO
       vm.btnNuevo = function(){
         var modalInstance = $uibModal.open({
@@ -117,6 +102,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -129,8 +116,7 @@
             vm.fData.si_genero = '2';
             vm.fData.si_color = '2';
             vm.fData.tipo_seleccion = '1';
-            vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
-            vm.fData.tipo_medida = vm.listaTipoMedida[0];
+
 
             // vm.rutaImagen = arrToModal.scope.dirImagesProducto + vm.fData.tipo_banner +'/';
 
@@ -191,6 +177,8 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
@@ -278,22 +266,50 @@
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
+            vm.temporal = {};
+            vm.temporal.categoria = 1;
             vm.fData = angular.copy(arrToModal.seleccion);
-            // vm.fData.temporal = {};
-            // vm.modoEdicion = true;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.listaColores = arrToModal.scope.listaColores;
+            // vm.listaTipoMedida = arrToModal.scope.listaTipoMedida;
+            // vm.fData.tipo_medida = vm.listaTipoMedida[0];
+            vm.getPaginationServerSideOr = arrToModal.getPaginationServerSide;
+            // vm.listaColores = arrToModal.scope.listaColores;
             vm.fData.cambio_color = false;
-
             vm.modalTitle = 'Precios por Medida';
-            // vm.fData.canvas = false;
-            // vm.rutaImagen = arrToModal.scope.dirImagesBlog;
-            ProductoServices.sListarColoresProducto(vm.fData).then(function(rpta){
-              vm.fData.colores = rpta.datos;
-            });
+
+            // COLORES
+              ProductoServices.sListarColoresCbo().then(function (rpta) {
+                vm.listaColores = angular.copy(rpta.datos);
+                vm.listaColores.splice(0,0,{ id : '', descripcion:''});
+                // vm.listaColoresFiltro = angular.copy(rpta.datos);
+                // vm.fBusqueda.filtroColores = vm.listaColoresFiltro[0];
+                // vm.getPaginationServerSide(true);
+              });
+              ProductoServices.sListarColoresProducto(vm.fData).then(function(rpta){
+                vm.fData.colores = rpta.datos;
+              });
+              // TIPO MEDIDA
+                ProductoServices.sListarTipoMedidaCbo().then(function (rpta) {
+                  vm.listaTipoMedida = angular.copy(rpta.datos);
+                  vm.listaTipoMedida.splice(0,0,{ id : '', descripcion:'Seleccione una opción'});
+                  vm.temporal.tipo_medida = vm.listaTipoMedida[0];
+                  vm.getPaginationServerSide();
+
+                });
+              vm.cargarMedidas = function(){
+                var paramDatos = vm.temporal.tipo_medida;
+                pageLoading.start('Cargando...');
+                ProductoServices.sListarMedidaCbo(paramDatos).then(function (rpta) {
+                  vm.listaMedida = angular.copy(rpta.datos);
+                  vm.listaMedida.splice(0,0,{ id : '', descripcion:'Seleccione una opción'});
+                  vm.temporal.medida = vm.listaMedida[0];
+                  pageLoading.stop();
+                });
+              }
             // GRILLA BASICO
               vm.gridOptions = {
                 enableFullRowSelection: false,
@@ -327,10 +343,17 @@
                 paramDatos.categoria = 1;
                 ProductoServices.sListarProductoPrecios(paramDatos).then(function (rpta) {
                   vm.gridOptions.data = angular.copy(rpta.datos);
-                  console.log('data',vm.gridOptions.data);
+                  if(rpta.flag == 1){
+
+                    console.log('data',vm.gridOptions.data);
+                    vm.temporal.tipo_medida = vm.listaTipoMedida.filter(function(obj) {
+                      return obj.id == vm.gridOptions.data[0].idtipomedida;
+                    }).shift();
+                    vm.cargarMedidas();
+                  }
                 });
               }
-              vm.getPaginationServerSide();
+              // vm.getPaginationServerSide();
             // GRILLA PREMIUM
               vm.gridOptionsPremium = {
                 enableFullRowSelection: false,
@@ -338,7 +361,7 @@
                 appScopeProvider: vm
               }
               vm.gridOptionsPremium.columnDefs = [
-                { field: 'medida', displayName: 'TAMAÑO', minWidth: 80,},
+                { field: 'medida', displayName: 'MEDIDAS', minWidth: 80,},
                 { field: 'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 80, width:90},
                 { field: 'precio_unitario',displayName: 'PRECIO', minWidth: 60,width:90,enableCellEdit: true,cellClass:'ui-editCell'},
                 { field: 'precio_2_5',displayName: 'DE 2 A 5', minWidth: 60,width:90,cellClass:'ui-editCell'},
@@ -361,21 +384,47 @@
               vm.getPaginationServerSidePremium = function() {
                 var paramDatos = angular.copy(vm.fData);
                 paramDatos.categoria = 2;
-                // var paramDatos = {
-                //   'datos' : vm.fData,
-                //   'categoria' : 2
-                // }
                 ProductoServices.sListarProductoPrecios(paramDatos).then(function (rpta) {
                   vm.gridOptionsPremium.data = angular.copy(rpta.datos);
-                  console.log('data',vm.gridOptionsPremium.data);
                 });
               }
               vm.getPaginationServerSidePremium();
 
+            vm.agregarItem =function(){
+              if( !angular.isObject(vm.temporal.tipo_medida) ){
+                toastr.warning('Seleccione un tipo de medida', 'Advertencia');
+                return false;
+              }
+              if( !angular.isObject(vm.temporal.medida) ){
+                toastr.warning('Seleccione una medida', 'Advertencia');
+                return false;
+              }
+              vm.arrTemporal = {}
+              vm.arrTemporal = {
+                'idproductomaster': vm.fData.idproductomaster,
+                // 'idtipomedida': vm.temporal.tipo_medida.id,
+                'idmedida' : vm.temporal.medida.id,
+                'medida': vm.temporal.medida.descripcion,
+                'categoria': vm.temporal.categoria,
+                'es_nuevo': true
+              }
+              if(vm.temporal.categoria == 1){
+                vm.gridOptions.data.push(vm.arrTemporal);
+              }else{
+                vm.gridOptionsPremium.data.push(vm.arrTemporal);
+              }
+              console.log('vm.arrTemporal',vm.arrTemporal);
+
+            }
             vm.btnQuitarDeLaCesta = function(row){
               if(row.entity.es_nuevo){
-                var index = vm.gridOptionsPremium.data.indexOf(row.entity);
-                vm.gridOptionsPremium.data.splice(index,1);
+                if( row.entity.categoria == 1 ){
+                  var index = vm.gridOptions.data.indexOf(row.entity);
+                  vm.gridOptions.data.splice(index,1);
+                }else{
+                  var index = vm.gridOptionsPremium.data.indexOf(row.entity);
+                  vm.gridOptionsPremium.data.splice(index,1);
+                }
               }else{
                 alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
                   ev.preventDefault();
@@ -413,7 +462,7 @@
                 pageLoading.stop();
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');
-                  vm.getPaginationServerSide();
+                  vm.getPaginationServerSideOr();
                   var title = 'OK';
                   var type = 'success';
                   $uibModalInstance.close(vm.fData);
@@ -484,6 +533,7 @@
     return({
       sListarProductoCbo: sListarProductoCbo,
       sListarTipoMedidaCbo: sListarTipoMedidaCbo,
+      sListarMedidaCbo: sListarMedidaCbo,
       sListarProductos: sListarProductos,
       sListarProductoPedido: sListarProductoPedido,
       sRegistrarProducto: sRegistrarProducto,
@@ -511,6 +561,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Producto/listar_tipo_medida_cbo",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarMedidaCbo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Producto/listar_medida_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
