@@ -144,6 +144,8 @@ class Model_cliente extends CI_Model {
 			'apellidos' 	=> strtoupper($data['apellidos']),
 			'telefono' 		=> empty($data['telefono']) ? NULL : $data['telefono'],
 			'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'hotel' 		=> empty($data['hotel']) ? NULL : $data['hotel'],
+			'habitacion' 	 => empty($data['habitacion']) ? NULL : $data['habitacion'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
 
 		 );
