@@ -241,6 +241,7 @@
             'precio' : vm.precio_adicional,
             'total_detalle' : vm.monto_adicionales,
           }
+          vm.gridOptions.data.push(vm.arrTemporal);
         }
         if(vm.cantidad_video>0){
           vm.arrTemporal = {
@@ -249,6 +250,7 @@
             'precio' : vm.precio_video,
             'total_detalle' : vm.monto_adicionales_video,
           }
+          vm.gridOptions.data.push(vm.arrTemporal);
         }
         vm.calcularGrilla();
         // vm.calculaDescuentos();

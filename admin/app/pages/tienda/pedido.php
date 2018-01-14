@@ -72,7 +72,7 @@
         </div>
         <div ng-if="ctrl.temporal.isSel && item.tipo_seleccion == '2'">
           <div class="m-xs inline-block" ng-repeat="image in ctrl.images | filter: { selected: true }">
-            <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="" style="max-width: 80px;max-height: 53px;">
+            <img class="img-responsive" ng-src="{{image.src}}" alt="" style="max-width: 80px;max-height: 53px;">
           </div>
         </div>
       </div>
