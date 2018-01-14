@@ -228,8 +228,8 @@
           'producto' : 'PAQUETE: ' + vm.paqueteSeleccionado.titulo_pq,
 
           'cantidad' : 1,
-          'precio' : vm.monto,
-          'total_detalle' : vm.monto,
+          'precio' : parseInt(vm.monto),
+          'total_detalle' : parseInt(vm.monto),
           // 'tipo_seleccion' : vm.temporal.tipo_seleccion,
           // 'imagenes': vm.temporal.imagen,
         }
@@ -237,18 +237,18 @@
         if(vm.cantidad_adic>0){
           vm.arrTemporal = {
             'idproducto' : 'FOTO ADICIONAL',
-            'cantidad' : vm.cantidad_adic,
-            'precio' : vm.precio_adicional,
-            'total_detalle' : vm.monto_adicionales,
+            'cantidad' : parseInt(vm.cantidad_adic),
+            'precio' : parseInt(vm.precio_adicional),
+            'total_detalle' : parseInt(vm.monto_adicionales),
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
         if(vm.cantidad_video>0){
           vm.arrTemporal = {
             'idproducto' : 'VIDEO ADICIONAL',
-            'cantidad' : vm.cantidad_video,
-            'precio' : vm.precio_video,
-            'total_detalle' : vm.monto_adicionales_video,
+            'cantidad' : parseInt(vm.cantidad_video),
+            'precio' : parseInt(vm.precio_video),
+            'total_detalle' : parseInt(vm.monto_adicionales_video),
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
