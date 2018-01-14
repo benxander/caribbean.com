@@ -21,14 +21,14 @@ class Compra extends CI_Controller {
 		$fecha_salida = strtotime($cliente['fecha_salida']);
 		$arrData['mostrar_productos'] = FALSE;
 		$arrData['lista_productos'] = [];
-		if($hoy  <= $fecha_salida){
+		// if($hoy  <= $fecha_salida){
 			// $arrData['mostrar_productos'] = TRUE;
 			// $lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
 			// foreach ($lista_productos as $iProd => $prod) {
 			// 	$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];
 			// }
 			// $arrData['lista_productos'] = $lista_productos;
-		}
+		// }
 
 		/*verifica bonificacion*/
 		$archivos = $this->model_archivo->m_cargar_galeria_descargados($cliente);

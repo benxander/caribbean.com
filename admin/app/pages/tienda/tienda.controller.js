@@ -8,11 +8,11 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope,$timeout, TiendaServices, ClienteServices, ExcursionServices, rootServices,toastr, pageLoading, alertify) {
+  function TiendaController($scope,$timeout, $uibModal, TiendaServices, ClienteServices, ExcursionServices, ProductoServices, rootServices,toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
-    console.log('scope',scope);
+    vm.dirImagesProducto = $scope.dirImages + "producto/";
     vm.seleccionadas = 0;
     vm.modoSeleccionar = true;
     vm.modoPagar = false;
@@ -103,7 +103,7 @@
           i++;
         }
       });
-
+      vm.seleccionadas = i;
       if(i > vm.paqueteSeleccionado.cantidad){
         var cantidad = i - vm.paqueteSeleccionado.cantidad;
         if(vm.isSelected){
@@ -155,18 +155,6 @@
         $scope.actualizarSaldo(true,'-'+ vm.precio_adicional);
       }
     };
-
-   /* $scope.$watch('vm.monto',function(newValue,oldValue = vm.monto) {
-      console.log('newValue',newValue);
-      console.log('oldValue',oldValue);
-      if (newValue===oldValue) {
-        console.log('vm.monto',vm.monto);
-        return;
-      }
-      console.log('watch dif');
-      $scope.actualizarSaldo(newValue,vm.monto);
-    });*/
-
     vm.confirmDescarga = function(){
       if(!vm.isSelected){
         return;
@@ -175,38 +163,344 @@
         alertify.confirm('¿Esta seguro de continuar? <br/>'+
           'Aun tiene '+ (vm.paqueteSeleccionado.cantidad - vm.seleccionadas)
           +' fotos por seleccionar', function(){
-           vm.btnDescargarFiles();
+           vm.verResumen();
         });
       }else{
-        vm.btnDescargarFiles();
+        vm.verResumen();
       }
     }
-    vm.btnDescargarFiles = function(){
+    vm.verResumen = function(){
       if(!vm.isSelected){
         return;
       }
-      pageLoading.start('Verificando seleccion...');
+      pageLoading.start('Procesando...');
+      vm.listaImagenes = [];
+      angular.forEach(vm.images, function(image) {
+        if (image.selected) {
+          vm.listaImagenes.push(image);
+        }
+      });
       var datos = {
         seleccion : vm.images,
         usuario : vm.fDataUsuario
       }
-
+      // vm.cargarProductos = function(){
+      // pageLoading.start('Procesando...');
+      ProductoServices.sListarProductoPedido().then(function (rpta) {
+        vm.listaProductos = angular.copy(rpta.datos);
+        // console.log('data',vm.listaProductos);
+        // pageLoading.stop();
+      });
+      // }
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
         pageLoading.stop();
         vm.datosVista = rpta;
-        vm.calcularTotales();
-        vm.calculaDescuentos();
+        // vm.calcularTotales();
+        // vm.calculaDescuentos();
+        vm.agregarGrilla();
 
-        // if(vm.datosVista.mostrar_productos){
-        //   angular.forEach(vm.images, function(image,key) {
-        //     if (image.selected) {
-        //       vm.images[key].lista_productos = angular.copy(vm.datosVista.lista_productos);
-        //     }
-        //   });
-        // }
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
       });
+      vm.agregarGrilla = function(){
+
+        // GRILLA RESUMEN
+          vm.gridOptions = {
+            minRowsToShow: 3,
+            appScopeProvider: vm
+          }
+          vm.gridOptions.columnDefs = [
+            { field: 'producto', displayName: 'PRODUCTO' },
+            { field: 'categoria', displayName: 'CATEGORIA',  width:100, visible:false },
+            { field: 'color',  displayName: 'COLOR',  width:80, visible:false },
+            { field: 'talla',  displayName: 'TALLA',  width:120, visible:false },
+            { field: 'cantidad',  displayName: 'CANTIDAD',  width:80 },
+            { field: 'precio',  displayName: 'PRECIO',  width:80 },
+            { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
+            { field: 'accion', displayName: '', width: 60,
+              cellTemplate: '<div>' +
+              '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+              '</div>'
+            }
+          ];
+          vm.gridOptions.data = [];
+        vm.arrTemporal = {
+          'producto' : 'PAQUETE: ' + vm.paqueteSeleccionado.titulo_pq,
+
+          'cantidad' : 1,
+          'precio' : vm.monto,
+          'total_detalle' : vm.monto,
+          // 'tipo_seleccion' : vm.temporal.tipo_seleccion,
+          // 'imagenes': vm.temporal.imagen,
+        }
+        vm.gridOptions.data.push(vm.arrTemporal);
+        if(vm.cantidad_adic>0){
+          vm.arrTemporal = {
+            'idproducto' : 'FOTO ADICIONAL',
+            'cantidad' : vm.cantidad_adic,
+            'precio' : vm.precio_adicional,
+            'total_detalle' : vm.monto_adicionales,
+          }
+        }
+        if(vm.cantidad_video>0){
+          vm.arrTemporal = {
+            'idproducto' : 'VIDEO ADICIONAL',
+            'cantidad' : vm.cantidad_video,
+            'precio' : vm.precio_video,
+            'total_detalle' : vm.monto_adicionales_video,
+          }
+        }
+        vm.calcularGrilla();
+        // vm.calculaDescuentos();
+      }
+      vm.calcularGrilla = function(){
+        vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+        console.log(vm.precio_adicional,vm.precio_video );
+        if(vm.cantidad_adic > 0){
+          vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
+        }else{
+          vm.cantidad_adic = 0;
+        }
+        vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
+        if(vm.datosVista.tiene_descuento){
+          vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
+        }
+
+        vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
+        vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
+
+
+        if(vm.restante < 0){
+          vm.monto_a_pagar = Math.abs(vm.restante);
+          vm.saldo_final = 0;
+        }else{
+          vm.saldo_final = vm.restante;
+          vm.monto_a_pagar = 0;
+        }
+      }
+    }
+    vm.btnPedidos = function(imagen){ // btn merchandising
+      var imagen = imagen || null;
+      if(vm.pedidoBool){ // regresar
+        vm.pedidoBool = false;
+        vm.productoBool = false;
+        //$state.reload();
+        vm.cargarGaleria(vm.fDataUsuario,true);
+      }else{ // merchandising
+        vm.pedidoBool = true;
+        vm.imagen = imagen;
+      }
+    }
+    vm.cambiaProducto = function(producto){ // pestaña productos
+      vm.productoBool = false;
+    }
+    vm.selectCat = function(categoria, producto){ //basico - premium
+      vm.productoBool = true;
+      vm.categoriaSel = categoria;
+
+      vm.temporal = {};
+      vm.temporal.cantidad = 1;
+      vm.temporal.isSel = false;
+      vm.temporal.idproductomaster = producto.idproductomaster;
+      vm.temporal.producto = producto.descripcion_pm;
+      vm.temporal.categoria = categoria;
+      vm.temporal.idproductomaster = producto.idproductomaster;
+      vm.temporal.producto = producto.descripcion_pm;
+      vm.temporal.si_genero = producto.si_genero;
+      vm.temporal.si_color = producto.si_color;
+      vm.temporal.tipo_seleccion = producto.tipo_seleccion;
+      // vm.temporal.color = null;
+      // vm.temporal.idcolor = null;
+      // vm.temporal.idcolor = null;
+      if( vm.temporal.tipo_seleccion == 1 && vm.imagen ){
+        vm.temporal.imagen = vm.imagen;
+        vm.temporal.isSel = true;
+      }else if( vm.temporal.tipo_seleccion == 2 ){
+        vm.temporal.imagen = [];
+      }else{
+        vm.temporal.imagen = null;
+      }
+    }
+    vm.cambiaColor = function(color,idproductomaster){
+      vm.temporal.color = color.nombre;
+    }
+    vm.cambiaMedida = function(size){
+      var cantidad = vm.temporal.cantidad;
+      vm.temporal.size = size;
+      if( cantidad== 1 ){
+        vm.temporal.precio = size.precio;
+      }else
+      if( cantidad > 1 && cantidad < 6 ){
+        vm.temporal.precio = size.precio_2_5;
+      }else
+      if( cantidad >= 6 ){
+        vm.temporal.precio = size.precio_mas_5;
+      }else{
+        vm.temporal.precio = 0;
+      }
+      if(vm.temporal.tipo_seleccion == '2'){
+        vm.temporal.isSel = false;
+        angular.forEach(vm.images, function(image) {
+          image.selected = false;
+        });
+      }
+      vm.temporal.total_detalle = vm.temporal.precio * cantidad;
+      vm.temporal.talla = size.denominacion;
+    }
+    vm.cambiaCantidad = function(){
+      var cantidad = vm.temporal.cantidad;
+      var size = vm.temporal.size || null;
+      console.log('size',size);
+      if(size){
+        if( cantidad== 1 ){
+          vm.temporal.precio = size.precio;
+        }else if( cantidad > 1 && cantidad < 6 ){
+          vm.temporal.precio = size.precio_2_5;
+        }else if( cantidad >= 6 ){
+          vm.temporal.precio = size.precio_mas_5;
+        }else{
+          vm.temporal.precio = 0;
+        }
+        vm.temporal.total_detalle = vm.temporal.precio * cantidad;
+      }
+    }
+    vm.selectFotografia = function(item){
+      if(item.tipo_seleccion == '2' && !angular.isObject(vm.temporal.size)){
+        toastr.warning('Seleccione primero un tamaño', 'Advertencia');
+        return false;
+      }
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/tienda/galeria_modal_tienda.php',
+        controllerAs: 'gm',
+        size: 'lg',
+        backdropClass: 'splash splash-2 splash-info splash-ef-13',
+        windowClass: 'splash splash-2 splash-info splash-ef-13',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          // vm.seleccion = arrToModal.scope.seleccion;
+          console.log('seleccion',item.tipo_seleccion);
+          vm.images = arrToModal.scope.listaImagenes;
+          console.log('vm.images',vm.images);
+          vm.tipo_seleccion = item.tipo_seleccion;
+          if(vm.tipo_seleccion == '2'){
+            vm.cantidad_fotos = arrToModal.scope.temporal.size.cantidad_fotos;
+            console.log('size',arrToModal.scope.temporal.size.cantidad_fotos);
+          }
+          vm.modalTitle = 'Selecciona Fotografía';
+          vm.selectFoto = function(imagen, index){
+            if(vm.tipo_seleccion == '1'){
+              arrToModal.scope.temporal.imagen = imagen;
+              arrToModal.scope.temporal.isSel = true;
+              $uibModalInstance.dismiss('cancel');
+            }else{
+              vm.cantidad_fotos = arrToModal.scope.temporal.size.cantidad_fotos;
+              var i = 0;
+              if (vm.images[index].selected) {
+                vm.images[index].selected = false;
+              } else {
+                vm.images[index].selected = true;
+              }
+              angular.forEach(vm.images, function(image) {
+                if (image.selected) {
+                  i++;
+                }
+              });
+              if (i >= vm.cantidad_fotos) {
+                arrToModal.scope.temporal.isSel = true;
+                $uibModalInstance.dismiss('cancel');
+              }
+            }
+          }
+          vm.aceptar = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+
+    }
+    vm.agregarItem = function(temp){
+      if( !vm.temporal.idcolor && vm.temporal.si_color == 1){
+        toastr.warning('Seleccione un color', 'Advertencia');
+        return false;
+      }
+      if( vm.temporal.si_genero == 1 && !vm.temporal.genero ){
+        toastr.warning('Seleccione un género', 'Advertencia');
+        return false;
+      }
+      if( !angular.isObject(vm.temporal.size) ){
+        toastr.warning('Seleccione un tamaño', 'Advertencia');
+        return false;
+      }
+      // if( vm.temporal.tipo_seleccion == 1 ){
+      //   console.log('unica');
+      //   if( !angular.isObject(vm.temporal.imagen) ){
+      //     toastr.warning('Seleccione una fotografía', 'Advertencia');
+      //     return false;
+      //   }
+      // }else{
+      //   console.log('multiple');
+      //   vm.temporal.imagen = [];
+      //   angular.forEach(vm.images, function(image,key) {
+      //     if (image.selected) {
+      //       vm.temporal.imagen.push(image);
+      //     }
+      //   });
+      //   if(vm.temporal.imagen.length <= 0){
+      //     toastr.warning('Seleccione fotografías', 'Advertencia');
+      //     return false;
+      //   }
+      // }
+      console.log('vm.temporal',vm.temporal);
+      vm.arrTemporal = {}
+      var adicional = '';
+      if(vm.temporal.si_genero == 1){
+        adicional = vm.temporal.genero == 'H'? ' - HOMBRE' : ' - MUJER';
+      }
+      vm.arrTemporal = {
+        'idproducto' : vm.temporal.idproducto,
+        'producto' : vm.temporal.producto + adicional,
+        'genero' : vm.temporal.si_genero == 1 ? vm.temporal.genero : null,
+        'categoria' : vm.temporal.categoria.descripcion_ca,
+        'idcolor' : vm.temporal.idcolor,
+        'color' : vm.temporal.color,
+        'talla' : vm.temporal.talla,
+        'cantidad' : vm.temporal.cantidad,
+        'precio' : vm.temporal.precio,
+        'total_detalle' : vm.temporal.total_detalle,
+        'tipo_seleccion' : vm.temporal.tipo_seleccion,
+        'imagenes': vm.temporal.imagen,
+      }
+      vm.gridOptions.data.push(vm.arrTemporal);
+      // console.log('data',vm.gridOptions.data);
+      // console.log('temp',temp);
+      var producto = vm.temporal.producto;
+      var categoria = vm.temporal.categoria;
+      var si_genero = vm.temporal.si_genero;
+      var tipo_seleccion = vm.temporal.tipo_seleccion;
+      vm.temporal = {};
+      vm.temporal.cantidad = 1;
+      vm.temporal.isSel = false;
+      // vm.temporal.idproductomaster = producto.idproductomaster;
+      vm.temporal.producto = producto;
+      vm.temporal.categoria = categoria;
+      vm.temporal.si_genero = si_genero;
+      vm.temporal.tipo_seleccion = tipo_seleccion;
+      vm.calcularTotales();
+    }
+    vm.btnQuitarDeLaCesta = function(row){
+      var index = vm.gridOptions.data.indexOf(row.entity);
+            vm.gridOptions.data.splice(index,1);
+            vm.calcularTotales();
     }
     vm.calculaDescuentos = function(){
       // if(vm.datosVista.tiene_bonificacion){
@@ -225,31 +519,26 @@
       }
     }
 
+
     vm.calcularTotales = function(){
-      vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-      console.log(vm.precio_adicional,vm.precio_video );
-      if(vm.cantidad_adic > 0){
-        vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
-      }else{
-        vm.cantidad_adic = 0;
+      var total = 0;
+      angular.forEach(vm.gridOptions.data,function (value, key) {
+        total += parseFloat(vm.gridOptions.data[key].total_detalle);
+      });
+      // vm.monto_total = total;
+      vm.monto_total = total;
+      if($scope.fSessionCI.monedero > 0){
+        vm.saldo_inicial = $scope.fSessionCI.monedero;
+        vm.restante = vm.saldo_inicial - vm.monto_total;
+        console.log('vm.restante',vm.restante);
+        if(vm.restante <= 0){
+          vm.monto_a_pagar = Math.abs(vm.restante);
+          vm.saldo_final = 0;
+        }else{
+          vm.saldo_final = vm.restante;
+          vm.monto_a_pagar = 0;
+        }
       }
-      vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
-      if(vm.datosVista.tiene_descuento){
-        vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
-      }
-
-      vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
-      vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
-
-
-      if(vm.restante < 0){
-        vm.monto_a_pagar = Math.abs(vm.restante);
-        vm.restante = 0;
-      }
-
-      console.log(vm.monto_total);
-      console.log(vm.monto_a_pagar);
-      console.log(vm.restante);
     }
     vm.btnVolver = function(){
       /*angular.forEach(vm.images, function(image) {
@@ -293,10 +582,10 @@
        /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
       }
 
-      var datos = { 
-        monedero: vm.restante, 
+      var datos = {
+        monedero: vm.restante,
         idcliente: $scope.fSessionCI.idcliente,
-        saldo: $scope.fSessionCI.monedero 
+        saldo: $scope.fSessionCI.monedero
       };
       TiendaServices.sActualizarMonedero(datos).then(function(rpta){
         if(rpta.flag == 1){

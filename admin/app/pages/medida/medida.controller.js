@@ -38,7 +38,7 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idmedida', name:'idmedida', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
-        { field: 'descripcion_tm', name:'descripcion_tm', displayName: 'TIPO MEDIDA', minWidth: 100,width:120},
+        { field: 'descripcion_tm', name:'descripcion_tm', displayName: 'TIPO MEDIDA', minWidth: 100,},
         { field: 'denominacion', name:'denominacion', displayName: 'MEDIDA', minWidth: 100},
         // { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100,width:80, enableFiltering: false,
         //   cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+

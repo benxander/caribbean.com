@@ -101,9 +101,7 @@
       }
     }
     vm.cambiaProducto = function(producto){ // pestaña productos
-      // vm.producto[idproductomaster] = {};
       vm.productoBool = false;
-
     }
     vm.selectCat = function(categoria, producto){ //basico - premium
       vm.productoBool = true;
@@ -191,9 +189,6 @@
         scope: $scope,
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
-          // vm.seleccion = arrToModal.scope.seleccion;
-          console.log('seleccion',item.tipo_seleccion);
-          console.log('size',arrToModal.scope.temporal.size.cantidad_fotos);
           vm.images = arrToModal.scope.images;
           vm.tipo_seleccion = item.tipo_seleccion;
           if(vm.tipo_seleccion == '2'){

@@ -103,7 +103,7 @@
               <div class="img-container ">
                 <!-- <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div> -->
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-                <div class="img-details">
+                <div class="">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
                     <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)" ng-if="image.descargado == 2">
@@ -146,7 +146,12 @@
             <!-- <minotaur-tile-close></minotaur-tile-close> -->
           </div>
         </section>
-        <div class="row mix-grid" masonry>
+        <ul class="mix-controls">
+          <li ng-click='ctrl.btnPedidos();' ng-if="!fSessionCI.es_salida">
+            <a href="javascript:;"><i class="fa fa-gift" ></i> {{ 'Text.MERCHANDISING' | translate }}</a>
+          </li>
+        </ul>
+        <div class="row mix-grid" masonry ng-show="!ctrl.pedidoBool">
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
             type: 'image',
@@ -159,58 +164,54 @@
             }
            }"
           >
-            <div class="masonry-brick col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images" ng-if="image.selected">
+            <div class="masonry-brick col-md-3 col-sm-4 mb-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.listaImagenes">
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
-
-                <div class="otros-productos" ng-if="ctrl.datosVista.mostrar_productos">
-                  <form class="form-inline">
-                    <div class="form-group" ng-repeat="(ind, prod) in image.lista_productos" style="margin-bottom: 5px;">
-                      <label for="cantidad" style="font-weight: 900;text-transform: capitalize;width: 70px;">{{prod.descripcion_tp}}: </label>
-                      <input type="number" style="width: 75px;margin-right: 10px;" class="form-control" id="cantidad" name="cantidad" ng-model="prod.cantidad" ng-change="ctrl.updatePrecio(prod);" >
-                      <label >{{prod.precio}}</label>
-                    </div>
-                  </form>
-                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="text-right" style=" margin:20px auto;width:200px">
-          <h3>Resumen de su compra</h3>
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="true">Paquete {{ctrl.paqueteSeleccionado.titulo_pq}}: {{ctrl.monto}}</p>
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="true">Foto Adicional ({{ctrl.cantidad_adic}} x {{ctrl.precio_adicional}}$): {{ctrl.monto_adicionales}}</p>
 
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="true">Video Adicional ({{ctrl.cantidad_video}} x {{ctrl.precio_video}}$): {{ctrl.monto_adicionales_video}}</p>
 
-          <!-- <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_bonificacion">Bonificacion: -{{ctrl.monto_bonificacion}}</p> -->
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_descuento">Descuento({{ctrl.datosVista.descuento.descuento}}%): -{{ctrl.monto_descuento}}</p>
 
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;"
-              ng-if="ctrl.datosVista.tiene_descuento">Total : {{ctrl.monto_total}}</p>
+        <div class="row"  ng-show="ctrl.pedidoBool" ng-include="'app/pages/tienda/pedido.php'">
 
-          <hr>
-          <p style="font-size: 16px;font-weight: bold;color:#5cb85c;"
-              ng-if="ctrl.datosVista.tiene_descuento">Saldo Inicial: {{fSessionCI.monedero}}</p>
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Saldo Final: {{ctrl.restante}}</p>
-
-          <p style="font-size: 16px;font-weight: bold;color:#1199d3;">Total a Pagar: {{ctrl.monto_a_pagar}}</p>
-          <label class="checkbox minotaur-checkbox inline-block m-0">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
-            <input type="checkbox" ng-model="ctrl.selectedTerminos"><div class="input-indicator"></div>
-          </label>
-          <button class="btn btn-input-sm btn-success mt-5" type="button" ng-click="ctrl.btnValidar();">Pagar</button>
 
         </div>
-        <!-- <div class="col-xs-12 pl-n">
-        </div>
 
-        <div class="col-xs-12 pl-n">
-        </div> -->
+        <div class="row">
+          <div class="col-md-12 col-sm-12 mt-lg" >
+          <div ui-grid="ctrl.gridOptions" ui-grid-auto-resize class="grid table-responsive clear">
+          </div>
+        </div>
+        <div class="form-inline col-md-12 col-sm-12 mt-lg text-right">
+          <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.IMPORTE' | translate }}</label>
+          <div class="input-group mb-10">
+            <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.monto_total" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          </div>
+        </div>
+        <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
+          <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.SALDO_INICIAL' | translate }}</label>
+          <div class="input-group mb-10">
+            <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="fSessionCI.monedero" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          </div>
+        </div>
+        <div class="form-inline col-md-12 col-sm-12 mt-xs text-right">
+          <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;">{{ 'Text.SALDO_FINAL' | translate }}</label>
+          <div class="input-group mb-10">
+            <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.saldo_final" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          </div>
+        </div>
+        <div class="form-inline col-md-12 col-sm-12 mt-xs text-right" ng-show="ctrl.monto_a_pagar > 0">
+          <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.TOTAL_PAGAR' | translate }}</label>
+          <div class="input-group mb-10">
+            <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.monto_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
+          </div>
+        </div>
+        <div class="col-md-12 mt">
+          <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ctrl.PagarPedido()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
+        </div>
+        </div>
 
       </div>
 
