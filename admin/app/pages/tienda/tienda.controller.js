@@ -197,11 +197,37 @@
         vm.datosVista = rpta;
         // vm.calcularTotales();
         // vm.calculaDescuentos();
+        vm.calcularGrilla();
         vm.agregarGrilla();
 
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
       });
+      vm.calcularGrilla = function(){
+        vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+        console.log(vm.precio_adicional,vm.precio_video );
+        if(vm.cantidad_adic > 0){
+          vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
+        }else{
+          vm.cantidad_adic = 0;
+        }
+        vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
+        if(vm.datosVista.tiene_descuento){
+          vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
+        }
+
+        vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
+        vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
+
+
+        if(vm.restante < 0){
+          vm.monto_a_pagar = Math.abs(vm.restante);
+          vm.saldo_final = 0;
+        }else{
+          vm.saldo_final = vm.restante;
+          vm.monto_a_pagar = 0;
+        }
+      }
       vm.agregarGrilla = function(){
 
         // GRILLA RESUMEN
@@ -235,8 +261,9 @@
         }
         vm.gridOptions.data.push(vm.arrTemporal);
         if(vm.cantidad_adic>0){
+          console.log('vm.cantidad_adic',vm.cantidad_adic);
           vm.arrTemporal = {
-            'idproducto' : 'FOTO ADICIONAL',
+            'producto' : 'FOTO ADICIONAL',
             'cantidad' : parseInt(vm.cantidad_adic),
             'precio' : parseInt(vm.precio_adicional),
             'total_detalle' : parseInt(vm.monto_adicionales),
@@ -245,41 +272,16 @@
         }
         if(vm.cantidad_video>0){
           vm.arrTemporal = {
-            'idproducto' : 'VIDEO ADICIONAL',
+            'producto' : 'VIDEO ADICIONAL',
             'cantidad' : parseInt(vm.cantidad_video),
             'precio' : parseInt(vm.precio_video),
             'total_detalle' : parseInt(vm.monto_adicionales_video),
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
-        vm.calcularGrilla();
         // vm.calculaDescuentos();
       }
-      vm.calcularGrilla = function(){
-        vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-        console.log(vm.precio_adicional,vm.precio_video );
-        if(vm.cantidad_adic > 0){
-          vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
-        }else{
-          vm.cantidad_adic = 0;
-        }
-        vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
-        if(vm.datosVista.tiene_descuento){
-          vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
-        }
 
-        vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
-        vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
-
-
-        if(vm.restante < 0){
-          vm.monto_a_pagar = Math.abs(vm.restante);
-          vm.saldo_final = 0;
-        }else{
-          vm.saldo_final = vm.restante;
-          vm.monto_a_pagar = 0;
-        }
-      }
     }
     vm.btnPedidos = function(imagen){ // btn merchandising
       var imagen = imagen || null;
@@ -443,28 +445,31 @@
         toastr.warning('Seleccione un tamaño', 'Advertencia');
         return false;
       }
-      // if( vm.temporal.tipo_seleccion == 1 ){
-      //   console.log('unica');
-      //   if( !angular.isObject(vm.temporal.imagen) ){
-      //     toastr.warning('Seleccione una fotografía', 'Advertencia');
-      //     return false;
-      //   }
-      // }else{
-      //   console.log('multiple');
-      //   vm.temporal.imagen = [];
-      //   angular.forEach(vm.images, function(image,key) {
-      //     if (image.selected) {
-      //       vm.temporal.imagen.push(image);
-      //     }
-      //   });
-      //   if(vm.temporal.imagen.length <= 0){
-      //     toastr.warning('Seleccione fotografías', 'Advertencia');
-      //     return false;
-      //   }
-      // }
+      if( vm.temporal.tipo_seleccion == 1 ){
+        console.log('unica');
+        if( !angular.isObject(vm.temporal.imagen) ){
+          toastr.warning('Seleccione una fotografía', 'Advertencia');
+          return false;
+        }
+      }else{
+        console.log('multiple');
+        vm.temporal.imagen = [];
+        angular.forEach(vm.images, function(image,key) {
+          if (image.selected) {
+            vm.temporal.imagen.push(image);
+          }
+        });
+        if(vm.temporal.imagen.length <= 0){
+          toastr.warning('Seleccione fotografías', 'Advertencia');
+          return false;
+        }
+      }
       console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}
       var adicional = '';
+      vm.gridOptions.columnDefs[1].visible = true;
+      vm.gridOptions.columnDefs[2].visible = true;
+      vm.gridOptions.columnDefs[3].visible = true;
       if(vm.temporal.si_genero == 1){
         adicional = vm.temporal.genero == 'H'? ' - HOMBRE' : ' - MUJER';
       }

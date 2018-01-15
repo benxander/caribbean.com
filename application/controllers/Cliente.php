@@ -466,7 +466,7 @@ class Cliente extends CI_Controller {
 						);
 						array_push($allInputs,array('tipo_archivo'=> 1));
 				        if($this->model_archivo->m_registrar_archivo($allInputs)){
-							$arrData['message'] = 'Se subieron las imagenes correctamente. ';
+							$arrData['message'] = 'La imagen se subió correctamente. ';
 				    		$arrData['flag'] = 1;
 						}
 			    	}else{

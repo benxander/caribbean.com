@@ -151,6 +151,7 @@
             <a href="javascript:;"><i class="fa fa-gift" ></i> {{ 'Text.MERCHANDISING' | translate }}</a>
           </li>
         </ul>
+        <!-- GALERIA RESUMEN -->
         <div class="row mix-grid" masonry ng-show="!ctrl.pedidoBool">
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
@@ -168,17 +169,21 @@
               <div class="img-container">
                 <img class="img-responsive" ng-src="{{image.src}}" alt="">
               </div>
+              <div class="img-details-static">
+                <!-- <h4>{{image.title}}</h4> -->
+                <div class="img-controls">
+                  <a class="img-select" ng-if="!image.es_salida" href="javascript:;" ng-click="ctrl.btnPedidos(image)" uib-tooltip="Merchandising" tooltip-placement="right">
+                    <i class="fa fa-gift"></i>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-
-
+        <!-- MERCHANDISING -->
         <div class="row"  ng-show="ctrl.pedidoBool" ng-include="'app/pages/tienda/pedido.php'">
-
-
         </div>
-
+        <!-- CESTA -->
         <div class="row">
           <div class="col-md-12 col-sm-12 mt-lg" >
           <div ui-grid="ctrl.gridOptions" ui-grid-auto-resize class="grid table-responsive clear">

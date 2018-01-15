@@ -356,6 +356,9 @@ minotaur-header .navbar-header .navigation-toggle{
 .mix-grid .mix .img-details h4 {
     margin-top: 25%;
 }
+.mix-grid .mix .img-details-static {
+   float: left; position: relative; top: -10px;
+}
 /*puntuacion*/
 .rating-stars,
 .rating-stars-calificado{
