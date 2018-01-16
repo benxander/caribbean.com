@@ -245,7 +245,7 @@
             { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
             { field: 'accion', displayName: '', width: 60,
               cellTemplate: '<div>' +
-              '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+              '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR" ng-if="row.entity.es_pedido"> <i class="fa fa-trash"></i> </button>' +
               '</div>'
             }
           ];
@@ -256,6 +256,7 @@
           'cantidad' : 1,
           'precio' : parseInt(vm.monto),
           'total_detalle' : parseInt(vm.monto),
+          'es_pedido': false,
           // 'tipo_seleccion' : vm.temporal.tipo_seleccion,
           // 'imagenes': vm.temporal.imagen,
         }
@@ -267,6 +268,8 @@
             'cantidad' : parseInt(vm.cantidad_adic),
             'precio' : parseInt(vm.precio_adicional),
             'total_detalle' : parseInt(vm.monto_adicionales),
+            'es_pedido': false,
+
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
@@ -276,6 +279,7 @@
             'cantidad' : parseInt(vm.cantidad_video),
             'precio' : parseInt(vm.precio_video),
             'total_detalle' : parseInt(vm.monto_adicionales_video),
+            'es_pedido': false,
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
@@ -486,10 +490,12 @@
         'total_detalle' : vm.temporal.total_detalle,
         'tipo_seleccion' : vm.temporal.tipo_seleccion,
         'imagenes': vm.temporal.imagen,
+        'es_pedido': true
       }
       vm.gridOptions.data.push(vm.arrTemporal);
       // console.log('data',vm.gridOptions.data);
       // console.log('temp',temp);
+      $scope.actualizarSaldo(true,vm.temporal.total_detalle);
       var producto = vm.temporal.producto;
       var categoria = vm.temporal.categoria;
       var si_genero = vm.temporal.si_genero;
@@ -505,9 +511,10 @@
       vm.calcularTotales();
     }
     vm.btnQuitarDeLaCesta = function(row){
+      $scope.actualizarSaldo(true,'-'+row.entity.total_detalle);
       var index = vm.gridOptions.data.indexOf(row.entity);
-            vm.gridOptions.data.splice(index,1);
-            vm.calcularTotales();
+      vm.gridOptions.data.splice(index,1);
+      vm.calcularTotales();
     }
     vm.calculaDescuentos = function(){
       // if(vm.datosVista.tiene_bonificacion){
@@ -574,15 +581,11 @@
       $scope.actualizarSeleccion(0);
       $scope.actualizarSaldo(false);
     }
-    vm.btnValidar = function(){
+    vm.btnPagar = function(){
       if(!vm.selectedTerminos){
         alert("Debe aceptar los Términos y Condiciones");
         return false;
-      }else{
-        vm.btnPagar();
       }
-    }
-    vm.btnPagar = function(){
       vm.modoSeleccionar = false;
       vm.modoPagar = false;
       if(vm.monto_a_pagar > 0){
@@ -590,7 +593,7 @@
       }
 
       var datos = {
-        monedero: vm.restante,
+        monedero: vm.saldo_final,
         idcliente: $scope.fSessionCI.idcliente,
         saldo: $scope.fSessionCI.monedero
       };

@@ -674,9 +674,9 @@ class Cliente extends CI_Controller {
 			return;
     	}
 
-		if($this->model_cliente->m_actulizar_monedero($allInputs)){
+		if($this->model_cliente->m_actualizar_monedero($allInputs)){
 			$cliente = $this->model_cliente->m_cargar_cliente_cbo($allInputs);
-			$arrData['message'] = 'Se actalizaron los datos correctamente';
+			$arrData['message'] = 'Se actualizaron los datos correctamente';
     		$arrData['cliente'] = $cliente;
     		$arrData['flag'] = 1;
 		}

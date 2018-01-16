@@ -190,7 +190,7 @@ class Model_cliente extends CI_Model {
 		return $this->db->update('cliente', $datos);
 	}
 
-	public function m_actulizar_monedero($datos){
+	public function m_actualizar_monedero($datos){
 		$data = array(
 			'monedero' => (float)$datos['monedero']
 		);
