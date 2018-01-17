@@ -41,6 +41,7 @@
         vm.fDataUsuario = response.datos;
         vm.cargarExcursiones(vm.fDataUsuario);
         vm.cargarGaleria(vm.fDataUsuario);
+        console.log('vm.fDataUsuario',vm.fDataUsuario);
       }
     });
     vm.cargarGaleria = function(datos){
@@ -250,6 +251,14 @@
             }
           ];
           vm.gridOptions.data = [];
+          vm.getTableHeight = function(){
+             var rowHeight = 26; // your row height
+             var headerHeight = 25; // your header height
+             return {
+                height: (vm.gridOptions.data.length * rowHeight + headerHeight + 40) + "px"
+                // height: (6 * rowHeight + headerHeight + 20) + "px"
+             };
+          };
         vm.arrTemporal = {
           'producto' : 'PAQUETE: ' + vm.paqueteSeleccionado.titulo_pq,
 
@@ -285,7 +294,6 @@
         }
         // vm.calculaDescuentos();
       }
-
     }
     vm.btnPedidos = function(imagen){ // btn merchandising
       var imagen = imagen || null;
@@ -358,7 +366,6 @@
     vm.cambiaCantidad = function(){
       var cantidad = vm.temporal.cantidad;
       var size = vm.temporal.size || null;
-      console.log('size',size);
       if(size){
         if( cantidad== 1 ){
           vm.temporal.precio = size.precio;
@@ -388,14 +395,10 @@
         scope: $scope,
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
-          // vm.seleccion = arrToModal.scope.seleccion;
-          console.log('seleccion',item.tipo_seleccion);
           vm.images = arrToModal.scope.listaImagenes;
-          console.log('vm.images',vm.images);
           vm.tipo_seleccion = item.tipo_seleccion;
           if(vm.tipo_seleccion == '2'){
             vm.cantidad_fotos = arrToModal.scope.temporal.size.cantidad_fotos;
-            console.log('size',arrToModal.scope.temporal.size.cantidad_fotos);
           }
           vm.modalTitle = 'Selecciona Fotografía';
           vm.selectFoto = function(imagen, index){
@@ -532,8 +535,6 @@
         vm.monto_neto = (parseFloat(vm.monto_total) - parseFloat(vm.monto_descuento)).toFixed(2);
       }
     }
-
-
     vm.calcularTotales = function(){
       var total = 0;
       angular.forEach(vm.gridOptions.data,function (value, key) {
@@ -581,10 +582,68 @@
       $scope.actualizarSeleccion(0);
       $scope.actualizarSaldo(false);
     }
+    vm.completarDatos = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/cliente/cliente_miniFormView.php',
+        controllerAs: 'cm',
+        size: '',
+        backdropClass: 'splash splash-2 splash-ef-16',
+        windowClass: 'splash splash-2 splash-ef-16',
+        backdrop: 'static',
+        keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.fData = {};
+          vm.fData = arrToModal.scope.fDataUsuario;
+          console.log('vm.fData',vm.fData);
+          vm.modalTitle = 'Datos Adicionales';
+          vm.aceptar = function () {
+            pageLoading.start('Procesando...');
+            ClienteServices.sEditarDatosAdicionalesCliente(vm.fData).then(function (rpta) {
+              pageLoading.stop();
+              if(rpta.flag == 1){
+                $uibModalInstance.dismiss('cancel');
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+            $uibModalInstance.close(vm.fData);
+          };
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
     vm.btnPagar = function(){
       if(!vm.selectedTerminos){
         alert("Debe aceptar los Términos y Condiciones");
         return false;
+      }
+      vm.pedido = false;
+      angular.forEach(vm.gridOptions.data, function(item) {
+        if (item.es_pedido) {
+          vm.pedido = true ;
+        }
+      });
+      console.log('vm.fDataUsuario',vm.fDataUsuario);
+      if(vm.pedido && vm.fDataUsuario.hotel == null){
+        vm.completarDatos();
       }
       vm.modoSeleccionar = false;
       vm.modoPagar = false;
@@ -648,6 +707,17 @@
         }
       });
     }
+    vm.btnTerminosCondiciones = function(){
+      var paramDatos = {
+        idseccion : 6 // terminos y condiciones
+      }
+      TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+
+        console.log('rpta',rpta);
+        alertify.alert('Terminos y condiciones');
+
+      });
+    }
   }
 
   function TiendaServices($http, $q) {
@@ -657,6 +727,7 @@
         sVerificarSeleccion: sVerificarSeleccion,
         sActualizarMonedero: sActualizarMonedero,
         sRegistrarMovimiento: sRegistrarMovimiento,
+        sListarSeccion: sListarSeccion,
     });
 
     function sListarNoDescargados(pDatos) {
@@ -703,6 +774,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Movimiento/registrar_movimiento",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarSeccion(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Seccion/listar_seccion",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

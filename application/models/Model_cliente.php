@@ -153,6 +153,22 @@ class Model_cliente extends CI_Model {
 
 		return $this->db->update('cliente', $datos);
 	}
+	public function m_editar_datos_adicionales($data){
+
+		$datos = array(
+			// 'nombres' 		=> strtoupper($data['nombres']),
+			// 'apellidos' 	=> strtoupper($data['apellidos']),
+			// 'telefono' 		=> empty($data['telefono']) ? NULL : $data['telefono'],
+			// 'whatsapp' 		=> empty($data['whatsapp']) ? NULL : $data['whatsapp'],
+			'hotel' 		=> $data['hotel'],
+			'habitacion' 	=> $data['habitacion'],
+			'updatedat' 	=> date('Y-m-d H:i:s'),
+
+		 );
+		$this->db->where('idcliente',$data['idcliente']);
+
+		return $this->db->update('cliente', $datos);
+	}
 
 	public function m_anular_cliente($data){
 		$datos = array(

@@ -54,6 +54,13 @@ class Model_seccion extends CI_Model {
 		}
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_Seccion($datos){
+		$this->db->select('idseccion, titulo, contenido');
+		$this->db->from('seccion_contenido');
+		$this->db->where('idseccion', $datos['idseccion']);
+		$fData = $this->db->get()->row_array();
+		return $fData;
+	}
 	public function m_count_secciones($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('seccion se');

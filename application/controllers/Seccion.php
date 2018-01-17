@@ -146,6 +146,21 @@ class Seccion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_seccion(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$rowSec = $this->model_seccion->m_cargar_seccion($allInputs);
+		// $arrSeccion = array();
+
+		$arrData['datos'] = $rowSec;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function listar_secciones_web()
 	{
 		ini_set('xdebug.var_display_max_depth', 10);

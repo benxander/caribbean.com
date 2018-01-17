@@ -287,6 +287,20 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function editar_datos_adicionales_cliente(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_cliente->m_editar_datos_adicionales($allInputs) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function editar_perfil_cliente(){
 		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);

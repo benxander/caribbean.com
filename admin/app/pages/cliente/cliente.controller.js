@@ -614,6 +614,7 @@
         sListarClientePorIdusuario:sListarClientePorIdusuario,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
+        sEditarDatosAdicionalesCliente: sEditarDatosAdicionalesCliente,
         sEditarPerfilCliente: sEditarPerfilCliente,
         sAnularCliente: sAnularCliente,
         sAnularArchivo: sAnularArchivo,
@@ -665,6 +666,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/editar_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarDatosAdicionalesCliente(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/editar_datos_adicionales_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
