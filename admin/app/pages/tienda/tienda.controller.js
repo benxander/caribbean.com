@@ -590,8 +590,9 @@
     }
     vm.completarDatos = function(){
       var modalInstance = $uibModal.open({
-        templateUrl: 'app/pages/cliente/cliente_miniFormView.php',
-        controllerAs: 'cm',
+        templateUrl: 'app/pages/cliente/completa_datos_view.php',
+        // templateUrl: 'app/pages/tienda/terminos.php',
+        controllerAs: 'cdm',
         size: '',
         backdropClass: 'splash splash-2 splash-ef-16',
         windowClass: 'splash splash-2 splash-ef-16',
@@ -604,7 +605,7 @@
           vm.fData = arrToModal.scope.fDataUsuario;
           console.log('vm.fData',vm.fData);
           vm.modalTitle = 'Datos Adicionales';
-          vm.aceptar = function () {
+          /*vm.aceptar = function () {
             pageLoading.start('Procesando...');
             ClienteServices.sEditarDatosAdicionalesCliente(vm.fData).then(function (rpta) {
               pageLoading.stop();
@@ -623,7 +624,7 @@
             });
             $uibModalInstance.close(vm.fData);
             vm.realizarPago();
-          };
+          };*/
         },
         resolve: {
           arrToModal: function() {

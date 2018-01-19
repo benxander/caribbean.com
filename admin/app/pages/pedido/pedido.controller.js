@@ -44,7 +44,13 @@
         { field: 'color', name:'color', displayName: 'COLOR', minWidth: 100 },
         { field: 'cantidad', name:'cantidad', displayName: 'CANTIDAD', minWidth: 100, width:100 },
         { field: 'total_detalle', name:'total_detalle', displayName: 'TOTAL DETALLE', minWidth: 100, width:100 },
-        // { field: 'imagen', name: 'imagen', displayName: 'IMAGEN',width: 120, enableFiltering: false, enableSorting: false, cellTemplate:'<img style="height:inherit;" class="center-block" ng-src="{{ grid.appScope.dirImagesProducto + COL_FIELD }}" /> </div>' },
+        { field: 'accion', name:'accion', displayName: '', width: 140, enableFiltering: false,
+          cellTemplate: '<div class="text-center">' +
+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.verDetale(row)" tooltip-placement="left" uib-tooltip="Ver detalle" > <i class="fa fa-eye"></i> </button>'+
+
+          '</div>'
+        }
 
 
 
@@ -87,6 +93,37 @@
       }
       vm.getPaginationServerSide();
       // vm.fBusqueda = {}
+
+    vm.verDetalle = function(row){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/pedido/detalle_pedido_view.php',
+        controllerAs: 'mp',
+        size: '',
+        backdropClass: 'splash splash-2 splash-ef-16',
+        windowClass: 'splash splash-2 splash-ef-16',
+        backdrop: 'static',
+        keyboard:false,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.fData = {};
+          vm.modoEdicion = false;
+          vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+          vm.modalTitle = 'Detalle de pedido';
+
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              getPaginationServerSide : vm.getPaginationServerSide,
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
 
 
   }
