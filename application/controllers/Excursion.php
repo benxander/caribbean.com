@@ -121,6 +121,7 @@ class Excursion extends CI_Controller {
 		foreach ($lista as $row) {
  			$arrListado[$row['idactividad']] = array(
 				'idactividad' => $row['idactividad'],
+				'idactividadcliente' => $row['idactividadcliente'],
 				'titulo_act' => $row['titulo_act'],
 				'descripcion' => $row['descripcion_act'],
 				'cantidad_fotos' => (int)$row['cantidad_fotos'],

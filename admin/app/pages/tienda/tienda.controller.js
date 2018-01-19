@@ -260,35 +260,42 @@
              };
           };
         vm.arrTemporal = {
+          'idpaquete': vm.paqueteSeleccionado.idpaquete,
           'producto' : 'PAQUETE: ' + vm.paqueteSeleccionado.titulo_pq,
 
           'cantidad' : 1,
           'precio' : parseInt(vm.monto),
           'total_detalle' : parseInt(vm.monto),
           'es_pedido': false,
-          // 'tipo_seleccion' : vm.temporal.tipo_seleccion,
-          // 'imagenes': vm.temporal.imagen,
+          'tipo_seleccion' : 2,
+          'imagenes': vm.listaImagenes,
         }
         vm.gridOptions.data.push(vm.arrTemporal);
         if(vm.cantidad_adic>0){
           console.log('vm.cantidad_adic',vm.cantidad_adic);
           vm.arrTemporal = {
+            'idpaquete': vm.paqueteSeleccionado.idpaquete,
             'producto' : 'FOTO ADICIONAL',
             'cantidad' : parseInt(vm.cantidad_adic),
             'precio' : parseInt(vm.precio_adicional),
             'total_detalle' : parseInt(vm.monto_adicionales),
+            'tipo_seleccion' : 1,
             'es_pedido': false,
+            'imagenes': null,
 
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
         if(vm.cantidad_video>0){
           vm.arrTemporal = {
+            'idpaquete': vm.paqueteSeleccionado.idpaquete,
             'producto' : 'VIDEO ADICIONAL',
             'cantidad' : parseInt(vm.cantidad_video),
             'precio' : parseInt(vm.precio_video),
             'total_detalle' : parseInt(vm.monto_adicionales_video),
+            'tipo_seleccion' : 2,
             'es_pedido': false,
+            'imagenes': null,
           }
           vm.gridOptions.data.push(vm.arrTemporal);
         }
@@ -437,7 +444,6 @@
           }
         }
       });
-
     }
     vm.agregarItem = function(temp){
       if( !vm.temporal.idcolor && vm.temporal.si_color == 1){
@@ -616,9 +622,7 @@
               }
             });
             $uibModalInstance.close(vm.fData);
-          };
-          vm.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
+            vm.realizarPago();
           };
         },
         resolve: {
@@ -636,15 +640,25 @@
         return false;
       }
       vm.pedido = false;
+      vm.total_pedido = 0;
+      vm.total_venta = 0;
       angular.forEach(vm.gridOptions.data, function(item) {
         if (item.es_pedido) {
           vm.pedido = true ;
+          vm.total_pedido += item.total_detalle;
+        }else{
+          vm.total_venta += item.total_detalle;
         }
       });
       console.log('vm.fDataUsuario',vm.fDataUsuario);
       if(vm.pedido && vm.fDataUsuario.hotel == null){
         vm.completarDatos();
+      }else{
+        vm.realizarPago();
       }
+
+    }
+    vm.realizarPago = function(){
       vm.modoSeleccionar = false;
       vm.modoPagar = false;
       if(vm.monto_a_pagar > 0){
@@ -654,20 +668,25 @@
       var datos = {
         monedero: vm.saldo_final,
         idcliente: $scope.fSessionCI.idcliente,
-        saldo: $scope.fSessionCI.monedero
+        saldo: $scope.fSessionCI.monedero,
+        detalle: vm.gridOptions.data,
+        total_pedido: vm.total_pedido,
+        total_venta: vm.total_venta,
+        idactividadcliente : vm.listaExcursiones[0].idactividadcliente
       };
-      TiendaServices.sActualizarMonedero(datos).then(function(rpta){
+      TiendaServices.sRegistrarVenta(datos).then(function(rpta){
         if(rpta.flag == 1){
           vm.irCompraExitosa();
           $scope.getValidateSession();
           $scope.actualizarSaldo(false);
-        }else{
+        }else if(rpta.flag == 0){
           alert(rpta.message);
           $scope.getValidateSession();
           location.reload();
+        }else{
+          alert('Error inesperado');
         }
       });
-
     }
     vm.irCompraExitosa = function(){
       pageLoading.start('Procesando descarga...');
@@ -708,14 +727,38 @@
       });
     }
     vm.btnTerminosCondiciones = function(){
-      var paramDatos = {
-        idseccion : 6 // terminos y condiciones
-      }
-      TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/tienda/terminos.php',
+        controllerAs: 'mt',
+        size: 'lg',
+        backdropClass: 'splash-2 splash-ef-12',
+        windowClass: 'splash-2 splash-ef-12',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          var paramDatos = {
+            idseccion : 6 // terminos y condiciones
+          }
+          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+            vm.modalTitle = rpta.datos.titulo;
+            vm.contenido = rpta.datos.contenido;
+            console.log('rpta',rpta);
 
-        console.log('rpta',rpta);
-        alertify.alert('Terminos y condiciones');
 
+          });
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
       });
     }
   }
@@ -725,7 +768,7 @@
         sListarNoDescargados: sListarNoDescargados,
         sDescargarArchivosPagados: sDescargarArchivosPagados,
         sVerificarSeleccion: sVerificarSeleccion,
-        sActualizarMonedero: sActualizarMonedero,
+        sRegistrarVenta: sRegistrarVenta,
         sRegistrarMovimiento: sRegistrarMovimiento,
         sListarSeccion: sListarSeccion,
     });
@@ -760,11 +803,11 @@
       return (request.then( handleSuccess,handleError ));
     }
 
-    function sActualizarMonedero(pDatos) {
+    function sRegistrarVenta(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Cliente/actualizar_monedero",
+            url :  angular.patchURLCI + "Movimiento/registrar_venta",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -773,7 +816,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Movimiento/registrar_movimiento",
+            url :  angular.patchURLCI + "Movimiento/registrar_pedido",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

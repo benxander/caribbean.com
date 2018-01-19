@@ -66,7 +66,7 @@ class Model_movimiento extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
-	public function m_registrar_pedido($data){
+	public function m_registrar_movimiento($data){
 		$this->db->insert('movimiento', $data);
 		$insert_id = $this->db->insert_id();
 		return $insert_id;

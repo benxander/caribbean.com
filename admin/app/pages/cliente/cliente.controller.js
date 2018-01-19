@@ -624,6 +624,7 @@
         sSubirImagenesCarpeta: sSubirImagenesCarpeta,
         sDelete: sDelete,
         sRegistrarPuntuacion:sRegistrarPuntuacion,
+        sActualizarMonedero:sActualizarMonedero,
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -757,6 +758,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/registrar_puntuacion",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sActualizarMonedero (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/actualizar_monedero",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
