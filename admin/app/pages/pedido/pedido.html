@@ -28,12 +28,20 @@
         <!-- /tile header -->
         <!-- tile body -->
         <section class="tile-body">
+          <form name="formPedido" role="form" novalidate class="row form-validation">
+            <div class="form-group col-md-3 col-sm-12">
+              <label class="control-label minotaur-label"> Desde </label>
+              <input type="text" class="form-control" ng-model="pe.fBusqueda.desde" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
+            </div>
+            <div class="form-group col-md-3 col-sm-12">
+              <label class="control-label minotaur-label"> Hasta </label>
+              <input type="text" class="form-control" ng-model="pe.fBusqueda.hasta" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
+            </div>
+            <div class="form-group col-md-3 col-sm-12">
+              <input type="button" class="btn btn-info mt-lg" value="PROCESAR" ng-click="pe.getPaginationServerSide();"  ng-disabled="formPedido.$invalid" />
+            </div>
+          </form>
           <div class="row">
-            <!-- <div class="col-md-12 col-sm-12">
-              <div class="form-group pull-right" style="position: relative;z-index: 10">
-                <button class="btn btn-success" ng-click='pr.btnNuevo()'>Nuevo</button>
-              </div>
-            </div> -->
             <div class="col-md-12 col-sm-12">
               <div ui-grid="pe.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
             </div>

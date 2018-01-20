@@ -11,10 +11,10 @@ class Movimiento extends CI_Controller {
     public function listar_pedidos(){
     	$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
-		// $paramDatos = $allInputs['datos'];
-		// var_dump($allInputs); exit();
-		$lista = $this->model_movimiento->m_cargar_pedidos($paramPaginate);
-		$totalRows = $this->model_movimiento->m_count_pedidos($paramPaginate);
+		$paramDatos = $allInputs['datos'];
+		// var_dump($paramDatos); exit();
+		$lista = $this->model_movimiento->m_cargar_pedidos($paramPaginate, $paramDatos);
+		$totalRows = $this->model_movimiento->m_count_pedidos($paramPaginate, $paramDatos);
 		$arrListado = array();
 
 		foreach ($lista as $row) {

@@ -6,6 +6,9 @@ class Model_movimiento extends CI_Model {
 	}
 
 	public function m_cargar_pedidos($paramPaginate=FALSE, $paramDatos=FALSE){
+		$desde = $this->db->escape(darFormatoYMD($paramDatos['desde']) . ' 00:00:00');
+		$hasta = $this->db->escape(darFormatoYMD($paramDatos['hasta']) . ' 23:59:59');
+		// var_dump($desde); var_dump($hasta); exit();
 		$this->db->select('mo.idmovimiento, mo.idcliente, mo.fecha_movimiento, mo.idactividadcliente');
 		$this->db->select('d.iddetalle, d.idproducto, pm.descripcion_pm, d.cantidad, d.total_detalle, d.genero');
 		$this->db->select("CASE WHEN p.categoria = 1 THEN 'BASICO' ELSE 'PREMIUM' END AS categoria",FALSE);
@@ -27,6 +30,7 @@ class Model_movimiento extends CI_Model {
 		$this->db->where('mo.estado', 1);
 		$this->db->where('d.estado_det', 1);
 		$this->db->where('d.tipo_detalle', 2);
+		$this->db->where('mo.fecha_movimiento BETWEEN '. $desde.' AND ' . $hasta);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {

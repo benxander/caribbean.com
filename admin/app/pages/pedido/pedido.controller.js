@@ -6,11 +6,14 @@
     .service('PedidoServices', PedidoServices);
 
   /** @ngInject */
-  function PedidoController($scope,$uibModal,PedidoServices,toastr,alertify, pageLoading, uiGridConstants) {
+  function PedidoController($scope,$uibModal, $filter, PedidoServices,toastr,alertify, pageLoading, uiGridConstants) {
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
-
+    vm.fBusqueda = {}
+    var hoy = new Date();
+    vm.fBusqueda.desde = $filter('date')(hoy,'dd-MM-yyyy');
+    vm.fBusqueda.hasta = $filter('date')(hoy,'dd-MM-yyyy');
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -38,12 +41,12 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'iddetalle', name:'iddetalle', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
+        { field: 'fecha_movimiento', name:'fecha_movimiento', displayName: 'FECHA PEDIDO', minWidth: 100 ,enableFiltering:false},
         { field: 'codigo', name:'codigo', displayName: 'CLIENTE', minWidth: 100, width:80 },
         { field: 'producto', name:'descripcion_pm', displayName: 'PRODUCTO', minWidth: 100 },
         { field: 'categoria', name:'categoria', displayName: 'CATEGORIA', minWidth: 100, width:100 },
-        { field: 'color', name:'color', displayName: 'COLOR', minWidth: 100 },
-        { field: 'cantidad', name:'cantidad', displayName: 'CANTIDAD', minWidth: 100, width:100 },
-        { field: 'total_detalle', name:'total_detalle', displayName: 'TOTAL DETALLE', minWidth: 100, width:100 },
+        { field: 'cantidad', name:'cantidad', displayName: 'CANTIDAD', minWidth: 100, width:100,enableFiltering:false },
+        { field: 'total_detalle', name:'total_detalle', displayName: 'TOTAL DETALLE', minWidth: 100, width:100,enableFiltering:false },
         { field: 'accion', name:'accion', displayName: '', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
 
@@ -73,8 +76,10 @@
           var grid = this.grid;
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
-            'idproducto' : grid.columns[1].filters[0].term,
-            'descripcion' : grid.columns[2].filters[0].term,
+            'iddetalle' : grid.columns[1].filters[0].term,
+            'codigo' : grid.columns[3].filters[0].term,
+            'descripcion_pm' : grid.columns[3].filters[0].term,
+            'categoria' : grid.columns[3].filters[0].term,
           }
           vm.getPaginationServerSide();
         });
@@ -83,7 +88,8 @@
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
         vm.datosGrid = {
-          paginate : paginationOptions
+          paginate : paginationOptions,
+          datos : vm.fBusqueda,
         };
         PedidoServices.sListarPedido(vm.datosGrid).then(function (rpta) {
           vm.gridOptions.data = rpta.datos;
