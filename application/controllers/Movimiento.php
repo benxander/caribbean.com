@@ -146,6 +146,16 @@ class Movimiento extends CI_Controller {
     	// }else{
 	    // 	$idactividadcliente = $allInputs['detalle'][0]['imagenes']['idactividadcliente'];
     	// }
+    	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
+    	if($monedero != $allInputs['saldo']){
+    		$arrData['message'] = 'El saldo no coincide';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+
 
     	$datos_venta = array(
     		'idcliente' => $allInputs['idcliente'],
@@ -189,19 +199,21 @@ class Movimiento extends CI_Controller {
 						'estado_det' => 1, // pendiente
 					);
 					$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
-					if( $row['tipo_seleccion'] == 1 ){
-						$data = array(
-							'iddetalle' => $iddetalle,
-							'idarchivo' => $row['imagenes']['idarchivo']
-						);
-						$this->model_movimiento->m_registrar_detalle_archivo($data);
-					}else{
-						foreach ($row['imagenes'] as $row_imagen) {
+					if(!empty($row['imagenes'])){
+						if( $row['tipo_seleccion'] == 1 ){
 							$data = array(
 								'iddetalle' => $iddetalle,
-								'idarchivo' => $row_imagen['idarchivo']
+								'idarchivo' => $row['imagenes']['idarchivo']
 							);
 							$this->model_movimiento->m_registrar_detalle_archivo($data);
+						}else{
+							foreach ($row['imagenes'] as $row_imagen) {
+								$data = array(
+									'iddetalle' => $iddetalle,
+									'idarchivo' => $row_imagen['idarchivo']
+								);
+								$this->model_movimiento->m_registrar_detalle_archivo($data);
+							}
 						}
 					}
 				}else{
@@ -219,19 +231,21 @@ class Movimiento extends CI_Controller {
 						'estado_det' => 1, // pendiente
 					);
 					$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
-					if( $row['tipo_seleccion'] == 1 ){
-						$data = array(
-							'iddetalle' => $iddetalle,
-							'idarchivo' => $row['imagenes']['idarchivo']
-						);
-						$this->model_movimiento->m_registrar_detalle_archivo($data);
-					}else{
-						foreach ($row['imagenes'] as $row_imagen) {
+					if(!empty($row['imagenes'])){
+						if( $row['tipo_seleccion'] == 1 ){
 							$data = array(
 								'iddetalle' => $iddetalle,
-								'idarchivo' => $row_imagen['idarchivo']
+								'idarchivo' => $row['imagenes']['idarchivo']
 							);
 							$this->model_movimiento->m_registrar_detalle_archivo($data);
+						}else{
+							foreach ($row['imagenes'] as $row_imagen) {
+								$data = array(
+									'iddetalle' => $iddetalle,
+									'idarchivo' => $row_imagen['idarchivo']
+								);
+								$this->model_movimiento->m_registrar_detalle_archivo($data);
+							}
 						}
 					}
 				}
@@ -239,6 +253,9 @@ class Movimiento extends CI_Controller {
 
 			$arrData['message'] = 'Se registraron los datos correctamente ';
     		$arrData['flag'] = 1;
+		}
+		if($this->model_cliente->m_actualizar_monedero($allInputs)){
+
 		}
 		$this->db->trans_complete();
     	// var_dump($allInputs); exit();

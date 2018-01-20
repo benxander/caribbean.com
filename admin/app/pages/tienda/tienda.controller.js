@@ -41,7 +41,6 @@
         vm.fDataUsuario = response.datos;
         vm.cargarExcursiones(vm.fDataUsuario);
         vm.cargarGaleria(vm.fDataUsuario);
-        console.log('vm.fDataUsuario',vm.fDataUsuario);
       }
     });
     vm.cargarGaleria = function(datos){
@@ -134,7 +133,6 @@
           $scope.actualizarSaldo(true,vm.monto);
         }
       }
-
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
           i++;
@@ -185,41 +183,38 @@
         seleccion : vm.images,
         usuario : vm.fDataUsuario
       }
-      // vm.cargarProductos = function(){
-      // pageLoading.start('Procesando...');
-      ProductoServices.sListarProductoPedido().then(function (rpta) {
-        vm.listaProductos = angular.copy(rpta.datos);
-        // console.log('data',vm.listaProductos);
-        // pageLoading.stop();
-      });
-      // }
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
         pageLoading.stop();
         vm.datosVista = rpta;
-        // vm.calcularTotales();
-        // vm.calculaDescuentos();
+        if(vm.datosVista.mostrar_productos){
+          vm.cargarProductos();
+        }
         vm.calcularGrilla();
         vm.agregarGrilla();
-
         vm.modoSeleccionar=false;
         vm.modoPagar=true;
       });
+      vm.cargarProductos = function(){
+        ProductoServices.sListarProductoPedido().then(function (rpta) {
+          vm.listaProductos = angular.copy(rpta.datos);
+        });
+      }
       vm.calcularGrilla = function(){
         vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-        console.log(vm.precio_adicional,vm.precio_video );
         if(vm.cantidad_adic > 0){
           vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
         }else{
           vm.cantidad_adic = 0;
         }
         vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
+        console.log('vm.datosVista',vm.datosVista);
         if(vm.datosVista.tiene_descuento){
           vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
+          vm.importe_total = parseFloat(vm.monto_total - vm.monto_descuento);
+          vm.restante = parseFloat($scope.fSessionCI.monedero - vm.importe_total);
+        }else{
+          vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total);
         }
-
-        vm.monto_total = parseFloat(vm.monto_total - vm.monto_descuento);
-        vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total).toFixed(2);
-
 
         if(vm.restante < 0){
           vm.monto_a_pagar = Math.abs(vm.restante);
@@ -603,9 +598,10 @@
           var vm = this;
           vm.fData = {};
           vm.fData = arrToModal.scope.fDataUsuario;
+          vm.realizarPago = arrToModal.scope.realizarPago;
           console.log('vm.fData',vm.fData);
           vm.modalTitle = 'Datos Adicionales';
-          /*vm.aceptar = function () {
+          vm.aceptar = function () {
             pageLoading.start('Procesando...');
             ClienteServices.sEditarDatosAdicionalesCliente(vm.fData).then(function (rpta) {
               pageLoading.stop();
@@ -619,12 +615,11 @@
                 var type = 'warning';
                 toastr.warning(rpta.message, title);
               }else{
-                alert('Ocurrió un error');
-              }
+                alert('Ocurrió un error');              }
             });
             $uibModalInstance.close(vm.fData);
             vm.realizarPago();
-          };*/
+          };
         },
         resolve: {
           arrToModal: function() {
@@ -651,7 +646,6 @@
           vm.total_venta += item.total_detalle;
         }
       });
-      console.log('vm.fDataUsuario',vm.fDataUsuario);
       if(vm.pedido && vm.fDataUsuario.hotel == null){
         vm.completarDatos();
       }else{

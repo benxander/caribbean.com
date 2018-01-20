@@ -678,8 +678,6 @@ class Cliente extends CI_Controller {
     	$arrData['flag'] = 0;
 
     	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
-    	// print_r($allInputs);
-    	// print_r($monedero);
     	if($monedero != $allInputs['saldo']){
     		$arrData['message'] = 'El saldo no coincide';
     		$this->output

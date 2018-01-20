@@ -2,7 +2,7 @@
   <h4 class="modal-title">{{cdm.modalTitle}}</h4>
 </div>
 <div class="modal-body">
-	<!-- <section class="tile-body">
+	<section class="tile-body">
 		<form name="formCliente" role="form" novalidate class="form-validation">
 		    <div class="row">
 	   	        <div class="form-group col-md-12">
@@ -19,7 +19,7 @@
 
 		    </div>
 		</form>
-	</section> -->
+	</section>
 </div>
 <div class="modal-footer">
   <!-- <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="cdm.cancel()"><i class="fa fa-arrow-left"></i> Cancel</button> -->

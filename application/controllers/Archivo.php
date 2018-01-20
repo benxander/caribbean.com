@@ -63,6 +63,11 @@ class Archivo extends CI_Controller {
 		$lista = $this->model_archivo->m_cargar_galeria_no_descargados($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
+			if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
+				$salida = TRUE;
+			}else{
+				$salida = FALSE;
+			}
 			$src = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
 			array_push($arrListado,
 				array(
@@ -80,6 +85,8 @@ class Archivo extends CI_Controller {
 					'selected' => FALSE,
 					'src' => $src,
 					'title' => '',
+					'fecha_salida' => $row['fecha_salida'],
+					'es_salida' => $salida,
 				)
 			);
 		}
