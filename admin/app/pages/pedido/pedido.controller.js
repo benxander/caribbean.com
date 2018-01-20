@@ -47,7 +47,7 @@
         { field: 'accion', name:'accion', displayName: '', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
 
-          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.verDetale(row)" tooltip-placement="left" uib-tooltip="Ver detalle" > <i class="fa fa-eye"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.verDetalle(row)" tooltip-placement="left" uib-tooltip="Ver detalle" > <i class="fa fa-eye"></i> </button>'+
 
           '</div>'
         }
@@ -95,21 +95,25 @@
       // vm.fBusqueda = {}
 
     vm.verDetalle = function(row){
+      console.log('det');
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/pedido/detalle_pedido_view.php',
         controllerAs: 'mp',
-        size: '',
+        size: 'lg',
         backdropClass: 'splash splash-2 splash-ef-16',
         windowClass: 'splash splash-2 splash-ef-16',
         backdrop: 'static',
         keyboard:false,
+        scope: $scope,
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
           vm.fData = {};
+          vm.dirImagesProducto = $scope.dirImages + "producto/";
           vm.modoEdicion = false;
           vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
           vm.modalTitle = 'Detalle de pedido';
-
+          vm.fData = row.entity;
+          console.log('vm.fData',vm.fData);
           vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };

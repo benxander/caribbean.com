@@ -190,7 +190,7 @@
             </div>
           </div>
           <div class="form-inline col-md-12 col-sm-12 mt-lg text-right">
-            <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.IMPORTE' | translate }}</label>
+            <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> TOTAL</label>
             <div class="input-group mb-10">
               <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.monto_total" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
             </div>
@@ -202,7 +202,7 @@
             </div>
           </div>
           <div class="form-inline col-md-12 col-sm-12 text-right" ng-if="ctrl.datosVista.tiene_descuento">
-            <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> IMPORTE TOTAL</label>
+            <label class="control-label mr-xs text-info f-18" style="font-weight: bolder;"> {{ 'Text.IMPORTE' | translate }}</label>
             <div class="input-group mb-10">
               <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.importe_total" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
             </div>
