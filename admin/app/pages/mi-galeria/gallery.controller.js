@@ -7,11 +7,13 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, $state, PagesGalleryServices, rootServices, ProductoServices,TiendaServices, Socialshare, pageLoading,toastr) {
+  function PagesGalleryController($scope,$uibModal, $state, PagesGalleryServices, rootServices, ProductoServices,TiendaServices, ClienteServices, Socialshare, pageLoading,toastr) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
+
+    vm.selectedTerminos = false;
 
     vm.cargarGaleria = function(datos,loader){
       var loader = loader || false;
@@ -53,7 +55,7 @@
     vm.temporal = {};
     vm.temporal.cantidad = 1;
     vm.temporal.isSel = false;
-
+    vm.modoDescargaCompleta = false;
     vm.selectAll = function () {
       if (vm.selectedAll) {
         vm.selectedAll = false;
@@ -284,7 +286,6 @@
           return false;
         }
       }
-      console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}
       var adicional = '';
       if(vm.temporal.si_genero == 1){
@@ -305,8 +306,7 @@
         'imagenes': vm.temporal.imagen,
       }
       vm.gridOptions.data.push(vm.arrTemporal);
-      // console.log('data',vm.gridOptions.data);
-      // console.log('temp',temp);
+      $scope.actualizarSaldo(true,vm.temporal.total_detalle);
       var producto = vm.temporal.producto;
       var categoria = vm.temporal.categoria;
       var si_genero = vm.temporal.si_genero;
@@ -333,7 +333,7 @@
         total += parseFloat(vm.gridOptions.data[key].total_detalle);
       });
       vm.fData.total_pedido = total;
-      if($scope.fSessionCI.monedero > 0){
+      // if($scope.fSessionCI.monedero > 0){
         vm.fData.saldo_inicial = $scope.fSessionCI.monedero;
         vm.restante = vm.fData.saldo_inicial - vm.fData.total_pedido;
         console.log('vm.restante',vm.restante);
@@ -344,32 +344,60 @@
           vm.fData.saldo_final = vm.restante;
           vm.fData.total_a_pagar = 0;
         }
-      }
+      // }
     }
     vm.PagarPedido = function(){
+      if(vm.gridOptions.data.length <= 0){
+        alert("Debe agregar un pedido a la cesta");
+        return false;
+      }
+      if(!vm.selectedTerminos){
+        alert("Debe aceptar los Términos y Condiciones");
+        return false;
+      }
       vm.fData.detalle = vm.gridOptions.data;
+      pageLoading.start('Procesando...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){
+        pageLoading.stop();
         if(rpta.flag == 1){
-          // vm.modoDescargaCompleta=true;
           // vm.limpiar();
           vm.temporal = {};
           vm.gridOptions.data = [];
-          vm.pedidoBool = false;
+          // vm.pedidoBool = false;
           vm.productoBool = false;
+          vm.modoDescargaCompleta=true;
+          $scope.getValidateSession();
+          $scope.actualizarSaldo(false);
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
-          $state.reload();
+          // $state.reload();
         }else if(rpta.flag == 0){
           var title = 'Advertencia';
           var type = 'warning';
           toastr.warning(rpta.message, title);
+          $scope.getValidateSession();
+          location.reload();
         }else{
           alert('Error de desarrollo');
         }
       });
     }
-
+    vm.limpiar = function(){
+      vm.cantidad_adic = 0;
+      vm.cantidad_video = 0;
+      vm.monto_total = 0.00;
+      vm.monto_a_pagar = 0.00;
+      vm.monto_descuento = 0.00;
+      vm.monto_bonificacion = 0.00;
+      vm.monto_adicionales = 0.00;
+      vm.monto_adicionales_video = 0.00;
+      vm.modoPagar = false;
+      vm.selectedAll = false;
+      vm.isPagoMonedero = false;
+      $scope.actualizarSeleccion(0);
+      $scope.actualizarSaldo(false);
+    }
     vm.btnDescargarFiles = function(){
       if(!vm.isSelected){
         return;
@@ -387,7 +415,61 @@
           enlace.parentNode.removeChild(enlace);
         }
       });
+    }
+    vm.calificar = function(value){
+      console.log('click');
+      vm.calificacion = value;
+      vm.fDataUsuario.puntos = value;
+      ClienteServices.sRegistrarPuntuacion(vm.fDataUsuario).then(function(rpta){
+        if(rpta.flag == 1){
+          vm.modoCalificacionOk=true;
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
+        }else if(rpta.flag == 0){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+        }else{
+          alert('Error inesperado');
 
+        }
+      });
+    }
+    vm.btnTerminosCondiciones = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/tienda/terminos.php',
+        controllerAs: 'mt',
+        size: 'lg',
+        backdropClass: 'splash-2 splash-ef-12',
+        windowClass: 'splash-2 splash-ef-12',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          var paramDatos = {
+            idseccion : 6 // terminos y condiciones
+          }
+          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+            vm.modalTitle = rpta.datos.titulo;
+            vm.contenido = rpta.datos.contenido;
+            console.log('rpta',rpta);
+
+
+          });
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
     }
   }
 

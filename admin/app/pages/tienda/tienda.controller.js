@@ -454,13 +454,11 @@
         return false;
       }
       if( vm.temporal.tipo_seleccion == 1 ){
-        console.log('unica');
         if( !angular.isObject(vm.temporal.imagen) ){
           toastr.warning('Seleccione una fotografía', 'Advertencia');
           return false;
         }
       }else{
-        console.log('multiple');
         vm.temporal.imagen = [];
         angular.forEach(vm.images, function(image,key) {
           if (image.selected) {
@@ -472,7 +470,6 @@
           return false;
         }
       }
-      console.log('vm.temporal',vm.temporal);
       vm.arrTemporal = {}
       var adicional = '';
       vm.gridOptions.columnDefs[1].visible = true;

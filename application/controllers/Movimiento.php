@@ -74,6 +74,17 @@ class Movimiento extends CI_Controller {
     	$arrData['flag'] = 0;
 
     	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
+    	$allInputs['idcliente'] = $cliente['idcliente'];
+    	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
+    	if($monedero != $allInputs['saldo_inicial']){
+    		$arrData['message'] = 'El saldo no coincide';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
+    	$allInputs['monedero'] = $allInputs['saldo_final'];
 
     	if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
 	    	$idactividadcliente = $allInputs['detalle'][0]['imagenes'][0]['idactividadcliente'];
@@ -126,6 +137,9 @@ class Movimiento extends CI_Controller {
 
 			$arrData['message'] = 'Se registraron los datos correctamente ';
     		$arrData['flag'] = 1;
+		}
+		if($this->model_cliente->m_actualizar_monedero($allInputs)){
+
 		}
 		$this->db->trans_complete();
     	// var_dump($allInputs); exit();

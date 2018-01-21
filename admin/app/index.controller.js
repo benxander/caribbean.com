@@ -90,23 +90,15 @@
     $scope.isSelected = false;
     $scope.seleccionadas = 0;
     $scope.dirImages = angular.patchURL+'uploads/';
-
-     // $scope.valores = [true,true,true,true,true,true];
-    // console.log('$translate',$translate);
     $scope.$watch('seleccionadas',function(newValue, oldValue){
-      console.log('newValue',newValue);
-      console.log('oldValue',oldValue);
       if (newValue===oldValue) {
         return;
       }
-      console.log('$scope.seleccionadas',$scope.seleccionadas);
     });
     $scope.actualizarSeleccion = function(sel, monto){
       $scope.seleccionadas = sel;
     }
     $scope.actualizarSaldo = function(isSel,monto){
-      console.log('actualizarSaldo',monto);
-      console.log('fSessionCI.monedero',$scope.fSessionCI.monedero);
       if(isSel){
         $scope.saldo = parseInt($scope.saldo) - parseInt(monto);
       }else{

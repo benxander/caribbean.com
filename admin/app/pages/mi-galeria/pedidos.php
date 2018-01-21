@@ -1,4 +1,4 @@
-<div class="tile p-15">
+<div class="tile p-15" ng-show="!ga.modoDescargaCompleta">
   <section class="tile-header pl-0 pr-0">
     <div class="row">
       <div class="col-sm-12">
@@ -123,8 +123,59 @@
         </div>
       </div>
       <div class="col-md-12 mt">
+        <label class="checkbox minotaur-checkbox inline-block m-0 pull-right">He leído y acepto los <a href="javascript:;" ng-click="ga.btnTerminosCondiciones();" >Términos y Condiciones</a>
+          <input type="checkbox" ng-model="ga.selectedTerminos"><div class="input-indicator"></div>
+        </label>
+      </div>
+      <div class="col-md-12 mt">
         <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ga.PagarPedido()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
       </div>
     </div>
   </section>
+</div>
+
+<div class="tile p-15" style="min-height: 400px;" ng-show="ga.modoDescargaCompleta">
+  <section class="tile-header pl-0">
+    <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>
+  </section>
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <h2 class="text-custom text-center mb-5">{{ 'Text.GRACIAS' | translate }}</h2>
+      <h3 ng-if="!ga.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.CALIFICA' | translate }}</h3>
+      <h3 ng-if="ga.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.GRACIAS_CALIFICA' | translate }}</h3>
+      <div class="rating-stars" ng-if="!ga.modoCalificacionOk" >
+        <span ng-click="ga.calificar(5);" >☆</span>
+        <span ng-click="ga.calificar(4);">☆</span>
+        <span ng-click="ga.calificar(3);">☆</span>
+        <span ng-click="ga.calificar(2);">☆</span>
+        <span ng-click="ga.calificar(1);">☆</span>
+      </div>
+      <div class="rating-stars-calificado" ng-if="ga.modoCalificacionOk" >
+        <span ng-class="{'califica': 1 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 2 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 3 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 4 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 5 == ga.calificacion}">★</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="rating-stars-calificado" style="width: 260px">
+        <div class="row m">
+          <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.EXCELENTE' | translate }}</label>
+        </div>
+        <div class="row m">
+          <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.BUENO' | translate }}</label>
+        </div>
+        <div class="row m">
+          <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.REGULAR' | translate }}</label>
+        </div>
+        <div class="row m">
+          <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.MALO' | translate }}</label>
+        </div>
+        <div class="row m">
+          <div class="col-sm-6 text-lg text-orange dk b-a b-cyan br-10">★</div><label class="col-sm-6 text-left bold mt-xs">{{ 'Text.MUY_MALO' | translate }}</label>
+        </div>
+    </div>
+  </div>
 </div>
