@@ -75,6 +75,14 @@ class Model_movimiento extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_cargar_imagenes_pedidos($datos){
+		$this->db->select('arc.idarchivo, arc.nombre_archivo');
+		$this->db->from('detalle_archivo da');
+		$this->db->join('archivo arc', 'da.idarchivo = arc.idarchivo');
+		$this->db->where('iddetalle', $datos['iddetalle']);
+		$this->db->where('arc.estado_arc', 1);
+		return $this->db->get()->result_array();
+	}
 	public function m_registrar_movimiento($data){
 		$this->db->insert('movimiento', $data);
 		$insert_id = $this->db->insert_id();

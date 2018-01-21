@@ -23,7 +23,6 @@
         sortName: null,
         search: null
       };
-      // vm.dirImagesProducto = $scope.dirImages + "producto/";
       vm.mySelectionGrid = [];
       vm.gridOptions = {
         paginationPageSizes: [10, 50, 100, 500, 1000],
@@ -114,12 +113,16 @@
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
           vm.fData = {};
+          vm.dirImages = $scope.dirImages;
           vm.dirImagesProducto = $scope.dirImages + "producto/";
           vm.modoEdicion = false;
           vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
           vm.modalTitle = 'Detalle de pedido';
           vm.fData = row.entity;
-          console.log('vm.fData',vm.fData);
+          // cargar imagenes del pedido
+          PedidoServices.sListarImagenesPedido(vm.fData).then(function(rpta){
+            vm.listaImagenes = rpta.datos;
+          });
           vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
@@ -140,6 +143,7 @@
   function PedidoServices($http, $q) {
     return({
       sListarPedido: sListarPedido,
+      sListarImagenesPedido: sListarImagenesPedido,
 
     });
     function sListarPedido(pDatos) {
@@ -147,6 +151,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Movimiento/listar_pedidos",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarImagenesPedido(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Movimiento/listar_imagenes_pedido",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

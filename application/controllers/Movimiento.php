@@ -42,7 +42,9 @@ class Movimiento extends CI_Controller {
 
 					'idmovimiento' 	=> $row['idmovimiento'],
 					'iddetalle' 	=> $row['iddetalle'],
-					'fecha_movimiento' 	=> darFormatoDMY($row['fecha_movimiento']),
+					'fecha_movimiento' 	=> darFormatoDMYHora($row['fecha_movimiento']),
+					'fecha_pedido' 	=> darFormatoDMY($row['fecha_movimiento']),
+					'hora_pedido' 	=> darFormatoHora2($row['fecha_movimiento']),
 					'producto' 			=> $row['descripcion_pm'] . $adicional,
 					'imagen_producto' 	=> $row['imagen_producto'],
 					'categoria' 		=> $row['categoria'],
@@ -57,6 +59,32 @@ class Movimiento extends CI_Controller {
 		}
 		$arrData['datos'] = $arrListado;
     	$arrData['paginate']['totalRows'] = $totalRows['contador'];
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+    }
+    public function listar_imagenes_pedido(){
+    	$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_movimiento->m_cargar_imagenes_pedidos($allInputs);
+		$arrListado = array();
+
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idarchivo' => $row['idarchivo'],
+					'nombre_archivo' 	=> $row['nombre_archivo'],
+					'src' => 'clientes/'.$allInputs['codigo'].'/descargadas/'.$row['nombre_archivo'],
+
+				)
+			);
+		}
+		// var_dump($arrListado); exit();
+		$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($lista)){

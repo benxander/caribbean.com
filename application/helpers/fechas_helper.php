@@ -149,19 +149,29 @@
 	    } while($start <= $end);
 	    return $range;
 	}
-	function darFormatoDMY($fecha)
-	{
+	function darFormatoDMY($fecha){
 		if(empty($fecha)){
 			return null;
 		}
-
 		$fechaUT = strtotime($fecha); // obtengo una fecha UNIX ( integer )
 		$d	= date('d', $fechaUT);
 		$m	= date('m', $fechaUT);
 		$y	= date('Y', $fechaUT);
 		$result = $d."-".$m."-".$y;
-		// var_dump("<pre>",$fecha,$result);
-		return $result;
+		return $result; // dd-mm-yyyy
+	}
+	function darFormatoDMYHora($fecha){
+		if(empty($fecha)){
+			return null;
+		}
+		$fechaUT = strtotime($fecha); // obtengo una fecha UNIX ( integer )
+		$d	= date('d', $fechaUT);
+		$m	= date('m', $fechaUT);
+		$y	= date('Y', $fechaUT);
+		$hr	= date('H', $fechaUT);
+		$min= date('i', $fechaUT);
+		$result = $d."-".$m."-".$y." ". $hr.":".$min;
+		return $result; // dd-mm-yyyy
 	}
 	function darFormatoYMD($fecha)
 	{
@@ -174,8 +184,7 @@
 		$m	= date('m', $fechaUT);
 		$y	= date('Y', $fechaUT);
 		$result = $y."-".$m."-".$d;
-		// var_dump("<pre>",$fecha,$result);
-		return $result;
+		return $result; // yyyy-mm-dd
 	}
 	function darFormatoDMY2($fecha)
 	{
@@ -437,8 +446,7 @@
 		$result = $day." ".$D." ".$month." ".$y." ".$hr.":".$min." ".$a;
 		return $result; // Jue 4 Jun 2016 05:00 pm
 	}
-	function formatoConDiaYano($fechaSQL)
-	{
+	function formatoConDiaYano($fechaSQL){
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
 		$shortDayArray = array("","Lun","Mar","Mie","Jue","Vie","Sab","Dom");
 		if ($fechaSQL == 0) return "";
@@ -452,8 +460,7 @@
 		$result = $day." ".$D." ".$month." ".$y;
 		return $result; // Jue 4 Jun 2016
 	}
-	function formatoConDiaYNombreDia($fechaSQL)
-	{
+	function formatoConDiaYNombreDia($fechaSQL){
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
 		$shortDayArray = array("","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo");
 		if ($fechaSQL == 0) return "";
