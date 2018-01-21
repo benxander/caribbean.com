@@ -15,12 +15,13 @@ class Model_movimiento extends CI_Model {
 		$this->db->select("CASE WHEN p.categoria = 1 THEN pm.imagen_bas ELSE imagen_pre END AS imagen_producto",FALSE);
 		$this->db->select('co.idcolor, co.nombre AS color');
 		$this->db->select('c.nombres,c.apellidos, c.email, c.hotel, c.habitacion, c.fecha_excursion, c.fecha_salida, u.codigo, u.ididioma');
-		$this->db->select('act.titulo_act excursion');
+		$this->db->select('act.titulo_act excursion, me.denominacion size');
 		$this->db->from('movimiento mo');
 		$this->db->join('cliente c', 'mo.idcliente = c.idcliente');
 		$this->db->join('usuario u', 'c.idusuario = u.idusuario');
 		$this->db->join('detalle d', 'mo.idmovimiento = d.idmovimiento');
 		$this->db->join('producto p', 'd.idproducto = p.idproducto');
+		$this->db->join('medida me', 'p.idmedida = me.idmedida');
 		$this->db->join('producto_master pm', 'p.idproductomaster = pm.idproductomaster');
 		$this->db->join('color co', 'd.idcolor = co.idcolor');
 		$this->db->join('actividad_cliente ac', 'mo.idactividadcliente = ac.idactividadcliente');

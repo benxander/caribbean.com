@@ -54,9 +54,17 @@
 		            <label class="control-label minotaur-label"> Producto: </label>
 		            <p>{{mp.fData.producto}}</p>
 		        </div>
+		        <div class="form-group mb-md col-md-4 col-sm-6">
+		            <label class="control-label minotaur-label"> Categoria: </label>
+		            <p>{{mp.fData.categoria}}</p>
+		        </div>
 				<div class="form-group mb-md col-md-4 col-sm-6">
 		            <label class="control-label minotaur-label"> Color: </label>
 		            <p>{{mp.fData.color}}</p>
+		        </div>
+		        <div class="form-group mb-md col-md-4 col-sm-6">
+		            <label class="control-label minotaur-label"> Tamaño: </label>
+		            <p>{{mp.fData.size}}</p>
 		        </div>
 
 

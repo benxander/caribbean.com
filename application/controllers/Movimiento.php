@@ -50,6 +50,7 @@ class Movimiento extends CI_Controller {
 					'total_detalle' 	=> $row['total_detalle'],
 					'idcolor' 	=> $row['idcolor'],
 					'color' 	=> $row['color'],
+					'size' 	=> $row['size'],
 
 				)
 			);
