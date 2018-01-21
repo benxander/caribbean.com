@@ -346,7 +346,7 @@
         }
       // }
     }
-    vm.PagarPedido = function(){
+    vm.btnPagar = function(){
       if(vm.gridOptions.data.length <= 0){
         alert("Debe agregar un pedido a la cesta");
         return false;
@@ -355,6 +355,63 @@
         alert("Debe aceptar los Términos y Condiciones");
         return false;
       }
+      if(vm.fDataUsuario.hotel == null || vm.fDataUsuario.habitacion == null ){
+        // console.log('completa datos');
+        vm.completarDatos();
+      }else{
+        // console.log('pagar');
+        vm.PagarPedido();
+      }
+
+    }
+    vm.completarDatos = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/cliente/completa_datos_view.php',
+        // templateUrl: 'app/pages/tienda/terminos.php',
+        controllerAs: 'cdm',
+        size: '',
+        backdropClass: 'splash splash-2 splash-ef-16',
+        windowClass: 'splash splash-2 splash-ef-16',
+        backdrop: 'static',
+        keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.fData = {};
+          vm.fData = arrToModal.scope.fDataUsuario;
+          vm.PagarPedido = arrToModal.scope.PagarPedido;
+          console.log('vm.fData',vm.fData);
+          vm.modalTitle = 'Datos Adicionales';
+          vm.aceptar = function () {
+            pageLoading.start('Procesando...');
+            ClienteServices.sEditarDatosAdicionalesCliente(vm.fData).then(function (rpta) {
+              pageLoading.stop();
+              if(rpta.flag == 1){
+                $uibModalInstance.dismiss('cancel');
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');              }
+            });
+            $uibModalInstance.close(vm.fData);
+            vm.PagarPedido();
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
+    vm.PagarPedido = function(){
       vm.fData.detalle = vm.gridOptions.data;
       pageLoading.start('Procesando...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){

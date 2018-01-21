@@ -643,7 +643,7 @@
           vm.total_venta += item.total_detalle;
         }
       });
-      if(vm.pedido && vm.fDataUsuario.hotel == null){
+      if(vm.pedido && (vm.fDataUsuario.hotel == null || vm.fDataUsuario.habitacion == null )){
         vm.completarDatos();
       }else{
         vm.realizarPago();
