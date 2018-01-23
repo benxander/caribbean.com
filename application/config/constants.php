@@ -84,6 +84,7 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-defined('DESCRIPCION') OR define('DESCRIPCION', 'CARIBBEAN PHOTO STUDIO');
-defined('URL') OR define('URL', 'http://www.unaisangamer.com/');
-defined('_1MB') OR define('_1MB', 1048576);
+defined('DESCRIPCION') 	OR define('DESCRIPCION', 'CARIBBEAN PHOTO STUDIO');
+defined('URL') 			OR define('URL', 'http://www.unaisangamer.com/');
+defined('CORREO') 		OR define('CORREO', 'soporte@unaisangamer.com');
+defined('_1MB') 		OR define('_1MB', 1048576);

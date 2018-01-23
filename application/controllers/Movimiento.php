@@ -5,7 +5,7 @@ class Movimiento extends CI_Controller {
         parent::__construct();
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','otros'));
-        $this->load->model(array('model_movimiento','model_cliente'));
+        $this->load->model(array('model_movimiento','model_cliente','model_email'));
     }
 
     public function listar_pedidos(){
@@ -171,6 +171,42 @@ class Movimiento extends CI_Controller {
 
 		}
 		$this->db->trans_complete();
+
+		/*envio de correo*/
+			$cliente['idtipoemail'] = 6; // confirmacion
+			$lista = $this->model_email->m_cargar_email($cliente);
+			if(empty($lista)){
+				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
+				$arrData['flag2'] = 0;
+			}else{
+		    	$mensaje = $lista[0]['contenido'];
+		    	$mensaje .= '<table>';
+		    	$mensaje .= '<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th>';
+		    	foreach ($allInputs['detalle'] as $row) {
+		    		$mensaje .= '<tr>';
+		    		$mensaje .= '<td>'.$row['producto'].' - '.$row['categoria'].' - '.$row['talla'].' - '.$row['color'].'</td>';
+		    		$mensaje .= '<td>'.$row['cantidad'].'</td>';
+		    		$mensaje .= '<td>'.$row['precio'].'</td>';
+		    		$mensaje .= '<td>'.$row['total_detalle'].'</td>';
+		    	}
+		    	$mensaje .= '</table>';
+		    	$mensaje .= 'TOTAL A PAGAR: US$' . $allInputs['total_pedido'];
+
+				$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
+				$from = CORREO;
+				$to = $cliente['email'];
+				$cc = CORREO;
+				$asunto = $lista[0]['asunto'];
+				// if(false){
+				if(envio_email($to, $cc,$asunto, $mensaje, $from)){
+					$arrData['message2'] = 'Notificación de correo enviada exitosamente.';
+					$arrData['flag2'] = 1;
+				}else{
+					$arrData['message2'] = 'Error en envio de correo';
+					$arrData['flag2'] = 0;
+				}
+			}
+
     	// var_dump($allInputs); exit();
 		$this->output
 		    ->set_content_type('application/json')
@@ -184,7 +220,7 @@ class Movimiento extends CI_Controller {
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-    	// $cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
+    	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
 
     	// if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
 	    // 	$idactividadcliente = $allInputs['detalle'][0]['imagenes'][0]['idactividadcliente'];
@@ -221,7 +257,7 @@ class Movimiento extends CI_Controller {
 	    		'estado'=> 1
 	    	);
     	}
-    	// var_dump($allInputs); exit();
+    	// var_dump($allInputs['detalle']); exit();
     	$this->db->trans_start();
     	$idmovimiento = $this->model_movimiento->m_registrar_movimiento($datos_venta);
     	if($allInputs['total_pedido']>0){
@@ -302,11 +338,66 @@ class Movimiento extends CI_Controller {
 		if($this->model_cliente->m_actualizar_monedero($allInputs)){
 
 		}
+		/*envio de correo*/
+			$cliente['idtipoemail'] = 6; // confirmacion
+			$lista = $this->model_email->m_cargar_email($cliente);
+			if(empty($lista)){
+				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
+				$arrData['flag2'] = 0;
+			}else{
+		    	$mensaje = $lista[0]['contenido'];
+		    	$mensaje .= '<table>';
+		    	$mensaje .= '<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th>';
+		    	$total = 0;
+		    	foreach ($allInputs['detalle'] as $row) {
+		    		$mensaje .= '<tr>';
+		    		if($row['es_pedido']){
+		    			$mensaje .= '<td>'.$row['producto'].' - '.$row['categoria'].' - '.$row['talla'].' - '.$row['color'].'</td>';
+		    		}else{
+		    			$mensaje .= '<td>'.$row['producto'].'</td>';
+		    		}
+		    		$mensaje .= '<td>'.$row['cantidad'].'</td>';
+		    		$mensaje .= '<td>'.$row['precio'].'</td>';
+		    		$mensaje .= '<td>'.$row['total_detalle'].'</td>';
+		    	}
+		    	$mensaje .= '</table>';
+		    	$total += $allInputs['total_venta'];
+		    	if($allInputs['total_pedido']>0){
+		    		$total += $allInputs['total_pedido'];
+		    	}
+		    	$mensaje .= 'TOTAL A PAGAR: US$' . $total;
+
+				$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
+				$from = CORREO;
+				$to = $cliente['email'];
+				$cc = CORREO;
+				$asunto = $lista[0]['asunto'];
+				// if(false){
+				if(envio_email($to, $cc,$asunto, $mensaje, $from)){
+					$arrData['message2'] = 'Notificación de correo enviada exitosamente.';
+					$arrData['flag2'] = 1;
+				}else{
+					$arrData['message2'] = 'Error en envio de correo';
+					$arrData['flag2'] = 0;
+				}
+			}
 		$this->db->trans_complete();
     	// var_dump($allInputs); exit();
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+	public function email_prueba(){
+		$from = CORREO;
+		$to = 'rguevara@villasalud.pe';
+		$cc = CORREO;
+		$asunto = 'Prueba';
+		$mensaje = 'Mensaje Prueba';
+		if(envio_email($to, $cc,$asunto, $mensaje, $from)){
+			echo 'Notificación de correo enviada exitosamente.';
+		}else{
+			echo 'Error en envio de correo';
+		}
 	}
 
 }

@@ -330,7 +330,7 @@
     vm.calcularTotales = function(){
       var total = 0;
       angular.forEach(vm.gridOptions.data,function (value, key) {
-        total += parseFloat(vm.gridOptions.data[key].total_detalle);
+        total += parseFloat(value.total_detalle);
       });
       vm.fData.total_pedido = total;
       // if($scope.fSessionCI.monedero > 0){

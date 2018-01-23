@@ -536,11 +536,11 @@
     vm.calcularTotales = function(){
       var total = 0;
       angular.forEach(vm.gridOptions.data,function (value, key) {
-        total += parseFloat(vm.gridOptions.data[key].total_detalle);
+        total += parseFloat(value.total_detalle);
       });
       // vm.monto_total = total;
       vm.monto_total = total;
-      if($scope.fSessionCI.monedero > 0){
+      // if($scope.fSessionCI.monedero > 0){
         vm.saldo_inicial = $scope.fSessionCI.monedero;
         vm.restante = vm.saldo_inicial - vm.monto_total;
         console.log('vm.restante',vm.restante);
@@ -551,7 +551,7 @@
           vm.saldo_final = vm.restante;
           vm.monto_a_pagar = 0;
         }
-      }
+      // }
     }
     vm.btnVolver = function(){
       /*angular.forEach(vm.images, function(image) {
