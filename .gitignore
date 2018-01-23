@@ -10,6 +10,7 @@ application/logs/*
 
 application/config/database.php
 application/config/config.php
+application/config/email.php
 
 assets/js/config.js
 admin/app/config.js
