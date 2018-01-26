@@ -6,6 +6,7 @@ class Movimiento extends CI_Controller {
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','otros'));
         $this->load->model(array('model_movimiento','model_cliente','model_email'));
+        $this->load->library('Fpdfext');
     }
 
     public function listar_pedidos(){
@@ -399,5 +400,144 @@ class Movimiento extends CI_Controller {
 			echo 'Error en envio de correo';
 		}
 	}
+	/* IMPRIMIR */
+	public function imprimir_pedido(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData = array();
+		$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+    	// DATOS
+    	$pedido = $this->model_movimiento->m_cargar_pedido($allInputs);
+    	if($pedido['genero']){
+			$adicional = $pedido['genero'] == 'H'? ' - HOMBRE' : ' - MUJER';
+		}else{
+			$adicional = '';
+		}
+    	// var_dump($allInputs); exit();
+    	// CREACION PDF
+    	$this->pdf = new Fpdfext();
+    	$this->pdf->AddPage('P','A4');
+		$this->pdf->SetFont('Arial','B',16);
 
+		$this->pdf->Cell(0,11,'',0,15);
+		$this->pdf->Cell(0,7,utf8_decode('Pedido Nº ' . $pedido['iddetalle']),0,7,'C');
+		$this->pdf->Ln(4);
+
+
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos Cliente'),0,7,'L',TRUE);
+		$this->pdf->SetLineWidth(.1);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		$this->pdf->Line($x, $y, $x+190, $y);
+
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(45,6,utf8_decode('Código: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode($pedido['codigo']));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(45,6,utf8_decode('Nombre y Apellidos: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($pedido['nombres'])) . ' ' .ucwords(strtolower_total($pedido['apellidos']))));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(45,6,utf8_decode('Excursion: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($pedido['excursion']))));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(45,6,utf8_decode('Fecha excursión: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,darFormatoDMY($pedido['fecha_excursion']));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(45,6,utf8_decode('Fecha salida: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,darFormatoDMY($pedido['fecha_salida']));
+		$this->pdf->Ln();
+		$this->pdf->Ln();
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos del Pedido'),0,7,'L',TRUE);
+		// $this->pdf->SetLineWidth(.1);
+		// $this->pdf->SetDrawColor(38,147,193);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		$this->pdf->Line($x, $y, $x+190, $y);
+
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(35,6,utf8_decode('Producto: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,$pedido['descripcion_pm'] . $adicional);
+		$this->pdf->Ln();
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->Cell(35,6,utf8_decode('Email: '));
+		// $this->pdf->SetTextColor(100,100,100);
+		// $this->pdf->Cell(70,6,strtolower_total($allInputs['email']));
+		// $this->pdf->Ln();
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->Cell(35,6,utf8_decode('Empresa: '));
+		// $this->pdf->SetTextColor(100,100,100);
+		// $this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['empresa']))));
+		// $this->pdf->Ln();
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->Cell(35,6,utf8_decode('Cargo Lab.: '));
+		// $this->pdf->SetTextColor(100,100,100);
+		// $this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['cargo_laboral']))));
+
+		// $this->pdf->Ln();
+		// $this->pdf->Ln();
+		// /* SECCION */
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(255,255,255);
+		// $this->pdf->SetFillColor(38,147,193);
+		// $this->pdf->Cell(45,6,'   ' . utf8_decode('Más información'),0,7,'L',TRUE);
+		// // $this->pdf->SetLineWidth(.1);
+		// $x=$this->pdf->GetX();
+  //   	$y=$this->pdf->GetY();
+		// // $this->pdf->SetDrawColor(38,147,193);
+		// $this->pdf->Line($x, $y, $x+190, $y);
+		// $this->pdf->Ln();
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->Cell(35,6,utf8_decode('Clasificación: '));
+		// $this->pdf->SetTextColor(100,100,100);
+		// $this->pdf->Cell(70,6,utf8_decode($allInputs['clasificacion']));
+		// $this->pdf->Ln();
+		// $this->pdf->SetFont('Arial','B',12);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->Cell(35,6,utf8_decode('Estatura: '));
+		// $this->pdf->SetTextColor(100,100,100);
+		// $this->pdf->Cell(70,6,utf8_decode($allInputs['estatura']) . ' cm.');
+
+		$this->pdf->Ln();
+		$this->pdf->Ln();
+
+
+		$timestamp = date('YmdHis');
+		$result = $this->pdf->Output( 'F','admin/assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+
+		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+	    // $arrData = array(
+	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
+	    // );
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

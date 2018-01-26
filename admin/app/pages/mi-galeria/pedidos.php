@@ -131,9 +131,10 @@
         <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ga.btnPagar()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
       </div>
     </div>
+    <div class="row" ng-if="ga.pasarela" ng-include="'app/pages/mi-galeria/pasarela.php'"> </div>
+
   </section>
 </div>
-
 <div class="tile p-15" style="min-height: 400px;" ng-show="ga.modoDescargaCompleta">
   <section class="tile-header pl-0">
     <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>

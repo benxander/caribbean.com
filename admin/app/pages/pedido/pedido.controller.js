@@ -6,7 +6,7 @@
     .service('PedidoServices', PedidoServices);
 
   /** @ngInject */
-  function PedidoController($scope,$uibModal, $filter, PedidoServices,toastr,alertify, pageLoading, uiGridConstants) {
+  function PedidoController($scope,$uibModal,$window, $filter, PedidoServices,toastr,alertify, pageLoading, uiGridConstants) {
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
@@ -123,6 +123,16 @@
           PedidoServices.sListarImagenesPedido(vm.fData).then(function(rpta){
             vm.listaImagenes = rpta.datos;
           });
+          vm.imprimirPdf = function () {
+            pageLoading.start('Procesando...');
+            PedidoServices.sImprimirPedido(vm.fData).then(function(rpta){
+              pageLoading.stop();
+              if(rpta.flag == 1){
+                console.log('pdf...');
+                $window.open(rpta.urlTempPDF, '_blank');
+              }
+            });
+          };
           vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
@@ -144,6 +154,7 @@
     return({
       sListarPedido: sListarPedido,
       sListarImagenesPedido: sListarImagenesPedido,
+      sImprimirPedido: sImprimirPedido,
 
     });
     function sListarPedido(pDatos) {
@@ -160,6 +171,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Movimiento/listar_imagenes_pedido",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sImprimirPedido(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Movimiento/imprimir_pedido",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

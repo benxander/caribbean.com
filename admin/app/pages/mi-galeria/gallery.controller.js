@@ -12,7 +12,7 @@
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
-
+    vm.pasarela = false;
     vm.selectedTerminos = false;
 
     vm.cargarGaleria = function(datos,loader){
@@ -412,6 +412,11 @@
       });
     }
     vm.PagarPedido = function(){
+      if(vm.fData.total_a_pagar > 0){
+       /*aqui deberia incorporar proceso de pago y si es valido llevarlo al metodo que mueve las imagenes y muestra la encuesta*/
+       vm.pasarela = true;
+       return;
+      }
       vm.fData.detalle = vm.gridOptions.data;
       pageLoading.start('Procesando...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){

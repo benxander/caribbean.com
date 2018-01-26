@@ -75,6 +75,30 @@ class Model_movimiento extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_cargar_pedido($datos){
+		$this->db->select('mo.idmovimiento, mo.idcliente, mo.fecha_movimiento, mo.idactividadcliente');
+		$this->db->select('d.iddetalle, d.idproducto, pm.descripcion_pm, d.cantidad, d.total_detalle, d.genero');
+		$this->db->select("CASE WHEN p.categoria = 1 THEN 'BASICO' ELSE 'PREMIUM' END AS categoria",FALSE);
+		$this->db->select('co.idcolor, co.nombre AS color');
+		$this->db->select('c.nombres,c.apellidos, c.email, c.hotel, c.habitacion, c.fecha_excursion, c.fecha_salida, u.codigo, u.ididioma');
+		$this->db->select('act.titulo_act excursion, me.denominacion size');
+		$this->db->from('movimiento mo');
+		$this->db->join('cliente c', 'mo.idcliente = c.idcliente');
+		$this->db->join('usuario u', 'c.idusuario = u.idusuario');
+		$this->db->join('detalle d', 'mo.idmovimiento = d.idmovimiento');
+		$this->db->join('producto p', 'd.idproducto = p.idproducto');
+		$this->db->join('medida me', 'p.idmedida = me.idmedida');
+		$this->db->join('producto_master pm', 'p.idproductomaster = pm.idproductomaster');
+		$this->db->join('color co', 'd.idcolor = co.idcolor');
+		$this->db->join('actividad_cliente ac', 'mo.idactividadcliente = ac.idactividadcliente');
+		$this->db->join('actividad act', 'ac.idactividad = act.idactividad');
+		// $this->db->join('detalle_archivo da', 'd.iddetalle = da.iddetalle');
+
+		$this->db->where('mo.estado', 1);
+		$this->db->where('d.estado_det', 1);
+		$this->db->where('d.iddetalle', $datos['iddetalle']);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_imagenes_pedidos($datos){
 		$this->db->select('arc.idarchivo, arc.nombre_archivo');
 		$this->db->from('detalle_archivo da');
