@@ -150,6 +150,12 @@
         controller: 'PedidoController',
         controllerAs: 'pe'
       })
+      .state('encuesta', {
+        url: '/app/encuesta',
+        templateUrl: 'app/pages/encuesta/encuesta.html',
+        controller: 'EncuestaController',
+        controllerAs: 'enc'
+      })
       .state('medida', {
         url: '/app/medida',
         templateUrl: 'app/pages/medida/medida.html',

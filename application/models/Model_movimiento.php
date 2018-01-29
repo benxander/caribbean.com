@@ -107,6 +107,13 @@ class Model_movimiento extends CI_Model {
 		$this->db->where('arc.estado_arc', 1);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_puntuacion(){
+		$this->db->select('puntos, COUNT(*) puntaje',FALSE);
+		$this->db->from('puntuacion');
+		$this->db->group_by('puntos');
+		$this->db->order_by('puntos','DESC');
+		return $this->db->get()->result_array();
+	}
 	public function m_registrar_movimiento($data){
 		$this->db->insert('movimiento', $data);
 		$insert_id = $this->db->insert_id();

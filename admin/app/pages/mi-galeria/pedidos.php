@@ -1,5 +1,5 @@
 <div class="tile p-15" ng-show="!ga.modoDescargaCompleta">
-  <section class="tile-header pl-0 pr-0">
+  <section class="tile-header pl-0 pr-0" ng-show="!ga.pasarela">
     <div class="row">
       <div class="col-sm-12">
         <h1 class="heading pull-left">{{ 'Text.MERCHANDISING' | translate }}</h1>
@@ -127,13 +127,13 @@
           <input type="checkbox" ng-model="ga.selectedTerminos"><div class="input-indicator"></div>
         </label>
       </div>
-      <div class="col-md-12 mt">
+      <div class="col-md-12 mt" ng-show="!ga.pasarela">
         <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ga.btnPagar()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
       </div>
     </div>
-    <div class="row" ng-if="ga.pasarela" ng-include="'app/pages/mi-galeria/pasarela.php'"> </div>
 
   </section>
+  <div class="row" ng-if="ga.pasarela" ng-include="'app/pages/mi-galeria/pasarela.php'"> </div>
 </div>
 <div class="tile p-15" style="min-height: 400px;" ng-show="ga.modoDescargaCompleta">
   <section class="tile-header pl-0">

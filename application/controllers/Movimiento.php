@@ -408,6 +408,7 @@ class Movimiento extends CI_Controller {
     	$arrData['flag'] = 1;
     	// DATOS
     	$pedido = $this->model_movimiento->m_cargar_pedido($allInputs);
+    	$imagenes = $this->model_movimiento->m_cargar_imagenes_pedidos($allInputs);
     	if($pedido['genero']){
 			$adicional = $pedido['genero'] == 'H'? ' - HOMBRE' : ' - MUJER';
 		}else{
@@ -425,108 +426,170 @@ class Movimiento extends CI_Controller {
 
 
 		/* SECCION */
-		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetFont('Arial','B',11);
 		$this->pdf->SetTextColor(255,255,255);
 		$this->pdf->SetFillColor(38,147,193);
 		$this->pdf->SetDrawColor(38,147,193);
-		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos Cliente'),0,7,'L',TRUE);
+		$this->pdf->Cell(40,6,'   ' . utf8_decode('Datos Cliente'),0,7,'L',TRUE);
 		$this->pdf->SetLineWidth(.1);
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x+190, $y);
 
 		$this->pdf->Ln();
-		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetFont('Arial','B',11);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(45,6,utf8_decode('Código: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,utf8_decode($pedido['codigo']));
-		$this->pdf->Ln();
-		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(45,6,utf8_decode('Nombre y Apellidos: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($pedido['nombres'])) . ' ' .ucwords(strtolower_total($pedido['apellidos']))));
+		$this->pdf->Cell(40,6,utf8_decode('Código: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,utf8_decode($pedido['codigo']));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(45,6,utf8_decode('Excursion: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($pedido['excursion']))));
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Nombre y Apellidos: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['nombres'])) . ' ' .ucwords(strtolower_total($pedido['apellidos']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(45,6,utf8_decode('Fecha excursión: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,darFormatoDMY($pedido['fecha_excursion']));
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Hotel: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['hotel']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(45,6,utf8_decode('Fecha salida: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,darFormatoDMY($pedido['fecha_salida']));
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Habitación: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['habitacion']))));
 		$this->pdf->Ln();
-		$this->pdf->Ln();
+		// IZQUIERDA
+		$ancho = $this->pdf->GetPageWidth();
+		$medio = ($ancho / 2)+10;
+
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Excursion: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['excursion']))));
+        $y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Fecha excursión: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,darFormatoDMY($pedido['fecha_excursion']));
+		$y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Fecha salida: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,darFormatoDMY($pedido['fecha_salida']));
+
+		$this->pdf->Ln(18);
 		/* SECCION */
-		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetFont('Arial','B',11);
 		$this->pdf->SetTextColor(255,255,255);
 		$this->pdf->SetFillColor(38,147,193);
-		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos del Pedido'),0,7,'L',TRUE);
-		// $this->pdf->SetLineWidth(.1);
-		// $this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Cell(40,6,'   ' . utf8_decode('Datos del Pedido'),0,7,'L',TRUE);
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x+190, $y);
 
 		$this->pdf->Ln();
-		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetFont('Arial','B',11);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(35,6,utf8_decode('Producto: '));
-		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(70,6,$pedido['descripcion_pm'] . $adicional);
+		$this->pdf->Cell(40,6,utf8_decode('Producto: '));
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['descripcion_pm'] . $adicional))));
 		$this->pdf->Ln();
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->Cell(35,6,utf8_decode('Email: '));
-		// $this->pdf->SetTextColor(100,100,100);
-		// $this->pdf->Cell(70,6,strtolower_total($allInputs['email']));
-		// $this->pdf->Ln();
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->Cell(35,6,utf8_decode('Empresa: '));
-		// $this->pdf->SetTextColor(100,100,100);
-		// $this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['empresa']))));
-		// $this->pdf->Ln();
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->Cell(35,6,utf8_decode('Cargo Lab.: '));
-		// $this->pdf->SetTextColor(100,100,100);
-		// $this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['cargo_laboral']))));
-
-		// $this->pdf->Ln();
-		// $this->pdf->Ln();
-		// /* SECCION */
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(255,255,255);
-		// $this->pdf->SetFillColor(38,147,193);
-		// $this->pdf->Cell(45,6,'   ' . utf8_decode('Más información'),0,7,'L',TRUE);
-		// // $this->pdf->SetLineWidth(.1);
-		// $x=$this->pdf->GetX();
-  //   	$y=$this->pdf->GetY();
-		// // $this->pdf->SetDrawColor(38,147,193);
-		// $this->pdf->Line($x, $y, $x+190, $y);
-		// $this->pdf->Ln();
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->Cell(35,6,utf8_decode('Clasificación: '));
-		// $this->pdf->SetTextColor(100,100,100);
-		// $this->pdf->Cell(70,6,utf8_decode($allInputs['clasificacion']));
-		// $this->pdf->Ln();
-		// $this->pdf->SetFont('Arial','B',12);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->Cell(35,6,utf8_decode('Estatura: '));
-		// $this->pdf->SetTextColor(100,100,100);
-		// $this->pdf->Cell(70,6,utf8_decode($allInputs['estatura']) . ' cm.');
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(40,6,utf8_decode('Categoria: '));
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['categoria']))));
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(40,6,utf8_decode('Tamaño: '));
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->Cell(65,6,utf8_decode($pedido['size']));
+		$this->pdf->Ln();
+		if(!empty($pedido['color'])){
+			$this->pdf->SetFont('Arial','B',11);
+			$this->pdf->SetTextColor(0,0,0);
+			$this->pdf->Cell(40,6,utf8_decode('Color: '));
+			$this->pdf->SetFont('Arial','',11);
+			$this->pdf->SetTextColor(043,043,054);
+			$this->pdf->Cell(65,6,utf8_decode(ucwords(strtolower_total($pedido['color']))));
+			$this->pdf->Ln();
+		}
 
 		$this->pdf->Ln();
 		$this->pdf->Ln();
+		// IZQUIERDA
+		// $y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Fecha de Pedido: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,darFormatoDMY($pedido['fecha_movimiento']));
+		$y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Hora de Pedido: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,darFormatoHora2($pedido['fecha_movimiento']));
+		$y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Cantidad: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,$pedido['cantidad']);
+		$y=$this->pdf->GetY();
+		$this->pdf->SetXY($medio,$y+6);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell(40,6,utf8_decode('Total: '));
+		$this->pdf->SetTextColor(043,043,054);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->Cell(65,6,'US$ ' . $pedido['total_detalle']);
 
+		/* SECCION */
+		$this->pdf->Ln(18);
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->Cell(40,6,'   ' . utf8_decode('Fotografías'),0,7,'L',TRUE);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		$this->pdf->Line($x, $y, $x+190, $y);
+		$this->pdf->SetFont('Arial','',11);
+		$this->pdf->SetTextColor(043,043,054);
+		foreach ($imagenes as $row) {
+			$url = base_url().'uploads/clientes/'.$pedido['codigo'].'/descargadas/'.$row['nombre_archivo'];
+			$this->pdf->Ln();
+			$this->pdf->Cell(0,8 ,$url,'','','',false, $url);
+			// $this->pdf->Link(100,10,10,10, $url);
+			// $this->pdf->Cell(0,6,$url);
+
+		}
 
 		$timestamp = date('YmdHis');
 		$result = $this->pdf->Output( 'F','admin/assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
@@ -539,5 +602,51 @@ class Movimiento extends CI_Controller {
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+	/*PUNTUACION*/
+	public function listar_puntuacion(){
+		$lista = $this->model_movimiento->m_cargar_puntuacion();
+		$arrListado = array();
+		$total = 0;
+		$peso = 0;
+		for ($i=5; $i >=1 ; $i--) {
+			array_push($arrListado, array(
+				'puntos'=> $i,
+				'puntaje'=> 0,
+				)
+			);
+		}
+		foreach ($lista as $row) {
+			$total += $row['puntaje'];
+			$peso += $row['puntos'] * $row['puntaje'];
+		}
+		foreach ($arrListado as $key => $value) {
+			foreach ($lista as $row) {
+				if( $value['puntos'] == $row['puntos'] ){
+					$arrListado[$key]['puntaje'] = $row['puntaje'];
+				}
+			}
+		}
+		foreach ($arrListado as $key => $row) {
+			$arrListado[$key]['porcentaje'] = round(($row['puntaje'] / $total)*100);
+		}
+		// var_dump($arrListado); exit();
+		$promedio = $peso / $total;
+		$porcentaje = round($promedio*20);
+		$promedio = round(($peso / $total),1);
+
+		$arrData['datos'] = $arrListado;
+    	$arrData['total'] = $total;
+    	$arrData['promedio'] = $promedio;
+    	$arrData['porcentaje'] = $porcentaje;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+
 	}
 }

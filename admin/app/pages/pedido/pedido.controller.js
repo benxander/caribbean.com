@@ -50,6 +50,7 @@
           cellTemplate: '<div class="text-center">' +
 
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.verDetalle(row)" tooltip-placement="left" uib-tooltip="Ver detalle" > <i class="fa fa-eye"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-info btn-action" ng-click="grid.appScope.imprimirPdf(row.entity)" tooltip-placement="left" uib-tooltip="Imprimir" > <i class="fa fa-print"></i> </button>'+
 
           '</div>'
         }
@@ -98,9 +99,18 @@
       }
       vm.getPaginationServerSide();
       // vm.fBusqueda = {}
+    vm.imprimirPdf = function (data) {
+      pageLoading.start('Procesando...');
+      PedidoServices.sImprimirPedido(data).then(function(rpta){
+        pageLoading.stop();
+        if(rpta.flag == 1){
+          console.log('pdf...');
+          $window.open(rpta.urlTempPDF, '_blank');
+        }
+      });
+    };
 
     vm.verDetalle = function(row){
-      console.log('det');
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/pedido/detalle_pedido_view.php',
         controllerAs: 'mp',
@@ -117,22 +127,14 @@
           vm.dirImagesProducto = $scope.dirImages + "producto/";
           vm.modoEdicion = false;
           vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+          vm.imprimirPdf = arrToModal.scope.imprimirPdf;
           vm.modalTitle = 'Detalle de pedido';
           vm.fData = row.entity;
           // cargar imagenes del pedido
           PedidoServices.sListarImagenesPedido(vm.fData).then(function(rpta){
             vm.listaImagenes = rpta.datos;
           });
-          vm.imprimirPdf = function () {
-            pageLoading.start('Procesando...');
-            PedidoServices.sImprimirPedido(vm.fData).then(function(rpta){
-              pageLoading.stop();
-              if(rpta.flag == 1){
-                console.log('pdf...');
-                $window.open(rpta.urlTempPDF, '_blank');
-              }
-            });
-          };
+
           vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };

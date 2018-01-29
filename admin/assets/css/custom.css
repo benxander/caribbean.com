@@ -525,3 +525,58 @@ body{top:0px!important;}
   .traductor{right: initial;margin-left: 10px}
 
 }
+/*bar colors encuesta*/
+.progress{
+  background-color: #fff;
+}
+.progress-bar-v5 {
+  background-color: #88b131;
+}
+.progress-bar-v4 {
+  background-color: #99cc00;
+}
+.progress-bar-v3 {
+  background-color: #ffcf02;
+}
+.progress-bar-v2 {
+  background-color: #ff9f02;
+}
+.progress-bar-v1 {
+  background-color: #ff6f31;
+}
+.score{
+    color: #333;
+    font-size: 64px;
+    font-weight: 100;
+    line-height: 64px;
+}
+
+.star-ratings-css {
+  unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 25px;
+  width: 100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0;
+  text-shadow: 0px 1px 0 #a2a2a2;
+}
+.star-ratings-css-top {
+    color: #e7711b;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+.star-ratings-css-bottom {
+    padding: 0;
+    display: block;
+    z-index: 0;
+  }
+.reviews-stats {
+    color: #8d8d8d;
+}

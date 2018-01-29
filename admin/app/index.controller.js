@@ -63,7 +63,7 @@
       }
       return handle;
     })
-    .directive('hcChart', function () {
+    /*.directive('hcChart', function () {
       return {
           restrict: 'E',
           template: '<div></div>',
@@ -82,13 +82,14 @@
 
           }
       };
-  });
+    })*/;
 
   /** @ngInject */
   function MainController($translate,$scope,$state,$location, rootServices, empresaNombre) {
     var vm = this;
     $scope.isSelected = false;
     $scope.seleccionadas = 0;
+    $scope.dirBase = angular.patchURL;
     $scope.dirImages = angular.patchURL+'uploads/';
     $scope.$watch('seleccionadas',function(newValue, oldValue){
       if (newValue===oldValue) {
