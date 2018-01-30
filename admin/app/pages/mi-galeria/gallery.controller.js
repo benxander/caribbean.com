@@ -7,14 +7,17 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, $state, PagesGalleryServices, rootServices, ProductoServices,TiendaServices, ClienteServices, Socialshare, pageLoading,toastr) {
+  function PagesGalleryController($scope,$uibModal, $state,$stateParams, PagesGalleryServices, rootServices, ProductoServices,TiendaServices, ClienteServices, Socialshare, pageLoading,toastr) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
     vm.pasarela = false;
     vm.selectedTerminos = false;
-
+    console.log('$stateParams.',$stateParams);
+    if(!angular.isUndefined($stateParams.id)){
+      console.log('Aqui llamará a la variable session');
+    }
     vm.cargarGaleria = function(datos,loader){
       var loader = loader || false;
       if(loader){
@@ -417,6 +420,36 @@
        vm.pasarela = true;
        return;
       }
+      vm.pagarOk();
+      /*vm.fData.detalle = vm.gridOptions.data;
+      pageLoading.start('Procesando...');
+      TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){
+        pageLoading.stop();
+        if(rpta.flag == 1){
+          // vm.limpiar();
+          vm.temporal = {};
+          vm.gridOptions.data = [];
+          // vm.pedidoBool = false;
+          vm.productoBool = false;
+          vm.modoDescargaCompleta=true;
+          $scope.getValidateSession();
+          $scope.actualizarSaldo(false);
+          var title = 'OK';
+          var type = 'success';
+          toastr.success(rpta.message, title);
+          // $state.reload();
+        }else if(rpta.flag == 0){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+          $scope.getValidateSession();
+          location.reload();
+        }else{
+          alert('Error de desarrollo');
+        }
+      });*/
+    }
+    vm.pagarOk = function(){
       vm.fData.detalle = vm.gridOptions.data;
       pageLoading.start('Procesando...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){

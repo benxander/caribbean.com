@@ -115,7 +115,7 @@
         controllerAs: 'p'
       })//galeria personal
       .state('mi-galeria', {
-        url: '/app/mi-galeria',
+        url: '/app/mi-galeria/?id&&valor',
         templateUrl: 'app/pages/mi-galeria/gallery.html',
         controller: 'PagesGalleryController',
         controllerAs: 'ga'
