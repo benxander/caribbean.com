@@ -58,6 +58,7 @@
         vm.paqueteSeleccionado = vm.listaPaquetes[0];
         vm.monto = vm.listaPaquetes[0].monto;
         vm.precio_adicional = vm.listaExcursiones[0].precio_por_adicional;
+        vm.precio_primera = vm.listaExcursiones[0].precio_primera;
         vm.precio_video = vm.listaExcursiones[0].precio_video;
       });
     }
@@ -87,10 +88,13 @@
       if (vm.selectedAll) {
         vm.selectedAll = false;
         vm.isSelected = false;
+        $scope.actualizarMonto(0);
 
       } else {
         vm.selectedAll = true;
         vm.isSelected = true;
+        $scope.actualizarMonto(vm.monto);
+
       }
       var i=0;
       angular.forEach(vm.images, function(image) {
@@ -104,7 +108,7 @@
         }
       });
       vm.seleccionadas = i;
-      if(i > vm.paqueteSeleccionado.cantidad){
+      /*if(i > vm.paqueteSeleccionado.cantidad){
         var cantidad = i - vm.paqueteSeleccionado.cantidad;
         if(vm.isSelected){
           $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
@@ -114,7 +118,7 @@
         }
       }else if(!vm.isSelected){
         i=0;
-      }
+      }*/
       $scope.actualizarSeleccion(i);
     };
     vm.selectImage = function(index) {
@@ -141,10 +145,18 @@
 
       if (i === 0) {
         vm.isSelected = false;
+        $scope.actualizarMonto(0);
+      }else if(i == 1){
+        console.log('foto suelta');
+        $scope.actualizarMonto(vm.precio_primera);
+      }else if(i > 1){
+        var monto_total = (i - 1)*vm.precio_adicional + vm.precio_primera;
+        $scope.actualizarMonto(monto_total);
       }
       vm.seleccionadas = i;
       $scope.actualizarSeleccion(i);
-      if(add && (vm.seleccionadas > vm.paqueteSeleccionado.cantidad)){
+
+      /*if(add && (vm.seleccionadas > vm.paqueteSeleccionado.cantidad)){
         if(!vm.alertAdicionales){
           alert("Apartir de ahora se cobrará USD$ "+vm.precio_adicional+" por cada foto adicional");
           vm.alertAdicionales = true;
@@ -152,7 +164,7 @@
         $scope.actualizarSaldo(true,vm.precio_adicional);
       }else if(!add && vm.seleccionadas >= vm.paqueteSeleccionado.cantidad){
         $scope.actualizarSaldo(true,'-'+ vm.precio_adicional);
-      }
+      }*/
     };
     vm.confirmDescarga = function(){
       if(!vm.isSelected){

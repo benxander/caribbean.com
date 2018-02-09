@@ -53,6 +53,7 @@ class Excursion extends CI_Controller {
 				'descripcion' => $row['descripcion_act'],
 				'cantidad_fotos' => (int)$row['cantidad_fotos'],
 				'monto_total' => (int)$row['monto_total'],
+				'precio_primera' => (int)$row['precio_primera'],
 				'precio_por_adicional' => (int)$row['precio_por_adicional'],
 				'precio_video' => empty($row['precio_video'])? NULL : (int)$row['precio_video'],
 				'estado' => array(
@@ -126,6 +127,7 @@ class Excursion extends CI_Controller {
 				'descripcion' => $row['descripcion_act'],
 				'cantidad_fotos' => (int)$row['cantidad_fotos'],
 				'monto_total' => (int)$row['monto_total'],
+				'precio_primera' => (int)$row['precio_primera'],
 				'precio_por_adicional' => (int)$row['precio_por_adicional'],
 				'precio_video' => (int)$row['precio_video'],
 				'paquetes' => array()
@@ -184,18 +186,34 @@ class Excursion extends CI_Controller {
     	$arrData['flag'] = 0;
     	// validaciones
     	if(empty($allInputs['titulo_act'])){
-    		$arrData['message'] = 'Campo obligatorio';
+    		$arrData['message'] = 'Título obligatorio';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	if(empty($allInputs['cantidad_fotos'])){
+    		$arrData['message'] = 'Cantidad obligatoria';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if(empty($allInputs['cantidad_fotos'])){
+    		$arrData['message'] = 'Precio paquete obligatorio';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
     	$data = array(
     		'titulo_act' => strtoupper_total($allInputs['titulo_act']),
-    		'descripcion_act' => $allInputs['descripcion'],
+    		'descripcion_act' => empty($allInputs['descripcion'])?NULL:$allInputs['descripcion'],
     		'cantidad_fotos' => $allInputs['cantidad_fotos'],
     		'monto_total' => $allInputs['monto_total'],
-    		'precio_por_adicional' => $allInputs['precio_por_adicional'],
+    		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
+    		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
     		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
     		'createdat' => date('Y-m-d H:i:s'),
     		'updatedat' => date('Y-m-d H:i:s'),
@@ -233,10 +251,11 @@ class Excursion extends CI_Controller {
     	$data = array(
 
     		'titulo_act' => $allInputs['titulo_act'],
-    		'descripcion_act' => $allInputs['descripcion'],
+    		'descripcion_act' => empty($allInputs['descripcion'])?NULL:$allInputs['descripcion'],
     		'cantidad_fotos' => $allInputs['cantidad_fotos'],
     		'monto_total' => $allInputs['monto_total'],
-    		'precio_por_adicional' => $allInputs['precio_por_adicional'],
+    		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
+    		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
     		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
     		'updatedat' => date('Y-m-d H:i:s'),
     	);

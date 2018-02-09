@@ -18,17 +18,21 @@
 	              	<div touch-spin name="cantidad" id="cantidad" ng-model="mb.fData.cantidad_fotos" placeholder="Cantidad" options="{verticalButtons: true, max: 100000, step:10}"></div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-6">
-		    		<label for="monto" class="control-label minotaur-label">Precio Total Fotos($) <small class="text-red">(*)</small> </label>
+		    		<label for="monto" class="control-label minotaur-label">Precio Paquete($) <small class="text-red">(*)</small> </label>
 	              	<div touch-spin name="monto" id="monto" ng-model="mb.fData.monto_total" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
+	            </div>
+	            <div class="form-group col-sm-12 col-md-6">
+		    		<label for="precio_primera" class="control-label minotaur-label">Precio Primera Fotografia($) </label>
+	              	<div touch-spin name="precio_primera" id="precio_primera" ng-model="mb.fData.precio_primera" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-6">
 		    		<label for="precio_por_adicional" class="control-label minotaur-label">Precio Fotografia adicional($) </label>
 	              	<div touch-spin name="precio_por_adicional" id="precio_por_adicional" ng-model="mb.fData.precio_por_adicional" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
 	            </div>
-	            <div class="form-group col-sm-12 col-md-6">
+	            <!-- <div class="form-group col-sm-12 col-md-6">
 		    		<label for="precio_video" class="control-label minotaur-label">Precio Video($) </label>
 	              	<div touch-spin name="precio_video" id="precio_video" ng-model="mb.fData.precio_video" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
-	            </div>
+	            </div> -->
 
 	        </div>
 

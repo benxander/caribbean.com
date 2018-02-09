@@ -89,6 +89,7 @@
     var vm = this;
     $scope.isSelected = false;
     $scope.seleccionadas = 0;
+    $scope.monto_cesta = 0;
     $scope.dirBase = angular.patchURL;
     $scope.dirImages = angular.patchURL+'uploads/';
     $scope.$watch('seleccionadas',function(newValue, oldValue){
@@ -96,8 +97,16 @@
         return;
       }
     });
+    $scope.$watch('monto_cesta',function(newValue, oldValue){
+      if (newValue===oldValue) {
+        return;
+      }
+    });
     $scope.actualizarSeleccion = function(sel, monto){
       $scope.seleccionadas = sel;
+    }
+    $scope.actualizarMonto = function(monto){
+      $scope.monto_cesta = monto;
     }
     $scope.actualizarSaldo = function(isSel,monto){
       if(isSel){

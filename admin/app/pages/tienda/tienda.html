@@ -9,7 +9,7 @@
         <section class="tile-header pl-0">
           <div class="row">
             <h1 class="heading text-center">{{ctrl.listaExcursiones[0].titulo_act}}</h1>
-            <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PAQUETE' | translate }}</div>
+            <!-- <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PAQUETE' | translate }}</div> -->
             <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
                 <div class="card" ng-click="ctrl.selPaquete(item.idpaquete)">
                   <div class="front text-center" ng-class="{'bg-lightred': item.selected, 'bg-lightgray':!item.selected}">
@@ -38,15 +38,18 @@
                     </div>
                     <div class="row">
                       <div class="col-xs-6">
-                        <div><i class="fa fa-camera fa-2x"></i></div><div> + US$ {{ctrl.listaExcursiones[0].precio_por_adicional}}</div>
+                        <div><i class="fa fa-camera"></i></div><div>Foto suelta + US$ {{ctrl.listaExcursiones[0].precio_primera}}</div>
                       </div>
                       <div class="col-xs-6">
-                        <div><i class="fa fa-video-camera fa-2x"></i></div><div> + US$ {{ctrl.listaExcursiones[0].precio_video}}</div>
+                        <div><i class="fa fa-camera"></i></div><div>Adicional + US$ {{ctrl.listaExcursiones[0].precio_por_adicional}}</div>
                       </div>
+                      <!-- <div class="col-xs-6">
+                        <div><i class="fa fa-video-camera fa-2x"></i></div><div> + US$ {{ctrl.listaExcursiones[0].precio_video}}</div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
-                <!-- <input type="radio" name="exc" ng-model=""> -->
+
             </div>
 
           </div>
@@ -54,7 +57,7 @@
             <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PRODUCTO' | translate }}</div>
           </div>
           <div class="controls">
-            <!-- <div class="btn-group" uib-dropdown>
+            <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
@@ -63,7 +66,7 @@
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close> -->
+            <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
 

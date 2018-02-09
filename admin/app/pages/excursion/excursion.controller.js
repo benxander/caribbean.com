@@ -51,7 +51,7 @@
                   '</label></div>' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
-          '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPaquetes(row)" tooltip-placement="left" uib-tooltip="PAQUETES" > <i class="icon-grid"></i> </button>' +
+          // '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPaquetes(row)" tooltip-placement="left" uib-tooltip="PAQUETES" > <i class="icon-grid"></i> </button>' +
 
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
@@ -112,124 +112,9 @@
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Registro de excursion';
-            // vm.fData.cImagen = false;
+            vm.modalTitle = 'Registro de excursión';
 
-
-            // vm.rutaImagen = arrToModal.scope.dirImagesBanner + vm.fData.tipo_banner +'/';
-            // DATEPICKER
-              vm.today = function() {
-                var y = moment().format('YYYY');
-                var m = moment().format('M');
-                var d = moment().format('DD');
-                vm.fData.fecha = new Date(y, (m-1), d);
-              };
-              vm.today();
-
-              vm.clear = function() {
-                vm.fData.fecha = null;
-              };
-
-              vm.inlineOptions = {
-                customClass: getDayClass,
-                minDate: new Date(),
-                showWeeks: true
-              };
-
-              vm.dateOptions = {
-                dateDisabled: false,
-                formatYear: 'yy',
-                maxDate: new Date(2020, 5, 22),
-                minDate: new Date(),
-                startingDay: 1,
-                showWeeks: false,
-                ngModelOptions: {
-                  timezone: 'UTC'
-                }
-              };
-
-              // Disable weekend selection
-              // function disabled(data) {
-              //   var date = data.date,
-              //     mode = data.mode;
-              //   return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-              // }
-
-              vm.toggleMin = function() {
-                vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
-                vm.dateOptions.minDate = vm.inlineOptions.minDate;
-              };
-
-              vm.toggleMin();
-
-              vm.open1 = function() {
-                vm.popup1.opened = true;
-              };
-
-              vm.open2 = function() {
-                vm.popup2.opened = true;
-              };
-
-              // vm.setDate = function(year, month, day) {
-              //   vm.fData.fecha = new Date(year, month, day);
-              // };
-
-              vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-              vm.format = vm.formats[0];
-              vm.altInputFormats = ['M!/d!/yyyy'];
-
-              vm.popup1 = {
-                opened: false
-              };
-
-              vm.popup2 = {
-                opened: false
-              };
-
-              // var tomorrow = new Date();
-              // tomorrow.setDate(tomorrow.getDate() + 1);
-              // var afterTomorrow = new Date();
-              // afterTomorrow.setDate(tomorrow.getDate() + 1);
-              // vm.events = [
-              //   {
-              //     date: tomorrow,
-              //     status: 'full'
-              //   },
-              //   {
-              //     date: afterTomorrow,
-              //     status: 'partially'
-              //   }
-              // ];
-
-              function getDayClass(data) {
-                var date = data.date,
-                  mode = data.mode;
-                if (mode === 'day') {
-                  var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-                  for (var i = 0; i < vm.events.length; i++) {
-                    var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
-
-                    if (dayToCheck === currentDay) {
-                      return vm.events[i].status;
-                    }
-                  }
-                }
-
-                return '';
-              }
             vm.aceptar = function () {
-              // if(vm.fData.cImagen){
-              //   if(angular.isUndefined($scope.image)){
-              //     alert('Debe seleccionar una imagen');
-              //     return false;
-              //   }
-              // }
-              // vm.fData.imagen = $scope.image;
-              // vm.fData.size = $scope.file.size;
-              // vm.fData.nombre_imagen = $scope.file.name;
-              // vm.fData.tipo_imagen = $scope.file.type;
-
               ExcursionServices.sRegistrarExcursion(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){
                   $uibModalInstance.dismiss('cancel');

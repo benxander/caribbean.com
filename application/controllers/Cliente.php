@@ -6,6 +6,7 @@ class Cliente extends CI_Controller {
         parent::__construct();
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion','model_email'));
+        $this->load->library('excel');
     }
 
     public function listar_clientes(){
@@ -372,6 +373,8 @@ class Cliente extends CI_Controller {
 
 		if($this->model_archivo->m_delete_archivo($allInputs)){
 			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
+			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'descargadas'. DIRECTORY_SEPARATOR .'thumbs');
+			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'descargadas');
 			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales'. DIRECTORY_SEPARATOR .'thumbs');
 			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales');
 			deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'thumbs');
@@ -696,5 +699,42 @@ class Cliente extends CI_Controller {
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+	public function leer_excel(){
+		ini_set('xdebug.var_display_max_depth', 10);
+	    ini_set('xdebug.var_display_max_children', 1024);
+	    ini_set('xdebug.var_display_max_data', 1024);
+		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+		$objReader->setReadDataOnly(true);
+
+		$objPHPExcel = $objReader->load("admin/assets/test.xlsx");
+		$objWorksheet = $objPHPExcel->getActiveSheet();
+		$arrListado = array();
+		foreach ($objWorksheet->getRowIterator() as $row) {
+			$cellIterator = $row->getCellIterator();
+			$cellIterator->setIterateOnlyExistingCells(false);
+
+			$arrAux = array();
+			foreach ($cellIterator as $cell) {
+				$arrAux[] = $cell->getValue();
+			}
+			array_push($arrListado, array(
+				'codigo' => $arrAux[0],
+				'excursion' => $arrAux[1],
+				'monedero' => $arrAux[2],
+				'fecha' => $arrAux[3],
+				)
+			);
+		}
+
+
+		// $this->db->trans_start();
+		// foreach ($arrListado as $row) {
+
+  //   		$idusuario = $this->model_usuario->m_registrar_usuario($row);
+		// }
+
+		var_dump($arrListado); exit();
+		// echo '</table>' . "\n";
 	}
 }
