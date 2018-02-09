@@ -172,10 +172,10 @@
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true,true,true,true,true,false,false,false,false];
+        $scope.valores = [true,true,true,false,true,true,true,false,true,false,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [true,false,false,false,false,false,false,false,false,false,true,true,true];
+        $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
       }
       else{
         console.log('No tiene grupo');
@@ -188,8 +188,10 @@
           $scope.fSessionCI = response.datos;
           $scope.logIn();
           console.log('logIn ->',response);
-          if( $location.path() == '/app/pages/login' ){
+          if( $location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo != 3 ){
             $scope.goToUrl('/');
+          }else if($location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo == 3){
+            $scope.goToUrl('/app/tienda');
           }
           $scope.CargaMenu();
           $scope.saldo = $scope.fSessionCI.monedero;
