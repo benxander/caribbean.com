@@ -162,6 +162,7 @@
                       var type = 'success';
                       toastr.success(response.message, title);
                        $uibModalInstance.close();
+                       vm.getPaginationServerSide();
                     }else if( response.flag == 0 ){
                       var title = 'Advertencia';
                       var type = 'warning';
