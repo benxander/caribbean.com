@@ -74,9 +74,9 @@ class Model_usuario extends CI_Model {
 
 		$datos = array(
 			'idgrupo' => 3,
-			'username' => $data['email'],
+			'username' => empty($data['email'])? NULL : $data['email'],
 			'password' => hash('md5',$data['codigo']),
-			'ididioma' => $data['ididioma'],
+			'ididioma' => empty($data['ididioma'])? NULL : $data['ididioma'],
 			'solicita_bonificacion' => 2,
 			'estado_us' => 1,
 			'createdat' => date('Y-m-d H:i:s'),

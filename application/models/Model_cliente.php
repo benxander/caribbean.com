@@ -98,7 +98,7 @@ class Model_cliente extends CI_Model {
 		$datos = array(
 			'nombres' 	 => empty($data['nombres'])? NULL : strtoupper($data['nombres']),
 			'apellidos'  => empty($data['apellidos'])? NULL : strtoupper($data['apellidos']),
-			'email' 	 => $data['email'],
+			'email' 	 => empty($data['email'])? NULL : $data['email'],
 			'telefono' 	 => empty($data['telefono']) ? NULL : $data['telefono'],
 			'whatsapp' 	 => empty($data['whatsapp']) ? NULL : $data['whatsapp'],
 			'hotel' 	 => empty($data['hotel']) ? NULL : $data['hotel'],
@@ -109,8 +109,9 @@ class Model_cliente extends CI_Model {
 			'idusuario'  => $data['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
-			'fecha_excursion'=> date ('Y-m-d', strtotime($data['fecha_excursion'])),
-			'fecha_salida'=> date ('Y-m-d', strtotime($data['fecha_salida']))
+			'fecha_excursion'=> empty($data['fecha_excursion'])? date('Y-m-d H:i:s') : date ('Y-m-d', strtotime($data['fecha_excursion'])),
+			'fecha_salida'=> date('Y-m-d H:i:s')
+			// 'fecha_salida'=> date ('Y-m-d', strtotime($data['fecha_salida']))
 		 );
 		$this->db->insert('cliente', $datos);
 		$insert_id = $this->db->insert_id();

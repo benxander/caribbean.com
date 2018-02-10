@@ -59,7 +59,7 @@
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="FOTOGRAFIAS" ng-if="row.entity.idusuario"> <i class="halcyon-icon-photo-camera"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR FOTOS" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
-          '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
+          // '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '</div>'
         }
@@ -129,6 +129,93 @@
       });
 
     // MANTENIMIENTO
+      vm.btnImportarExcel = function () {
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/cliente/subir_excel_modal.php',
+          controllerAs: 'mc',
+          size: 'md',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
+          scope: $scope,
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            var uploader = $scope.uploader = new FileUploader ({
+              url: angular.patchURLCI + 'cliente/upload_excel'
+              // url: '../application/controllers/upload.php'
+            });
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Importación de clientes';
+
+            // botones
+              vm.aceptar = function () {
+                console.log('uploader.queue',uploader.queue);
+                uploader.queue[0].upload();
+                pageLoading.start('Procesando...');
+                uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                  console.info('onSuccessItem', fileItem, response, status, headers);
+                  pageLoading.stop();
+                  if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                       $uibModalInstance.close();
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+                uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                    pageLoading.stop();
+                    if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+                /*ClienteServices.sRegistrarClientesExcel(vm.fData).then(function (rpta) {
+                  pageLoading.stop();
+                  if(rpta.flag == 1){
+                    toastr.success(rpta.message, 'OK');
+                    $uibModalInstance.close(vm.fData);
+                    vm.getPaginationServerSide();
+
+                  }else if( rpta.flag == 0 ){
+                    var title = 'Advertencia';
+                    var type = 'warning';
+                    toastr.warning(rpta.message, title);
+                  }else{
+                    alert('Ocurrió un error');
+                  }
+                });*/
+
+              };
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/cliente_formview.php',

@@ -238,7 +238,7 @@ class Cliente extends CI_Controller {
     			$arrData['flag'] = 1;
 
     			/*envio de correo*/
-    			$allInputs['idtipoemail'] = 1;
+    			/*$allInputs['idtipoemail'] = 1;
     			$lista = $this->model_email->m_cargar_email($allInputs);
     			if(empty($lista)){
     				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
@@ -257,12 +257,13 @@ class Cliente extends CI_Controller {
 						$arrData['message2'] = 'Error en envio de correo';
 	    				$arrData['flag2'] = 0;
 					}
-    			}
+    			}*/
 
 			}
 		}
 		$this->db->trans_complete();
-
+		$arrData['message2'] = '';
+    	$arrData['flag2'] = 1;
 		if($arrData['flag'] == 1){
 			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
 		    createCarpetas($carpeta);
@@ -537,7 +538,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function lista_imagenes(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_imagenes($allInputs);
@@ -587,7 +587,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
     public function subir_imagenes_carpeta(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente';
@@ -657,7 +656,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function registrar_puntuacion(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'No se pudo registrar la calificacion.';
@@ -674,7 +672,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function actualizar_monedero(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al actualizar los datos, inténtelo nuevamente';
@@ -700,14 +697,76 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function leer_excel(){
+	public function upload_excel(){
+		$arrData['message'] = 'Error al subir archivo';
+    	$arrData['flag'] = 0;
+    	$errors = array(
+		    '0' => 'There is no error, the file uploaded with success',
+		    '1' => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+		    '2' => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		    '3' => 'The uploaded file was only partially uploaded',
+		    '4' => 'No file was uploaded',
+		    '6' => 'Missing a temporary folder',
+		    '7' => 'Failed to write file to disk.',
+		    '8' => 'A PHP extension stopped the file upload.',
+		);
+    	// var_dump($_FILES['file']); exit();
+		if(!empty( $_FILES )  && isset($_FILES['file'])){
+			$file_name = $_FILES['file']['name'];
+		    $file_size =$_FILES['file']['size'];
+		    $file_tmp =$_FILES['file']['tmp_name'];
+		    $file_type=$_FILES['file']['type'];
+		    $file_error=$_FILES['file']['error'];
+		    if(!$file_tmp){
+		    	$arrData['message'] = 'Temporal no existe';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+		    }
+		    if($file_error > 0){
+		    	$arrData['message'] = $errors[$file_error];
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+		    }
+		 //    $inputFile = $_FILES['spreadsheet']['tmp_name'];
+			// $extension = strtoupper(pathinfo($inputFile, PATHINFO_EXTENSION));
+		    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+		    $extensions_archivo = array("xls","xlsx");
+		    $carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes';
+		    $file_name = 'clientes.'. $file_ext;
+		    if(in_array($file_ext,$extensions_archivo)){
+		    	move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
+		    	if($this->registrar_clientes_excel($carpeta . DIRECTORY_SEPARATOR . $file_name )){
+		    		$arrData['message'] = 'Se registraron los datos correctamente';
+	    			$arrData['flag'] = 1;
+		    	}else{
+		    		$arrData['message'] = 'Error al registrar los datos.';
+		    	}
+
+		    }else{
+		    	$arrData['message'] = 'No es el formato correcto';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+		    }
+		}
+		$arrData['message'] = 'Seleccione un archivo';
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	private function registrar_clientes_excel($inputFile){
 		ini_set('xdebug.var_display_max_depth', 10);
 	    ini_set('xdebug.var_display_max_children', 1024);
 	    ini_set('xdebug.var_display_max_data', 1024);
 		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 		$objReader->setReadDataOnly(true);
 
-		$objPHPExcel = $objReader->load("admin/assets/test.xlsx");
+		$objPHPExcel = $objReader->load($inputFile);
 		$objWorksheet = $objPHPExcel->getActiveSheet();
 		$arrListado = array();
 		foreach ($objWorksheet->getRowIterator() as $row) {
@@ -718,23 +777,47 @@ class Cliente extends CI_Controller {
 			foreach ($cellIterator as $cell) {
 				$arrAux[] = $cell->getValue();
 			}
-			array_push($arrListado, array(
-				'codigo' => $arrAux[0],
-				'excursion' => $arrAux[1],
-				'monedero' => $arrAux[2],
-				'fecha' => $arrAux[3],
-				)
-			);
+			if( !empty($arrAux[0]) && !empty($arrAux[1]) ){
+				array_push($arrListado, array(
+					'codigo' => $arrAux[0],
+					'excursion' => $arrAux[1],
+					'monedero' => $arrAux[2],
+					'fecha_excursion' => NULL,
+					// 'fecha_excursion' => $arrAux[3],
+					)
+				);
+			}
+		}
+		// var_dump($arrListado); exit();
+		unset($arrListado[0]);
+		$registro_exitoso = TRUE;
+		$this->db->trans_begin();
+		foreach ($arrListado as $row) {
+	  		$idusuario = $this->model_usuario->m_registrar_usuario($row);
+	  		if($idusuario){
+	  			$row['idusuario'] = $idusuario;
+				$idcliente = $this->model_cliente->m_registrar_cliente($row);
+				if($idcliente){
+					$data = array(
+						'idcliente' => $idcliente,
+						'idactividad' => $row['excursion']
+					);
+					$this->model_cliente->m_registrar_actividad_cliente($data);
+					$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
+		    		createCarpetas($carpeta);
+	    		}
+	  		}else{
+	  			$registro_exitoso = FALSE;
+	  		}
+		}
+		if ($this->db->trans_status() == FALSE || $registro_exitoso == FALSE){
+			$this->db->trans_rollback();
+			$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+	    	$arrData['flag'] = 0;
+		}else{
+			$this->db->trans_commit();
 		}
 
-
-		// $this->db->trans_start();
-		// foreach ($arrListado as $row) {
-
-  //   		$idusuario = $this->model_usuario->m_registrar_usuario($row);
-		// }
-
-		var_dump($arrListado); exit();
-		// echo '</table>' . "\n";
+		return $registro_exitoso;
 	}
 }
