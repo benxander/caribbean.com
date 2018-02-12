@@ -5,62 +5,62 @@
 	<section class="tile-body">
 		<form name="formCliente" role="form" novalidate class="form-validation">
 		    <div class="row">
+	            <div class="form-group col-md-6" >
+					<label for="codigo" class="control-label minotaur-label">Código del Cliente <small class="text-red">(*)</small> </label>
+	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Código del Cliente" required>
+	            </div>
 
 	            <div class="form-group col-md-6">
-					<label for="nombres" class="control-label minotaur-label">Nombres <small class="text-red">(*)</small> </label>
-	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombres" required>
+					<label for="nombres" class="control-label minotaur-label">Nombre </label>
+	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombre">
 	            </div>
-	            <div class="form-group col-md-6">
+	           <!--  <div class="form-group col-md-6">
 					<label for="apellidos" class="control-label minotaur-label">Apellidos </label>
 	              	<input type="text" name="apellidos" id="apellidos" class="form-control" ng-model="mc.fData.apellidos" placeholder="Registre apellidos" >
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="email" class="control-label minotaur-label">Correo <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="email" id="email" class="form-control" ng-model="mc.fData.email" placeholder="example@email.com" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
-	            </div>
-	            <div class="form-group col-md-6" >
-					<label for="codigo" class="control-label minotaur-label">Código del Cliente <small class="text-red">(*)</small> </label>
-	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Código del Cliente" required>
-	            </div>
-	            <div class="form-group col-md-3">
-					<label for="telefono" class="control-label minotaur-label">Teléfono</label>
-	              	<input type="text" name="codigo" id="telefono" class="form-control" ng-model="mc.fData.telefono" placeholder="999999999">
-	            </div>
-	            <div class="form-group col-md-3">
+	            </div> -->
+	            <!-- <div class="form-group col-md-3">
 					<label for="whatsapp" class="control-label minotaur-label">Whatsapp</label>
 	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Whatsapp" >
-	            </div>
+	            </div> -->
 	            <div class="form-group col-md-6">
 					<label class="control-label minotaur-label">Excursiones <small class="text-red">(*)</small> </label>
-	              	<select multiple chosen="{width: '100%'}" class="form-control" ng-model="mc.fData.actividades" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
+	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
 	            </div>
 
 
 
 
-	            <div class="form-group col-md-3">
+	            <!-- <div class="form-group col-md-3">
 					<label for="hotel" class="control-label minotaur-label">Hotel</label>
 	              	<input type="text" name="hotel" id="hotel" class="form-control" ng-model="mc.fData.hotel" placeholder="Registre Hotel" >
 	            </div>
 	            <div class="form-group col-md-3">
 					<label for="habitacion" class="control-label minotaur-label">Habitación</label>
 	              	<input type="text" name="habitacion" id="habitacion" class="form-control" ng-model="mc.fData.habitacion" placeholder="Registre Habitación" >
-	            </div>
-	            <div class="form-group col-md-3" >
+	            </div> -->
+	            <div class="form-group col-md-6" >
 					<label for="fecha_excursion" class="control-label minotaur-label">Fecha de Excursión <small class="text-red">(*)</small> </label>
 	                <input type="text" class="form-control" id="fecha_excursion" ng-model="mc.fData.fecha_excursion" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
-	            <div class="form-group col-md-3" >
+	            <!-- <div class="form-group col-md-3" >
 					<label for="fecha" class="control-label minotaur-label">Fecha de Salida <small class="text-red">(*)</small> </label>
 	                <input type="text" class="form-control" id="fecha" ng-model="mc.fData.fecha_salida" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
 	            <div class="form-group col-md-6">
 					<label for="idioma" class="control-label minotaur-label">Idioma <small class="text-red">(*)</small> </label>
 	              	<select class="form-control" ng-model="mc.fData.ididioma" ng-options="item.id as item.descripcion for item in mc.listaIdiomas" required > </select>
-	            </div>
+	            </div> -->
 	            <div class="form-group col-md-6" >
 					<label for="monedero" class="control-label minotaur-label">Depósito </label>
 	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
+	            </div>
+	            <div class="form-group col-md-3">
+					<label for="telefono" class="control-label minotaur-label">Teléfono</label>
+	              	<input type="text" name="codigo" id="telefono" class="form-control" ng-model="mc.fData.telefono" placeholder="999999999">
 	            </div>
 		    </div>
 		</form>

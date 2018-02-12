@@ -167,16 +167,16 @@ class Cliente extends CI_Controller {
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		if($origen == 'externo'){
 			$allInputs['nombres'] = $this->input->post_get('nombres');
-			$allInputs['apellidos'] = $this->input->post_get('apellidos');
-			$allInputs['email'] = $this->input->post_get('email');
+			// $allInputs['apellidos'] = $this->input->post_get('apellidos');
+			// $allInputs['email'] = $this->input->post_get('email');
 			$allInputs['codigo'] = $this->input->post_get('codigo');
 			$allInputs['telefono'] = $this->input->post_get('telefono');
-			$allInputs['actividades'][] = $this->input->post_get('idexcursion');
-			$allInputs['hotel'] = $this->input->post_get('hotel');
-			$allInputs['habitacion'] = $this->input->post_get('habitacion');
-			$allInputs['ididioma'] = $this->input->post_get('ididioma');
+			$allInputs['idactividad'] = $this->input->post_get('idactividad');
+			// $allInputs['hotel'] = $this->input->post_get('hotel');
+			// $allInputs['habitacion'] = $this->input->post_get('habitacion');
+			// $allInputs['ididioma'] = $this->input->post_get('ididioma');
 			$allInputs['fecha_excursion'] = $this->input->post_get('fecha_excursion');
-			$allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
+			// $allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
 			$allInputs['monedero'] = $this->input->post_get('deposito');
 		}else{
 			$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -184,41 +184,41 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-    	if(empty($allInputs['email'])){
+    	/*if(empty($allInputs['email'])){
     		$arrData['message'] = 'Debe seleccionar un email.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}
-    	if(empty($allInputs['ididioma'])){
+    	}*/
+    	/*if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}
-    	if(empty($allInputs['actividades'])){
+    	}*/
+    	if(empty($allInputs['idactividad'])){
     		$arrData['message'] = 'Debe seleccionar una excursión.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-    	if(!comprobar_email($allInputs['email'])){
+    	/*if(!comprobar_email($allInputs['email'])){
     		$arrData['message'] = 'Correo de Cliente inválido.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}
-    	if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
+    	}*/
+    	/*if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
     		$arrData['message'] = 'Ya existe un cliente registrado con el email: '.$allInputs['email'];
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}
+    	}*/
 
     	$this->db->trans_start();
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
@@ -227,13 +227,14 @@ class Cliente extends CI_Controller {
 			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
 			// var_dump($allInputs);
 			if($idcliente){
-				foreach ($allInputs['actividades'] as $row) {
-					$data = array(
-						'idcliente' => $idcliente,
-						'idactividad' => $row
-					);
+				$data = array(
+					'idcliente' => $idcliente,
+					'idactividad' => $allInputs['idactividad']
+				);
+				$this->model_cliente->m_registrar_actividad_cliente($data);
+				/*foreach ($allInputs['actividades'] as $row) {
 					$this->model_cliente->m_registrar_actividad_cliente($data);
-				}
+				}*/
 				$arrData['message'] = 'Se registraron los datos correctamente';
     			$arrData['flag'] = 1;
 

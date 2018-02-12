@@ -116,7 +116,7 @@
     // EXCURSIONES
       ExcursionServices.sListarExcursionCbo().then(function (rpta) {
         vm.listaExcursiones = angular.copy(rpta.datos);
-        vm.listaExcursiones.splice(0,0,{ id : '', descripcion:''});
+         // vm.listaExcursiones.splice(0,0,{ id : '', descripcion:'Selecciona opcion'});
         vm.listaExcursionesFiltro = angular.copy(rpta.datos);
         vm.fBusqueda.filtroExcursiones = vm.listaExcursionesFiltro[0];
         vm.getPaginationServerSide(true);
@@ -221,7 +221,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/cliente_formview.php',
           controllerAs: 'mc',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           backdrop: 'static',
@@ -236,6 +236,7 @@
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData.ididioma = vm.listaIdiomas[0].id;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
+            vm.fData.idactividad = vm.listaExcursiones[0].id;
             var hoy = new Date();
             vm.fData.fecha_excursion = $filter('date')(hoy,'dd-MM-yyyy');
             // botones
@@ -306,7 +307,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/cliente_formview.php',
           controllerAs: 'mc',
-          size: 'lg',
+          size: '',
           backdropClass: 'splash splash-2 splash-ef-16',
           windowClass: 'splash splash-2 splash-ef-16',
           backdrop: 'static',
@@ -323,9 +324,9 @@
             vm.modalTitle = 'Edición de Cliente';
 
             ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
-              vm.fData.actividades = rpta.datos;
+              vm.fData.idactividad = rpta.datos;
             });
-            // vm.fData.actividades = ["1","5"];
+            // vm.fData.idactividad = ["1","5"];
 
             vm.aceptar = function () {
               pageLoading.start('Procesando...');

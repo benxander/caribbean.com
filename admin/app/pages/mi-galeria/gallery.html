@@ -5,21 +5,26 @@
   </ol>
   <div class="row" ng-show="!ga.pedidoBool">
     <div class="tile p-15">
-      <section class="tile-header pl-0">
-        <h1 class="heading">{{ 'Menu.GALERIA' | translate }}</h1>
-        <p>Ahora puede descargar sus fotos.</p>
-        <p ng-if="!image.es_salida">Haga un pedido de producto.</p>
-        <div class="controls">
-          <div class="btn-group" uib-dropdown>
-            <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
-            <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
-              <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-              <li role="menuitem"><a href="javascript:;" ng-click="ga.cargarGaleria(ga.fDataUsuario,true);" minotaur-tile-refresh></a></li>
-              <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
-              <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
-            </ul>
+      <section class="tile-header row">
+        <div class="col-sm-12">
+          <h1 class="heading">{{ 'Menu.GALERIA' | translate }}</h1>
+
+          <div >
+            <p>Lorem ipsum dolor sit amet, sed do eiusmod tempor, sunt in culpa qui officia incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur consectetur adipisicing elit,. Excepteur sint occaecat cupidatat non proidentdeserunt mollit anim id est laborum.</p>
           </div>
-          <minotaur-tile-close></minotaur-tile-close>
+          <!-- <p ng-if="!image.es_salida">Haga un pedido de producto.</p> -->
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" ng-click="ga.cargarGaleria(ga.fDataUsuario,true);" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
         </div>
       </section>
 
@@ -33,9 +38,9 @@
         <li ng-class="{'disabled': !ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
           <a href="javascript:;"><i class="fa fa-download" ></i> {{ 'Text.DESCARGAR' | translate }}</a>
         </li>
-        <li ng-click='ga.btnPedidos();' ng-if="!fSessionCI.es_salida">
+        <!-- <li ng-click='ga.btnPedidos();' ng-if="!fSessionCI.es_salida">
           <a href="javascript:;"><i class="fa fa-gift" ></i> {{ 'Text.MERCHANDISING' | translate }}</a>
-        </li>
+        </li> -->
       </ul>
       <div class="row mix-grid" masonry>
         <div class="gallery" ng-mixitup magnific-popup="{
@@ -111,9 +116,9 @@
                   <a class="img-preview" href="{{image.src}}" title="{{image.title}}">
                     <i class="fa fa-search"></i>
                   </a>
-                  <a class="img-select" ng-if="image.descargado == 1 && !image.es_salida" href="javascript:;" ng-click="ga.btnPedidos(image)" uib-tooltip="Merchandising" tooltip-placement="top">
+                  <!-- <a class="img-select" ng-if="image.descargado == 1 && !image.es_salida" href="javascript:;" ng-click="ga.btnPedidos(image)" uib-tooltip="Merchandising" tooltip-placement="top">
                     <i class="fa fa-gift"></i>
-                  </a>
+                  </a> -->
                 </div>
               </div>
 
@@ -123,5 +128,5 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-show="ga.pedidoBool" ng-include="'app/pages/mi-galeria/pedidos.php'"> </div>
+  <!-- <div class="row" ng-show="ga.pedidoBool" ng-include="'app/pages/mi-galeria/pedidos.php'"> </div> -->
 </div>
