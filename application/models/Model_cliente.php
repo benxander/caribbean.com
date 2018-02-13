@@ -7,7 +7,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero, c.telefono, c.createdat, ac.idactividadcliente');
-		$this->db->select('u.codigo, u.ididioma, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo');
+		$this->db->select('u.codigo, u.ididioma, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo, ac.idactividad');
 		$this->db->select('c.hotel, c.habitacion');
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
@@ -131,7 +131,8 @@ class Model_cliente extends CI_Model {
 			'monedero' 		=> empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'updatedat' 	=> date('Y-m-d H:i:s'),
 			'fecha_excursion'=> date ('Y-m-d', strtotime($data['fecha_excursion'])),
-			'fecha_salida'	=> date ('Y-m-d', strtotime($data['fecha_salida']))
+			'fecha_salida'=> date('Y-m-d H:i:s')
+			// 'fecha_salida'	=> date ('Y-m-d', strtotime($data['fecha_salida']))
 			// 'idactividad'	=> $data['idactividad'],
 
 		 );

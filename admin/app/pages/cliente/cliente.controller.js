@@ -48,11 +48,11 @@
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
-        { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:80, visible:true },
+        { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:100, visible:true },
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA'},
         { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
-        { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
-        { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
+        // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
+        // { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
         { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 110, enableFiltering: false, enableSorting: false },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
@@ -245,11 +245,11 @@
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
                   pageLoading.stop();
                   if(rpta.flag == 1){
-                    if(rpta.flag2 == 1){
+                    /*if(rpta.flag2 == 1){
                       toastr.success(rpta.message2, 'OK');
                     }else{
                       toastr.warning(rpta.message2, 'Advertencia');
-                    }
+                    }*/
                     toastr.success(rpta.message, 'OK');
                     $uibModalInstance.close(vm.fData);
                     vm.getPaginationServerSide();
@@ -323,9 +323,9 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
 
-            ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
-              vm.fData.idactividad = rpta.datos;
-            });
+            // ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
+            //   vm.fData.idactividad = rpta.datos;
+            // });
             // vm.fData.idactividad = ["1","5"];
 
             vm.aceptar = function () {

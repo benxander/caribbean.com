@@ -35,6 +35,7 @@ class Cliente extends CI_Controller {
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> $row['ididioma'],
 					'idactividadcliente' 	=> $row['idactividadcliente'],
+					'idactividad' 	=> $row['idactividad'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
@@ -165,13 +166,13 @@ class Cliente extends CI_Controller {
 	// MANTENIMIENTO
 	public function registrar_cliente($origen=''){
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
-		if($origen == 'externo'){
+		if($origen == 'externo'){ // para colocar en un formulario externo
 			$allInputs['nombres'] = $this->input->post_get('nombres');
 			// $allInputs['apellidos'] = $this->input->post_get('apellidos');
 			// $allInputs['email'] = $this->input->post_get('email');
 			$allInputs['codigo'] = $this->input->post_get('codigo');
 			$allInputs['telefono'] = $this->input->post_get('telefono');
-			$allInputs['idactividad'] = $this->input->post_get('idactividad');
+			$allInputs['idactividad'] = $this->input->post_get('idexcursion');
 			// $allInputs['hotel'] = $this->input->post_get('hotel');
 			// $allInputs['habitacion'] = $this->input->post_get('habitacion');
 			// $allInputs['ididioma'] = $this->input->post_get('ididioma');

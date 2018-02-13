@@ -28,7 +28,7 @@
 	            </div> -->
 	            <div class="form-group col-md-6">
 					<label class="control-label minotaur-label">Excursiones <small class="text-red">(*)</small> </label>
-	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required> </select>
+	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required ng-disabled="mc.modoEdicion"> </select>
 	            </div>
 
 
