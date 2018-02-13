@@ -181,6 +181,7 @@
       }
     }
     vm.verResumen = function(){
+
       if(!vm.isSelected){
         return;
       }
@@ -197,36 +198,32 @@
       }
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
         pageLoading.stop();
-        vm.datosVista = rpta;
-        if(vm.datosVista.mostrar_productos){
-          vm.cargarProductos();
-        }
-        vm.calcularGrilla();
-        vm.agregarGrilla();
-        vm.modoSeleccionar=false;
+        // vm.datosVista = rpta;
+        // if(vm.datosVista.mostrar_productos){
+        //   vm.cargarProductos();
+        // }
         vm.modoPagar=true;
       });
-      vm.cargarProductos = function(){
+      /*vm.cargarProductos = function(){
         ProductoServices.sListarProductoPedido().then(function (rpta) {
           vm.listaProductos = angular.copy(rpta.datos);
         });
-      }
+      }*/
       vm.calcularGrilla = function(){
-        vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-        if(vm.cantidad_adic > 0){
-          vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
-        }else{
-          vm.cantidad_adic = 0;
-        }
+        // vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+        // if(vm.cantidad_adic > 0){
+        //   vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
+        // }else{
+        //   vm.cantidad_adic = 0;
+        // }
         vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
-        console.log('vm.datosVista',vm.datosVista);
-        if(vm.datosVista.tiene_descuento){
+       /* if(vm.datosVista.tiene_descuento){
           vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
           vm.importe_total = parseFloat(vm.monto_total - vm.monto_descuento);
           vm.restante = parseFloat($scope.fSessionCI.monedero - vm.importe_total);
-        }else{
+        }else{*/
           vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total);
-        }
+        // }
 
         if(vm.restante < 0){
           vm.monto_a_pagar = Math.abs(vm.restante);
@@ -237,25 +234,24 @@
         }
       }
       vm.agregarGrilla = function(){
-
         // GRILLA RESUMEN
           vm.gridOptions = {
             minRowsToShow: 3,
             appScopeProvider: vm
           }
           vm.gridOptions.columnDefs = [
-            { field: 'producto', displayName: 'PRODUCTO' },
+            { field: 'producto', displayName: 'PRODUCTO', minWidth:120 },
             { field: 'categoria', displayName: 'CATEGORIA',  width:100, visible:false },
             { field: 'color',  displayName: 'COLOR',  width:80, visible:false },
             { field: 'talla',  displayName: 'TALLA',  width:120, visible:false },
-            { field: 'cantidad',  displayName: 'CANTIDAD',  width:80 },
+            { field: 'cantidad',  displayName: 'CANTIDAD FOTOS',  width:120 },
             { field: 'precio',  displayName: 'PRECIO',  width:80 },
             { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
-            { field: 'accion', displayName: '', width: 60,
+            /*{ field: 'accion', displayName: '', width: 60,
               cellTemplate: '<div>' +
               '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR" ng-if="row.entity.es_pedido"> <i class="fa fa-trash"></i> </button>' +
               '</div>'
-            }
+            }*/
           ];
           vm.gridOptions.data = [];
           vm.getTableHeight = function(){
@@ -268,9 +264,10 @@
           };
         vm.arrTemporal = {
           'idpaquete': vm.paqueteSeleccionado.idpaquete,
-          'producto' : 'PAQUETE: ' + vm.paqueteSeleccionado.titulo_pq,
+          'producto' : 'PAQUETE: ' + vm.listaExcursiones[0].titulo_act,
 
-          'cantidad' : 1,
+          'cantidad' : vm.listaImagenes.length,
+          // 'cantidad' : 1,
           'precio' : parseInt(vm.monto),
           'total_detalle' : parseInt(vm.monto),
           'es_pedido': false,
@@ -278,7 +275,8 @@
           'imagenes': vm.listaImagenes,
         }
         vm.gridOptions.data.push(vm.arrTemporal);
-        if(vm.cantidad_adic>0){
+        console.log('data',vm.gridOptions.data);
+       /* if(vm.cantidad_adic>0){
           console.log('vm.cantidad_adic',vm.cantidad_adic);
           vm.arrTemporal = {
             'idpaquete': vm.paqueteSeleccionado.idpaquete,
@@ -305,9 +303,14 @@
             'imagenes': null,
           }
           vm.gridOptions.data.push(vm.arrTemporal);
-        }
+        }*/
         // vm.calculaDescuentos();
+
       }
+      console.log('calculo');
+      vm.calcularGrilla();
+      vm.agregarGrilla();
+      vm.modoSeleccionar=false;
     }
     vm.btnPedidos = function(imagen){ // btn merchandising
       var imagen = imagen || null;
@@ -591,8 +594,9 @@
       vm.isPagoMonedero = false;
       $scope.actualizarSeleccion(0);
       $scope.actualizarSaldo(false);
+      $scope.actualizarMonto(0);
     }
-    vm.completarDatos = function(){
+    /*vm.completarDatos = function(){
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/cliente/completa_datos_view.php',
         // templateUrl: 'app/pages/tienda/terminos.php',
@@ -638,7 +642,7 @@
           }
         }
       });
-    }
+    }*/
     vm.btnPagar = function(){
       if(!vm.selectedTerminos){
         alert("Debe aceptar los Términos y Condiciones");
@@ -655,11 +659,11 @@
           vm.total_venta += item.total_detalle;
         }
       });
-      if(vm.pedido && (vm.fDataUsuario.hotel == null || vm.fDataUsuario.habitacion == null )){
-        vm.completarDatos();
-      }else{
+      // if(vm.pedido && (vm.fDataUsuario.hotel == null || vm.fDataUsuario.habitacion == null )){
+      //   vm.completarDatos();
+      // }else{
         vm.realizarPago();
-      }
+      // }
 
     }
     vm.realizarPago = function(){
@@ -683,6 +687,7 @@
           vm.irCompraExitosa();
           $scope.getValidateSession();
           $scope.actualizarSaldo(false);
+          $scope.actualizarMonto(0);
         }else if(rpta.flag == 0){
           alert(rpta.message);
           $scope.getValidateSession();
