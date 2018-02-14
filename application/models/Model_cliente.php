@@ -65,6 +65,21 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_cliente_por_codigo($codigo){
+		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero, c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
+		$this->db->select('ac.idactividadcliente');
+		// $this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
+		// $this->db->select('c.hotel, c.habitacion');
+		$this->db->from('cliente c');
+		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
+		// $this->db->join('usuario u','c.idusuario = u.idusuario');
+		// $this->db->join('idioma id','u.ididioma = id.ididioma');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('ac.estado_ac', 1);
+		$this->db->where('c.codigo', $codigo);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_cliente_por_email($datos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
 		$this->db->from('cliente c');
@@ -105,7 +120,7 @@ class Model_cliente extends CI_Model {
 			'habitacion' 	 => empty($data['habitacion']) ? NULL : $data['habitacion'],
 			'monedero' 	 => empty($data['monedero']) ? NULL : (float)$data['monedero'],
 			'estado_cl'  => 1,
-			// 'idactividad'=> $data['idactividad'],
+			'codigo'	 => $data['codigo'],
 			'idusuario'  => $data['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),

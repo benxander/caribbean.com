@@ -407,6 +407,30 @@
             ev.preventDefault();
         });
       }
+      vm.btnOrganizarImagenes = function(){
+        alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
+            ev.preventDefault();
+            pageLoading.start('Procesando...puede tardar unos minutos');
+            ClienteServices.sOrganizarImagenes().then(function (rpta) {
+              pageLoading.stop();
+              if(rpta.flag == 1){
+                vm.getPaginationServerSide();
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Ocurrió un error');
+              }
+            });
+          },
+          function(ev){
+            ev.preventDefault();
+        });
+      }
       vm.btnUpload = function(row){
         vm.gritdClientes = false;
         vm.uploadBtn = false;
@@ -714,6 +738,7 @@
         sDelete: sDelete,
         sRegistrarPuntuacion:sRegistrarPuntuacion,
         sActualizarMonedero:sActualizarMonedero,
+        sOrganizarImagenes:sOrganizarImagenes,
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -856,6 +881,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/actualizar_monedero",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sOrganizarImagenes (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/organizar_imagenes_temporales",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

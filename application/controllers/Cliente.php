@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Cliente extends CI_Controller {
 	public function __construct(){
         parent::__construct();
@@ -8,7 +7,6 @@ class Cliente extends CI_Controller {
         $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion','model_email'));
         $this->load->library('excel');
     }
-
     public function listar_clientes(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
@@ -54,30 +52,29 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function listar_cliente_por_idusuario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$row = $this->model_cliente->m_cargar_cliente_por_idusuario($allInputs['idusuario']);
 		//var_dump($lista); exit();
 		$arrListado =	array(
-				'idcliente' => $row['idcliente'],
-				'idusuario' => $row['idusuario'],
-				'username' => $row['username'],
-				'nombres' => $row['nombres'],
-				'apellidos' => $row['apellidos'],
-				'cliente' => strtoupper_total($row['nombres'] . ' ' .$row['apellidos']),
-				'email' => $row['email'],
-				'whatsapp' => $row['whatsapp'],
-				'hotel' 	=> $row['hotel'],
-				'habitacion'=> $row['habitacion'],
-				'telefono' 	=> $row['telefono'],
-				'estado_cl' => $row['estado_cl'],
-				'ididioma' => $row['ididioma'],
-				'idioma' => $row['idioma'],
+			'idcliente' => $row['idcliente'],
+			'idusuario' => $row['idusuario'],
+			'username' => $row['username'],
+			'nombres' => $row['nombres'],
+			'apellidos' => $row['apellidos'],
+			'cliente' => strtoupper_total($row['nombres'] . ' ' .$row['apellidos']),
+			'email' => $row['email'],
+			'whatsapp' => $row['whatsapp'],
+			'hotel' 	=> $row['hotel'],
+			'habitacion'=> $row['habitacion'],
+			'telefono' 	=> $row['telefono'],
+			'estado_cl' => $row['estado_cl'],
+			'ididioma' => $row['ididioma'],
+			'idioma' => $row['idioma'],
 
-				'solicita_bonificacion' => $row['solicita_bonificacion'],
-				'nombre_foto' => empty($row['nombre_foto']) ? 'sin-imagen.png' : $row['nombre_foto'],
-			);
+			'solicita_bonificacion' => $row['solicita_bonificacion'],
+			'nombre_foto' => empty($row['nombre_foto']) ? 'sin-imagen.png' : $row['nombre_foto'],
+		);
 
     	$arrData['datos'] = $arrListado;
     	$arrData['flag'] = 1;
@@ -274,7 +271,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function editar_cliente(){
 		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -321,7 +317,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function anular_cliente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
@@ -338,7 +333,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function anular_archivo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
@@ -368,7 +362,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function delete_archivo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
@@ -388,7 +381,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function delete_archivo_select(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
@@ -415,7 +407,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function upload_cliente(){
 		ini_set('memory_limit','1G');
 		$arrData['message'] = 'Error al subir imagenes/videos';
@@ -821,5 +812,71 @@ class Cliente extends CI_Controller {
 		}
 
 		return $registro_exitoso;
+	}
+	public function organizar_imagenes_temporales(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$this->load->helper('file');
+        $this->load->library('image_lib');
+        // $extensions_image = array("jpeg","jpg");
+        // $archivos = array();
+		$carpeta = './uploads/temporal';
+
+		if (!file_exists($carpeta)) {
+			$arrData['message'] = 'No existe el directorio';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+		$error = FALSE;
+		$i = 0;
+		foreach (get_filenames($carpeta) as $archivo) {
+			if( $archivo != 'index.html'){
+				++$i;
+	       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+				$codigo = explode("-", $archivo)[0];
+
+				$url_origen = $carpeta.'/'.$archivo;
+				$url_destino = 'uploads/clientes/'.$codigo.'/originales/'.$archivo;
+
+				if(rename($url_origen,$url_destino)){
+					$carpeta_or = './uploads/clientes/'.$codigo;
+				    $archivo_or = $carpeta_or.'/originales/'.$archivo;
+
+	   				$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
+	        		$allInputs['nombre_archivo'] = $archivo;
+					$allInputs['size'] = filesize($archivo_or);
+					$allInputs['tipo_archivo'] = 1;
+					$allInputs['idcliente'] = $rowCliente['idcliente'];
+					$allInputs['idusuario'] = $rowCliente['idusuario'];
+					$allInputs['idactividadcliente'] = $rowCliente['idactividadcliente'];
+					// var_dump($allInputs);
+
+	   				redimencionMarcaAgua(600, $archivo_or, $carpeta_or, $archivo);
+	   				redimenciona(300, $archivo_or, $carpeta_or .'/originales/thumbs', $archivo);
+
+
+	        		if(!$this->model_archivo->m_registrar_archivo($allInputs)){
+						$error = TRUE;
+					}
+				}else{
+					$error = TRUE;
+				}
+
+			}
+       	}
+       	if( $i == 0 ){
+       		$arrData['message'] = 'No hay nada que organizar';
+			$arrData['flag'] = 0;
+       	}elseif($error){
+       		$arrData['message'] = 'Ocurrió un error';
+			$arrData['flag'] = 0;
+       	}else{
+       		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
+			$arrData['flag'] = 1;
+       	}
+ 		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
 	}
 }
