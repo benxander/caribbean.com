@@ -10,24 +10,24 @@ class Model_archivo extends CI_Model {
 			arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
 			us.codigo, cl.fecha_salida, arc.idactividadcliente');
 		$this->db->from('archivo arc');
-		$this->db->join('usuario us','us.idusuario = arc.idusuario');
+		// $this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 1);
-		$this->db->where('arc.idusuario', $pDatos['idusuario']);
+		$this->db->where('arc.idcliente', $pDatos['idcliente']);
 		return $this->db->get()->result_array();
 	}
 
 	public function m_cargar_galeria_no_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size,
 			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
-			arc.tipo_archivo, us.codigo,cl.fecha_salida');
+			arc.tipo_archivo, cl.codigo,cl.fecha_salida');
 		$this->db->from('archivo arc');
-		$this->db->join('usuario us','us.idusuario = arc.idusuario');
+		// $this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 2);
-		$this->db->where('arc.idusuario', $pDatos['idusuario']);
+		$this->db->where('arc.idcliente', $pDatos['idcliente']);
 		return $this->db->get()->result_array();
 	}
 
@@ -70,20 +70,22 @@ class Model_archivo extends CI_Model {
 
 	public function m_cargar_imagenes($data){
 		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo,
-		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, u.codigo');
+		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, cl.codigo');
 		$this->db->from('archivo a');
-		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
+		$this->db->join('cliente cl', 'a.idcliente = cl.idcliente');
+		// $this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
 		$this->db->where('a.estado_arc', 1);
-		$this->db->where('a.idusuario', $data['idusuario']);
+		$this->db->where('a.idcliente', $data['idcliente']);
 		return $this->db->get()->result_array();
 	}
 
 	public function m_cargar_nombre_imagenes($data){
 		$this->db->select('a.nombre_archivo');
 		$this->db->from('archivo a');
-		$this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
+		$this->db->join('cliente cl', 'a.idcliente = cl.idcliente');
+		// $this->db->join('usuario u','u.idusuario = a.idusuario', 'left');
 		$this->db->where('a.estado_arc', 1);
-		$this->db->where('a.idusuario', $data['idusuario']);
+		$this->db->where('a.idcliente', $data['idcliente']);
 		return $this->db->get()->result_array();
 	}
 

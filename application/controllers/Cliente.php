@@ -580,7 +580,7 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-    public function subir_imagenes_carpeta(){
+    /*public function subir_imagenes_carpeta(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente';
     	$arrData['flag'] = 0;
@@ -648,7 +648,7 @@ class Cliente extends CI_Controller {
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
-	}
+	}*/
 	public function registrar_puntuacion(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'No se pudo registrar la calificacion.';

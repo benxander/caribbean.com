@@ -508,14 +508,14 @@
         vm.cargarImagenes = function(datos){
           ClienteServices.sListarImagenes(vm.fDataUpload).then(function(rpta){
             vm.imgs = rpta.datos;
-
+            var num = 10;
             // vm.images = rpta.datos;
             vm.length_images = vm.imgs.length;
             // vm.length_images = vm.images.length;
             if (vm.length_images == 0) { vm.uploadBtn = true; };
 
-            if(vm.imgs.length>=5){
-              for (var i = 0; i < 5; i++) {
+            if(vm.imgs.length>=num){
+              for (var i = 0; i < num; i++) {
                 vm.images.push(vm.imgs[i]);
               }
             }else{
@@ -528,8 +528,9 @@
             console.log('cargando mas...');
             var last = vm.images.length;
             var dif = vm.imgs.length - vm.images.length;
-            if( dif >= 5 ){
-              for (var i = 0; i < 5; i++) {
+            var num = 5;
+            if( dif >= num ){
+              for (var i = 0; i < num; i++) {
                 vm.images.push(vm.imgs[last+i]);
               }
             }else{
@@ -540,24 +541,6 @@
           }
         }
         vm.cargarImagenes();
-
-        vm.btnSubirImagenesCarpeta = function(datos){
-          ClienteServices.sSubirImagenesCarpeta(vm.fDataUpload).then(function(rpta){
-            if(rpta.flag == 1){
-              vm.getPaginationServerSide();
-              var title = 'OK';
-              var type = 'success';
-              toastr.success(rpta.message, title);
-              vm.cargarImagenes();
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var type = 'warning';
-              toastr.warning(rpta.message, title);
-            }else{
-              alert('Ocurrió un error');
-            }
-          });
-        }
 
         vm.selectAll = function () {
           if (vm.selectedAll) {
@@ -734,7 +717,6 @@
         sDeleteArchivoSelect: sDeleteArchivoSelect,
         sUploadCliente: sUploadCliente,
         sListarImagenes: sListarImagenes,
-        sSubirImagenesCarpeta: sSubirImagenesCarpeta,
         sDelete: sDelete,
         sRegistrarPuntuacion:sRegistrarPuntuacion,
         sActualizarMonedero:sActualizarMonedero,
@@ -857,16 +839,6 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sSubirImagenesCarpeta (pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Cliente/subir_imagenes_carpeta",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
-
     function sRegistrarPuntuacion (pDatos) {
       var datos = pDatos || {};
       var request = $http({

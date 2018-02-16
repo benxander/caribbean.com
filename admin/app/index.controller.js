@@ -85,7 +85,7 @@
     })*/;
 
   /** @ngInject */
-  function MainController($translate,$scope,$state,$location, rootServices, empresaNombre) {
+  function MainController($translate,$scope,$state,$location, $window, rootServices, empresaNombre) {
     var vm = this;
     $scope.isSelected = false;
     $scope.seleccionadas = 0;
@@ -138,13 +138,16 @@
     };
 
     $scope.btnLogoutToSystem = function () {
+      var esCliente = ($scope.fSessionCI.idgrupo == 3)? true : false;
       rootServices.sLogoutSessionCI().then(function () {
         $scope.fSessionCI = {};
         $scope.seleccionadas = 0;
-        // $scope.listaUnidadesNegocio = {};
-        // $scope.listaModulos = {};
         $scope.logOut();
-        $scope.goToUrl('/app/pages/login');
+        if(esCliente){
+          $window.location.href = $scope.dirBase+'zona-privada';
+        }else{
+          $scope.goToUrl('/app/pages/login');
+        }
       });
     };
 
@@ -183,14 +186,17 @@
       }
     }
     $scope.getValidateSession = function () {
+      var esCliente = false;
+      if(angular.isObject($scope.fSessionCI)){
+        esCliente = ($scope.fSessionCI.idgrupo == 3)? true : false;
+      }
       rootServices.sGetSessionCI().then(function (response) {
         if(response.flag == 1){
           $scope.fSessionCI = response.datos;
           $scope.logIn();
-          console.log('logIn ->',response);
-          if( $location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo != 3 ){
+          if( $location.path() == '/app/pages/login' && !esCliente ){
             $scope.goToUrl('/');
-          }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard')&& $scope.fSessionCI.idgrupo == 3){
+          }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard') && esCliente){
             $scope.goToUrl('/app/tienda');
           }
           $scope.CargaMenu();
@@ -198,9 +204,11 @@
         }else{
           $scope.fSessionCI = {};
           $scope.logOut();
-          console.log('logOut ->',response);
-          //alert('Saliendo del admin');
-          $scope.goToUrl('/app/pages/login');
+          if(esCliente){
+            $window.location.href = $scope.dirBase+'zona-privada';
+          }else{
+            $scope.goToUrl('/app/pages/login');
+          }
         }
       });
 
