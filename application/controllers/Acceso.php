@@ -104,6 +104,9 @@ class Acceso extends CI_Controller {
 			$arrPerfilUsuario['username'] = NULL;
 			$arrPerfilUsuario['monedero'] = strtoupper($loggedUser['monedero']);
 			$arrPerfilUsuario['logged'] = true;
+			$arrPerfilUsuario['cliente'] = empty($loggedUser['nombres'])?$loggedUser['codigo'] : strtoupper_total($cliente['nombres']);
+			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $cliente['email'];
+			$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 			$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Usuario inició sesión correctamente';
