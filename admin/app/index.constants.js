@@ -8,7 +8,7 @@
     .constant('moment', moment)
     .constant('_', window._)
     .constant('L', L)
-    .constant('empresaNombre','Caribbean');
+    .constant('empresaNombre','Caribbean Photo Studio');
   /*esling-enable*/
 
 })();

@@ -30,6 +30,17 @@
       //   }]
       // }
     })
+    .when('/zona-privada', {
+      // templateUrl: 'templates/blog.php',
+      templateUrl: function(param) {
+      console.log('param',param);
+          return angular.dirViews +  'login_view.php';
+          // return angular.dirViews + param.templateFile + '.php';
+        },
+      controller: 'LoginController',
+      controllerAs: 'l',
+
+    })
     .when('/blog', {
       // templateUrl: 'templates/blog.php',
       templateUrl: function(param) {

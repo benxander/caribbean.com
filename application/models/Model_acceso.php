@@ -18,5 +18,13 @@ class Model_acceso extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_logging_cliente($data){
+		$this->db->select('cli.idcliente, cli.monedero, cli.codigo,',FALSE);
+		$this->db->from('cliente cli');
+		$this->db->where('cli.codigo',$data['codigo']);
+		$this->db->where('cli.estado_cl', 1);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 }
 ?>

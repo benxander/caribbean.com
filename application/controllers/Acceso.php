@@ -83,29 +83,58 @@ class Acceso extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
+	public function acceder_cliente(){
+		$allInputs = json_decode(trim(file_get_contents('php://input')),true);
+		$arrData['flag'] = 0;
+    	$arrData['message'] = 'No se encontraron datos.';
+    	if(empty($allInputs['codigo'])){
+    		$arrData['message'] = 'Ingrese codigo';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	$loggedUser = $this->model_acceso->m_logging_cliente($allInputs);
+    	if($loggedUser){
+    		$arrPerfilUsuario = array();
+			// $arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
+			$arrPerfilUsuario['idcliente'] = $loggedUser['idcliente'];
+			$arrPerfilUsuario['idgrupo'] = 3;
+			$arrPerfilUsuario['key_grupo'] = 'key_cliente';
+			$arrPerfilUsuario['username'] = NULL;
+			$arrPerfilUsuario['monedero'] = strtoupper($loggedUser['monedero']);
+			$arrPerfilUsuario['logged'] = true;
+			$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Usuario inició sesión correctamente';
+    	}
+    	// var_dump($loggedUser); exit();
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function getSessionCI(){
 		$arrData['flag'] = 0;
 		$arrData['datos'] = array();
 			// var_dump($_SESSION); exit();
 
 		if( $this->session->has_userdata( 'sess_cp_'.substr(base_url(),-14,9) ) &&
-			!empty($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario']) ){
+			!empty($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['logged']) ){
 
-			$idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
-			$fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
-			if( !empty($fila) ){
-				if( strtotime($fila['fecha_salida'])<strtotime(date('Y-m-d')) ){
-					$salida = TRUE;
-				}else{
-					$salida = FALSE;
-				}
-				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
-				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['fecha_salida'] = $fila['fecha_salida'];
-				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['es_salida'] = $salida;
-				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['hotel'] = $fila['hotel'];
-				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['habitacion'] = $fila['habitacion'];
-			}
+			// $idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
+			// $fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
+			// if( !empty($fila) ){
+			// 	if( strtotime($fila['fecha_salida'])<strtotime(date('Y-m-d')) ){
+			// 		$salida = TRUE;
+			// 	}else{
+			// 		$salida = FALSE;
+			// 	}
+			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
+			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['fecha_salida'] = $fila['fecha_salida'];
+			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['es_salida'] = $salida;
+			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['hotel'] = $fila['hotel'];
+			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['habitacion'] = $fila['habitacion'];
+			// }
 
 
 			$arrData['flag'] = 1;

@@ -190,7 +190,7 @@
           console.log('logIn ->',response);
           if( $location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo != 3 ){
             $scope.goToUrl('/');
-          }else if($location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo == 3){
+          }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard')&& $scope.fSessionCI.idgrupo == 3){
             $scope.goToUrl('/app/tienda');
           }
           $scope.CargaMenu();

@@ -5,41 +5,44 @@
     .module('caribbean')
     .controller('LoginController', LoginController)
     .service('loginServices', loginServices);
-  function LoginController($scope,loginServices) {
+  function LoginController($scope, loginServices, empresaNombre,$window) {
+    var vm = this;
+    vm.empresaNombre = empresaNombre;
+    vm.fLogin = {};
   	// $scope.getValidateSession();
-  	$scope.btnLoginToSystem = function () {
-      console.log('esta en el Login');
-      /*if($scope.fLogin.usuario == null || $scope.fLogin.clave == null || $scope.fLogin.usuario == '' || $scope.fLogin.clave == ''){
-        $scope.fAlert = {};
-        $scope.fAlert.type= 'orange';
-        $scope.fAlert.msg= 'Debe completar los campos usuario y contraseña.';
-        $scope.fAlert.strStrong = 'Aviso.';
-        return;
-      }
-
-      loginServices.sLoginToSystem($scope.fLogin).then(function (response) {
-        $scope.fAlert = {};
-        if( response.flag == 1 ){ // SE LOGEO CORRECTAMENTE
-          $scope.fAlert.type= 'success';
-          $scope.fAlert.msg= response.message;
-          $scope.fAlert.strStrong = 'OK.';
-          $scope.getValidateSession();
-          $scope.logIn();
-          // $scope.getNotificaciones();
-        }else if( response.flag == 0 ){ // NO PUDO INICIAR SESION
-          $scope.fAlert.type= 'danger';
-          $scope.fAlert.msg= response.message;
-          $scope.fAlert.strStrong = 'Error.';
-        }else if( response.flag == 2 ){  // CUENTA INACTIVA
-          $scope.fAlert.type= 'orange';
-          $scope.fAlert.msg= response.message;
-          $scope.fAlert.strStrong = 'Aviso.';
-          $scope.listaSedes = response.datos;
+  	vm.btnLoginToSystem = function () {
+      loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
+        if(rpta.flag == 1){
+          $window.location.href = $scope.dirWeb+'admin';
+          // $scope.goToUrl('/admin');
         }
-        $scope.fAlert.flag = response.flag;
-        //$scope.fLogin = {};
-      });*/
+      });
+
     }
+    // vm.getValidateSession = function () {
+    //   loginServices.sGetSessionCI().then(function (response) {
+    //     if(response.flag == 1){
+    //       $scope.fSessionCI = response.datos;
+    //       $scope.logIn();
+    //       console.log('logIn ->',response);
+    //       if( $location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo != 3 ){
+    //         $scope.goToUrl('/');
+    //       }else if($location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo == 3){
+    //         $scope.goToUrl('/app/tienda');
+    //       }
+    //       $scope.CargaMenu();
+    //       $scope.saldo = $scope.fSessionCI.monedero;
+    //     }else{
+    //       $scope.fSessionCI = {};
+    //       $scope.logOut();
+    //       console.log('logOut ->',response);
+    //       //alert('Saliendo del admin');
+    //       $scope.goToUrl('/app/pages/login');
+    //     }
+    //   });
+
+    // }
+    // vm.getValidateSession();
   }
 
   function loginServices($http, $q) {
@@ -50,7 +53,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "acceso/",
+            url :  angular.patchURLCI + "acceso/acceder_cliente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

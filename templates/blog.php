@@ -1,4 +1,4 @@
-<div id="page-content"  ng-controller="BlogController as vm">
+<div id="page-content" ng-controller="BlogController as vm">
 	<div class="container" id="noticias">
         <div class="row">
             <div class="col-sm-12">
