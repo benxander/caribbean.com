@@ -821,8 +821,9 @@ class Cliente extends CI_Controller {
         // $archivos = array();
 		$carpeta = './uploads/temporal';
 
-		if (!file_exists($carpeta)) {
-			$arrData['message'] = 'No existe el directorio';
+		if (!file_exists('./uploads/clientes.zip')) {
+			$arrData['message'] = 'No existe el archivo clientes.zip';
+			$arrData['flag'] = 0;
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -830,6 +831,19 @@ class Cliente extends CI_Controller {
 		}
 		$error = FALSE;
 		$i = 0;
+		$zip = new ZipArchive;
+		if ($zip->open('./uploads/clientes.zip') === TRUE) {
+		    $zip->extractTo($carpeta);
+		    $zip->close();
+		} else {
+		   	$arrData['message'] = 'No se pudo abrir el archivo clientes.zip';
+			$arrData['flag'] = 0;
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
 		foreach (get_filenames($carpeta) as $archivo) {
 			if( $archivo != 'index.html'){
 				++$i;
