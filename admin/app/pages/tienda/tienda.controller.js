@@ -78,10 +78,10 @@
       if(vm.isPagoMonedero){
         $scope.actualizarSaldo(false);
         $scope.actualizarSaldo(true,vm.monto);
-        if($scope.seleccionadas > vm.paqueteSeleccionado.cantidad){
-          var cantidad = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-          $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
-        }
+        // if($scope.seleccionadas > vm.paqueteSeleccionado.cantidad){
+        //   var cantidad = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
+        //   $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
+        // }
       }
     }
     vm.selectAll = function () {
@@ -132,10 +132,10 @@
         vm.images[index].selected = true;
         vm.isSelected = true;
         add = true;
-        if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
-          vm.isPagoMonedero = true;
-          $scope.actualizarSaldo(true,vm.monto);
-        }
+        // if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
+        //   vm.isPagoMonedero = true;
+        //   $scope.actualizarSaldo(true,vm.monto);
+        // }
       }
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
@@ -146,12 +146,15 @@
       if (i === 0) {
         vm.isSelected = false;
         $scope.actualizarMonto(0);
+        $scope.actualizarSaldo(false);
       }else if(i == 1){
         console.log('foto suelta');
         $scope.actualizarMonto(vm.precio_primera);
+        $scope.actualizarSaldo(true,vm.precio_primera);
       }else if(i > 1){
         var monto_total = (i - 1)*vm.precio_adicional + vm.precio_primera;
         $scope.actualizarMonto(monto_total);
+        $scope.actualizarSaldo(true,monto_total);
       }
       vm.seleccionadas = i;
       $scope.actualizarSeleccion(i);

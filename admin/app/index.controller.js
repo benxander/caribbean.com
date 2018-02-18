@@ -110,7 +110,8 @@
     }
     $scope.actualizarSaldo = function(isSel,monto){
       if(isSel){
-        $scope.saldo = parseInt($scope.saldo) - parseInt(monto);
+        // $scope.saldo = parseInt($scope.saldo) - parseInt(monto);
+        $scope.saldo = $scope.fSessionCI.monedero - parseInt(monto);
       }else{
         $scope.saldo = $scope.fSessionCI.monedero;
       }
