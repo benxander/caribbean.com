@@ -35,6 +35,7 @@
     vm.monto_adicionales_video = 0.00;
     vm.precio_video = 0;
     vm.precio_adicional = 0;
+    vm.esPack = null;
 
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
@@ -62,8 +63,17 @@
         vm.precio_video = vm.listaExcursiones[0].precio_video;
       });
     }
-    vm.selPaquete = function(idpaquete){
-      angular.forEach(vm.listaPaquetes, function(paquete,key) {
+    vm.selPaquete = function(){
+
+      if(vm.radioModel == 'Pack'){
+        vm.esPack = true;
+        vm.selectAll();
+      }else{
+        vm.esPack = false;
+        vm.selectAll();
+      }
+      console.log('vm.radioModel',vm.radioModel);
+      /*angular.forEach(vm.listaPaquetes, function(paquete,key) {
         if(paquete.idpaquete == idpaquete){
           vm.listaPaquetes[key].selected = true;
           vm.paqueteSeleccionado = paquete;
@@ -72,7 +82,7 @@
         }else{
           vm.listaPaquetes[key].selected = false;
         }
-      });
+      });*/
     }
     vm.actualizaMontoPaquete =  function(){
       if(vm.isPagoMonedero){
@@ -85,16 +95,16 @@
       }
     }
     vm.selectAll = function () {
-      if (vm.selectedAll) {
+      if (vm.selectedAll && !vm.esPack) {
         vm.selectedAll = false;
         vm.isSelected = false;
         $scope.actualizarMonto(0);
-
+        $scope.actualizarSaldo(false);
       } else {
         vm.selectedAll = true;
         vm.isSelected = true;
         $scope.actualizarMonto(vm.monto);
-
+        $scope.actualizarSaldo(true,vm.monto);
       }
       var i=0;
       angular.forEach(vm.images, function(image) {

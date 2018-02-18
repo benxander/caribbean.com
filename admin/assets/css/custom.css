@@ -580,3 +580,12 @@ body{top:0px!important;}
 .reviews-stats {
     color: #8d8d8d;
 }
+/*TIENDA-PAQUETES*/
+.pack{
+  height: 120px;
+  padding: 10px;
+  width: 200px;
+}
+/*.btn-default.active{
+  background-color: #20326b;
+}*/
