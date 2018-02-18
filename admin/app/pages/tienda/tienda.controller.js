@@ -35,7 +35,8 @@
     vm.monto_adicionales_video = 0.00;
     vm.precio_video = 0;
     vm.precio_adicional = 0;
-    vm.esPack = null;
+    vm.esPack = false;
+    vm.esIndividual = false;
 
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
@@ -67,9 +68,11 @@
 
       if(vm.radioModel == 'Pack'){
         vm.esPack = true;
+        vm.esIndividual = false;
         vm.selectAll();
-      }else{
+      }else if(vm.radioModel == 'Sueltas'){
         vm.esPack = false;
+        vm.esIndividual = true;
         vm.selectAll();
       }
       console.log('vm.radioModel',vm.radioModel);
@@ -95,12 +98,13 @@
       }
     }
     vm.selectAll = function () {
-      if (vm.selectedAll && !vm.esPack) {
+      if (vm.selectedAll && vm.esIndividual) {
+        console.log('pack');
         vm.selectedAll = false;
         vm.isSelected = false;
         $scope.actualizarMonto(0);
         $scope.actualizarSaldo(false);
-      } else {
+      } else if(!vm.selectedAll && vm.esPack) {
         vm.selectedAll = true;
         vm.isSelected = true;
         $scope.actualizarMonto(vm.monto);
@@ -108,10 +112,10 @@
       }
       var i=0;
       angular.forEach(vm.images, function(image) {
-        if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
+        /*if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
           vm.isPagoMonedero = true;
           $scope.actualizarSaldo(true,vm.monto);
-        }
+        }*/
         if(image.descargado == 2){
           image.selected = vm.selectedAll;
           i++;
