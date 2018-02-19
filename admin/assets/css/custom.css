@@ -582,9 +582,22 @@ body{top:0px!important;}
 }
 /*TIENDA-PAQUETES*/
 .pack{
-  height: 120px;
+  height: 135px;
   padding: 10px;
   width: 200px;
+}
+a.disabled{cursor: not-allowed;}
+.mix-controls li a {
+    color: #fff;
+}
+.mix-controls li.disabled a {
+    color: #000;
+}
+.mix-controls li.active {
+    background-color: #337ab7!important;
+}
+li.disabled{
+  background: #dbe0e2;
 }
 /*.btn-default.active{
   background-color: #20326b;

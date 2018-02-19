@@ -14,6 +14,7 @@
             <div class="col-sm-12" >
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
+            <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PRODUCTO' | translate }}</div>
             <!-- <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
                 <div class="card" ng-click="ctrl.selPaquete(item.idpaquete)">
                   <div class="front text-center" ng-class="{'bg-lightred': item.selected, 'bg-lightgray':!item.selected}">
@@ -56,6 +57,7 @@
                 <div class="row">
                   <div class="col-xs-12">
                       <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
+                      <p class="text-sm line-sm">Paquete completo</p>
                   </div>
                 </div>
                 <div class="row">
@@ -73,6 +75,7 @@
                 <div class="row">
                   <div class="col-xs-12">
                       <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
+                      <p class="text-sm line-sm">Fotos Individuales</p>
                   </div>
                 </div>
                 <div class="row">
@@ -96,9 +99,7 @@
               </label>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PRODUCTO' | translate }}</div>
-          </div>
+
           <div class="controls">
             <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
@@ -120,7 +121,7 @@
             </label>
           </li> -->
 
-          <li class="btn" ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+          <li class="btn ml-md" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
             <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
 
@@ -150,7 +151,7 @@
                 <div class="">
                   <h4>{{image.title}}</h4>
                   <div class="img-controls">
-                    <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)" ng-if="image.descargado == 2">
+                    <a href="javascript:;" class="img-select" ng-click="ctrl.selectImage($index)" ng-if="image.descargado == 2" ng-class="{'disabled': ctrl.esPack || !ctrl.esIndividual}">
                       <i class="fa fa-square-o" ng-show="!image.selected"></i>
                       <i class="fa fa-check-square-o" ng-show="image.selected"></i>
                     </a>
@@ -169,7 +170,7 @@
           NO SE ENCONTRARON PRODUCTOS
         </div>
         <ul class="mix-controls">
-          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
             <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
         </ul>

@@ -65,7 +65,9 @@
       });
     }
     vm.selPaquete = function(){
-
+      if((vm.radioModel == 'Pack' && vm.esPack) || (vm.radioModel == 'Sueltas' && vm.esIndividual )){
+        return false;
+      }
       if(vm.radioModel == 'Pack'){
         vm.esPack = true;
         vm.esIndividual = false;
@@ -75,17 +77,6 @@
         vm.esIndividual = true;
         vm.selectAll();
       }
-      console.log('vm.radioModel',vm.radioModel);
-      /*angular.forEach(vm.listaPaquetes, function(paquete,key) {
-        if(paquete.idpaquete == idpaquete){
-          vm.listaPaquetes[key].selected = true;
-          vm.paqueteSeleccionado = paquete;
-          vm.monto = parseFloat(paquete.monto);
-          vm.actualizaMontoPaquete();
-        }else{
-          vm.listaPaquetes[key].selected = false;
-        }
-      });*/
     }
     vm.actualizaMontoPaquete =  function(){
       if(vm.isPagoMonedero){
@@ -136,6 +127,9 @@
       $scope.actualizarSeleccion(i);
     };
     vm.selectImage = function(index) {
+      if(vm.esPack || !vm.esIndividual){
+        return false;
+      }
       var i = 0;
       var add = false;
 
