@@ -138,6 +138,12 @@
         controller: 'EmailController',
         controllerAs: 'em'
       })
+      .state('mensaje', {
+        url: '/app/mensaje',
+        templateUrl: 'app/pages/mensaje/mensaje.html',
+        controller: 'MensajeController',
+        controllerAs: 'mj'
+      })
       .state('producto', {
         url: '/app/producto',
         templateUrl: 'app/pages/producto/producto.html',
