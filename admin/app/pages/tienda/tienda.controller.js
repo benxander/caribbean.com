@@ -236,7 +236,7 @@
           }
           vm.gridOptions.columnDefs = [
             { field: 'producto', displayName: 'PRODUCTO', minWidth:120 },
-            { field: 'cantidad',  displayName: 'CANTIDAD FOTOS',  width:120 },
+            { field: 'cantidad',  displayName: 'CANTIDAD FOTOS',  width:150 },
             { field: 'precio',  displayName: 'PRECIO',  width:80 },
             { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
             /*{ field: 'accion', displayName: '', width: 60,
