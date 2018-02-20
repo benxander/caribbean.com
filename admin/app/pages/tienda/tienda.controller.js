@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope,$timeout, $uibModal, TiendaServices, ClienteServices, ExcursionServices, ProductoServices, rootServices,toastr, pageLoading, alertify) {
+  function TiendaController($scope,$timeout, $uibModal, TiendaServices, ClienteServices, ExcursionServices, MensajeServices, rootServices,toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
@@ -41,10 +41,18 @@
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
         vm.fDataUsuario = response.datos;
+        vm.cargarMensajes();
         vm.cargarExcursiones(vm.fDataUsuario);
         vm.cargarGaleria(vm.fDataUsuario);
+      }else{
+        $window.location.href = $scope.dirBase+'zona-privada';
       }
     });
+    vm.cargarMensajes = function(){
+      MensajeServices.sListarMensajes().then(function(rpta){
+        vm.mensajes = rpta.datos;
+      });
+    }
     vm.cargarGaleria = function(datos){
       pageLoading.start('Cargando archivos...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
@@ -103,27 +111,15 @@
       }
       var i=0;
       angular.forEach(vm.images, function(image) {
-        /*if(!vm.isPagoMonedero && vm.paqueteSeleccionado){
-          vm.isPagoMonedero = true;
-          $scope.actualizarSaldo(true,vm.monto);
-        }*/
         if(image.descargado == 2){
           image.selected = vm.selectedAll;
           i++;
         }
       });
-      vm.seleccionadas = i;
-      /*if(i > vm.paqueteSeleccionado.cantidad){
-        var cantidad = i - vm.paqueteSeleccionado.cantidad;
-        if(vm.isSelected){
-          $scope.actualizarSaldo(true,cantidad * vm.precio_adicional);
-        }else{
-          $scope.actualizarSaldo(true,'-'+(cantidad * vm.precio_adicional));
-          i=0;
-        }
-      }else if(!vm.isSelected){
+      if(!vm.isSelected){
         i=0;
-      }*/
+      }
+      vm.seleccionadas = i;
       $scope.actualizarSeleccion(i);
     };
     vm.selectImage = function(index) {
@@ -159,10 +155,12 @@
         console.log('foto suelta');
         $scope.actualizarMonto(vm.precio_primera);
         $scope.actualizarSaldo(true,vm.precio_primera);
+        vm.monto_total = vm.precio_primera;
       }else if(i > 1){
         var monto_total = (i - 1)*vm.precio_adicional + vm.precio_primera;
         $scope.actualizarMonto(monto_total);
         $scope.actualizarSaldo(true,monto_total);
+        vm.monto_total = monto_total;
       }
       vm.seleccionadas = i;
       $scope.actualizarSeleccion(i);
@@ -177,7 +175,7 @@
         $scope.actualizarSaldo(true,'-'+ vm.precio_adicional);
       }*/
     };
-    vm.confirmDescarga = function(){
+    /*vm.confirmDescarga = function(){
       if(!vm.isSelected){
         return;
       }
@@ -190,7 +188,7 @@
       }else{
         vm.verResumen();
       }
-    }
+    }*/
     vm.verResumen = function(){
 
       if(!vm.isSelected){
@@ -221,21 +219,7 @@
         });
       }*/
       vm.calcularGrilla = function(){
-        // vm.cantidad_adic = $scope.seleccionadas - vm.paqueteSeleccionado.cantidad;
-        // if(vm.cantidad_adic > 0){
-        //   vm.monto_adicionales = parseFloat(vm.cantidad_adic * vm.precio_adicional);
-        // }else{
-        //   vm.cantidad_adic = 0;
-        // }
-        vm.monto_total = parseFloat(vm.monto + vm.monto_adicionales);
-       /* if(vm.datosVista.tiene_descuento){
-          vm.monto_descuento = (parseFloat(vm.monto_total) * parseFloat(vm.datosVista.descuento.descuento) / 100);
-          vm.importe_total = parseFloat(vm.monto_total - vm.monto_descuento);
-          vm.restante = parseFloat($scope.fSessionCI.monedero - vm.importe_total);
-        }else{*/
-          vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total);
-        // }
-
+        vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto_total);
         if(vm.restante < 0){
           vm.monto_a_pagar = Math.abs(vm.restante);
           vm.saldo_final = 0;
@@ -252,9 +236,6 @@
           }
           vm.gridOptions.columnDefs = [
             { field: 'producto', displayName: 'PRODUCTO', minWidth:120 },
-            { field: 'categoria', displayName: 'CATEGORIA',  width:100, visible:false },
-            { field: 'color',  displayName: 'COLOR',  width:80, visible:false },
-            { field: 'talla',  displayName: 'TALLA',  width:120, visible:false },
             { field: 'cantidad',  displayName: 'CANTIDAD FOTOS',  width:120 },
             { field: 'precio',  displayName: 'PRECIO',  width:80 },
             { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
@@ -279,8 +260,8 @@
 
           'cantidad' : vm.listaImagenes.length,
           // 'cantidad' : 1,
-          'precio' : parseInt(vm.monto),
-          'total_detalle' : parseInt(vm.monto),
+          'precio' : parseInt(vm.monto_total)/vm.listaImagenes.length,
+          'total_detalle' : parseInt(vm.monto_total),
           'es_pedido': false,
           'tipo_seleccion' : 2,
           'imagenes': vm.listaImagenes,

@@ -7,7 +7,7 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$uibModal, $state,$stateParams, PagesGalleryServices, rootServices, ProductoServices,TiendaServices, ClienteServices, Socialshare, pageLoading,toastr) {
+  function PagesGalleryController($scope,$uibModal, $state,$stateParams, PagesGalleryServices, rootServices, MensajeServices, TiendaServices, ClienteServices, Socialshare, pageLoading,toastr) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
@@ -31,20 +31,25 @@
         }
       });
     }
-    vm.cargarProductos = function(){
+    vm.cargarMensajes = function(){
+      MensajeServices.sListarMensajes().then(function(rpta){
+        vm.mensajes = rpta.datos;
+      });
+    }
+    /*vm.cargarProductos = function(){
       pageLoading.start('Procesando...');
       ProductoServices.sListarProductoPedido().then(function (rpta) {
         vm.listaProductos = angular.copy(rpta.datos);
         console.log('data',vm.listaProductos);
         pageLoading.stop();
       });
-    }
+    }*/
     rootServices.sGetSessionCI().then(function (response) {
       if(response.flag == 1){
+        vm.cargarMensajes();
         vm.fDataUsuario = response.datos;
         vm.cargarGaleria(vm.fDataUsuario);
-        vm.cargarProductos();
-
+        // vm.cargarProductos();
       }
     });
 

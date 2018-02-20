@@ -8,62 +8,22 @@
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
         <section class="tile-header">
           <div class="row">
-            <div class="col-sm-12"><h1 class="heading">TIENDA</h1></div>
-
-            <!-- <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PAQUETE' | translate }}</div> -->
-            <div class="col-sm-12" >
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="col-sm-12 mb-md"><h1 class="heading">TIENDA</h1></div>
+            <div class="col-sm-12" ng-bind-html="ctrl.mensajes[0].contenido">
             </div>
             <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PRODUCTO' | translate }}</div>
-            <!-- <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="item in ctrl.listaPaquetes">
-                <div class="card" ng-click="ctrl.selPaquete(item.idpaquete)">
-                  <div class="front text-center" ng-class="{'bg-lightred': item.selected, 'bg-lightgray':!item.selected}">
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-xs-6">
-                        <div><i class="fa fa-camera fa-2x"></i></div>
-                        <div>{{item.cantidad}} fotos + video</div>
-                      </div>
-                      <div class="col-xs-6">
-                        <div><i class="fa fa-usd fa-2x"></i></div>
-                        <div>US$ {{item.monto}}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="back text-center p-md" ng-class="{'bg-lightred': item.selected, 'bg-lightgray':!item.selected}">
-                    <div class="row" style="height: 50%">
-                      <div class="col-xs-12">
-                        <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
-                        <p class="text-md line-md">{{item.cantidad}} fotos al precio de US$ {{item.monto}}</p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-xs-6">
-                        <div><i class="fa fa-camera"></i></div><div>Foto suelta + US$ {{ctrl.listaExcursiones[0].precio_primera}}</div>
-                      </div>
-                      <div class="col-xs-6">
-                        <div><i class="fa fa-camera"></i></div><div>Adicional + US$ {{ctrl.listaExcursiones[0].precio_por_adicional}}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div> -->
-            <div class="btn-group mb-5">
+            <div class="btn-group mb-5" ng-show="ctrl.images.length">
               <label class="btn btn-default pack" ng-model="ctrl.radioModel" uib-btn-radio="'Pack'" ng-class="{'bg-lightred': ctrl.esPack, 'bg-lightgray':!ctrl.esPack}" ng-click="ctrl.selPaquete()">
-                <div class="row">
+                <div class="">
                   <div class="col-xs-12">
                       <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
                       <p class="text-sm line-sm">Paquete completo</p>
                   </div>
                 </div>
-                <div class="row">
+                <div class="">
                   <div class="col-xs-6">
                     <div><i class="fa fa-camera fa-2x"></i></div>
-                    <div>{{ctrl.listaPaquetes[0].cantidad}} fotos + video</div>
+                    <div>{{ctrl.listaPaquetes[0].cantidad}} fotos <br>+ video</div>
                   </div>
                   <div class="col-xs-6">
                     <div><i class="fa fa-usd fa-2x"></i></div>
@@ -72,13 +32,13 @@
                 </div>
               </label>
               <label class="btn btn-default pack ml-lg" ng-model="ctrl.radioModel" uib-btn-radio="'Sueltas'" ng-class="{'bg-lightred': ctrl.esIndividual, 'bg-lightgray':!ctrl.esIndividual}" ng-click="ctrl.selPaquete()">
-                <div class="row">
+                <div class="">
                   <div class="col-xs-12">
                       <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].titulo_act}}</p>
                       <p class="text-sm line-sm">Fotos Individuales</p>
                   </div>
                 </div>
-                <div class="row">
+                <div class="">
                   <div class="col-xs-6">
                     <div><i class="fa fa-camera fa-2x"></i></div>
                     <div>1 Foto</div>
@@ -88,7 +48,7 @@
                     <div>US$ {{ctrl.listaExcursiones[0].precio_primera}}</div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="">
                   <div class="col-xs-6">
                     <div>Adicionales</div>
                   </div>
@@ -100,7 +60,7 @@
             </div>
           </div>
 
-          <div class="controls">
+          <div class="controls" ng-show="ctrl.images.length">
             <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
@@ -121,7 +81,7 @@
             </label>
           </li> -->
 
-          <li class="btn ml-md" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+          <li class="btn ml-md" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
             <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
 
@@ -170,7 +130,7 @@
           NO SE ENCONTRARON PRODUCTOS
         </div>
         <ul class="mix-controls">
-          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.confirmDescarga();'>
+          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
             <a href="javascript:;"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
         </ul>
@@ -179,6 +139,9 @@
       <div class="tile p-15" ng-if="ctrl.modoPagar">
         <section class="tile-header pl-0">
           <h1 class="heading">Resumen</h1>
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="ctrl.mensajes[1].contenido">
+          </div>
           <div class="controls">
             <div class="form-group pull-right" >
                 <button class="btn btn-warning" style="font-size:14px;color:#fff;" ng-click="ctrl.btnVolver()">
@@ -285,6 +248,9 @@
       <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
         <section class="tile-header pl-0">
           <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="ctrl.mensajes[2].contenido">
+          </div>
           <div class="controls">
             <!-- <div class="btn-group" uib-dropdown>
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>

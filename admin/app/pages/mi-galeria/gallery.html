@@ -7,10 +7,10 @@
     <div class="tile p-15">
       <section class="tile-header row">
         <div class="col-sm-12">
-          <h1 class="heading">{{ 'Menu.GALERIA' | translate }}</h1>
+          <h1 class="heading mb-md">{{ 'Menu.GALERIA' | translate }}</h1>
 
-          <div >
-            <p>Lorem ipsum dolor sit amet, sed do eiusmod tempor, sunt in culpa qui officia incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur consectetur adipisicing elit,. Excepteur sint occaecat cupidatat non proidentdeserunt mollit anim id est laborum.</p>
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="ga.mensajes[3].contenido">
           </div>
           <!-- <p ng-if="!image.es_salida">Haga un pedido de producto.</p> -->
           <div class="controls">
@@ -23,7 +23,6 @@
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
           </div>
         </div>
       </section>
@@ -35,7 +34,7 @@
           </label>
         </li>
 
-        <li ng-class="{'disabled': !ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
+        <li ng-class="{'disabled': !ga.isSelected, 'active': ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
           <a href="javascript:;"><i class="fa fa-download" ></i> {{ 'Text.DESCARGAR' | translate }}</a>
         </li>
         <!-- <li ng-click='ga.btnPedidos();' ng-if="!fSessionCI.es_salida">
