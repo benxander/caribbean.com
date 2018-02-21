@@ -115,13 +115,13 @@
         controllerAs: 'p'
       })//galeria personal
       .state('mi-galeria', {
-        url: '/app/mi-galeria/?id&&valor',
+        url: '/app/mi-galeria',
         templateUrl: 'app/pages/mi-galeria/gallery.html',
         controller: 'PagesGalleryController',
         controllerAs: 'ga'
       })//galeria tienda
       .state('tienda', {
-        url: '/app/tienda',
+        url: '/app/tienda/?id&token',
         templateUrl: 'app/pages/tienda/tienda.html',
         controller: 'TiendaController',
         controllerAs: 'ctrl'

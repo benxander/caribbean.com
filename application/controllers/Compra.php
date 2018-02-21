@@ -7,7 +7,7 @@ class Compra extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_archivo','model_descuento','model_cliente','model_pedido'));
+        $this->load->model(array('model_archivo','model_descuento','model_cliente','model_pedido','model_movimiento'));
     }
 
 	public function verificar_archivos_seleccion(){
@@ -59,28 +59,26 @@ class Compra extends CI_Controller {
 	public function descargar_archivos_pagados(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		//print_r($allInputs); exit();
+		if( !empty($allInputs['idmovimiento']) ){
+			$lista = $this->model_movimiento->m_cargar_imagenes_por_idmovimiento($allInputs);
+			$arrListado = array();
+			foreach ($lista as $row) {
+				array_push($arrListado,
+					array(
+						'codigo_usuario' => $row['codigo'],
+						'idarchivo' => $row['idarchivo'],
+						'nombre_archivo' => $row['nombre_archivo'],
+						'selected' => TRUE,
+					)
+				);
+			}
+			$allInputs['imagenes'] = $arrListado;
+		}
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido error';
 		$error = FALSE;
-		foreach ($allInputs as $key => $image) {
+		foreach ($allInputs['imagenes'] as $key => $image) {
 			if($image['selected']){
-
-				// foreach ($image['lista_productos'] as $iProd => $prod) {
-				// 	if((int)$prod['cantidad'] > 0){
-				// 		/*registro en pedido*/
-				// 		$pDatos =  array(
-				// 			'idarchivo' 		=> $image['idarchivo'],
-				// 			'idcliente' 		=> $image['idcliente'],
-				// 			'tipo_archivo' 		=> $prod['tipo_archivo'],
-				// 			'precio_unitario' 	=> $prod['precio'],
-				// 			'cantidad' 			=> $prod['cantidad'],
-				// 		);
-				// 		if(!$this->model_pedido->m_registrar_pedido($pDatos)){
-				// 			$error = TRUE;
-				// 		}
-				// 	}
-				// }
-
 				if(!$error){
 					$url_origen = 'uploads/clientes/'.$image['codigo_usuario'].'/originales/'.$image['nombre_archivo'];
 					$url_destino = 'uploads/clientes/'.$image['codigo_usuario'].'/descargadas/'.$image['nombre_archivo'];
@@ -103,7 +101,7 @@ class Compra extends CI_Controller {
 				}
 			}
 		}
-
+		unset($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token']);
 		if(!$error){
 			$arrData['message'] = 'Archivos descargados exitosamente.';
     		$arrData['flag'] = 1;

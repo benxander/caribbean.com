@@ -160,7 +160,7 @@
           </li>
         </ul> -->
         <!-- GALERIA RESUMEN -->
-        <div class="row mix-grid" masonry ng-show="!ctrl.pedidoBool">
+        <div class="row mix-grid" masonry>
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
             type: 'image',
@@ -244,7 +244,7 @@
         </div>
 
       </div>
-
+      <div class="row" ng-if="ctrl.pasarela" ng-include="'app/pages/tienda/pasarela.php'"> </div>
       <div class="tile p-15" style="min-height: 400px;" ng-if="ctrl.modoDescargaCompleta">
         <section class="tile-header pl-0">
           <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>

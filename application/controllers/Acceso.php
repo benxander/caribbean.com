@@ -139,7 +139,6 @@ class Acceso extends CI_Controller {
 			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['habitacion'] = $fila['habitacion'];
 			// }
 
-
 			$arrData['flag'] = 1;
 			$arrData['datos'] = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ];
 		}

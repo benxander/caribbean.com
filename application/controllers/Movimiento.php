@@ -220,8 +220,11 @@ class Movimiento extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
     	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
+
+		$arrData['token'] = hash('md5',$cliente['codigo']);
+		$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token'] = $arrData['token'];
+    	// var_dump($allInputs); exit();
 
     	// if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
 	    // 	$idactividadcliente = $allInputs['detalle'][0]['imagenes'][0]['idactividadcliente'];
@@ -245,7 +248,7 @@ class Movimiento extends CI_Controller {
     		'tipo_movimiento' => 1, // pedido
     		'fecha_movimiento' => date('Y-m-d H:i:s'),
     		'total' => $allInputs['total_venta'],
-    		'estado'=> 1
+    		'estado'=> ($allInputs['porConfirmar'])? 2 : 1
     	);
     	$datos_pedido = array();
     	if($allInputs['total_pedido']>0){
@@ -255,15 +258,15 @@ class Movimiento extends CI_Controller {
 	    		'tipo_movimiento' => 2, // pedido
 	    		'fecha_movimiento' => date('Y-m-d H:i:s'),
 	    		'total' => $allInputs['total_pedido'],
-	    		'estado'=> 1
+	    		'estado'=> ($allInputs['porConfirmar'])? 2 : 1
 	    	);
     	}
     	// var_dump($allInputs['detalle']); exit();
     	$this->db->trans_start();
     	$idmovimiento = $this->model_movimiento->m_registrar_movimiento($datos_venta);
-    	if($allInputs['total_pedido']>0){
+    	/*if($allInputs['total_pedido']>0){
     		$idmovimiento_pedido = $this->model_movimiento->m_registrar_movimiento($datos_pedido);
-		}
+		}*/
 		if( $idmovimiento ){
 			foreach ($allInputs['detalle'] as $row) {
 				if($row['es_pedido']){
@@ -336,17 +339,17 @@ class Movimiento extends CI_Controller {
 			$arrData['message'] = 'Se registraron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
-		if($this->model_cliente->m_actualizar_monedero($allInputs)){
-
-		}
-		/*envio de correo*/
-			$cliente['idtipoemail'] = 6; // confirmacion
-			$lista = $this->model_email->m_cargar_email($cliente);
-			if(empty($lista)){
-				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
-				$arrData['flag2'] = 0;
-			}else{
-		    	$mensaje = $lista[0]['contenido'];
+		if(!$allInputs['porConfirmar']){
+			$this->model_cliente->m_actualizar_monedero($allInputs);
+			/*envio de correo*/
+			// $cliente['idtipoemail'] = 6; // confirmacion
+			// $lista = $this->model_email->m_cargar_email($cliente);
+			// if(empty($lista)){
+			// 	$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
+			// 	$arrData['flag2'] = 0;
+			// }else{
+		    	// $mensaje = $lista[0]['contenido'];
+		    	$mensaje = 'Se realizó una venta';
 		    	$mensaje .= '<table>';
 		    	$mensaje .= '<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th>';
 		    	$total = 0;
@@ -370,9 +373,11 @@ class Movimiento extends CI_Controller {
 
 				$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
 				$from = CORREO;
-				$to = $cliente['email'];
-				$cc = CORREO;
-				$asunto = $lista[0]['asunto'];
+				// $to = $cliente['email'];
+				$to = CORREO;
+				// $cc = CORREO;
+				// $asunto = $lista[0]['asunto'];
+				$asunto = 'Venta online';
 				// if(false){
 				if(envio_email($to, $cc,$asunto, $mensaje, $from)){
 					$arrData['message2'] = 'Notificación de correo enviada exitosamente.';
@@ -381,8 +386,14 @@ class Movimiento extends CI_Controller {
 					$arrData['message2'] = 'Error en envio de correo';
 					$arrData['flag2'] = 0;
 				}
-			}
+			// }
+		}else{
+			/*genera token*/
+			$arrData['token'] = hash('md5',$cliente['codigo']);
+			$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token'] = $arrData['token'];
+		}
 		$this->db->trans_complete();
+		$arrData['idmovimiento'] = $idmovimiento;
     	// var_dump($allInputs); exit();
 		$this->output
 		    ->set_content_type('application/json')

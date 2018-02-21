@@ -107,6 +107,17 @@ class Model_movimiento extends CI_Model {
 		$this->db->where('arc.estado_arc', 1);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_imagenes_por_idmovimiento($datos){
+		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size,
+			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
+			arc.tipo_archivo, cl.codigo');
+		$this->db->from('detalle_archivo da');
+		$this->db->join('archivo arc', 'da.idarchivo = arc.idarchivo');
+		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
+		$this->db->join('detalle d', 'da.iddetalle = d.iddetalle');
+		$this->db->where('d.idmovimiento', $datos['idmovimiento']);
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_puntuacion(){
 		$this->db->select('puntos, COUNT(*) puntaje',FALSE);
 		$this->db->from('puntuacion');
