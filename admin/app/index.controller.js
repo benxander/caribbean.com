@@ -109,9 +109,14 @@
       $scope.monto_cesta = monto;
     }
     $scope.actualizarSaldo = function(isSel,monto){
+      console.log('$scope.fSessionCI.monedero',$scope.fSessionCI.monedero);
       if(isSel){
-        // $scope.saldo = parseInt($scope.saldo) - parseInt(monto);
-        $scope.saldo = $scope.fSessionCI.monedero - parseInt(monto);
+        // if (monto === false){
+        //   console.log('cero');
+        //   $scope.saldo = 0;
+        // }else{
+          $scope.saldo = $scope.fSessionCI.monedero - parseInt(monto);
+        // }
       }else{
         $scope.saldo = $scope.fSessionCI.monedero;
       }

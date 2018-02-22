@@ -123,21 +123,17 @@ class Acceso extends CI_Controller {
 
 		if( $this->session->has_userdata( 'sess_cp_'.substr(base_url(),-14,9) ) &&
 			!empty($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['logged']) ){
-
-			// $idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
-			// $fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
-			// if( !empty($fila) ){
-			// 	if( strtotime($fila['fecha_salida'])<strtotime(date('Y-m-d')) ){
-			// 		$salida = TRUE;
-			// 	}else{
-			// 		$salida = FALSE;
-			// 	}
-			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
-			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['fecha_salida'] = $fila['fecha_salida'];
-			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['es_salida'] = $salida;
-			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['hotel'] = $fila['hotel'];
-			// 	$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['habitacion'] = $fila['habitacion'];
-			// }
+			if( $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idgrupo'] == 3 ){
+				$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+				// $idcliente = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idcliente'];
+				$fila = $this->model_cliente->m_cargar_cliente_por_sesion();
+			}/*else{
+				$idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
+				$fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
+			}*/
+			if( !empty($fila) ){
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
+			}
 
 			$arrData['flag'] = 1;
 			$arrData['datos'] = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ];

@@ -221,9 +221,10 @@ class Movimiento extends CI_Controller {
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	$cliente = $this->model_cliente->m_cargar_cliente_por_sesion();
-
-		$arrData['token'] = hash('md5',$cliente['codigo']);
-		$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token'] = $arrData['token'];
+    	if($allInputs['porConfirmar']){
+			$arrData['token'] = hash('md5',$cliente['codigo']);
+			$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token'] = $arrData['token'];
+    	}
     	// var_dump($allInputs); exit();
 
     	// if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
@@ -349,7 +350,7 @@ class Movimiento extends CI_Controller {
 			// 	$arrData['flag2'] = 0;
 			// }else{
 		    	// $mensaje = $lista[0]['contenido'];
-		    	$mensaje = 'Se realizó una venta';
+		    	/*$mensaje = 'Se realizó una venta';
 		    	$mensaje .= '<table>';
 		    	$mensaje .= '<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th>';
 		    	$total = 0;
@@ -375,7 +376,7 @@ class Movimiento extends CI_Controller {
 				$from = CORREO;
 				// $to = $cliente['email'];
 				$to = CORREO;
-				// $cc = CORREO;
+				$cc = NULL;
 				// $asunto = $lista[0]['asunto'];
 				$asunto = 'Venta online';
 				// if(false){
@@ -385,7 +386,7 @@ class Movimiento extends CI_Controller {
 				}else{
 					$arrData['message2'] = 'Error en envio de correo';
 					$arrData['flag2'] = 0;
-				}
+				}*/
 			// }
 		}else{
 			/*genera token*/

@@ -59,7 +59,7 @@ class Compra extends CI_Controller {
 	public function descargar_archivos_pagados(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		//print_r($allInputs); exit();
-		if( !empty($allInputs['idmovimiento']) ){
+		if( !empty($allInputs['idmovimiento']) ){// cuando viene de pasarela
 			$lista = $this->model_movimiento->m_cargar_imagenes_por_idmovimiento($allInputs);
 			$arrListado = array();
 			foreach ($lista as $row) {
@@ -67,12 +67,16 @@ class Compra extends CI_Controller {
 					array(
 						'codigo_usuario' => $row['codigo'],
 						'idarchivo' => $row['idarchivo'],
+						'idcliente' => $row['idcliente'],
 						'nombre_archivo' => $row['nombre_archivo'],
 						'selected' => TRUE,
 					)
 				);
 			}
 			$allInputs['imagenes'] = $arrListado;
+			$allInputs['idcliente'] = $arrListado[0]['idcliente'];
+			$allInputs['monedero'] = 0;
+			$this->model_cliente->m_actualizar_monedero($allInputs);
 		}
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido error';

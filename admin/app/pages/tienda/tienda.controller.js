@@ -49,8 +49,9 @@
           var token = $stateParams.token;
 
           if( token == response.datos.token ){
-            $scope.actualizarSaldo(false);
             $scope.actualizarMonto(0);
+            $scope.fSessionCI.monedero = 0;
+            $scope.actualizarSaldo(false);
             vm.modoSeleccionar = false;
             vm.irCompraExitosa(idmovimiento);
             return;
@@ -528,7 +529,6 @@
       vm.selectedAll = false;
       vm.isPagoMonedero = false;
       $scope.actualizarSeleccion(0);
-      $scope.actualizarSaldo(false);
       $scope.actualizarMonto(0);
     }
     /*vm.completarDatos = function(){
@@ -672,6 +672,8 @@
       var id = idmovimiento || null;
       if(id){
         vm.images = null;
+      }else{
+        $scope.actualizarSaldo(false);
       }
       var datos = {
         imagenes : vm.images,
