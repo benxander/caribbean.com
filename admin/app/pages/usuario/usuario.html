@@ -22,13 +22,17 @@
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
         <!-- /tile header -->
         <!-- tile body -->
         <section class="tile-body">
           <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <div class="form-group pull-right" style="position: relative;z-index: 10">
+                <button class="btn btn-success" ng-click='u.btnNuevo()'>Nuevo</button>
+              </div>
+            </div>
             <div class="col-md-12 col-sm-12">
               <div ui-grid="u.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear">
               </div>

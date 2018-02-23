@@ -28,11 +28,11 @@ class Usuario extends CI_Controller {
 				array(
 					'idusuario' => $row['idusuario'],
 					'username' => $row['username'],
-					'ididioma' => $row['ididioma'],
-					'idioma' => $row['nombre_id'],
+					// 'ididioma' => $row['ididioma'],
+					// 'idioma' => $row['nombre_id'],
 					'idgrupo' => $row['idgrupo'],
 					'grupo' => $row['nombre_gr'],
-					'solicita_bonificacion' => $row['solicita_bonificacion'],
+					// 'solicita_bonificacion' => $row['solicita_bonificacion'],
 					'estado' => array(
 						'id'	 =>$row['idusuario'],
 						'valor'  =>$row['estado_us'],
@@ -109,32 +109,22 @@ class Usuario extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
-    	if(empty($allInputs['ididioma'])){
+    	/*if(empty($allInputs['ididioma'])){
     		$arrData['message'] = 'Debe seleccionar un idioma.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}
+    	}*/
 
-		$codigo = "";
-    	$band = true;
-    	while ($band) {
-    		$codigo = generateRandomString();
-    		if(!$this->model_usuario->m_verificar_codigo_usuario($codigo)){
-				$band = false;
-			}
-    	}
-
-    	$allInputs['codigo'] = $codigo;
     	$this->db->trans_start();
     	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
 		if($idusuario){
-			$allInputs['idusuario'] = $idusuario;
-			if($this->model_cliente->m_actualizar_cliente_usuario($allInputs)){
+			// $allInputs['idusuario'] = $idusuario;
+			// if($this->model_cliente->m_actualizar_cliente_usuario($allInputs)){
 				$arrData['message'] = 'Se registraron los datos correctamente';
     			$arrData['flag'] = 1;
-			}
+			// }
 		}
 		$this->db->trans_complete();
 		$this->output
@@ -305,7 +295,7 @@ class Usuario extends CI_Controller {
     	$mensaje = $lista[0]['contenido'];
 		// $mensaje = '<div style="font-size:16px; color: #000000">
 		//         Estimado Sr(a): '. $allInputs['nombres']. ' '.$allInputs['apellidos'].' <br /> <br /> ';
-  // 		$mensaje .= '<div style="font-size:16px;">
+  		// 			$mensaje .= '<div style="font-size:16px;">
 		//          Se ha creado un usuario para que pueda ver sus imagenes : <br />
 		//          Usuario: '.$allInputs['email'].'<br />
 		//          Contraseña: '.$allInputs['codigo'];

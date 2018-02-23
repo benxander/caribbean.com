@@ -132,7 +132,7 @@ class Cliente extends CI_Controller {
     	}
 
     	$this->db->trans_start();
-    	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
+    	$idusuario = $this->model_usuario->m_registrar_usuario_cliente($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
 			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
@@ -219,7 +219,7 @@ class Cliente extends CI_Controller {
     	}*/
 
     	$this->db->trans_start();
-    	$idusuario = $this->model_usuario->m_registrar_usuario($allInputs);
+    	$idusuario = $this->model_usuario->m_registrar_usuario_cliente($allInputs);
 		if($idusuario){
 			$allInputs['idusuario'] = $idusuario;
 			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
@@ -786,7 +786,7 @@ class Cliente extends CI_Controller {
 		$registro_exitoso = TRUE;
 		$this->db->trans_begin();
 		foreach ($arrListado as $row) {
-	  		$idusuario = $this->model_usuario->m_registrar_usuario($row);
+	  		$idusuario = $this->model_usuario->m_registrar_usuario_cliente($row);
 	  		if($idusuario){
 	  			$row['idusuario'] = $idusuario;
 				$idcliente = $this->model_cliente->m_registrar_cliente($row);

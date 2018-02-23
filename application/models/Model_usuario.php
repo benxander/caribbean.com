@@ -11,15 +11,15 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_cargar_usuario($paramPaginate=FALSE){
-		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us, u.codigo');
+		$this->db->select('u.idusuario, u.username, u.solicita_bonificacion, u.estado_us, u.password');
 		$this->db->select('gr.idgrupo, gr.nombre_gr');
-		$this->db->select('id.ididioma, id.nombre_id');
+		// $this->db->select('id.ididioma, id.nombre_id');
 		$this->db->join('grupo gr','gr.idgrupo = u.idgrupo');
-		$this->db->join('idioma id','id.ididioma = u.ididioma');
+		// $this->db->join('idioma id','id.ididioma = u.ididioma');
 		$this->db->from('usuario u');
 		$this->db->where('u.estado_us <>', 0);
 		if($this->sessionCP['key_grupo'] != 'key_root'){
-			$this->db->where('u.idgrupo <>', 1);
+			$this->db->where_not_in('u.idgrupo', array(1,3));
 		}
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -57,6 +57,8 @@ class Model_usuario extends CI_Model {
 	public function m_cargar_grupo_cbo(){
 		$this->db->select("idgrupo, nombre_gr");
 		$this->db->from('grupo');
+		$this->db->where('key_grupo <>', 'key_root');
+		$this->db->where('key_grupo <>', 'key_cliente');
 		$this->db->where("estado_gr",1);
 
 		return $this->db->get()->result_array();
@@ -73,6 +75,23 @@ class Model_usuario extends CI_Model {
 	public function m_registrar_usuario($data){
 
 		$datos = array(
+			'idgrupo' => $data['idgrupo'],
+			'username' =>$data['username'],
+			'password' => hash('md5',$data['password']),
+			// 'ididioma' => empty($data['ididioma'])? NULL : $data['ididioma'],
+			// 'solicita_bonificacion' => 2,
+			'estado_us' => 1,
+			'createdat' => date('Y-m-d H:i:s'),
+			'updatedat' => date('Y-m-d H:i:s'),
+		);
+
+		$this->db->insert('usuario', $datos);
+   		$insert_id = $this->db->insert_id();
+		return $insert_id;
+	}
+	public function m_registrar_usuario_cliente($data){
+
+		$datos = array(
 			'idgrupo' => 3,
 			'username' => empty($data['email'])? NULL : $data['email'],
 			'password' => hash('md5',$data['codigo']),
@@ -81,7 +100,7 @@ class Model_usuario extends CI_Model {
 			'estado_us' => 1,
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s'),
-			'codigo' => $data['codigo']
+			// 'codigo' => $data['codigo']
 		);
 
 		$this->db->insert('usuario', $datos);
@@ -90,22 +109,14 @@ class Model_usuario extends CI_Model {
 	}
 
 	public function m_editar_usuario($data){
-
-		$this->db->select('u.password');
-		$this->db->from('usuario u');
-		$this->db->where('u.estado_us <>', 0);
-		$this->db->where('u.idusuario', $data['idusuario']);
-		$fData = $this->db->get()->row_array();
-		$oldPassword = $fData['password'];
-		$this->db->reset_query();
-
 		$datos = array(
 			'idgrupo' => $data['idgrupo'],
 			'username' => $data['username'],
-			'password' => ($oldPassword != hash('md5',$data['password'])) ? hash('md5',$data['password']) : $oldPassword,
-			'ididioma' => $data['ididioma'],
 			'updatedat' => date('Y-m-d H:i:s'),
 		);
+		if(!empty($data['password'])){
+			$datos['password'] = hash('md5',$data['password']);
+		}
 		$this->db->where('idusuario',$data['idusuario']);
 
 		return $this->db->update('usuario', $datos);

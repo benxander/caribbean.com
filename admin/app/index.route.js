@@ -126,6 +126,12 @@
         controller: 'TiendaController',
         controllerAs: 'ctrl'
       })
+      .state('pago', {
+        url: '/app/pago/?id&token',
+        templateUrl: 'app/pages/pago/pago.html',
+        controller: 'PagoController',
+        controllerAs: 'pg'
+      })
       .state('descuento', {
         url: '/app/descuento',
         templateUrl: 'app/pages/descuento/descuento.html',

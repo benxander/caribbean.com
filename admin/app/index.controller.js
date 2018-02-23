@@ -181,10 +181,13 @@
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,false,true,true,true,false,true,false,false,false,false];
+        $scope.valores = [true,true,true,false,true,true,true,false,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){
         $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
+      }
+      else if($scope.fSessionCI.idgrupo == 4){
+        $scope.valores = [false,true,false,false,false,false,false,false,false,false,false,false,false];
       }
       else{
         console.log('No tiene grupo');
