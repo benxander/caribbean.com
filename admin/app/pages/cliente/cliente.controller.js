@@ -49,8 +49,9 @@
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:100, visible:true },
+        { field: 'excursion', name:'titulo_act', displayName: 'EXCURSION'},
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA'},
-        { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
+        // { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         // { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
         { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 110, enableFiltering: false, enableSorting: false },
@@ -84,10 +85,10 @@
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
             'c.idcliente' : grid.columns[1].filters[0].term,
-            'u.codigo' : grid.columns[2].filters[0].term,
-            'fecha_excursion' : grid.columns[3].filters[0].term,
-            'c.nombres' : grid.columns[4].filters[0].term,
-            'c.apellidos' : grid.columns[5].filters[0].term,
+            'c.codigo' : grid.columns[2].filters[0].term,
+            'act.titulo_act' : grid.columns[3].filters[0].term,
+            'fecha_excursion' : grid.columns[4].filters[0].term,
+
           }
           vm.getPaginationServerSide();
         });
@@ -116,8 +117,8 @@
     // EXCURSIONES
       ExcursionServices.sListarExcursionCbo().then(function (rpta) {
         vm.listaExcursiones = angular.copy(rpta.datos);
-         // vm.listaExcursiones.splice(0,0,{ id : '', descripcion:'Selecciona opcion'});
         vm.listaExcursionesFiltro = angular.copy(rpta.datos);
+        vm.listaExcursionesFiltro.splice(0,0,{ id : '0', descripcion:'--TODAS--'});
         vm.fBusqueda.filtroExcursiones = vm.listaExcursionesFiltro[0];
         vm.getPaginationServerSide(true);
       });

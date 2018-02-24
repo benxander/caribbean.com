@@ -10,10 +10,10 @@
 	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Código del Cliente" required>
 	            </div>
 
-	            <div class="form-group col-md-6">
+	           <!--  <div class="form-group col-md-6">
 					<label for="nombres" class="control-label minotaur-label">Nombre </label>
 	              	<input type="text" name="nombres" id="nombres" class="form-control" ng-model="mc.fData.nombres" placeholder="Registre nombre">
-	            </div>
+	            </div> -->
 	           <!--  <div class="form-group col-md-6">
 					<label for="apellidos" class="control-label minotaur-label">Apellidos </label>
 	              	<input type="text" name="apellidos" id="apellidos" class="form-control" ng-model="mc.fData.apellidos" placeholder="Registre apellidos" >
@@ -27,7 +27,7 @@
 	              	<input type="text" name="whatsapp" id="whatsapp" class="form-control" ng-model="mc.fData.whatsapp" placeholder="Whatsapp" >
 	            </div> -->
 	            <div class="form-group col-md-6">
-					<label class="control-label minotaur-label">Excursiones <small class="text-red">(*)</small> </label>
+					<label class="control-label minotaur-label">Excursión <small class="text-red">(*)</small> </label>
 	              	<select class="form-control" ng-model="mc.fData.idactividad" ng-options="item.id as item.descripcion for item in mc.listaExcursiones" required ng-disabled="mc.modoEdicion"> </select>
 	            </div>
 
@@ -58,10 +58,10 @@
 					<label for="monedero" class="control-label minotaur-label">Depósito </label>
 	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
 	            </div>
-	            <div class="form-group col-md-3">
+	           <!--  <div class="form-group col-md-3">
 					<label for="telefono" class="control-label minotaur-label">Teléfono</label>
 	              	<input type="text" name="codigo" id="telefono" class="form-control" ng-model="mc.fData.telefono" placeholder="999999999">
-	            </div>
+	            </div> -->
 		    </div>
 		</form>
 	</section>

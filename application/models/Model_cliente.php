@@ -7,15 +7,18 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero, c.telefono, c.createdat, ac.idactividadcliente');
-		$this->db->select('u.codigo, u.ididioma, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo, ac.idactividad');
+		$this->db->select('c.codigo, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo, ac.idactividad, act.titulo_act');
 		$this->db->select('c.hotel, c.habitacion');
 		$this->db->from('cliente c');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
-		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
+		$this->db->join('actividad act', 'ac.idactividad = act.idactividad');
+		// $this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->join('archivo a','a.idactividadcliente = ac.idactividadcliente AND a.estado_arc = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		$this->db->where('ac.estado_ac', 1);
-		$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
+		if($paramDatos['filtroExcursiones']['id'] != 0){
+			$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
+		}
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -31,17 +34,20 @@ class Model_cliente extends CI_Model {
 				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
 			}
 		}
-		$this->db->group_by('c.idcliente,u.codigo, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
+		$this->db->group_by('c.idcliente, c.idusuario, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.createdat, ac.idactividadcliente');
 		return $this->db->get()->result_array();
 	}
 
 	public function m_count_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('cliente c');
-		$this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
+		// $this->db->join('usuario u','u.idusuario = c.idusuario AND u.estado_us = 1', 'left');
 		$this->db->join('actividad_cliente ac', 'c.idcliente = ac.idcliente');
+		$this->db->join('actividad act', 'ac.idactividad = act.idactividad');
 		$this->db->where('ac.estado_ac', 1);
-		$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
+		if($paramDatos['filtroExcursiones']['id'] != 0){
+			$this->db->where('ac.idactividad', $paramDatos['filtroExcursiones']['id']);
+		}
 		$this->db->where('c.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {

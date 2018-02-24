@@ -5,7 +5,7 @@
 	<section class="tile-body p-0">
 		<form name="formExc" role="form" novalidate class="form-validation">
 		    <div class="row">
-		    	<div class="form-group col-sm-12 col-md-12 mb-n">
+		    	<div class="form-group col-sm-12 col-md-6 mb-n">
 		    		<label for="titulo_act" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="titulo_act" id="titulo_act" class="form-control" ng-model="mb.fData.titulo_act" placeholder="Registre titulo_act" required>
 	              	<div ng-messages="formExc.titulo_act.$error" ng-if="formExc.titulo_act.$dirty" role="alert" class="help-block text-red">
@@ -13,10 +13,10 @@
 	              	</div>
 	            </div>
 
-	            <div class="form-group col-sm-12 col-md-6">
+	            <!-- <div class="form-group col-sm-12 col-md-6">
 		    		<label for="cantidad" class="control-label minotaur-label">Cantidad de fotos <small class="text-red">(*)</small> </label>
 	              	<div touch-spin name="cantidad" id="cantidad" ng-model="mb.fData.cantidad_fotos" placeholder="Cantidad" options="{verticalButtons: true, max: 100000, step:10}"></div>
-	            </div>
+	            </div> -->
 	            <div class="form-group col-sm-12 col-md-6">
 		    		<label for="monto" class="control-label minotaur-label">Precio Paquete($) <small class="text-red">(*)</small> </label>
 	              	<div touch-spin name="monto" id="monto" ng-model="mb.fData.monto_total" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
