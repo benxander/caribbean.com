@@ -41,7 +41,7 @@
         enableRowSelection: true,
         enableRowHeaderSelection: true,
         enableFullRowSelection: false,
-        multiSelect: false,
+        multiSelect: true,
         exporterMenuCsv: false,
         enableGridMenu: true,
         appScopeProvider: vm
@@ -61,7 +61,8 @@
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="FOTOGRAFIAS" ng-if="row.entity.idusuario"> <i class="halcyon-icon-photo-camera"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR FOTOS" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
           // '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
-          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
+
+          // '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
           '</div>'
         }
 
@@ -364,10 +365,10 @@
           }
         });
       }
-      vm.btnAnular = function(row){
+      vm.btnAnular = function(){
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
-            ClienteServices.sAnularCliente(row.entity).then(function (rpta) {
+            ClienteServices.sAnularCliente(vm.mySelectionGrid).then(function (rpta) {
               if(rpta.flag == 1){
                 vm.getPaginationServerSide();
                 var title = 'OK';

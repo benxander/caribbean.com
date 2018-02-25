@@ -710,6 +710,9 @@
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
+          $timeout(function() {
+            $window.location.href = $scope.dirBase+'admin/#/app/mi-galeria';
+          },2000);
         }else if(rpta.flag == 0){
           var title = 'Advertencia';
           var type = 'warning';

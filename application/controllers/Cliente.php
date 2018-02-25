@@ -322,13 +322,14 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-
-    	if($this->model_usuario->m_anular_usuario($allInputs)){
-			if($this->model_cliente->m_anular_cliente($allInputs)){
-				$arrData['message'] = 'Se anularon los datos correctamente';
-	    		$arrData['flag'] = 1;
+    	foreach ($allInputs as $row) {
+	    	if($this->model_usuario->m_anular_usuario($row)){
+				if($this->model_cliente->m_anular_cliente($row)){
+					$arrData['message'] = 'Se anularon los datos correctamente';
+		    		$arrData['flag'] = 1;
+				}
 			}
-		}
+    	}
 
 		$this->output
 		    ->set_content_type('application/json')

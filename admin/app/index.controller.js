@@ -156,7 +156,12 @@
 
     $scope.logIn = function() {
       $scope.isLoggedIn = true;
-      vm.changeLanguage($scope.fSessionCI.ididioma);
+      if($scope.fSessionCI.key_grupo == 'key_cliente'){
+        vm.currentLanguage = 'en';
+      }else{
+        vm.currentLanguage = 'es';
+      }
+      // vm.changeLanguage($scope.fSessionCI.ididioma);
     };
 
     $scope.btnLogoutToSystem = function () {
