@@ -121,7 +121,7 @@
         controllerAs: 'ga'
       })//galeria tienda
       .state('tienda', {
-        url: '/app/tienda/?id&token',
+        url: '/app/tienda',
         templateUrl: 'app/pages/tienda/tienda.html',
         controller: 'TiendaController',
         controllerAs: 'ctrl'

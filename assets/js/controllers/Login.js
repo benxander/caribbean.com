@@ -10,12 +10,16 @@
     vm.empresaNombre = empresaNombre;
     console.log(empresaNombre);
     vm.fLogin = {};
-  	// $scope.getValidateSession();
-  	vm.btnLoginToSystem = function () {
+    vm.error = false;
+    // $scope.getValidateSession();
+    vm.btnLoginToSystem = function () {
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
           $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
           // $scope.goToUrl('/admin');
+        }else if(rpta.flag == 0){
+          vm.error = true;
+          vm.fLogin.codigo = null;
         }
       });
 

@@ -15,8 +15,8 @@
         <input type="hidden" name="currency_code" value="USD">
         <input type="hidden" name="amount" value="{{ctrl.monto_a_pagar}}">
         <input type="hidden" name="no_shipping" value="1">
-        <input type="hidden" name="return" value="{{dirBase}}admin/#/app/tienda/?id={{ctrl.idmovimiento}}&token={{ctrl.token}}">
-    	<input type="hidden" name="cancel_return" value="{{dirBase}}admin/#/app/tienda/?nok">
+        <input type="hidden" name="return" value="{{dirBase}}admin/#/app/pago/?id={{ctrl.idmovimiento}}&token={{ctrl.token}}">
+    	<input type="hidden" name="cancel_return" value="{{dirBase}}admin/#/app/pago/?nok">
         <input type="image" src="http://www.paypal.com/es_XC/i/btn/x-click-but03.gif"
                name="submit"
                alt="Make payments with PayPal - it's fast, free and secure!" style="width: 80px">

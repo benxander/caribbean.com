@@ -46,6 +46,22 @@
         }
       };
     })
+    .directive('ngEnter', function() {
+      return function(scope, element, attrs) {
+        element.bind("keydown", function(event) {
+
+            if(event.which === 13) {
+              //event.preventDefault();
+              scope.$apply(function(){
+                scope.$eval(attrs.ngEnter);
+              });
+              //event.stopPropagation();
+            }
+            //event.stopPropagation();
+            //event.preventDefault();
+        });
+      };
+    })
     .directive('owlCarouselItem', [function() {
       return {
         restrict: 'A',

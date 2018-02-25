@@ -44,7 +44,7 @@
       if(response.flag == 1){
         vm.fDataUsuario = response.datos;
         vm.cargarMensajes();
-        if(!angular.isUndefined($stateParams.id) && !angular.isUndefined(response.datos.token)){
+        /*if(!angular.isUndefined($stateParams.id) && !angular.isUndefined(response.datos.token)){
           var idmovimiento = $stateParams.id;
           var token = $stateParams.token;
 
@@ -56,7 +56,7 @@
             vm.irCompraExitosa(idmovimiento);
             return;
           }
-        }
+        }*/
         vm.cargarExcursiones(vm.fDataUsuario);
         vm.cargarGaleria(vm.fDataUsuario);
       }else{
@@ -82,6 +82,7 @@
         vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
         vm.paqueteSeleccionado = vm.listaPaquetes[0];
         vm.monto = vm.listaPaquetes[0].monto;
+        vm.monto_paquete = vm.listaPaquetes[0].monto;
         vm.precio_adicional = vm.listaExcursiones[0].precio_por_adicional;
         vm.precio_primera = vm.listaExcursiones[0].precio_primera;
         vm.precio_video = vm.listaExcursiones[0].precio_video;
@@ -109,14 +110,16 @@
     }
     vm.selectAll = function () {
       if (vm.selectedAll && vm.esIndividual) {
-        console.log('pack');
+        console.log('todas -> sueltas');
         vm.selectedAll = false;
         vm.isSelected = false;
         $scope.actualizarMonto(0);
         $scope.actualizarSaldo(false);
       } else if(!vm.selectedAll && vm.esPack) {
+        console.log('else if');
         vm.selectedAll = true;
         vm.isSelected = true;
+        vm.monto = vm.monto_paquete;
         $scope.actualizarMonto(vm.monto);
         $scope.actualizarSaldo(true,vm.monto);
       }
@@ -617,6 +620,7 @@
           if(vm.monto_a_pagar > 0){
             vm.token = rpta.token;
             vm.pasarela = true;
+            console.log('pasarela',vm.pasarela);
             return;
           }
           vm.irCompraExitosa();
