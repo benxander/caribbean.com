@@ -7,7 +7,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		$this->db->select('c.idcliente, c.monedero, c.createdat, ac.idactividadcliente');
-		$this->db->select('c.codigo, c.fecha_excursion, c.fecha_salida, COUNT(a.idarchivo) as archivo, ac.idactividad, act.titulo_act, estado_cl');
+		$this->db->select('c.codigo, c.fecha_excursion, COUNT(a.idarchivo) as archivo, act.idactividad, act.titulo_act, estado_cl');
 		$this->db->select("SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) descargados",FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as monto", FALSE);
 		$this->db->from('cliente c');

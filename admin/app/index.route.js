@@ -138,6 +138,12 @@
         controller: 'DescuentoController',
         controllerAs: 'des'
       })
+      .state('ajustes', {
+        url: '/app/ajustes',
+        templateUrl: 'app/pages/ajustes/ajustes.html',
+        controller: 'AjustesController',
+        controllerAs: 'aj'
+      })
       .state('email', {
         url: '/app/email',
         templateUrl: 'app/pages/email/email.html',
