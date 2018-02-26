@@ -44,24 +44,25 @@
         enableSelectAll: true,
         multiSelect: true,
         exporterMenuCsv: false,
-        enableGridMenu: false,
+        enableGridMenu: true,
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:90, visible:true },
-        { field: 'idactividad', name:'idactividad', displayName: 'COD. EXCURSION', minWidth: 120},
+        { field: 'idactividad', name:'idactividad', displayName: 'ID EXCUR.', minWidth: 120},
         { field: 'excursion', name:'titulo_act', displayName: 'EXCURSION', minWidth: 130},
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100,},
         // { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         // { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
-        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false },
+        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, },
         { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false },
         { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
           cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
         },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 120, enableFiltering: false,
+          enableColumnMenus: false, enableColumnMenu: false, enableSorting: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="FOTOGRAFIAS" ng-if="row.entity.idcliente"> <i class="halcyon-icon-photo-camera"></i> </button>'+
@@ -80,6 +81,17 @@
         });
         gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
+        });
+        gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+          //console.log(sortColumns);
+          if (sortColumns.length == 0) {
+            paginationOptions.sort = null;
+            paginationOptions.sortName = null;
+          } else {
+            paginationOptions.sort = sortColumns[0].sort.direction;
+            paginationOptions.sortName = sortColumns[0].name;
+          }
+          vm.getPaginationServerSide();
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;

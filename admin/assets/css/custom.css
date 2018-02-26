@@ -602,3 +602,21 @@ li.disabled{
 /*.btn-default.active{
   background-color: #20326b;
 }*/
+.ui-grid-icon-up-dir:before {
+    content: "\c359";
+}
+.ui-grid-icon-down-dir:before {
+    content: "\c358";
+}
+.ui-grid-icon-angle-down:before {
+    content: "\c35e";
+}
+.ui-grid-icon-cancel:before {
+    content: "\c353";
+}
+.ui-grid-icon-menu:before {
+    content: '\c363';
+}
+.ui-grid-icon-ok:before {
+    content: '\c362';
+}
