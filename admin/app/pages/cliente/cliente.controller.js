@@ -41,20 +41,25 @@
         enableRowSelection: true,
         enableRowHeaderSelection: true,
         enableFullRowSelection: false,
+        enableSelectAll: true,
         multiSelect: true,
         exporterMenuCsv: false,
-        enableGridMenu: true,
+        enableGridMenu: false,
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:100, visible:true },
         { field: 'excursion', name:'titulo_act', displayName: 'EXCURSION'},
-        { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA'},
+        { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:120,},
         // { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
         // { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
         { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 110, enableFiltering: false, enableSorting: false },
+        { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 110, enableFiltering: false, enableColumnMenu: false, enableSorting: false },
+        { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
+          cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
+        },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 190, enableFiltering: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+

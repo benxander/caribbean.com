@@ -17,10 +17,21 @@ class Cliente extends CI_Controller {
 		$arrListado = array();
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
+			$objEstado = array();
+			if( $row['descargados'] == $row['archivo'] && $row['archivo'] != 0 ){
+				$estado = 'COMPLETO';
+				$clase = 'label-success';
+			}elseif( $row['descargados'] < $row['archivo'] ){
+				$estado = 'PARCIAL';
+				$clase = 'label-warning';
+			}else{
+				$estado = 'NO PROCESADO';
+				$clase = 'label-default';
+			}
 			array_push($arrListado,
 				array(
 					'idcliente' => $row['idcliente'],
-					'idusuario' => $row['idusuario'],
+					// 'idusuario' => $row['idusuario'],
 					// 'nombres' 	=> $row['nombres'],
 					// 'apellidos'	=> $row['apellidos'],
 					// 'email' 	=> $row['email'],
@@ -37,7 +48,12 @@ class Cliente extends CI_Controller {
 					'excursion' 	=> $row['titulo_act'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
-					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE
+					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE,
+					'monto'=>	$row['monto'],
+					'estado_obj' => array(
+						'string' => $estado,
+						'clase' =>$clase
+					),
 				)
 			);
 		}
