@@ -831,36 +831,37 @@ class Cliente extends CI_Controller {
 
 		return $registro_exitoso;
 	}
-	public function organizar_imagenes_temporales(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+	public function organizar_imagenes_temporales($allInputs){
+		// $allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$this->load->helper('file');
         $this->load->library('image_lib');
         // $extensions_image = array("jpeg","jpg");
         // $archivos = array();
-		$carpeta = './uploads/temporal';
+		$carpeta = './uploads/temporal/tmp';
 
-		if (!file_exists('./uploads/clientes.zip')) {
-			$arrData['message'] = 'No existe el archivo clientes.zip';
+		if (!file_exists('./uploads/temporal/' . $allInputs['archivoZip'])) {
+			$arrData['message'] = 'No subió el archivo zip';
 			$arrData['flag'] = 0;
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
+    		// $this->output
+			   //  ->set_content_type('application/json')
+			   //  ->set_output(json_encode($arrData));
+			return $arrData;
 		}
 		$error = FALSE;
 		$i = 0;
 		$zip = new ZipArchive;
-		if ($zip->open('./uploads/clientes.zip') === TRUE) {
+		if ($zip->open('./uploads/temporal/' . $allInputs['archivoZip']) === TRUE) {
 		    $zip->extractTo($carpeta);
 		    $zip->close();
 		} else {
-		   	$arrData['message'] = 'No se pudo abrir el archivo clientes.zip';
+		   	$arrData['message'] = 'No se pudo abrir el archivo zip';
 			$arrData['flag'] = 0;
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
+    		// $this->output
+			   //  ->set_content_type('application/json')
+			   //  ->set_output(json_encode($arrData));
+			return $arrData;
 		}
+		unlink('./uploads/temporal/' . $allInputs['archivoZip']);
 
 		foreach (get_filenames($carpeta) as $archivo) {
 			if( $archivo != 'index.html'){
@@ -907,8 +908,86 @@ class Cliente extends CI_Controller {
        		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
 			$arrData['flag'] = 1;
        	}
- 		$this->output
+       	return $arrData;
+ 		// $this->output
+		 //    ->set_content_type('application/json')
+		 //    ->set_output(json_encode($arrData));
+	}
+	public function upload_zip_ftp(){
+		$this->load->library('ftp');
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		/*$arrData['message'] = 'Error al subir archivo';
+    	$arrData['flag'] = 0;
+    	$errors = array(
+		    '0' => 'There is no error, the file uploaded with success',
+		    '1' => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+		    '2' => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		    '3' => 'The uploaded file was only partially uploaded',
+		    '4' => 'No file was uploaded',
+		    '6' => 'Missing a temporary folder',
+		    '7' => 'Failed to write file to disk.',
+		    '8' => 'A PHP extension stopped the file upload.',
+		);
+		if(!empty( $_FILES )  && isset($_FILES['file'])){
+			$file_name = $_FILES['file']['name'];
+		    $file_size =$_FILES['file']['size'];
+		    $file_tmp =$_FILES['file']['tmp_name'];
+		    $file_type=$_FILES['file']['type'];
+		    $file_error=$_FILES['file']['error'];
+		    if(!$file_tmp){
+		    	$arrData['message'] = 'Temporal no existe';
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+		    }
+		    if($file_error > 0){
+		    	$arrData['message'] = $errors[$file_error];
+	    		$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+		    }*/
+		    // $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+		    $file_ext = strtolower(pathinfo($allInputs['ruta'], PATHINFO_EXTENSION));
+		    $extensions_archivo = array("zip");
+		    $carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'temporal';
+		    $file_name = 'clientes-'.date('YmdHis').'.'. $file_ext;
+		    $file_tmp = $allInputs['ruta'];
+		    // $file_tmp = $carpeta . '/clientes2.zip';
+    		// var_dump($file_name); exit();
+		    if(in_array($file_ext,$extensions_archivo)){
+
+		        $config['hostname'] = '37.252.96.44';
+		        $config['username'] = 'subida';
+		        $config['password'] = 'unai2018';
+		        $config['debug'] = TRUE;
+		        $config['passive'] = TRUE;
+
+		        $this->ftp->connect($config);
+
+		       /* $list = $this->ftp->list_files('/');
+				print_r($list);*/
+
+		        $this->ftp->upload($file_tmp, $file_name, "auto", 0775);
+
+
+		    	$arrData['archivoZip'] = $file_name;
+		        $this->ftp->close();
+		        $rpta = $this->organizar_imagenes_temporales($arrData);
+		        if($rpta['flag'] == 1){
+		        	$arrData['message'] = $rpta['message'];
+    				$arrData['flag'] = 1;
+		        }else{
+		        	$arrData['message'] = $rpta['message'];
+    				$arrData['flag'] = 0;
+		        }
+		    }
+
+		// }
+		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+
 	}
 }

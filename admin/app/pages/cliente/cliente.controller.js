@@ -150,94 +150,6 @@
       });
 
     // MANTENIMIENTO
-      vm.btnImportarExcel = function () {
-        var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/cliente/subir_excel_modal.php',
-          controllerAs: 'mc',
-          size: 'md',
-          backdropClass: 'splash splash-2 splash-ef-16',
-          windowClass: 'splash splash-2 splash-ef-16',
-          backdrop: 'static',
-          keyboard:false,
-          scope: $scope,
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            vm.fData = {};
-            var uploader = $scope.uploader = new FileUploader ({
-              url: angular.patchURLCI + 'cliente/upload_excel'
-              // url: '../application/controllers/upload.php'
-            });
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Importación de clientes';
-
-            // botones
-              vm.aceptar = function () {
-                console.log('uploader.queue',uploader.queue);
-                uploader.queue[0].upload();
-                pageLoading.start('Procesando...');
-                uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                  console.info('onSuccessItem', fileItem, response, status, headers);
-                  pageLoading.stop();
-                  if(response.flag == 1){
-                      var title = 'OK';
-                      var type = 'success';
-                      toastr.success(response.message, title);
-                       $uibModalInstance.close();
-                       vm.getPaginationServerSide();
-                    }else if( response.flag == 0 ){
-                      var title = 'Advertencia';
-                      var type = 'warning';
-                      toastr.warning(response.message, title);
-                    }else{
-                      alert('Ocurrió un error');
-                    }
-                };
-                uploader.onErrorItem = function(fileItem, response, status, headers) {
-                    console.info('onErrorItem', fileItem, response, status, headers);
-                    pageLoading.stop();
-                    if(response.flag == 1){
-                      var title = 'OK';
-                      var type = 'success';
-                      toastr.success(response.message, title);
-                    }else if( response.flag == 0 ){
-                      var title = 'Advertencia';
-                      var type = 'warning';
-                      toastr.warning(response.message, title);
-                    }else{
-                      alert('Ocurrió un error');
-                    }
-                };
-                /*ClienteServices.sRegistrarClientesExcel(vm.fData).then(function (rpta) {
-                  pageLoading.stop();
-                  if(rpta.flag == 1){
-                    toastr.success(rpta.message, 'OK');
-                    $uibModalInstance.close(vm.fData);
-                    vm.getPaginationServerSide();
-
-                  }else if( rpta.flag == 0 ){
-                    var title = 'Advertencia';
-                    var type = 'warning';
-                    toastr.warning(rpta.message, title);
-                  }else{
-                    alert('Ocurrió un error');
-                  }
-                });*/
-
-              };
-              vm.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-              };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                scope : vm,
-              }
-            }
-          }
-        });
-      }
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/cliente_formview.php',
@@ -432,6 +344,7 @@
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
             pageLoading.start('Procesando...puede tardar unos minutos');
+
             ClienteServices.sOrganizarImagenes().then(function (rpta) {
               pageLoading.stop();
               if(rpta.flag == 1){
@@ -723,6 +636,171 @@
           }
         });
       }
+      vm.btnImportarExcel = function () {
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/cliente/subir_excel_modal.php',
+          controllerAs: 'mc',
+          size: 'md',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
+          scope: $scope,
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            var uploader = $scope.uploader = new FileUploader ({
+              url: angular.patchURLCI + 'cliente/upload_excel'
+              // url: '../application/controllers/upload.php'
+            });
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Importación de clientes';
+
+            // botones
+              vm.aceptar = function () {
+                console.log('uploader.queue',uploader.queue);
+                uploader.queue[0].upload();
+                pageLoading.start('Procesando...');
+                uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                  console.info('onSuccessItem', fileItem, response, status, headers);
+                  pageLoading.stop();
+                  if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                       $uibModalInstance.close();
+                       vm.getPaginationServerSide();
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+                uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                    pageLoading.stop();
+                    if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+              };
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
+      vm.btnSubirZip = function () {
+        console.log('helo');
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/cliente/upzip_modal.php',
+          controllerAs: 'mz',
+          size: 'md',
+          backdropClass: 'splash splash-2 splash-ef-16',
+          windowClass: 'splash splash-2 splash-ef-16',
+          backdrop: 'static',
+          keyboard:false,
+          scope: $scope,
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            var uploader = $scope.uploader = new FileUploader ({
+              url: angular.patchURLCI + 'cliente/upload_zip_ftp'
+              // url: '../application/controllers/upload.php'
+            });
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.modalTitle = 'Subir fotografias comprimidas';
+
+            // botones
+              vm.aceptar = function () {
+                console.log('rutaArchivo',vm.rutaArchivo);
+                // uploader.queue[0].upload();
+                /*pageLoading.start('Procesando...');
+                uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                  console.info('onSuccessItem', fileItem, response, status, headers);
+                  pageLoading.stop();
+                  if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                       $uibModalInstance.close();
+                       vm.getPaginationServerSide();
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };
+                uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                    pageLoading.stop();
+                    if(response.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(response.message, title);
+                    }else if( response.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(response.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                };*/
+                var params = {
+                  ruta : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'none'
+                }
+                pageLoading.start('Procesando...');
+                ClienteServices.sUploadPrueba(params).then(function(rpta){
+                  pageLoading.stop();
+                  if(rpta.flag == 1){
+                    var title = 'OK';
+                    var type = 'success';
+                    toastr.success(rpta.message, title);
+                    $uibModalInstance.close();
+                    vm.nombreArchivoSubido = rpta.nombreArchivo;
+                  }else if( rpta.flag == 0 ){
+                    var title = 'Advertencia';
+                    var type = 'warning';
+                    toastr.warning(rpta.message, title);
+                  }else{
+                    alert('Ocurrió un error');
+                  }
+                });
+              };
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                scope : vm,
+              }
+            }
+          }
+        });
+      }
   }
 
   function ClienteServices($http, $q) {
@@ -742,6 +820,7 @@
         sRegistrarPuntuacion:sRegistrarPuntuacion,
         sActualizarMonedero:sActualizarMonedero,
         sOrganizarImagenes:sOrganizarImagenes,
+        sUploadPrueba:sUploadPrueba,
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -883,6 +962,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/organizar_imagenes_temporales",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sUploadPrueba (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/upload_zip_ftp",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
