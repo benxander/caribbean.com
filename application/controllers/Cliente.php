@@ -915,8 +915,8 @@ class Cliente extends CI_Controller {
 	}
 	public function upload_zip_ftp(){
 		$this->load->library('ftp');
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		/*$arrData['message'] = 'Error al subir archivo';
+		// $allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al subir archivo';
     	$arrData['flag'] = 0;
     	$errors = array(
 		    '0' => 'There is no error, the file uploaded with success',
@@ -947,13 +947,13 @@ class Cliente extends CI_Controller {
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
 				return;
-		    }*/
+		    }
 		    // $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 		    $file_ext = strtolower(pathinfo($allInputs['ruta'], PATHINFO_EXTENSION));
 		    $extensions_archivo = array("zip");
 		    $carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'temporal';
 		    $file_name = 'clientes-'.date('YmdHis').'.'. $file_ext;
-		    $file_tmp = $allInputs['ruta'];
+		    // $file_tmp = $allInputs['ruta'];
 		    // $file_tmp = $carpeta . '/clientes2.zip';
     		// var_dump($file_name); exit();
 		    if(in_array($file_ext,$extensions_archivo)){
@@ -984,7 +984,7 @@ class Cliente extends CI_Controller {
 		        }
 		    }
 
-		// }
+		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

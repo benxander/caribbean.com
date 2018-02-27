@@ -12,9 +12,9 @@
 		    </div>
 		    <div class="row">
 		    	<div class="form-group col-sm-12">
-		            <label class="control-label minotaur-label">Copiar ruta de archivo</label>
-	            	<!-- <input type="file" class="filestyle" nv-file-select="" uploader="uploader" filestyle button-text="Zip" icon-name="fa fa-inbox" accept=".zip" required="true"> -->
-	            	<input type="text" ng-model="mz.rutaArchivo" required="true">
+		            <label class="control-label minotaur-label">Seleccione un archivo</label>
+	            	<input type="file" class="filestyle" nv-file-select="" uploader="uploader" filestyle button-text="Zip" icon-name="fa fa-inbox" accept=".zip" required="true">
+	            	<!-- <input type="text" ng-model="mz.rutaArchivo" required="true"> -->
 		    	</div>
 		    </div>
 		</form>
