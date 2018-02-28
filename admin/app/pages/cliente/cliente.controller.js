@@ -731,9 +731,9 @@
 
             // botones
               vm.aceptar = function () {
-                console.log('rutaArchivo',vm.rutaArchivo);
+                // console.log('rutaArchivo',vm.rutaArchivo);
                 // uploader.queue[0].upload();
-                /*pageLoading.start('Procesando...');
+                pageLoading.start('Procesando, puede tardar varios minutos...');
                 uploader.onSuccessItem = function(fileItem, response, status, headers) {
                   console.info('onSuccessItem', fileItem, response, status, headers);
                   pageLoading.stop();
@@ -765,8 +765,8 @@
                     }else{
                       alert('Ocurrió un error');
                     }
-                };*/
-                var params = {
+                };
+                /*var params = {
                   ruta : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'none'
                 }
                 pageLoading.start('Procesando...');
@@ -785,7 +785,7 @@
                   }else{
                     alert('Ocurrió un error');
                   }
-                });
+                });*/
               };
               vm.cancel = function () {
                 $uibModalInstance.dismiss('cancel');

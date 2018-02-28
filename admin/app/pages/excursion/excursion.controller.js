@@ -42,14 +42,16 @@
         // { field: 'fecha_f', name:'fecha_actividad', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
         { field: 'titulo_act', name:'titulo_act', displayName: 'TITULO', minWidth: 100 },
         // { field: 'cantidad_fotos', name:'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 100 },
-        { field: 'monto_total', name:'monto_total', displayName: 'MONTO ($)', minWidth: 100 },
-        { field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100, enableFiltering: false,
+        { field: 'monto_total', name:'monto_total', displayName: 'PRECIO PACK ($)', minWidth: 100, enableFiltering: false },
+        { field: 'precio_primera', name:'precio_primera', displayName: 'PRECIO PRIMERA ($)', minWidth: 100, enableFiltering: false },
+        { field: 'precio_por_adicional', name:'precio_por_adicional', displayName: 'PRECIO ADICIONAL ($)', minWidth: 100, enableFiltering: false },
+        /*{ field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100, enableFiltering: false,
           cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
                   '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
                   '<label class="onoffswitch-label" for="switch{{ COL_FIELD.id }}">'+
                     '<span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span>'+
-                  '</label></div>' },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 140, enableFiltering: false,
+                  '</label></div>' },*/
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 100, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
           // '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.verPaquetes(row)" tooltip-placement="left" uib-tooltip="PAQUETES" > <i class="icon-grid"></i> </button>' +
 
@@ -67,6 +69,16 @@
         gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
         });
+        vm.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+          if (sortColumns.length == 0) {
+            paginationOptions.sort = null;
+            paginationOptions.sortName = null;
+          } else {
+            paginationOptions.sort = sortColumns[0].sort.direction;
+            paginationOptions.sortName = sortColumns[0].name;
+          }
+          vm.getPaginationServerSide();
+        });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
           paginationOptions.pageSize = pageSize;
@@ -79,8 +91,6 @@
           paginationOptions.searchColumn = {
             'idactividad' : grid.columns[1].filters[0].term,
             'titulo_act' : grid.columns[2].filters[0].term,
-            'cantidad' : grid.columns[3].filters[0].term,
-            'monto' : grid.columns[4].filters[0].term,
           }
           vm.getPaginationServerSide();
         });

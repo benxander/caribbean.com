@@ -41,26 +41,12 @@ class Excursion extends CI_Controller {
 		$totalRows = $this->model_excursion->m_count_excursiones($paramPaginate);
 		$arrListado = array();
 		foreach ($lista as $row) {
-			if( $row['estado'] == 1 ){
-				$bool = true;
-			}
-			elseif( $row['estado'] == 2 ){
-				$bool = false;
-			}
 			array_push($arrListado, array(
 				'idactividad' => $row['idactividad'],
 				'titulo_act' => $row['titulo_act'],
-				'descripcion' => $row['descripcion_act'],
-				'cantidad_fotos' => (int)$row['cantidad_fotos'],
 				'monto_total' => (int)$row['monto_total'],
 				'precio_primera' => (int)$row['precio_primera'],
 				'precio_por_adicional' => (int)$row['precio_por_adicional'],
-				'precio_video' => empty($row['precio_video'])? NULL : (int)$row['precio_video'],
-				'estado' => array(
-						'id'	 =>$row['idactividad'],
-						'valor'  =>$row['estado'],
-						'bool'   =>$bool
-					)
 				)
 			);
 		}
@@ -120,36 +106,16 @@ class Excursion extends CI_Controller {
 		$lista = $this->model_excursion->m_cargar_paquetes_cliente($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
- 			$arrListado[$row['idactividad']] = array(
+			array_push($arrListado, array(
 				'idactividad' => $row['idactividad'],
 				'idactividadcliente' => $row['idactividadcliente'],
 				'titulo_act' => $row['titulo_act'],
-				'descripcion' => $row['descripcion_act'],
-				'cantidad_fotos' => (int)$row['cantidad_fotos'],
 				'monto_total' => (int)$row['monto_total'],
 				'precio_primera' => (int)$row['precio_primera'],
 				'precio_por_adicional' => (int)$row['precio_por_adicional'],
-				'precio_video' => (int)$row['precio_video'],
-				'paquetes' => array()
+				)
 			);
 		}
-		foreach ($arrListado as $key => $value) {
-			$arrAux = array();
-			foreach ($lista as $row) {
-				if($key == $row['idactividad']){
-					array_push($arrAux, array(
-						'idpaquete' => $row['idpaquete'],
-						'titulo_pq' => $row['titulo_pq'],
-						'cantidad' => (int)$row['cantidad'],
-						'monto' => (int)$row['monto'],
-						'selected' => $row['es_base'] == 1 ? TRUE :  FALSE
-						)
-					);
-				}
-			}
-			$arrListado[$key]['paquetes'] = $arrAux;
-		}
-		$arrListado = array_values($arrListado);
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
@@ -192,14 +158,7 @@ class Excursion extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-    	if(empty($allInputs['cantidad_fotos'])){
-    		$arrData['message'] = 'Cantidad obligatoria';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
-    	if(empty($allInputs['cantidad_fotos'])){
+    	if(empty($allInputs['monto_total'])){
     		$arrData['message'] = 'Precio paquete obligatorio';
     		$this->output
 			    ->set_content_type('application/json')
@@ -209,19 +168,18 @@ class Excursion extends CI_Controller {
 
     	$data = array(
     		'titulo_act' => strtoupper_total($allInputs['titulo_act']),
-    		'descripcion_act' => empty($allInputs['descripcion'])?NULL:$allInputs['descripcion'],
-    		'cantidad_fotos' => $allInputs['cantidad_fotos'],
     		'monto_total' => $allInputs['monto_total'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
     		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
-    		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
     		'createdat' => date('Y-m-d H:i:s'),
     		'updatedat' => date('Y-m-d H:i:s'),
     	);
     	// print_r($data); exit();
     	$idactividad = $this->model_excursion->m_registrar($data);
     	if($idactividad){
-	    	$data2 = array(
+    		$arrData['message'] = 'Se registraron los datos correctamente';
+    		$arrData['flag'] = 1;
+	    	/*$data2 = array(
 	    		'titulo_pq' => 'PLATINO',
 	    		'idactividad' => $idactividad,
 	    		'porc_cantidad' => 100,
@@ -230,13 +188,13 @@ class Excursion extends CI_Controller {
 	    		'monto' => $allInputs['monto_total'],
 	    		'es_base' => 1
 	    	);
-    		$reg_paquete = $this->model_excursion->m_registrar_paquete($data2);
+    		$reg_paquete = $this->model_excursion->m_registrar_paquete($data2);*/
     	}
-    	if($reg_paquete){
+    	/*if($reg_paquete){
 
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
-    	}
+    	}*/
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -250,16 +208,13 @@ class Excursion extends CI_Controller {
     	// data
     	$data = array(
 
-    		'titulo_act' => $allInputs['titulo_act'],
-    		'descripcion_act' => empty($allInputs['descripcion'])?NULL:$allInputs['descripcion'],
-    		'cantidad_fotos' => $allInputs['cantidad_fotos'],
+    		'titulo_act' => strtoupper_total($allInputs['titulo_act']),
     		'monto_total' => $allInputs['monto_total'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
     		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
-    		'precio_video' => empty($allInputs['precio_video'])? NULL : $allInputs['precio_video'],
     		'updatedat' => date('Y-m-d H:i:s'),
     	);
-    	$paquetes = $this->model_excursion->m_cargar_paquetes_por_actividad($allInputs);
+    	/*$paquetes = $this->model_excursion->m_cargar_paquetes_por_actividad($allInputs);
     	foreach ($paquetes as $row) {
     		if( $row['cantidad'] != $allInputs['cantidad_fotos'] && $row['es_base'] == 1 ){
     			$edita_cantidad = TRUE;
@@ -267,12 +222,12 @@ class Excursion extends CI_Controller {
     		if( $row['monto'] != $allInputs['monto_total'] && $row['es_base'] == 1 ){
     			$edita_monto = TRUE;
     		}
-    	}
+    	}*/
     	$this->db->trans_start();
 		if( $this->model_excursion->m_editar($data,$allInputs['idactividad']) ){
 			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
-			if( $edita_cantidad || $edita_monto ){
+			/*if( $edita_cantidad || $edita_monto ){
 				foreach ($paquetes as $row) {
 			    	$data2 = array(
 			    		'cantidad' => ceil($allInputs['cantidad_fotos']*$row['porc_cantidad']/100),
@@ -284,7 +239,7 @@ class Excursion extends CI_Controller {
 					}
 
 				}
-			}
+			}*/
 		}
 		$this->db->trans_complete();
 		$this->output

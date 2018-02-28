@@ -63,15 +63,13 @@ class Model_excursion extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_paquetes_cliente($datos){
-		$this->db->select('pq.idpaquete, pq.idactividad, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, ac.idactividadcliente');
+		$this->db->select('act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, ac.idactividadcliente');
 		$this->db->select('act.precio_por_adicional, act.precio_primera, act.precio_video');
-		$this->db->from('paquete pq');
-		$this->db->join('actividad act', 'pq.idactividad = act.idactividad');
+		$this->db->from('actividad act');
 		$this->db->join('actividad_cliente ac', 'act.idactividad = ac.idactividad');
 		$this->db->join('cliente c', 'ac.idcliente = c.idcliente');
 		$this->db->where('c.idcliente', $datos['idcliente']);
 		$this->db->where('ac.estado_ac', 1);
-		$this->db->where('pq.estado_pq', 1);
 
 		return $this->db->get()->result_array();
 	}
