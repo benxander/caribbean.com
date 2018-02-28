@@ -200,7 +200,7 @@ class Banner extends CI_Controller {
 			if($allInputs['acepta_texto'] == 1 ){
 	    		foreach ($allInputs['capas'] as $row) {
 	    			$data_c['idbanner'] = $idbanner;
-		    		$data_c['texto'] = trim($row['texto']);
+		    		$data_c['texto'] = empty($row['texto'])? NULL : trim($row['texto']);
 		    		$data_c['fontsize'] = empty($row['fontsize'])? 70 : $row['fontsize'];
 		    		$data_c['color'] = empty($row['color'])? 'rgba(255,255,255,1)' : $row['color'];
 

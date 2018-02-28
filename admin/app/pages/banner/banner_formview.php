@@ -60,7 +60,7 @@
 						</div>
 	              		<div class="form-group col-sm-4 pl-0">
 			              	<label class="control-label minotaur-label">Color Texto</label>
-			         		<input colorpicker="rgba" colorpicker-position="right" ng-model="mb.fData.capas[0].color" type="text" class="form-control">
+			         		<input colorpicker="rgba" colorpicker-position="right" ng-model="mb.fData.capas[0].color" type="text" class="form-control" ng-disabled="mb.fData.acepta_texto == '0'">
 			            </div>
 
 					</div>

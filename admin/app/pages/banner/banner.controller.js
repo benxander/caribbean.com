@@ -123,7 +123,7 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de banner';
             vm.fData.canvas = true;
-            vm.fData.acepta_texto = '1';
+            vm.fData.acepta_texto = '0';
             vm.fData.size_titulo = 70;
             vm.fData.size_subtitulo = 15;
             vm.fData.color_titulo = 'rgba(255,255,255,1)';
