@@ -143,11 +143,19 @@
         vm.getPaginationServerSide(true);
       });
 
+    // PROCESADOS
+      vm.listaProcesadosFiltro = [
+        { id : '0', descripcion : '--TODOS--' },
+        { id : '1', descripcion : 'NO PROCESADOS' },
+        { id : '2', descripcion : 'PARCIAL' },
+        { id : '3', descripcion : 'TOTAL' },
+      ];
+      vm.fBusqueda.filtroProcesados = vm.listaProcesadosFiltro[0];
     // IDIOMA
-      UsuarioServices.sListarIdioma().then(function (rpta) {
+      /* UsuarioServices.sListarIdioma().then(function (rpta) {
         vm.listaIdiomas = rpta.datos;
         vm.listaIdiomas.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
-      });
+      });*/
 
     // MANTENIMIENTO
       vm.btnNuevo = function () {
