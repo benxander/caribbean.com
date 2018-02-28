@@ -13,11 +13,8 @@
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
     vm.pasarela = false;
-    vm.selectedTerminos = false;
-    console.log('$stateParams.',$stateParams);
-    if(!angular.isUndefined($stateParams.id)){
-      console.log('Aqui llamará a la variable session');
-    }
+    vm.selectedAll = true;
+
     vm.cargarGaleria = function(datos,loader){
       var loader = loader || false;
       if(loader){
@@ -29,6 +26,9 @@
         if(loader){
           pageLoading.stop();
         }
+        angular.forEach(vm.images, function(image) {
+          image.selected = vm.selectedAll;
+        });
       });
     }
     vm.cargarMensajes = function(){
@@ -48,13 +48,13 @@
       if(response.flag == 1){
         vm.cargarMensajes();
         vm.fDataUsuario = response.datos;
-        vm.cargarGaleria(vm.fDataUsuario);
+        vm.cargarGaleria(vm.fDataUsuario, true);
         // vm.cargarProductos();
       }
     });
 
-    vm.selectedAll = false;
-    vm.isSelected = false;
+
+    vm.isSelected = true;
     vm.fData = {}
     vm.fData.total_a_pagar = 0;
     vm.pedidoBool = false;
@@ -64,11 +64,14 @@
     vm.temporal.cantidad = 1;
     vm.temporal.isSel = false;
     vm.modoDescargaCompleta = false;
+
     vm.selectAll = function () {
       if (vm.selectedAll) {
+        console.log('sele1',vm.selectedAll);
         vm.selectedAll = false;
         vm.isSelected = false;
       } else {
+        console.log('sele2',vm.selectedAll);
         vm.selectedAll = true;
         vm.isSelected = true;
       }
@@ -77,7 +80,7 @@
         image.selected = vm.selectedAll;
       });
     };
-
+    // vm.selectAll();
     vm.selectImage = function(index) {
       var i = 0;
 
@@ -93,6 +96,11 @@
           i++;
         }
       });
+      if( i == vm.images.length ){
+        vm.selectedAll = true;
+      }else{
+        vm.selectedAll = false;
+      }
 
       if (i === 0) {
         vm.isSelected = false;

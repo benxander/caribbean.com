@@ -1,7 +1,4 @@
-<div class="col-md-6" style="min-height: 400px;">
-    <img src="{{dirBase}}admin/assets/images/paypal1.png" alt="" style="width: 100%;max-width: 250px;">
-</div>
-<div class="col-md-6" style="min-height: 400px;">
+<div class="col-md-12" style="min-height: 400px;">
     <img src="{{dirBase}}admin/assets/images/paypal.jpg" alt="" style="width: 100%;max-width: 250px;">
 
     <!-- <label>PEDIDO</label> -->

@@ -42,22 +42,16 @@
 	ul.demo-btns li > label { line-height: 0.7;}
 	.modal-header{padding: 10px!important}
 	.tab-wizard .nav-tabs > li > a{padding: 10px!important}
-    .cbo-sm{
+  .cbo-sm{
         width: 50px;
         padding: 5px;
         display: inline-block;
-    }
+  }
+  .va-middle{vertical-align: middle;}
 .appWrap.core #content{
     background:#62a3a5;
 }
-/*para corregir error en scroll de ui-grid*/
-.ui-grid-viewport { overflow-anchor: none;}
 
-.ui-grid-viewport .ui-grid-cell button.btn-action {
-	margin-left: 4px;
-	width: 34px; }
-.ui-grid-viewport .ui-grid-cell button.btn-action i {
-		font-size: 15px; }
 
 section.tile-body{
 	margin-top: 0;
@@ -287,7 +281,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', end
 /*BARRA HEADER*/
 minotaur-header{
   padding: 0 30px 0 0;
-  background: linear-gradient(to left, #0784bd 50%, #b8e7fd 100%);
+  background: linear-gradient(to right, #ffffff 15%,#87d4f7 30%, #0784bd 100%);
 }
 minotaur-header .navbar-header .navbar-brand{
     padding: 5px;
@@ -605,6 +599,14 @@ li.disabled{
 }*/
 
 /*UI GRID*/
+/*para corregir error en scroll de ui-grid*/
+.ui-grid-viewport { overflow-anchor: none;}
+
+.ui-grid-viewport .ui-grid-cell button.btn-action {
+  margin-left: 4px;
+  width: 34px; }
+.ui-grid-viewport .ui-grid-cell button.btn-action i {
+    font-size: 15px; }
 .ui-grid-icon-plus-squared:before {
   content: '\c350';
 }

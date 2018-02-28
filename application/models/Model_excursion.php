@@ -63,7 +63,7 @@ class Model_excursion extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_paquetes_cliente($datos){
-		$this->db->select('act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, ac.idactividadcliente');
+		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, ac.idactividadcliente');
 		$this->db->select('act.precio_por_adicional, act.precio_primera, act.precio_video');
 		$this->db->from('actividad act');
 		$this->db->join('actividad_cliente ac', 'act.idactividad = ac.idactividad');

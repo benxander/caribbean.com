@@ -305,7 +305,7 @@ class Movimiento extends CI_Controller {
 				}else{
 					$data = array(
 						'idmovimiento' => $idmovimiento,
-						'idpaquete' => $row['idpaquete'],
+						'idpaquete' => NULL,
 						'idproducto' => NULL,
 						// 'tipo_adicional' => NULL,
 						'cantidad' => $row['cantidad'],
