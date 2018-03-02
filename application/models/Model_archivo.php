@@ -6,9 +6,9 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_galeria_descargados($pDatos){
-		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
+		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
 			arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
-			cl.codigo, cl.fecha_salida, arc.idactividadcliente');
+			cl.codigo, cl.fecha_salida, cl.idexcursion');
 		$this->db->from('archivo arc');
 		// $this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
@@ -19,7 +19,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_galeria_no_descargados($pDatos){
-		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size,
+		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,
 			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
 			arc.tipo_archivo, cl.codigo,cl.fecha_salida');
 		$this->db->from('archivo arc');
@@ -32,7 +32,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_archivo($paramPaginate=FALSE){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
+		$this->db->select('a.idarchivo, a.idcliente, a.nombre_archivo, a.size, a.tipo_archivo, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
 		$this->db->from('archivo a');
 		$this->db->where('a.estado_ar', 1);
 		if($paramPaginate){
@@ -69,7 +69,7 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_imagenes($data){
-		$this->db->select('a.idarchivo, a.idcliente, a.idusuario, a.nombre_archivo, a.size, a.tipo_archivo,
+		$this->db->select('a.idarchivo, a.idcliente, a.nombre_archivo, a.size, a.tipo_archivo,
 		a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc, cl.codigo');
 		$this->db->from('archivo a');
 		$this->db->join('cliente cl', 'a.idcliente = cl.idcliente');
@@ -93,8 +93,6 @@ class Model_archivo extends CI_Model {
 	public function m_registrar_archivo($data){
 		$datos = array(
 			'idcliente' => $data['idcliente'],
-			'idusuario' => $data['idusuario'],
-			'idactividadcliente' => $data['idactividadcliente'],
 			'nombre_archivo' => $data['nombre_archivo'],
 			'size' => $data['size'],
 			'tipo_archivo' => $data['tipo_archivo'],

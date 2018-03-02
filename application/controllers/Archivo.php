@@ -23,9 +23,8 @@ class Archivo extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
-					'idusuario' => $row['idusuario'],
 					'idcliente' => $row['idcliente'],
-					'idactividadcliente' => $row['idactividadcliente'],
+					'idexcursion' => $row['idexcursion'],
 					'nombre_archivo' => $row['nombre_archivo'],
 					'size' => $row['size'],
 					'fecha_subida' => $row['fecha_subida'],
@@ -72,7 +71,7 @@ class Archivo extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
-					'idusuario' => $row['idusuario'],
+					'idusuario' => NULL,
 					'idcliente' => $row['idcliente'],
 					'nombre_archivo' => $row['nombre_archivo'],
 					'size' => $row['size'],

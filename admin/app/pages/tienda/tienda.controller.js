@@ -8,7 +8,7 @@
       );
 
   /** @ngInject */
-  function TiendaController($scope,$timeout, $uibModal, $stateParams, TiendaServices, ClienteServices, ExcursionServices, MensajeServices, rootServices,toastr, pageLoading, alertify) {
+  function TiendaController($scope,$window,$timeout, $uibModal, $stateParams, TiendaServices, ClienteServices, ExcursionServices, MensajeServices, rootServices,toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
@@ -33,7 +33,6 @@
     vm.monto_bonificacion = 0.00;
     vm.monto_adicionales = 0.00;
     vm.monto_adicionales_video = 0.00;
-    vm.precio_video = 0;
     vm.precio_adicional = 0;
     vm.esPack = false;
     vm.esIndividual = false;
@@ -81,11 +80,10 @@
         vm.listaExcursiones = rpta.datos;
         // vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
         // vm.paqueteSeleccionado = vm.listaPaquetes[0];
-        vm.monto = vm.listaExcursiones[0].monto_total;
-        vm.monto_paquete = vm.listaExcursiones[0].monto_total;
-        vm.precio_adicional = vm.listaExcursiones[0].precio_por_adicional;
+        vm.monto = vm.listaExcursiones[0].precio_pack;
+        vm.monto_paquete = vm.listaExcursiones[0].precio_pack;
+        vm.precio_adicional = vm.listaExcursiones[0].precio_adicional;
         vm.precio_primera = vm.listaExcursiones[0].precio_primera;
-        vm.precio_video = vm.listaExcursiones[0].precio_video;
       });
     }
     vm.selPaquete = function(){
@@ -193,17 +191,14 @@
       }
       TiendaServices.sVerificarSeleccion(datos).then(function(rpta){
         pageLoading.stop();
-        // vm.datosVista = rpta;
-        // if(vm.datosVista.mostrar_productos){
-        //   vm.cargarProductos();
-        // }
         vm.modoPagar=true;
+        if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var type = 'warning';
+          toastr.warning(rpta.message, title);
+          location.reload();
+        }
       });
-      /*vm.cargarProductos = function(){
-        ProductoServices.sListarProductoPedido().then(function (rpta) {
-          vm.listaProductos = angular.copy(rpta.datos);
-        });
-      }*/
       vm.calcularTotales = function(){
         vm.monto_total = vm.monto;
         vm.restante = parseFloat($scope.fSessionCI.monedero - vm.monto);
@@ -226,11 +221,6 @@
             { field: 'cantidad',  displayName: 'CANTIDAD FOTOS',  width:150 },
             { field: 'precio',  displayName: 'PRECIO',  width:80 },
             { field: 'total_detalle',  displayName: 'TOTAL',  width:80 },
-            /*{ field: 'accion', displayName: '', width: 60,
-              cellTemplate: '<div>' +
-              '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnQuitarDeLaCesta(row)" tooltip-placement="left" uib-tooltip="ELIMINAR" ng-if="row.entity.es_pedido"> <i class="fa fa-trash"></i> </button>' +
-              '</div>'
-            }*/
           ];
           vm.gridOptions.data = [];
           vm.getTableHeight = function(){
@@ -243,7 +233,7 @@
           };
         vm.arrTemporal = {
           'idpaquete': null,
-          'producto' : 'PAQUETE: ' + vm.listaExcursiones[0].titulo_act,
+          'producto' : 'PAQUETE: ' + vm.listaExcursiones[0].descripcion,
 
           'cantidad' : vm.listaImagenes.length,
           // 'cantidad' : 1,
@@ -263,16 +253,9 @@
     }
 
     vm.btnVolver = function(){
-      /*angular.forEach(vm.images, function(image) {
-        image.selected = false;
-      });*/
       vm.monto_total = 0.00;
       vm.modoSeleccionar = true;
       vm.modoPagar = false;
-      // vm.selectedAll = false;
-      //vm.isPagoMonedero = false;
-      /*$scope.actualizarSeleccion(0,0);
-      $scope.actualizarSaldo(false);*/
     }
     vm.limpiar = function(){
       vm.cantidad_adic = 0;
@@ -298,19 +281,6 @@
       vm.pedido = false;
       vm.total_pedido = 0;
       vm.total_venta = vm.monto_a_pagar;
-      /*angular.forEach(vm.gridOptions.data, function(item) {
-        if (item.es_pedido) {
-          vm.pedido = true ;
-          vm.total_pedido += item.total_detalle;
-        }else{
-          vm.total_venta += item.total_detalle;
-        }
-      });*/
-      // if(vm.pedido && (vm.fDataUsuario.hotel == null || vm.fDataUsuario.habitacion == null )){
-      //   vm.completarDatos();
-      // }else{
-        // vm.realizarPago();
-      // }
       vm.modoSeleccionar = false;
       vm.modoPagar = false;
       var datos = {
@@ -320,7 +290,7 @@
         detalle: vm.gridOptions.data,
         total_pedido: vm.total_pedido,
         total_venta: vm.total_venta,
-        idactividadcliente : vm.listaExcursiones[0].idactividadcliente,
+        idexcursion : vm.listaExcursiones[0].idexcursion,
         porConfirmar : (vm.monto_a_pagar > 0) ? true : false
       };
       console.log('datos',datos);
@@ -420,6 +390,7 @@
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
+          console.log('calificacion y redir');
           $timeout(function() {
             $window.location.href = $scope.dirBase+'admin/#/app/mi-galeria';
           },2000);

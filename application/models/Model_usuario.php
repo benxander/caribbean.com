@@ -89,7 +89,7 @@ class Model_usuario extends CI_Model {
    		$insert_id = $this->db->insert_id();
 		return $insert_id;
 	}
-	public function m_registrar_usuario_cliente($data){
+	/*public function m_registrar_usuario_cliente($data){
 
 		$datos = array(
 			'idgrupo' => 3,
@@ -106,7 +106,7 @@ class Model_usuario extends CI_Model {
 		$this->db->insert('usuario', $datos);
    		$insert_id = $this->db->insert_id();
 		return $insert_id;
-	}
+	}*/
 
 	public function m_editar_usuario($data){
 		$datos = array(

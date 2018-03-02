@@ -13,43 +13,14 @@ class Compra extends CI_Controller {
 	public function verificar_archivos_seleccion(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 
-		$cliente  = $this->model_cliente->m_cargar_cliente_por_idusuario($allInputs['usuario']['idusuario']);
-		// $descuentos = $this->model_descuento->m_cargar_todos_descuentos();
-
-		/*verifica si sigue en isla*/
-		/*$hoy = strtotime(date('Y-m-d'));
-		$fecha_salida = strtotime($cliente['fecha_salida']);
-		$arrData['mostrar_productos'] = FALSE;*/
-		// $arrData['lista_productos'] = [];
-		/*if($hoy  <= $fecha_salida){
-			$arrData['mostrar_productos'] = TRUE;
-			// $lista_productos = $this->model_tipo_producto->m_cargar_tipo_producto_oferta();
-			// foreach ($lista_productos as $iProd => $prod) {
-			// 	$lista_productos[$iProd]['cantidad'] = (int) $prod['cantidad'];
-			// }
-			// $arrData['lista_productos'] = $lista_productos;
-		}*/
-
-		/*verifica bonificacion*/
-		/*$archivos = $this->model_archivo->m_cargar_galeria_descargados($cliente);
-		if(!empty($archivos) && count($archivos) > 1){
-			$arrData['tiene_bonificacion'] = FALSE;
+		$cliente  = $this->model_cliente->m_cargar_cliente_por_sesion();
+		if(empty($cliente)){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Se ha perdido la sesíón';
 		}else{
-			$arrData['tiene_bonificacion'] = TRUE;
+			$arrData['flag'] = 1;
+			$arrData['message'] = '';
 		}
-*/
-		/*verifica descuento*/
-		/*$arrData['tiene_descuento'] = FALSE;
-		$arrData['descuento']['descuento'] = 0;
-		foreach ($descuentos as $key => $desc) {
-			$nuevafecha = strtotime ( '+'.$desc['dias'].' day' , strtotime ( $cliente['fecha_salida'] ) );
-			if( $hoy >= $nuevafecha ){
-				$arrData['descuento'] = $desc;
-				$arrData['tiene_descuento'] = TRUE;
-			}
-		}*/
-
-		//print_r($arrData);	exit();
 
 		$this->output
 		    ->set_content_type('application/json')

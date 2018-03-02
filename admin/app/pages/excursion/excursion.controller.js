@@ -37,14 +37,14 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idactividad', name:'idactividad', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
+        { field: 'idexcursion', name:'idexcursion', displayName: 'ID', minWidth: 50, width:80, visible:true, sort: { direction: uiGridConstants.DESC} },
 
         // { field: 'fecha_f', name:'fecha_actividad', displayName: 'FECHA', enableFiltering: false, minWidth: 80, width: 100 },
-        { field: 'titulo_act', name:'titulo_act', displayName: 'TITULO', minWidth: 100 },
+        { field: 'descripcion', name:'descripcion', displayName: 'TITULO', minWidth: 100 },
         // { field: 'cantidad_fotos', name:'cantidad_fotos', displayName: 'CANT. FOTOS', minWidth: 100 },
-        { field: 'monto_total', name:'monto_total', displayName: 'PRECIO PACK ($)', minWidth: 100, enableFiltering: false },
+        { field: 'precio_pack', name:'precio_pack', displayName: 'PRECIO PACK ($)', minWidth: 100, enableFiltering: false },
         { field: 'precio_primera', name:'precio_primera', displayName: 'PRECIO PRIMERA ($)', minWidth: 100, enableFiltering: false },
-        { field: 'precio_por_adicional', name:'precio_por_adicional', displayName: 'PRECIO ADICIONAL ($)', minWidth: 100, enableFiltering: false },
+        { field: 'precio_adicional', name:'precio_adicional', displayName: 'PRECIO ADICIONAL ($)', minWidth: 100, enableFiltering: false },
         /*{ field: 'estado', type: 'object', name: 'estado', displayName: 'ESTADO', maxWidth: 100, enableFiltering: false,
           cellTemplate:'<div class=" ml-md mt-xs onoffswitch green inline-block medium">'+
                   '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch{{ COL_FIELD.id }}" ng-checked="{{ COL_FIELD.bool }}" ng-click="grid.appScope.btnHabilitarDeshabilitar(row)">'+
@@ -89,8 +89,8 @@
           var grid = this.grid;
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
-            'idactividad' : grid.columns[1].filters[0].term,
-            'titulo_act' : grid.columns[2].filters[0].term,
+            'idexcursion' : grid.columns[1].filters[0].term,
+            'descripcion' : grid.columns[2].filters[0].term,
           }
           vm.getPaginationServerSide();
         });
@@ -343,7 +343,7 @@
                       toastr.warning('El porcentaje debe ser numero mayor a cero', title);
                       return false;
                     }
-                    rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.monto_total/100);
+                    rowEntity.monto = Math.ceil(rowEntity.porc_monto*vm.fData.precio_pack/100);
                   }
                   if(!rowEntity.es_nuevo){
                     ExcursionServices.sEditarPaquete(rowEntity).then(function (rpta) {
@@ -380,8 +380,8 @@
               }
             }
             vm.calcularMonto = function(){
-              if( vm.fData.monto_total > 0 ){
-                vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.monto_total/100);
+              if( vm.fData.precio_pack > 0 ){
+                vm.fData.temporal.monto = Math.ceil(vm.fData.temporal.porc_monto*vm.fData.precio_pack/100);
               }
             }
             vm.agregarItem = function(){
@@ -401,7 +401,7 @@
                 return false;
               }
               vm.arrTemporal = {
-                'idactividad' : vm.fData.idactividad,
+                'idexcursion' : vm.fData.idexcursion,
                 'titulo_pq' : vm.fData.temporal.titulo_pq,
                 'porc_cantidad' : vm.fData.temporal.porc_cantidad,
                 'cantidad' : vm.fData.temporal.cantidad,

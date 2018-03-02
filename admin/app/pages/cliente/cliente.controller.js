@@ -50,8 +50,8 @@
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:90, visible:true },
-        { field: 'idactividad', name:'idactividad', displayName: 'ID EXCUR.', minWidth: 120},
-        { field: 'excursion', name:'titulo_act', displayName: 'EXCURSION', minWidth: 130},
+        { field: 'idexcursion', name:'idexcursion', displayName: 'ID EXCUR.', minWidth: 120},
+        { field: 'excursion', name:'descripcion', displayName: 'EXCURSION', minWidth: 130, enableFiltering: false,},
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100,},
         // { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
         // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
@@ -103,10 +103,10 @@
           var grid = this.grid;
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
-            'c.idcliente' : grid.columns[1].filters[0].term,
-            'c.codigo' : grid.columns[2].filters[0].term,
-            'act.idactividad' : grid.columns[3].filters[0].term,
-            'act.titulo_act' : grid.columns[4].filters[0].term,
+            'idcliente' : grid.columns[1].filters[0].term,
+            'codigo' : grid.columns[2].filters[0].term,
+            'idexcursion' : grid.columns[3].filters[0].term,
+            'descripcion' : grid.columns[4].filters[0].term,
             'fecha_excursion' : grid.columns[5].filters[0].term,
 
           }
@@ -146,9 +146,10 @@
     // PROCESADOS
       vm.listaProcesadosFiltro = [
         { id : '0', descripcion : '--TODOS--' },
-        { id : '1', descripcion : 'NO PROCESADOS' },
-        { id : '2', descripcion : 'PARCIAL' },
-        { id : '3', descripcion : 'TOTAL' },
+        { id : '1', descripcion : 'NO PROCESADO' },
+        { id : '2', descripcion : 'NO PAGO' },
+        { id : '3', descripcion : 'PENDIENTE' },
+        { id : '4', descripcion : 'COMPLETO' },
       ];
       vm.fBusqueda.filtroProcesados = vm.listaProcesadosFiltro[0];
     // IDIOMA
@@ -175,9 +176,10 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de cliente';
             vm.listaIdiomas = arrToModal.scope.listaIdiomas;
-            vm.fData.ididioma = vm.listaIdiomas[0].id;
+            // vm.fData.ididioma = vm.listaIdiomas[0].id;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
-            vm.fData.idactividad = vm.listaExcursiones[0].id;
+            vm.listaExcursiones.splice(0,0,{ id : '', descripcion:'--Seleccione--'});
+            vm.fData.excursion = vm.listaExcursiones[0];
             var hoy = new Date();
             vm.fData.fecha_excursion = $filter('date')(hoy,'dd-MM-yyyy');
             // botones
@@ -186,40 +188,9 @@
                 ClienteServices.sRegistrarCliente(vm.fData).then(function (rpta) {
                   pageLoading.stop();
                   if(rpta.flag == 1){
-                    /*if(rpta.flag2 == 1){
-                      toastr.success(rpta.message2, 'OK');
-                    }else{
-                      toastr.warning(rpta.message2, 'Advertencia');
-                    }*/
                     toastr.success(rpta.message, 'OK');
                     $uibModalInstance.close(vm.fData);
                     vm.getPaginationServerSide();
-
-                    /*var paramDatos = {
-                      idtipoemail : 1,
-                      ididioma : vm.fData.ididioma,
-                      codigo : vm.fData.codigo,
-                      email : vm.fData.email,
-                    }
-                    UsuarioServices.sEnviarMailUsuario(paramDatos).then(function(rpta){
-                      if(rpta.flag == 1){
-                        var title = 'OK';
-                        var type = 'success';
-                        toastr.success(rpta.message, title);
-                        $uibModalInstance.close(vm.fData);
-                        vm.getPaginationServerSide();
-
-
-                      }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var type = 'warning';
-                        toastr.warning(rpta.message, title);
-                      }else{
-                        alert('Ocurrió un error');
-                      }
-                    });*/
-
-
                   }else if( rpta.flag == 0 ){
                     var title = 'Advertencia';
                     var type = 'warning';
@@ -256,7 +227,7 @@
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
-            vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            // vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             console.log('vm.fData',vm.fData);
@@ -265,9 +236,9 @@
             vm.modalTitle = 'Edición de Cliente';
 
             // ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
-            //   vm.fData.idactividad = rpta.datos;
+            //   vm.fData.idexcursion = rpta.datos;
             // });
-            // vm.fData.idactividad = ["1","5"];
+            // vm.fData.idexcursion = ["1","5"];
 
             vm.aceptar = function () {
               pageLoading.start('Procesando...');
@@ -566,7 +537,7 @@
               nombres: vm.fDataUpload.nombres,
               apellidos: vm.fDataUpload.apellidos,
               codigo: vm.fDataUpload.codigo,
-              idactividadcliente: vm.fDataUpload.idactividadcliente,
+              idexcursioncliente: vm.fDataUpload.idexcursioncliente,
             });
             //console.info('onBeforeUploadItem', item);
         };

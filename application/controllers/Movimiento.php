@@ -36,7 +36,6 @@ class Movimiento extends CI_Controller {
 					// 'telefono' 	=> $row['telefono'],
 					// 'monedero' 	=> (int)$row['monedero'],
 					'ididioma' 	=> $row['ididioma'],
-					'idactividadcliente'=> $row['idactividadcliente'],
 					'excursion'=> $row['excursion'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_salida' 		=> darFormatoDMY($row['fecha_salida']),
@@ -225,13 +224,6 @@ class Movimiento extends CI_Controller {
 			$arrData['token'] = hash('md5',$cliente['codigo']);
 			$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token'] = $arrData['token'];
     	}
-    	// var_dump($allInputs); exit();
-
-    	// if($allInputs['detalle'][0]['tipo_seleccion'] == 2){
-	    // 	$idactividadcliente = $allInputs['detalle'][0]['imagenes'][0]['idactividadcliente'];
-    	// }else{
-	    // 	$idactividadcliente = $allInputs['detalle'][0]['imagenes']['idactividadcliente'];
-    	// }
     	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
     	if($monedero != $allInputs['saldo']){
     		$arrData['message'] = 'El saldo no coincide';
@@ -245,23 +237,13 @@ class Movimiento extends CI_Controller {
 
     	$datos_venta = array(
     		'idcliente' => $allInputs['idcliente'],
-    		'idactividadcliente' => $allInputs['idactividadcliente'],
+    		'idexcursion' => $allInputs['idexcursion'],
     		'tipo_movimiento' => 1, // pedido
     		'fecha_movimiento' => date('Y-m-d H:i:s'),
-    		'total' => $allInputs['total_venta'],
+    		'total' => $allInputs[0]['detalle']['total_detalle'],
     		'estado'=> ($allInputs['porConfirmar'])? 2 : 1
     	);
-    	$datos_pedido = array();
-    	if($allInputs['total_pedido']>0){
-	    	$datos_pedido = array(
-	    		'idcliente' => $allInputs['idcliente'],
-	    		'idactividadcliente' => $allInputs['idactividadcliente'],
-	    		'tipo_movimiento' => 2, // pedido
-	    		'fecha_movimiento' => date('Y-m-d H:i:s'),
-	    		'total' => $allInputs['total_pedido'],
-	    		'estado'=> ($allInputs['porConfirmar'])? 2 : 1
-	    	);
-    	}
+
     	// var_dump($allInputs['detalle']); exit();
     	$this->db->trans_start();
     	$idmovimiento = $this->model_movimiento->m_registrar_movimiento($datos_venta);
@@ -270,71 +252,37 @@ class Movimiento extends CI_Controller {
 		}*/
 		if( $idmovimiento ){
 			foreach ($allInputs['detalle'] as $row) {
-				if($row['es_pedido']){
-					$data = array(
-						'idmovimiento' => $idmovimiento_pedido,
-						// 'idpaquete' => NULL,
-						'idproducto' => $row['idproducto'],
-						// 'tipo_adicional' => NULL,
-						'cantidad' => $row['cantidad'],
-						'precio' => $row['precio'],
-						'total_detalle' => $row['total_detalle'],
-						'idcolor' => empty($row['idcolor'])? NULL : $row['idcolor'],
-						'genero' => empty($row['genero'])? NUll : $row['genero'],
-						'tipo_detalle' => 2, // 1$row['genero']: compra online; 2: merchandising (pedido)
-						'estado_det' => 1, // pendiente
-					);
-					$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
-					if(!empty($row['imagenes'])){
-						if( $row['tipo_seleccion'] == 1 ){
+				$data = array(
+					'idmovimiento' => $idmovimiento,
+					'idpaquete' => NULL,
+					'idproducto' => NULL,
+					// 'tipo_adicional' => NULL,
+					'cantidad' => $row['cantidad'],
+					'precio' => $row['precio'],
+					'total_detalle' => $row['total_detalle'],
+
+					'tipo_detalle' => 1, // 1$row['genero']: compra online; 2: merchandising (pedido)
+					'estado_det' => 1, // pendiente
+				);
+				$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
+				if(!empty($row['imagenes'])){
+					if( $row['tipo_seleccion'] == 1 ){
+						$data = array(
+							'iddetalle' => $iddetalle,
+							'idarchivo' => $row['imagenes']['idarchivo']
+						);
+						$this->model_movimiento->m_registrar_detalle_archivo($data);
+					}else{
+						foreach ($row['imagenes'] as $row_imagen) {
 							$data = array(
 								'iddetalle' => $iddetalle,
-								'idarchivo' => $row['imagenes']['idarchivo']
+								'idarchivo' => $row_imagen['idarchivo']
 							);
 							$this->model_movimiento->m_registrar_detalle_archivo($data);
-						}else{
-							foreach ($row['imagenes'] as $row_imagen) {
-								$data = array(
-									'iddetalle' => $iddetalle,
-									'idarchivo' => $row_imagen['idarchivo']
-								);
-								$this->model_movimiento->m_registrar_detalle_archivo($data);
-							}
-						}
-					}
-				}else{
-					$data = array(
-						'idmovimiento' => $idmovimiento,
-						'idpaquete' => NULL,
-						'idproducto' => NULL,
-						// 'tipo_adicional' => NULL,
-						'cantidad' => $row['cantidad'],
-						'precio' => $row['precio'],
-						'total_detalle' => $row['total_detalle'],
-						'idcolor' => empty($row['idcolor'])? NULL : $row['idcolor'],
-						'genero' => empty($row['genero'])? NUll : $row['genero'],
-						'tipo_detalle' => 1, // 1$row['genero']: compra online; 2: merchandising (pedido)
-						'estado_det' => 1, // pendiente
-					);
-					$iddetalle = $this->model_movimiento->m_registrar_detalle($data);
-					if(!empty($row['imagenes'])){
-						if( $row['tipo_seleccion'] == 1 ){
-							$data = array(
-								'iddetalle' => $iddetalle,
-								'idarchivo' => $row['imagenes']['idarchivo']
-							);
-							$this->model_movimiento->m_registrar_detalle_archivo($data);
-						}else{
-							foreach ($row['imagenes'] as $row_imagen) {
-								$data = array(
-									'iddetalle' => $iddetalle,
-									'idarchivo' => $row_imagen['idarchivo']
-								);
-								$this->model_movimiento->m_registrar_detalle_archivo($data);
-							}
 						}
 					}
 				}
+
 			}
 
 			$arrData['message'] = 'Se registraron los datos correctamente ';

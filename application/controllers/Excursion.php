@@ -9,6 +9,7 @@ class Excursion extends CI_Controller {
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_excursion'));
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
     }
     public function listar_excursion_cbo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -18,8 +19,8 @@ class Excursion extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'id' => $row['idactividad'],
-					'descripcion' => $row['titulo_act'],
+					'id' => $row['idexcursion'],
+					'descripcion' => $row['descripcion'],
 				)
 			);
 		}
@@ -42,11 +43,11 @@ class Excursion extends CI_Controller {
 		$arrListado = array();
 		foreach ($lista as $row) {
 			array_push($arrListado, array(
-				'idactividad' => $row['idactividad'],
-				'titulo_act' => $row['titulo_act'],
-				'monto_total' => (int)$row['monto_total'],
+				'idexcursion' => $row['idexcursion'],
+				'descripcion' => $row['descripcion'],
+				'precio_pack' => (int)$row['precio_pack'],
 				'precio_primera' => (int)$row['precio_primera'],
-				'precio_por_adicional' => (int)$row['precio_por_adicional'],
+				'precio_adicional' => (int)$row['precio_adicional'],
 				)
 			);
 		}
@@ -76,14 +77,14 @@ class Excursion extends CI_Controller {
 			array_push($arrListado, array(
 				'idpaquete' => $row['idpaquete'],
 				'titulo_pq' => $row['titulo_pq'],
-				'idactividad' => $row['idactividad'],
+				'idexcursion' => $row['idexcursion'],
 				'porc_cantidad' => (int)$row['porc_cantidad'],
 				'porc_monto' => (int)$row['porc_monto'],
 				'cantidad' => (int)$row['cantidad'],
 				'monto' => (int)$row['monto'],
 				'es_nuevo' => FALSE,
 				// 'estado_pq' => array(
-				// 		'id'	 =>$row['idactividad'],
+				// 		'id'	 =>$row['idexcursion'],
 				// 		'valor'  =>$row['estado_pq'],
 				// 		'bool'   =>$bool
 				// 	)
@@ -103,16 +104,15 @@ class Excursion extends CI_Controller {
 	}
 	public function listar_excursion_paquetes_cliente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_excursion->m_cargar_paquetes_cliente($allInputs);
+		$lista = $this->model_excursion->m_cargar_excursion_cliente($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
 			array_push($arrListado, array(
-				'idactividad' => $row['idactividad'],
-				'idactividadcliente' => $row['idactividadcliente'],
-				'titulo_act' => $row['titulo_act'],
-				'monto_total' => (int)$row['monto_total'],
+				'idexcursion' => $row['idexcursion'],
+				'descripcion' => $row['descripcion'],
+				'precio_pack' => (int)$row['precio_pack'],
 				'precio_primera' => (int)$row['precio_primera'],
-				'precio_por_adicional' => (int)$row['precio_por_adicional'],
+				'precio_adicional' => (int)$row['precio_adicional'],
 				)
 			);
 		}
@@ -131,7 +131,7 @@ class Excursion extends CI_Controller {
 		$lista = $this->model_excursion->m_cargar_excursiones_cliente($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
- 			$arrListado[] = $row['idactividad'];
+ 			$arrListado[] = $row['idexcursion'];
 		}
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
@@ -151,14 +151,14 @@ class Excursion extends CI_Controller {
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// validaciones
-    	if(empty($allInputs['titulo_act'])){
+    	if(empty($allInputs['descripcion'])){
     		$arrData['message'] = 'Título obligatorio';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-    	if(empty($allInputs['monto_total'])){
+    	if(empty($allInputs['precio_pack'])){
     		$arrData['message'] = 'Precio paquete obligatorio';
     		$this->output
 			    ->set_content_type('application/json')
@@ -167,35 +167,20 @@ class Excursion extends CI_Controller {
     	}
 
     	$data = array(
-    		'titulo_act' => strtoupper_total($allInputs['titulo_act']),
-    		'monto_total' => $allInputs['monto_total'],
+    		'descripcion' => strtoupper_total($allInputs['descripcion']),
+    		'precio_pack' => $allInputs['precio_pack'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
-    		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
+    		'precio_adicional' => empty($allInputs['precio_adicional'])?NULL:$allInputs['precio_adicional'],
     		'createdat' => date('Y-m-d H:i:s'),
     		'updatedat' => date('Y-m-d H:i:s'),
+    		'iduser_reg' => $this->sessionCP['idusuario']
     	);
     	// print_r($data); exit();
-    	$idactividad = $this->model_excursion->m_registrar($data);
-    	if($idactividad){
+    	$idexcursion = $this->model_excursion->m_registrar($data);
+    	if($idexcursion){
     		$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
-	    	/*$data2 = array(
-	    		'titulo_pq' => 'PLATINO',
-	    		'idactividad' => $idactividad,
-	    		'porc_cantidad' => 100,
-	    		'porc_monto' => 100,
-	    		'cantidad' => $allInputs['cantidad_fotos'],
-	    		'monto' => $allInputs['monto_total'],
-	    		'es_base' => 1
-	    	);
-    		$reg_paquete = $this->model_excursion->m_registrar_paquete($data2);*/
     	}
-    	/*if($reg_paquete){
-
-			$arrData['message'] = 'Se registraron los datos correctamente';
-    		$arrData['flag'] = 1;
-    	}*/
-
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -208,10 +193,10 @@ class Excursion extends CI_Controller {
     	// data
     	$data = array(
 
-    		'titulo_act' => strtoupper_total($allInputs['titulo_act']),
-    		'monto_total' => $allInputs['monto_total'],
+    		'descripcion' => strtoupper_total($allInputs['descripcion']),
+    		'precio_pack' => $allInputs['precio_pack'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
-    		'precio_por_adicional' => empty($allInputs['precio_por_adicional'])?NULL:$allInputs['precio_por_adicional'],
+    		'precio_adicional' => empty($allInputs['precio_adicional'])?NULL:$allInputs['precio_adicional'],
     		'updatedat' => date('Y-m-d H:i:s'),
     	);
     	/*$paquetes = $this->model_excursion->m_cargar_paquetes_por_actividad($allInputs);
@@ -219,19 +204,19 @@ class Excursion extends CI_Controller {
     		if( $row['cantidad'] != $allInputs['cantidad_fotos'] && $row['es_base'] == 1 ){
     			$edita_cantidad = TRUE;
     		}
-    		if( $row['monto'] != $allInputs['monto_total'] && $row['es_base'] == 1 ){
+    		if( $row['monto'] != $allInputs['precio_pack'] && $row['es_base'] == 1 ){
     			$edita_monto = TRUE;
     		}
     	}*/
     	$this->db->trans_start();
-		if( $this->model_excursion->m_editar($data,$allInputs['idactividad']) ){
+		if( $this->model_excursion->m_editar($data,$allInputs['idexcursion']) ){
 			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 			/*if( $edita_cantidad || $edita_monto ){
 				foreach ($paquetes as $row) {
 			    	$data2 = array(
 			    		'cantidad' => ceil($allInputs['cantidad_fotos']*$row['porc_cantidad']/100),
-			    		'monto' => ceil($allInputs['monto_total']*$row['porc_monto']/100),
+			    		'monto' => ceil($allInputs['precio_pack']*$row['porc_monto']/100),
 			    	);
 					if( !$this->model_excursion->m_editar_paquete($data2,$row['idpaquete']) ){
 						$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
@@ -256,7 +241,7 @@ class Excursion extends CI_Controller {
     	foreach ($allInputs as $row) {
     		if($row['es_nuevo']){
 		    	$data = array(
-		    		'idactividad' => $row['idactividad'],
+		    		'idexcursion' => $row['idexcursion'],
 		    		'titulo_pq' => strtoupper_total($row['titulo_pq']),
 		    		'porc_cantidad' => $row['porc_cantidad'],
 		    		'porc_monto' => $row['porc_monto'],
@@ -324,13 +309,13 @@ class Excursion extends CI_Controller {
     	$arrData['flag'] = 0;
     	$this->db->trans_start();
     	if( $allInputs['estado']['valor'] == 1 ){
-			if( $this->model_excursion->m_deshabilitar($allInputs['idactividad']) ){
+			if( $this->model_excursion->m_deshabilitar($allInputs['idexcursion']) ){
 				$arrData['message'] = 'Se deshabilitaron los datos correctamente';
 				$arrData['flag'] = 1;
 			}
     	}
     	if( $allInputs['estado']['valor'] == 2 ){
-			if( $this->model_excursion->m_habilitar($allInputs['idactividad']) ){
+			if( $this->model_excursion->m_habilitar($allInputs['idexcursion']) ){
 				$arrData['message'] = 'Se habilitaron los datos correctamente';
 				$arrData['flag'] = 1;
 			}

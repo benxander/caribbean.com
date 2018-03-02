@@ -6,6 +6,7 @@ class Cliente extends CI_Controller {
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion','model_email'));
         $this->load->library('excel');
+		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
     }
     public function listar_clientes(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -18,37 +19,41 @@ class Cliente extends CI_Controller {
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
 			$objEstado = array();
-			if( $row['descargados'] == $row['archivo'] && $row['archivo'] != 0 ){
-				$estado = 'COMPLETO';
-				$clase = 'label-success';
-			}elseif( $row['descargados'] < $row['archivo'] ){
-				$estado = 'PARCIAL';
-				$clase = 'label-warning';
-			}else{
-				$estado = 'NO PROCESADO';
-				$clase = 'label-default';
+			switch ($row['procesado']) {
+				case 'NO PROCESADO':
+					$estado = 'NO PROCESADO';
+					$clase = 'label-default';
+					break;
+				case 'NO PAGO':
+					$estado = 'NO PAGO';
+					$clase = 'label-info';
+					break;
+				case 'PENDIENTE':
+					$estado = 'PENDIENTE';
+					$clase = 'label-warning';
+					break;
+				case 'COMPLETO':
+					$estado = 'COMPLETO';
+					$clase = 'label-success';
+					break;
+				default:
+					$estado = '-';
+					$clase = 'label-danger';
+					break;
 			}
+
 			array_push($arrListado,
 				array(
 					'idcliente' => $row['idcliente'],
-					// 'idusuario' => $row['idusuario'],
-					// 'nombres' 	=> $row['nombres'],
-					// 'apellidos'	=> $row['apellidos'],
-					// 'email' 	=> $row['email'],
-					// 'whatsapp' 	=> $row['whatsapp'],
-					// 'hotel' 	=> $row['hotel'],
-					// 'habitacion'=> $row['habitacion'],
-					// 'telefono' 	=> $row['telefono'],
 					'monedero' 	=> (int)$row['monedero'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
-					// 'ididioma' 	=> $row['ididioma'],
-					'idactividadcliente' 	=> $row['idactividadcliente'],
-					'idactividad' 	=> $row['idactividad'],
-					'excursion' 	=> $row['titulo_act'],
+					'ididioma' 	=> 'en',
+					'idexcursion' 	=> $row['idexcursion'],
+					'excursion' 	=> $row['descripcion'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					// 'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
-					'archivo'	=> ($row['archivo'] > 0) ? TRUE:FALSE,
+					'archivo'	=> ($row['total_subido'] > 0) ? TRUE:FALSE,
 					'monto'=>	$row['monto'],
 					'estado_obj' => array(
 						'string' => $estado,
@@ -102,180 +107,31 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function reg_cliente(){
-		$allInputs['nombres'] = $this->input->post_get('nombres');
-		$allInputs['apellidos'] = $this->input->post_get('apellidos');
-		$allInputs['email'] = $this->input->post_get('email');
-		$allInputs['codigo'] = $this->input->post_get('codigo');
-		$allInputs['telefono'] = $this->input->post_get('telefono');
-		$allInputs['actividades'][] = $this->input->post_get('idexcursion');
-		$allInputs['hotel'] = $this->input->post_get('hotel');
-		$allInputs['habitacion'] = $this->input->post_get('habitacion');
-		$allInputs['ididioma'] = $this->input->post_get('ididioma');
-		$allInputs['fecha_excursion'] = $this->input->post_get('fecha_excursion');
-		$allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
-		$allInputs['monedero'] = $this->input->post_get('deposito');
-		// var_dump($allInputs); exit();
-		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
-    	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
-    	if(empty($allInputs['email'])){
-    		$arrData['message'] = 'Debe seleccionar un email.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
-    	if(empty($allInputs['ididioma'])){
-    		$arrData['message'] = 'Debe seleccionar un idioma.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
-    	if(empty($allInputs['actividades'])){
-    		$arrData['message'] = 'Debe seleccionar una excursión.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
-    	if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
-    		$arrData['message'] = 'Ya existe un cliente registrado con el email: '.$allInputs['email'];
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}
 
-    	$this->db->trans_start();
-    	$idusuario = $this->model_usuario->m_registrar_usuario_cliente($allInputs);
-		if($idusuario){
-			$allInputs['idusuario'] = $idusuario;
-			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
-			// var_dump($allInputs);
-			if($idcliente){
-				foreach ($allInputs['actividades'] as $row) {
-					$data = array(
-						'idcliente' => $idcliente,
-						'idactividad' => $row
-					);
-					$this->model_cliente->m_registrar_actividad_cliente($data);
-				}
-				$arrData['message'] = 'Se registraron los datos correctamente';
-    			$arrData['flag'] = 1;
-			}
-		}
-		$this->db->trans_complete();
-
-		if($arrData['flag'] == 1){
-			$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $allInputs['codigo'];
-		    createCarpetas($carpeta);
-		}
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-		// http://localhost/caribbean.com/ci.php/cliente/reg_cliente?nombres=Ruben&email=rguevara@hotmail.es&codigo=1122
-	}
 	// MANTENIMIENTO
 	public function registrar_cliente($origen=''){
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
-		if($origen == 'externo'){ // para colocar en un formulario externo
-			$allInputs['nombres'] = $this->input->post_get('nombres');
-			// $allInputs['apellidos'] = $this->input->post_get('apellidos');
-			// $allInputs['email'] = $this->input->post_get('email');
-			$allInputs['codigo'] = $this->input->post_get('codigo');
-			$allInputs['telefono'] = $this->input->post_get('telefono');
-			$allInputs['idactividad'] = $this->input->post_get('idexcursion');
-			// $allInputs['hotel'] = $this->input->post_get('hotel');
-			// $allInputs['habitacion'] = $this->input->post_get('habitacion');
-			// $allInputs['ididioma'] = $this->input->post_get('ididioma');
-			$allInputs['fecha_excursion'] = $this->input->post_get('fecha_excursion');
-			// $allInputs['fecha_salida'] = $this->input->post_get('fecha_salida');
-			$allInputs['monedero'] = $this->input->post_get('deposito');
-		}else{
-			$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		}
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
-    	/*if(empty($allInputs['email'])){
-    		$arrData['message'] = 'Debe seleccionar un email.';
+    	if(empty($allInputs['codigo'])){
+    		$arrData['message'] = 'Debe ingresar un código.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
-    	}*/
-    	/*if(empty($allInputs['ididioma'])){
-    		$arrData['message'] = 'Debe seleccionar un idioma.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}*/
-    	if(empty($allInputs['idactividad'])){
+    	}
+    	if(empty($allInputs['excursion']['id'])){
     		$arrData['message'] = 'Debe seleccionar una excursión.';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
 			return;
     	}
-    	/*if(!comprobar_email($allInputs['email'])){
-    		$arrData['message'] = 'Correo de Cliente inválido.';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}*/
-    	/*if($this->model_cliente->m_cargar_cliente_por_email($allInputs)){
-    		$arrData['message'] = 'Ya existe un cliente registrado con el email: '.$allInputs['email'];
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-    	}*/
-
+    	// print_r($allInputs); exit();
     	$this->db->trans_start();
-    	$idusuario = $this->model_usuario->m_registrar_usuario_cliente($allInputs);
-		if($idusuario){
-			$allInputs['idusuario'] = $idusuario;
-			$idcliente = $this->model_cliente->m_registrar_cliente($allInputs);
-			// var_dump($allInputs);
-			if($idcliente){
-				$data = array(
-					'idcliente' => $idcliente,
-					'idactividad' => $allInputs['idactividad']
-				);
-				$this->model_cliente->m_registrar_actividad_cliente($data);
-				/*foreach ($allInputs['actividades'] as $row) {
-					$this->model_cliente->m_registrar_actividad_cliente($data);
-				}*/
-				$arrData['message'] = 'Se registraron los datos correctamente';
-    			$arrData['flag'] = 1;
-
-    			/*envio de correo*/
-    			/*$allInputs['idtipoemail'] = 1;
-    			$lista = $this->model_email->m_cargar_email($allInputs);
-    			if(empty($lista)){
-    				$arrData['message2'] = 'Email no configurado para el idioma seleccionado';
-    				$arrData['flag2'] = 0;
-    			}else{
-			    	$mensaje = $lista[0]['contenido'];
-					$mensaje .= '<br /> Atte: <br /> '.DESCRIPCION.' </div></div>';
-					$from = 'soporte@unaisangamer.com';
-					$to = $allInputs['email'];
-					$asunto = $lista[0]['asunto'];
-					// if(false){
-					if(envio_email($to, "",$asunto, $mensaje, $from)){
-						$arrData['message2'] = 'Notificación de correo enviada exitosamente.';
-	    				$arrData['flag2'] = 1;
-					}else{
-						$arrData['message2'] = 'Error en envio de correo';
-	    				$arrData['flag2'] = 0;
-					}
-    			}*/
-
-			}
+		if($this->model_cliente->m_registrar_cliente($allInputs)){
+			$arrData['message'] = 'Se registraron los datos correctamente';
+			$arrData['flag'] = 1;
 		}
 		$this->db->trans_complete();
 		$arrData['message2'] = '';
@@ -338,12 +194,21 @@ class Cliente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
     	foreach ($allInputs as $row) {
-	    	if($this->model_usuario->m_anular_usuario($row)){
-				if($this->model_cliente->m_anular_cliente($row)){
-					$arrData['message'] = 'Se anularon los datos correctamente';
-		    		$arrData['flag'] = 1;
-				}
+			if($this->model_cliente->m_anular_cliente($row)){
+				$arrData['message'] = 'Se anularon los datos correctamente';
+	    		$arrData['flag'] = 1;
+			}
+			if($this->model_archivo->m_delete_archivo($row)){
+				$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
+				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'descargadas'. DIRECTORY_SEPARATOR .'thumbs');
+				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'descargadas');
+				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales'. DIRECTORY_SEPARATOR .'thumbs');
+				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales');
+				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'thumbs');
+				$arrData['message'] = 'Se eliminaron los datos correctamente';
+	    		$arrData['flag'] = 1;
 			}
     	}
 
@@ -445,8 +310,8 @@ class Cliente extends CI_Controller {
 			if(!empty( $_REQUEST )){
 				$codigo = $_REQUEST['codigo'];
 				$idcliente = $_REQUEST['idcliente'];
-				$idusuario = $_REQUEST['idusuario'];
-				$idactividadcliente = $_REQUEST['idactividadcliente'];
+				// $idusuario = $_REQUEST['idusuario'];
+				// $idactividadcliente = $_REQUEST['idactividadcliente'];
 
 			    $file_name = $_FILES['file']['name'];
 			    $file_size =$_FILES['file']['size'];
@@ -487,8 +352,6 @@ class Cliente extends CI_Controller {
 
 						$allInputs = array(
 							'idcliente' 	=> $idcliente,
-							'idusuario' 	=> $idusuario,
-							'idactividadcliente' 	=> $idactividadcliente,
 							'nombre_archivo'=> $file_name,
 							'size'			=> $file_size,
 							'tipo_archivo'=> 1
@@ -572,7 +435,7 @@ class Cliente extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idarchivo' => $row['idarchivo'],
-					'idusuario' => $row['idusuario'],
+					// 'idusuario' => $row['idusuario'],
 					'idcliente' => $row['idcliente'],
 					'nombre_archivo' => $row['nombre_archivo'],
 					'size' => $row['size'],

@@ -5,16 +5,16 @@ class Model_excursion extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_excursion_cbo($paramPaginate=FALSE){
-		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, act.precio_video, act.precio_por_adicional, estado');
-		$this->db->from('actividad act');
-		$this->db->where_in('act.estado', array(1));
-		$this->db->order_by('descripcion_act','ASC');
+		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack, exc.precio_primera, exc.precio_adicional, estado_exc');
+		$this->db->from('excursion exc');
+		$this->db->where_in('exc.estado_exc', array(1));
+		$this->db->order_by('descripcion','ASC');
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones($paramPaginate=FALSE){
-		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, act.precio_video, act.precio_por_adicional, act.precio_primera, estado');
-		$this->db->from('actividad act');
-		$this->db->where_in('act.estado', array(1,2));
+		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack, exc.precio_adicional, exc.precio_primera, estado_exc');
+		$this->db->from('excursion exc');
+		$this->db->where_in('exc.estado_exc', array(1,2));
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -35,8 +35,8 @@ class Model_excursion extends CI_Model {
 	}
 	public function m_count_excursiones($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
-		$this->db->from('actividad act');
-		$this->db->where_in('act.estado', array(1,2));
+		$this->db->from('excursion exc');
+		$this->db->where_in('exc.estado_exc', array(1,2));
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -47,43 +47,40 @@ class Model_excursion extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
-	public function m_cargar_paquetes($datos){
-		$this->db->select('pq.idpaquete, pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq');
+	/*public function m_cargar_paquetes($datos){
+		$this->db->select('pq.idpaquete, pq.idexcursion, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_exc_pq, pq.es_base, pq.titulo_pq');
 		$this->db->from('paquete pq');
-		$this->db->where('idactividad', $datos['idactividad']);
+		$this->db->where('idexcursion', $datos['idexcursion']);
 		if($this->sessionCP['key_grupo'] != 'key_cliente'){
 			$this->db->where('es_base', 2);
 		}
 		return $this->db->get()->result_array();
 	}
-	public function m_cargar_paquetes_por_actividad($datos){
-		$this->db->select('pq.idpaquete, pq.idactividad, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_pq, pq.es_base, pq.titulo_pq');
+	public function m_cargar_paquetes_por_excursion($datos){
+		$this->db->select('pq.idpaquete, pq.idexcursion, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_exc_pq, pq.es_base, pq.titulo_pq');
 		$this->db->from('paquete pq');
-		$this->db->where('idactividad', $datos['idactividad']);
+		$this->db->where('idexcursion', $datos['idexcursion']);
 		return $this->db->get()->result_array();
-	}
-	public function m_cargar_paquetes_cliente($datos){
-		$this->db->select('act.idactividad, act.titulo_act, act.descripcion_act, act.cantidad_fotos, act.monto_total, ac.idactividadcliente');
-		$this->db->select('act.precio_por_adicional, act.precio_primera, act.precio_video');
-		$this->db->from('actividad act');
-		$this->db->join('actividad_cliente ac', 'act.idactividad = ac.idactividad');
-		$this->db->join('cliente c', 'ac.idcliente = c.idcliente');
+	}*/
+	public function m_cargar_excursion_cliente($datos){
+		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack');
+		$this->db->select('exc.precio_adicional, exc.precio_primera,');
+		$this->db->from('excursion exc');
+		$this->db->join('cliente c', 'exc.idexcursion = c.idexcursion');
 		$this->db->where('c.idcliente', $datos['idcliente']);
-		$this->db->where('ac.estado_ac', 1);
-
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones_cliente($datos){
-		$this->db->select('idactividad');
-		$this->db->from('actividad_cliente');
+		$this->db->select('idexcursion');
+		$this->db->from('excursion_cliente');
 		$this->db->where('idcliente', $datos['idcliente']);
-		$this->db->where('estado_ac', 1);
+		$this->db->where('estado_exc_ac', 1);
 		return $this->db->get()->result_array();
 	}
 
 	public function m_registrar($data)
 	{
-		$this->db->insert('actividad', $data);
+		$this->db->insert('excursion', $data);
 		$last_id = $this->db->insert_id();
 		return $last_id;
 	}
@@ -96,8 +93,8 @@ class Model_excursion extends CI_Model {
 
 	public function m_editar($data,$id)
 	{
-		$this->db->where('idactividad',$id);
-		return $this->db->update('actividad', $data);
+		$this->db->where('idexcursion',$id);
+		return $this->db->update('excursion', $data);
 	}
 	public function m_editar_paquete($data,$id)
 	{
@@ -106,17 +103,19 @@ class Model_excursion extends CI_Model {
 	}
 	public function m_anular($datos){
 		$data = array(
-			'estado' => 0
+			'estado_exc' => 0,
+			'fecha_anula' => date('Y-m-d H:i:s'),
+			'iduser_anula' => $this->sessionCP['idusuario']
 		);
-		$this->db->where('idactividad',$datos['idactividad']);
-		return $this->db->update('actividad', $data);
+		$this->db->where('idexcursion',$datos['idexcursion']);
+		return $this->db->update('excursion', $data);
 	}
 	public function m_habilitar($id){
 		$data = array(
-			'estado' => 1
+			'estado_exc' => 1
 		);
-		$this->db->where('idactividad',$id);
-		if($this->db->update('actividad', $data)){
+		$this->db->where('idexcursion',$id);
+		if($this->db->update('excursion', $data)){
 			return true;
 		}else{
 			return false;
@@ -124,10 +123,10 @@ class Model_excursion extends CI_Model {
 	}
 	public function m_deshabilitar($id){
 		$data = array(
-			'estado' => 2
+			'estado_exc' => 2
 		);
-		$this->db->where('idactividad',$id);
-		if($this->db->update('actividad', $data)){
+		$this->db->where('idexcursion',$id);
+		if($this->db->update('excursion', $data)){
 			return true;
 		}else{
 			return false;

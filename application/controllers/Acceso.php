@@ -27,46 +27,17 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
 					$arrPerfilUsuario['key_grupo'] = $loggedUser['key_grupo'];
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
-					$arrPerfilUsuario['monedero'] = strtoupper($loggedUser['monedero']);
+					$arrPerfilUsuario['monedero'] = NULL;
+					$arrPerfilUsuario['ididioma'] = 'es';
 					$arrPerfilUsuario['logged'] = true;
 					$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 
-					/* CARGAR DATOS DEL CLIENTE SOLO SI ES DEL GRUPO CLIENTE*/
-					if( $loggedUser['key_grupo'] == 'key_cliente' ){
-						$cliente = $this->model_cliente->m_cargar_cliente_por_idusuario($loggedUser['idusuario']);
-
-						if(!empty($cliente['idcliente'])){
-							$arrPerfilUsuario['idcliente'] = $cliente['idcliente'];
-							$arrPerfilUsuario['nombres'] = $cliente['nombres'];
-							$arrPerfilUsuario['apellidos'] = $cliente['apellidos'];
-							$arrPerfilUsuario['cliente'] = strtoupper_total($cliente['nombres'] . ' ' .$cliente['apellidos']);
-							$arrPerfilUsuario['email'] = $cliente['email'];
-							$arrPerfilUsuario['whatsapp'] = $cliente['whatsapp'];
-							$arrPerfilUsuario['ididioma'] = $cliente['ididioma'];
-							$arrPerfilUsuario['solicita_bonificacion'] = $cliente['solicita_bonificacion'];
-							// $arrPerfilUsuario['nombre_foto'] = empty($cliente['nombre_foto']) ? 'sin-imagen.png' : $cliente['nombre_foto'];
-							$arrData['flag'] = 1;
-							$arrData['message'] = 'Usuario inició sesión correctamente';
-						}
-
-						// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA.
-						//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);
-						// ACTUALIZAMOS EL ULTIMO LOGEO DEL USUARIO.
-						//$this->model_acceso->m_actualizar_fecha_ultima_sesion($arrPerfilUsuario);
-						if( isset($arrPerfilUsuario['idcliente']) ){
-							$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
-						}else{
-							$arrData['flag'] = 0;
-		    				$arrData['message'] = 'No se encontró los datos del usuario.';
-						}
-
-					}else{
 						$arrPerfilUsuario['cliente'] = $arrPerfilUsuario['username'];
 						$arrPerfilUsuario['email'] = $arrPerfilUsuario['key_grupo'] =='key_admin' ? 'Administrador':'Supremo';
 						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
 						$arrData['flag'] = 1;
 						$arrData['message'] = 'Usuario inició sesión correctamente';
-					}
+
 
 
 				}elseif($loggedUser['estado_us'] == 2){
@@ -78,6 +49,7 @@ class Acceso extends CI_Controller {
     			$arrData['message'] = 'Usuario o contraseña invalida. Inténtelo nuevamente.';
     		}
 		}
+
 		// var_dump($arrData); exit();
 		$this->output
 		    ->set_content_type('application/json')

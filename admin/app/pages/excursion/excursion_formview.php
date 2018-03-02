@@ -6,9 +6,9 @@
 		<form name="formExc" role="form" novalidate class="form-validation">
 		    <div class="row">
 		    	<div class="form-group col-sm-12 col-md-6 mb-n">
-		    		<label for="titulo_act" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
-	              	<input type="text" name="titulo_act" id="titulo_act" class="form-control" ng-model="mb.fData.titulo_act" placeholder="Registre titulo_act" required>
-	              	<div ng-messages="formExc.titulo_act.$error" ng-if="formExc.titulo_act.$dirty" role="alert" class="help-block text-red">
+		    		<label for="descripcion" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
+	              	<input type="text" name="descripcion" id="descripcion" class="form-control" ng-model="mb.fData.descripcion" placeholder="Registre titulo" required>
+	              	<div ng-messages="formExc.descripcion.$error" ng-if="formExc.descripcion.$dirty" role="alert" class="help-block text-red">
 	                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 	              	</div>
 	            </div>
@@ -19,15 +19,15 @@
 	            </div> -->
 	            <div class="form-group col-sm-12 col-md-6">
 		    		<label for="monto" class="control-label minotaur-label">Precio Paquete($) <small class="text-red">(*)</small> </label>
-	              	<div touch-spin name="monto" id="monto" ng-model="mb.fData.monto_total" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}" ></div>
+	              	<div touch-spin name="monto" id="monto" ng-model="mb.fData.precio_pack" options="{prefix: '$',verticalButtons: true, max: 100000, step:10}" ></div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-6">
 		    		<label for="precio_primera" class="control-label minotaur-label">Precio Primera Fotografia($) </label>
-	              	<div touch-spin name="precio_primera" id="precio_primera" ng-model="mb.fData.precio_primera" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
+	              	<div touch-spin name="precio_primera" id="precio_primera" ng-model="mb.fData.precio_primera" options="{prefix: '$',verticalButtons: true, max: 100000, step:10}"></div>
 	            </div>
 	            <div class="form-group col-sm-12 col-md-6">
-		    		<label for="precio_por_adicional" class="control-label minotaur-label">Precio Fotografia adicional($) </label>
-	              	<div touch-spin name="precio_por_adicional" id="precio_por_adicional" ng-model="mb.fData.precio_por_adicional" options="{prefix: '$',verticalButtons: true, max: 100000, step:50}"></div>
+		    		<label for="precio_adicional" class="control-label minotaur-label">Precio Fotografia adicional($) </label>
+	              	<div touch-spin name="precio_adicional" id="precio_adicional" ng-model="mb.fData.precio_adicional" options="{prefix: '$',verticalButtons: true, max: 100000, step:5}"></div>
 	            </div>
 	            <!-- <div class="form-group col-sm-12 col-md-6">
 		    		<label for="precio_video" class="control-label minotaur-label">Precio Video($) </label>
@@ -46,5 +46,5 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="mb.cancel()"><i class="fa fa-arrow-left"></i> Cancelar</button>
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formExc.$invalid" ng-click="mb.aceptar()"><i class="fa fa-arrow-right"></i> Guardar</button>
+  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formExc.$invalid" ng-click="mb.aceptar()"><i class="fa fa-arrow-right"></i> Guardar y Salir</button>
 </div>
