@@ -447,7 +447,7 @@
         sDescargarArchivosPagados: sDescargarArchivosPagados,
         sVerificarSeleccion: sVerificarSeleccion,
         sRegistrarVenta: sRegistrarVenta,
-        sRegistrarMovimiento: sRegistrarMovimiento,
+        // sRegistrarMovimiento: sRegistrarMovimiento,
         sListarSeccion: sListarSeccion,
     });
 
@@ -490,15 +490,15 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sRegistrarMovimiento(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Movimiento/registrar_pedido",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
+    // function sRegistrarMovimiento(pDatos) {
+    //   var datos = pDatos || {};
+    //   var request = $http({
+    //         method : "post",
+    //         url :  angular.patchURLCI + "Movimiento/registrar_pedido",
+    //         data : datos
+    //   });
+    //   return (request.then( handleSuccess,handleError ));
+    // }
     function sListarSeccion(pDatos) {
       var datos = pDatos || {};
       var request = $http({

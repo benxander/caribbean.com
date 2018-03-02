@@ -654,8 +654,8 @@ class Cliente extends CI_Controller {
 			if( !empty($arrAux[0]) && !empty($arrAux[1]) ){
 				array_push($arrListado, array(
 					'codigo' => $arrAux[0],
-					'excursion' => $arrAux[1],
-					'monedero' => $arrAux[2],
+					'idexcursion' => $arrAux[1],
+					'monedero' => empty($arrAux[2])? '0': $arrAux[2],
 					'fecha_excursion' => NULL,
 					// 'fecha_excursion' => $arrAux[3],
 					)
@@ -667,19 +667,12 @@ class Cliente extends CI_Controller {
 		$registro_exitoso = TRUE;
 		$this->db->trans_begin();
 		foreach ($arrListado as $row) {
-	  		$idusuario = $this->model_usuario->m_registrar_usuario_cliente($row);
-	  		if($idusuario){
-	  			$row['idusuario'] = $idusuario;
-				$idcliente = $this->model_cliente->m_registrar_cliente($row);
-				if($idcliente){
-					$data = array(
-						'idcliente' => $idcliente,
-						'idactividad' => $row['excursion']
-					);
-					$this->model_cliente->m_registrar_actividad_cliente($data);
-					$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
-		    		createCarpetas($carpeta);
-	    		}
+			$row['excursion']['id'] = $row['idexcursion'];
+			if($this->model_cliente->m_registrar_cliente($row)){
+				$arrData['message'] = 'Se registraron los datos correctamente';
+				$arrData['flag'] = 1;
+				$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
+	    		createCarpetas($carpeta);
 	  		}else{
 	  			$registro_exitoso = FALSE;
 	  		}
@@ -694,15 +687,16 @@ class Cliente extends CI_Controller {
 
 		return $registro_exitoso;
 	}
-	public function organizar_imagenes_temporales($allInputs){
-		// $allInputs = json_decode(trim($this->input->raw_input_stream),true);
+	public function organizar_imagenes_temporales(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$this->load->helper('file');
         $this->load->library('image_lib');
         // $extensions_image = array("jpeg","jpg");
         // $archivos = array();
+        $archivoZip = '';
 		$carpeta = './uploads/temporal/tmp';
-
-		if (!file_exists('./uploads/temporal/' . $allInputs['archivoZip'])) {
+		$archivoZip = $allInputs['ruta'].'.zip';
+		if (!file_exists('./uploads/temporal/' . $archivoZip)) {
 			$arrData['message'] = 'No subió el archivo zip';
 			$arrData['flag'] = 0;
     		// $this->output
@@ -710,10 +704,11 @@ class Cliente extends CI_Controller {
 			   //  ->set_output(json_encode($arrData));
 			return $arrData;
 		}
+		// var_dump($archivoZip); exit();
 		$error = FALSE;
 		$i = 0;
 		$zip = new ZipArchive;
-		if ($zip->open('./uploads/temporal/' . $allInputs['archivoZip']) === TRUE) {
+		if ($zip->open('./uploads/temporal/' . $archivoZip) === TRUE) {
 		    $zip->extractTo($carpeta);
 		    $zip->close();
 		} else {
@@ -724,7 +719,7 @@ class Cliente extends CI_Controller {
 			   //  ->set_output(json_encode($arrData));
 			return $arrData;
 		}
-		unlink('./uploads/temporal/' . $allInputs['archivoZip']);
+		unlink('./uploads/temporal/' . $archivoZip);
 
 		foreach (get_filenames($carpeta) as $archivo) {
 			if( $archivo != 'index.html'){
@@ -744,8 +739,6 @@ class Cliente extends CI_Controller {
 					$allInputs['size'] = filesize($archivo_or);
 					$allInputs['tipo_archivo'] = 1;
 					$allInputs['idcliente'] = $rowCliente['idcliente'];
-					$allInputs['idusuario'] = $rowCliente['idusuario'];
-					$allInputs['idactividadcliente'] = $rowCliente['idactividadcliente'];
 					// var_dump($allInputs);
 
 	   				redimencionMarcaAgua(600, $archivo_or, $carpeta_or, $archivo);
@@ -771,10 +764,10 @@ class Cliente extends CI_Controller {
        		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
 			$arrData['flag'] = 1;
        	}
-       	return $arrData;
- 		// $this->output
-		 //    ->set_content_type('application/json')
-		 //    ->set_output(json_encode($arrData));
+       	// return $arrData;
+ 		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
 	}
 	public function upload_zip_ftp(){
 		$this->load->library('ftp');

@@ -5,14 +5,14 @@ class Compra extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_archivo','model_descuento','model_cliente','model_pedido','model_movimiento'));
     }
 
 	public function verificar_archivos_seleccion(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$cliente  = $this->model_cliente->m_cargar_cliente_por_sesion();
 		if(empty($cliente)){
 			$arrData['flag'] = 0;

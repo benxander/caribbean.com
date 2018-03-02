@@ -713,7 +713,27 @@
                 // console.log('rutaArchivo',vm.rutaArchivo);
                 // uploader.queue[0].upload();
                 pageLoading.start('Procesando, puede tardar varios minutos...');
-                uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                var params = {
+                  ruta : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'none'
+                }
+                ClienteServices.sOrganizarImagenes(params).then(function(rpta){
+                  pageLoading.stop();
+                  if(rpta.flag == 1){
+                    var title = 'OK';
+                    var type = 'success';
+                    toastr.success(rpta.message, title);
+                    $uibModalInstance.close();
+                    // vm.nombreArchivoSubido = rpta.nombreArchivo;
+                    vm.getPaginationServerSide();
+                  }else if( rpta.flag == 0 ){
+                    var title = 'Advertencia';
+                    var type = 'warning';
+                    toastr.warning(rpta.message, title);
+                  }else{
+                    alert('Ocurrió un error');
+                  }
+                });
+                /*uploader.onSuccessItem = function(fileItem, response, status, headers) {
                   console.info('onSuccessItem', fileItem, response, status, headers);
                   pageLoading.stop();
                   if(response.flag == 1){
@@ -744,27 +764,7 @@
                     }else{
                       alert('Ocurrió un error');
                     }
-                };
-                /*var params = {
-                  ruta : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'none'
-                }
-                pageLoading.start('Procesando...');
-                ClienteServices.sUploadPrueba(params).then(function(rpta){
-                  pageLoading.stop();
-                  if(rpta.flag == 1){
-                    var title = 'OK';
-                    var type = 'success';
-                    toastr.success(rpta.message, title);
-                    $uibModalInstance.close();
-                    vm.nombreArchivoSubido = rpta.nombreArchivo;
-                  }else if( rpta.flag == 0 ){
-                    var title = 'Advertencia';
-                    var type = 'warning';
-                    toastr.warning(rpta.message, title);
-                  }else{
-                    alert('Ocurrió un error');
-                  }
-                });*/
+                };*/
               };
               vm.cancel = function () {
                 $uibModalInstance.dismiss('cancel');

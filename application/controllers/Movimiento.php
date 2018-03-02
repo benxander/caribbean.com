@@ -240,7 +240,7 @@ class Movimiento extends CI_Controller {
     		'idexcursion' => $allInputs['idexcursion'],
     		'tipo_movimiento' => 1, // pedido
     		'fecha_movimiento' => date('Y-m-d H:i:s'),
-    		'total' => $allInputs[0]['detalle']['total_detalle'],
+    		'total' => $allInputs['detalle'][0]['total_detalle'],
     		'estado'=> ($allInputs['porConfirmar'])? 2 : 1
     	);
 
