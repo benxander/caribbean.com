@@ -63,6 +63,11 @@
         { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
           cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
         },
+        { field: 'video', name: 'video', displayName: 'VIDEO',width: 70, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false,
+          cellTemplate: '<div class="text-center text-red" ng-if="row.entity.bool_video">' +
+            '<i class="fa fa-video-camera"></i>' +
+          '</div>'
+         },
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 120, enableFiltering: false,
           enableColumnMenus: false, enableColumnMenu: false, enableSorting: false,
           cellTemplate: '<div>' +

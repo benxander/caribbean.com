@@ -55,6 +55,7 @@ class Cliente extends CI_Controller {
 					// 'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['total_subido'] > 0) ? TRUE:FALSE,
 					'monto'=>	$row['monto'],
+					'bool_video' => empty($row['idexcursionvideo'])? FALSE: TRUE,
 					'estado_obj' => array(
 						'string' => $estado,
 						'clase' =>$clase
