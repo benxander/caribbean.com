@@ -125,6 +125,14 @@
           </div>
         </div>
       </div>
+      <div class="row" ng-if="ga.boolVideo">
+        <div class="col-sm-12">
+          <video width="320" height="240" controls>
+            <source src="{{ga.arrVideo.ruta}}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
     </div>
   </div>
   <!-- <div class="row" ng-show="ga.pedidoBool" ng-include="'app/pages/mi-galeria/pedidos.php'"> </div> -->

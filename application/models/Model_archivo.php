@@ -17,6 +17,14 @@ class Model_archivo extends CI_Model {
 		$this->db->where('arc.idcliente', $pDatos['idcliente']);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_video_cliente($pDatos){
+		$this->db->select('cl.idcliente, ev.nombre_video, ev.size, ev.fecha, ev.idexcursionvideo');
+		$this->db->from('cliente cl');
+		$this->db->join('excursion_video ev', 'cl.idexcursionvideo = ev.idexcursionvideo', 'left');
+		$this->db->where('cl.idcliente', $pDatos['idcliente']);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 
 	public function m_cargar_galeria_no_descargados($pDatos){
 		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,

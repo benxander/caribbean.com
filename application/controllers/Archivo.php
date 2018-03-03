@@ -13,6 +13,8 @@ class Archivo extends CI_Controller {
     public function listar_galeria_descargados(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_descargados($allInputs);
+		$rowVideo = $this->model_archivo->m_cargar_video_cliente($allInputs);
+		$rowVideo['ruta'] = '../uploads/clientes/videos/'.$rowVideo['nombre_video'];
 		$arrListado = array();
 		foreach ($lista as $row) {
 			if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
@@ -47,6 +49,7 @@ class Archivo extends CI_Controller {
 		}
 
     	$arrData['datos'] = $arrListado;
+    	$arrData['video'] = $rowVideo;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($lista)){

@@ -23,6 +23,8 @@
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
         vm.images = rpta.datos;
+        vm.arrVideo = rpta.video;
+        vm.boolVideo = angular.isObject(vm.arrVideo)
         if(loader){
           pageLoading.stop();
         }
