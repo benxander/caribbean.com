@@ -233,10 +233,14 @@
           keyboard:false,
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            vm.listaExcursiones = arrToModal.scope.listaExcursiones;
             // vm.listaIdiomas = arrToModal.scope.listaIdiomas;
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
+            vm.listaExcursiones = arrToModal.scope.listaExcursiones;
+            var objIndex = vm.listaExcursiones.filter(function(obj) {
+              return obj.id == vm.fData.idexcursion;
+            }).shift();
+            vm.fData.excursion = objIndex;
             console.log('vm.fData',vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;

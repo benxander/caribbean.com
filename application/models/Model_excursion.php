@@ -64,7 +64,7 @@ class Model_excursion extends CI_Model {
 	}*/
 	public function m_cargar_excursion_cliente($datos){
 		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack');
-		$this->db->select('exc.precio_adicional, exc.precio_primera,');
+		$this->db->select('exc.precio_adicional, exc.precio_primera,c.idexcursionvideo');
 		$this->db->from('excursion exc');
 		$this->db->join('cliente c', 'exc.idexcursion = c.idexcursion');
 		$this->db->where('c.idcliente', $datos['idcliente']);

@@ -108,7 +108,7 @@ class Model_movimiento extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_imagenes_por_idmovimiento($datos){
-		$this->db->select('arc.idarchivo, arc.idusuario, arc.idcliente, arc.nombre_archivo, arc.size,
+		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,
 			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
 			arc.tipo_archivo, cl.codigo');
 		$this->db->from('detalle_archivo da');

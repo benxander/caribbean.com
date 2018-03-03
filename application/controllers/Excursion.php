@@ -110,6 +110,7 @@ class Excursion extends CI_Controller {
 			array_push($arrListado, array(
 				'idexcursion' => $row['idexcursion'],
 				'descripcion' => $row['descripcion'],
+				'idexcursionvideo' => $row['idexcursionvideo'],
 				'precio_pack' => (int)$row['precio_pack'],
 				'precio_primera' => (int)$row['precio_primera'],
 				'precio_adicional' => (int)$row['precio_adicional'],

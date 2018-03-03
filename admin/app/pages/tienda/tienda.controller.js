@@ -291,6 +291,7 @@
         total_pedido: vm.total_pedido,
         total_venta: vm.total_venta,
         idexcursion : vm.listaExcursiones[0].idexcursion,
+        idexcursionvideo : vm.esPack ? vm.listaExcursiones[0].idexcursionvideo : null,
         porConfirmar : (vm.monto_a_pagar > 0) ? true : false
       };
       console.log('datos',datos);

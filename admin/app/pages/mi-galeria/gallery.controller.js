@@ -13,6 +13,7 @@
     $scope.actualizarSeleccion(0,0);
     $scope.actualizarSaldo(false);
     vm.pasarela = false;
+    vm.boolVideo = false;
     vm.selectedAll = true;
 
     vm.cargarGaleria = function(datos,loader){
