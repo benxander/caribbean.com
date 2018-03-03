@@ -693,11 +693,13 @@ class Cliente extends CI_Controller {
         $this->load->library('image_lib');
         // $extensions_image = array("jpeg","jpg");
         // $archivos = array();
+        $arrData['flag'] = -1;
+        $arrData['flag2'] = -1;
         $imagenesZip = '';
         $videosZip = '';
 		$tmp = './uploads/temporal/tmp';
-		// $tmp_videos = './uploads/temporal/tmp_videos';
-		$tmp_videos = './uploads/clientes/videos';
+		$tmp_videos = './uploads/temporal/tmp_videos';
+		$carpeta_videos = './uploads/clientes/videos';
 		$imagenesZip = empty($allInputs['imagenes'])? NULL : $allInputs['imagenes'].'.zip';
 		$videosZip = empty($allInputs['videos'])? NULL : $allInputs['videos'].'.zip';
 		if(!$videosZip && !$imagenesZip){
@@ -717,8 +719,8 @@ class Cliente extends CI_Controller {
 			return;
 		}
 		if (!empty($videosZip) && !file_exists('./uploads/temporal/' . $videosZip)) {
-			$arrData['message'] = 'El archivo "'. $videosZip . '" no existe.';
-			$arrData['flag'] = 0;
+			$arrData['message2'] = 'El archivo "'. $videosZip . '" no existe.';
+			$arrData['flag2'] = 0;
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -787,21 +789,61 @@ class Cliente extends CI_Controller {
 
 		}
 		if(!empty($videosZip)){
+			$error = FALSE;
+			$i = 0;
 			$zip = new ZipArchive;
 			if ($zip->open('./uploads/temporal/' . $videosZip) === TRUE) {
 			    $zip->extractTo($tmp_videos);
 			    $zip->close();
 			} else {
-			   	$arrData['message'] = 'No se pudo abrir el archivo zip de videos';
-				$arrData['flag'] = 0;
+			   	$arrData['message2'] = 'No se pudo abrir el archivo zip de videos';
+				$arrData['flag2'] = 0;
 	    		$this->output
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
 				return;
 			}
 			unlink('./uploads/temporal/' . $videosZip);
-			$arrData['message'] = 'Se descomprimió el archivo zip de videos correctamente';
-			$arrData['flag'] = 1;
+			foreach (get_filenames($tmp_videos) as $archivo) {
+				if( $archivo != 'index.html'){
+					++$i;
+		       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+					$partes = explode("-", $archivo);
+					$fecha = substr($partes[0], -4) . '-' . substr($partes[0], 2,2) . '-' . substr($partes[0], 0,2);
+					$idexcursion = (int)$partes[1];
+
+					$url_origen = $tmp_videos.'/'.$archivo;
+					$url_destino = 'uploads/clientes/videos/'.$archivo;
+
+					if(rename($url_origen,$url_destino)){
+					    $archivo_or = './uploads/clientes/videos/'.$archivo;
+
+		        		$allInputs['nombre_video'] = $archivo;
+						$allInputs['size'] = filesize($archivo_or);
+						$allInputs['idexcursion'] = $idexcursion;
+						$allInputs['fecha'] = $fecha;
+
+
+
+		        		if(!$this->model_archivo->m_registrar_video_excursion($allInputs)){
+							$error = TRUE;
+						}
+					}else{
+						$error = TRUE;
+					}
+
+				}
+	       	}
+	       	if( $i == 0 ){
+	       		$arrData['message2'] = 'No hay nada que organizar';
+				$arrData['flag2'] = 0;
+	       	}elseif($error){
+	       		$arrData['message2'] = 'Ocurrió un error';
+				$arrData['flag2'] = 0;
+	       	}else{
+	       		$arrData['message2'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
+				$arrData['flag2'] = 1;
+	       	}
 		}
 
        	// return $arrData;

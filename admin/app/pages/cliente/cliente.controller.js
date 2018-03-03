@@ -720,20 +720,37 @@
                 }
                 ClienteServices.sOrganizarImagenes(params).then(function(rpta){
                   pageLoading.stop();
-                  if(rpta.flag == 1){
-                    var title = 'OK';
-                    var type = 'success';
-                    toastr.success(rpta.message, title);
-                    $uibModalInstance.close();
-                    // vm.nombreArchivoSubido = rpta.nombreArchivo;
-                    vm.getPaginationServerSide();
-                  }else if( rpta.flag == 0 ){
-                    var title = 'Advertencia';
-                    var type = 'warning';
-                    toastr.warning(rpta.message, title);
-                  }else{
-                    alert('Ocurrió un error');
+                  if( rpta.flag != -1 ){
+                    if(rpta.flag == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(rpta.message, title);
+                      $uibModalInstance.close();
+                      // vm.nombreArchivoSubido = rpta.nombreArchivo;
+                    }else if( rpta.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(rpta.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
                   }
+                  if( rpta.flag2 != -1 ){
+                    if(rpta.flag2 == 1){
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(rpta.message2, title);
+                      $uibModalInstance.close();
+                      // vm.nombreArchivoSubido = rpta.nombreArchivo;
+                    }else if( rpta.flag2 == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(rpta.message2, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                  }
+                  vm.getPaginationServerSide();
                 });
                 /*uploader.onSuccessItem = function(fileItem, response, status, headers) {
                   console.info('onSuccessItem', fileItem, response, status, headers);

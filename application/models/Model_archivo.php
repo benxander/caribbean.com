@@ -101,6 +101,16 @@ class Model_archivo extends CI_Model {
 		 );
 		return $this->db->insert('archivo', $datos);
 	}
+	public function m_registrar_video_excursion($data){
+		$datos = array(
+			'idexcursion' => $data['idexcursion'],
+			'nombre_video' => $data['nombre_video'],
+			'fecha' => $data['fecha'],
+			'size' => $data['size'],
+			'estado' => 1,
+		 );
+		return $this->db->insert('excursion_video', $datos);
+	}
 
 	public function m_editar_descarga_archivo($data){
 		$datos = array(
