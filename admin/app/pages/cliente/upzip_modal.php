@@ -7,14 +7,17 @@
 
 		    <div class="row">
 		    	<div class="form-group col-sm-12">
-		    		<p>El archivo zip debe subirse previamente por ftp.</p>
+		    		<p>Los archivos zip deberán subirse previamente por ftp.</p>
 		    	</div>
 		    </div>
 		    <div class="row">
 		    	<div class="form-group col-sm-12">
-		            <label class="control-label minotaur-label">Ingrese el nombre del archivo zip</label>
-	            	<!-- <input type="file" class="filestyle" nv-file-select="" uploader="uploader" filestyle button-text="Zip" icon-name="fa fa-inbox" accept=".zip" required="true"> -->
-	            	<input type="text" ng-model="mz.rutaArchivo" required="true">
+		            <label class="control-label minotaur-label">Imagenes Zip</label>
+	            	<input class="form-control" type="text" ng-model="mz.rutaArchivo" placeholder="Ingrese el nombre del archivo zip de imagenes">
+		    	</div>
+		    	<div class="form-group col-sm-12">
+		            <label class="control-label minotaur-label">Videos Zip</label>
+	            	<input class="form-control" type="text" ng-model="mz.rutaVideo" placeholder="Ingrese el nombre del archivo zip de videos">
 		    	</div>
 		    </div>
 		</form>

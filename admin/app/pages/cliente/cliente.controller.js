@@ -45,6 +45,8 @@
         multiSelect: true,
         exporterMenuCsv: false,
         enableGridMenu: true,
+        enableColumnMenus: false,
+        enableColumnMenu: false,
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
@@ -319,7 +321,7 @@
             ev.preventDefault();
         });
       }
-      vm.btnOrganizarImagenes = function(){
+      /*vm.btnOrganizarImagenes = function(){
         alertify.confirm("¿Realmente desea realizar la acción?",function(ev){
             ev.preventDefault();
             pageLoading.start('Procesando...puede tardar unos minutos');
@@ -343,7 +345,7 @@
           function(ev){
             ev.preventDefault();
         });
-      }
+      }*/
       vm.btnUpload = function(row){
         vm.gritdClientes = false;
         vm.uploadBtn = false;
@@ -687,8 +689,7 @@
           }
         });
       }
-      vm.btnSubirZip = function () {
-        console.log('helo');
+      vm.btnProcesarZip = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/cliente/upzip_modal.php',
           controllerAs: 'mz',
@@ -706,15 +707,16 @@
               // url: '../application/controllers/upload.php'
             });
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Subir fotografias comprimidas';
+            vm.modalTitle = 'Procesar fotografias y videos';
 
             // botones
               vm.aceptar = function () {
                 // console.log('rutaArchivo',vm.rutaArchivo);
                 // uploader.queue[0].upload();
-                pageLoading.start('Procesando, puede tardar varios minutos...');
+                pageLoading.start('Procesando, puede tardar unos minutos...');
                 var params = {
-                  ruta : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'none'
+                  imagenes : angular.isString(vm.rutaArchivo)?vm.rutaArchivo:'',
+                  videos : angular.isString(vm.rutaVideo)?vm.rutaVideo:'',
                 }
                 ClienteServices.sOrganizarImagenes(params).then(function(rpta){
                   pageLoading.stop();
