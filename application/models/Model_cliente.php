@@ -59,8 +59,12 @@ class Model_cliente extends CI_Model {
 			if( $paramPaginate['sortName'] ){
 				$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
 			}
-			if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
-				$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
+			if(!empty($paramDatos['origen']) && $paramDatos['origen'] == 'reporte' ){
+
+			}else{
+				if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
+					$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
+				}
 			}
 		}
 

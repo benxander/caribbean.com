@@ -936,7 +936,10 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;
     	// DATOS
-    	$lista = $this->model_cliente->m_cargar_cliente(false,$allInputs);
+    	$paramPaginate = $allInputs['paginate'];
+		$paramDatos = $allInputs['datos'];
+		$paramDatos['origen'] = 'reporte';
+    	$lista = $this->model_cliente->m_cargar_cliente($paramPaginate,$paramDatos);
     	// var_dump($lista); exit();
     	// var_dump($allInputs); exit();
     	// CREACION PDF

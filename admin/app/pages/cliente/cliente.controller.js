@@ -810,7 +810,11 @@
       }
       vm.btnExportarListaPdf = function () {
         pageLoading.start('Procesando...');
-        ClienteServices.sImprimirClientes(vm.fBusqueda).then(function(rpta){
+        var params = {
+          paginate : paginationOptions,
+          datos: vm.fBusqueda
+        };
+        ClienteServices.sImprimirClientes(params).then(function(rpta){
           pageLoading.stop();
           if(rpta.flag == 1){
             console.log('pdf...');
