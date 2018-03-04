@@ -7,7 +7,7 @@
     .service('PagoServices', PagoServices);
 
   /** @ngInject */
-  function PagoController($scope,$timeout,$window, $uibModal, $stateParams, PagoServices, ClienteServices, ExcursionServices, MensajeServices, rootServices,toastr, pageLoading, alertify) {
+  function PagoController($scope,$timeout,$window, $uibModal, $stateParams, PagoServices, TiendaServices, ClienteServices, MensajeServices, rootServices, toastr, pageLoading, alertify) {
 
     var vm = this;
     var scope = $scope;
@@ -70,7 +70,7 @@
         idmovimiento : id
       }
       pageLoading.start('Procesando descarga...');
-      PagoServices.sDescargarArchivosPagados(datos).then(function(rpta){
+      TiendaServices.sDescargarArchivosPagados(datos).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
           vm.limpiar();
@@ -114,16 +114,8 @@
 
   function PagoServices($http, $q) {
     return({
-        sDescargarArchivosPagados: sDescargarArchivosPagados,
+
     });
-    function sDescargarArchivosPagados(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Compra/descargar_archivos_pagados",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
+
   }
 })();

@@ -14,7 +14,7 @@ class Archivo extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_descargados($allInputs);
 		$rowVideo = $this->model_archivo->m_cargar_video_cliente($allInputs);
-		$rowVideo['ruta'] = '../uploads/clientes/videos/'.$rowVideo['nombre_video'];
+		$rowVideo['ruta'] = empty($rowVideo['nombre_video'])? NULL : '../uploads/clientes/videos/'.$rowVideo['nombre_video'];
 		$arrListado = array();
 		foreach ($lista as $row) {
 			if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){

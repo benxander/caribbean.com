@@ -32,7 +32,8 @@ class Compra extends CI_Controller {
 		//print_r($allInputs); exit();
 		if( !empty($allInputs['idmovimiento']) ){// cuando viene de pasarela
 			$lista = $this->model_movimiento->m_cargar_imagenes_por_idmovimiento($allInputs);
-			$arrListado = array();
+			// $rowMovimiento = $this->model_movimiento->m_cargar_movimiento_por_id($allInputs);
+  			$arrListado = array();
 			foreach ($lista as $row) {
 				array_push($arrListado,
 					array(
@@ -76,6 +77,13 @@ class Compra extends CI_Controller {
 					}
 				}
 			}
+		}
+		/*comprobar si ha descargado todas las imagenes*/
+		$allInputs['idcliente'] = $allInputs['imagenes'][0]['idcliente'];
+		$rowProc = $this->model_cliente->m_listar_cliente_procesado($allInputs);
+		if($rowProc['total_subido'] == $rowProc['comprados']){
+			$allInputs['procesado'] = 4; // marcamos como completado
+			$this->model_cliente->m_actualizar_procesado($allInputs);
 		}
 		unset($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token']);
 		if(!$error){

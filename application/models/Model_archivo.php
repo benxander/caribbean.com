@@ -20,7 +20,7 @@ class Model_archivo extends CI_Model {
 	public function m_cargar_video_cliente($pDatos){
 		$this->db->select('cl.idcliente, ev.nombre_video, ev.size, ev.fecha, ev.idexcursionvideo');
 		$this->db->from('cliente cl');
-		$this->db->join('excursion_video ev', 'cl.idexcursionvideo = ev.idexcursionvideo', 'left');
+		$this->db->join('excursion_video ev', 'cl.idexcursion = ev.idexcursion AND cl.fecha_excursion = ev.fecha', 'left');
 		$this->db->where('cl.idcliente', $pDatos['idcliente']);
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
@@ -122,7 +122,8 @@ class Model_archivo extends CI_Model {
 
 	public function m_editar_descarga_archivo($data){
 		$datos = array(
-			'descargado' => $data['valor']
+			'descargado' => $data['valor'],
+			'fecha_descarga' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idarchivo',$data['idarchivo']);
 

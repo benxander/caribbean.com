@@ -24,14 +24,14 @@
         pageNumber: 1,
         firstRow: 0,
         pageSize: 10,
-        sort: uiGridConstants.ASC,
+        sort: uiGridConstants.DESC,
         sortName: null,
         search: null
       };
 
       vm.mySelectionGrid = [];
       vm.gridOptions = {
-        paginationPageSizes: [10, 50, 100, 500, 1000],
+        paginationPageSizes: [10, 25, 50],
         paginationPageSize: 10,
         enableFiltering: true,
         enableSorting: true,
@@ -50,16 +50,13 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.ASC}, visible:false },
+        { field: 'idcliente', name:'idcliente', displayName: 'ID CLIENTE',  width:90, sort: { direction: uiGridConstants.DESC}, visible:false },
         { field: 'codigo', name:'codigo', displayName: 'CODIGO',  width:90, visible:true },
-        { field: 'idexcursion', name:'idexcursion', displayName: 'ID EXCUR.', minWidth: 120},
+        { field: 'idexcursion', name:'idexcursion', displayName: 'ID EXCUR.', minWidth: 90, width:90, cellClass:'text-center'},
         { field: 'excursion', name:'descripcion', displayName: 'EXCURSION', minWidth: 130, enableFiltering: false,},
-        { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100,},
-        // { field: 'nombres', name:'nombres', displayName: 'NOMBRES'},
-        // { field: 'apellidos', name: 'apellidos', displayName: 'APELLIDOS'},
-        // { field: 'email', name: 'email', displayName: 'EMAIL', enableFiltering: false, enableSorting: false },
-        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, },
-        { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false },
+        { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100, cellClass:'text-center'},
+        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false, cellClass:'text-right' },
         { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
           cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
         },
@@ -140,7 +137,13 @@
           }
         });
       }
-
+      vm.getTableHeight = function() {
+        var rowHeight = 30; // your row height
+        var headerHeight = 60; // your header height
+        return {
+           height: (vm.gridOptions.data.length * rowHeight + headerHeight + 60) + "px"
+        };
+      };
     // EXCURSIONES
       ExcursionServices.sListarExcursionCbo().then(function (rpta) {
         vm.listaExcursiones = angular.copy(rpta.datos);

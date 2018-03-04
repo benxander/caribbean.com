@@ -110,6 +110,13 @@ class Model_cliente extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	public function m_listar_cliente_procesado($datos){
+		$this->db->select('SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados, COUNT(a.idarchivo) as total_subido', FALSE);
+		$this->db->from('cliente c');
+		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
+		$this->db->where('c.idcliente', $datos['idcliente']);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_cliente_por_idusuario($idusuario){
 		$this->db->select('c.idcliente, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
 		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
@@ -266,6 +273,21 @@ class Model_cliente extends CI_Model {
 		$this->db->where('idcliente',$datos['idcliente']);
 		return $this->db->update('cliente', $data);
 	}
+	public function m_actualizar_procesado($datos){
+		$data = array(
+			'procesado' => $datos['procesado']
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+/*	public function m_actualizar_monedero_procesado($datos){
+		$data = array(
+			'monedero' => (float)$datos['monedero'],
+			'procesado' => ($datos['tipo_pack'] == 1)? 4 : 3
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}*/
 
 	public function m_monedero_cliente_cbo($datos){
 		$this->db->select('c.monedero');

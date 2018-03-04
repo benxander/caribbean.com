@@ -107,6 +107,13 @@ class Model_movimiento extends CI_Model {
 		$this->db->where('arc.estado_arc', 1);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_movimiento_por_id($datos){
+		$this->db->select('mo.idmovimiento, mo.idcliente, mo.fecha_movimiento, mo.total, mo.tipo_pack');
+		$this->db->from('movimiento mo');
+		$this->db->where('mo.idmovimiento', $datos['idmovimiento']);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_imagenes_por_idmovimiento($datos){
 		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,
 			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,

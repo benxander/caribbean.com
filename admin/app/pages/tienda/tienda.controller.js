@@ -291,7 +291,7 @@
         total_pedido: vm.total_pedido,
         total_venta: vm.total_venta,
         idexcursion : vm.listaExcursiones[0].idexcursion,
-        idexcursionvideo : vm.esPack ? vm.listaExcursiones[0].idexcursionvideo : null,
+        tipo_pack : vm.esPack ? 1 : 2,
         porConfirmar : (vm.monto_a_pagar > 0) ? true : false
       };
       console.log('datos',datos);
@@ -353,16 +353,11 @@
         }
       });
     }*/
-    vm.irCompraExitosa = function(idmovimiento){
-      var id = idmovimiento || null;
-      if(id){
-        vm.images = null;
-      }else{
-        $scope.actualizarSaldo(false);
-      }
+    vm.irCompraExitosa = function(){
+      $scope.actualizarSaldo(false);
       var datos = {
         imagenes : vm.images,
-        idmovimiento : id
+        procesado : vm.esPack
       }
       pageLoading.start('Procesando descarga...');
       TiendaServices.sDescargarArchivosPagados(datos).then(function(rpta){
