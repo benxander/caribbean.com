@@ -929,4 +929,86 @@ class Cliente extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 
 	}
+	public function imprimir_clientes(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$this->load->library('Fpdfext');
+		$arrData = array();
+		$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+    	// DATOS
+    	$lista = $this->model_cliente->m_cargar_cliente(false,$allInputs);
+    	// var_dump($lista); exit();
+    	// var_dump($allInputs); exit();
+    	// CREACION PDF
+    	$this->pdf = new Fpdfext();
+    	$this->pdf->AddPage('P','A4');
+		$this->pdf->SetFont('Arial','B',16);
+
+		$this->pdf->Cell(0,11,'',0,15);
+		$this->pdf->Cell(0,7,utf8_decode('Listado de clientes'),0,7,'C');
+		$this->pdf->Ln(4);
+
+		 $arrWidthCol = array(10,20,25,65,20,20,30); // ANCHO TOTAL: 190
+        $arrHeaderText = array('Nº','CODIGO CLIENTE', 'FECHA EXCURSION', 'EXCURSION', 'DEPOSITO', 'MONTO ($)', 'PROCESADO');
+        $arrHeaderAligns = array('C','C','C','C','C','C','C');
+        $arrDataAligns = array('C','C','C','L','L','C','C');
+        $arrBoolMultiCell = array(0,0,0,0,0,0,0); // colocar 1 donde deseas utilizar multicell
+        $countArray = count($arrWidthCol);
+        $acumWidth = 0;
+        $this->pdf->Ln(6);
+        $this->pdf->SetFont('Arial','B',6);
+        $this->pdf->SetFillColor(150, 190, 240);
+
+        for ($i=0; $i < $countArray ; $i++) {
+            if($arrBoolMultiCell[$i] == 1 ){
+                $this->pdf->MultiCell($arrWidthCol[$i],4,utf8_decode($arrHeaderText[$i]),1,$arrHeaderAligns[$i],TRUE);
+                $x=$this->pdf->GetX();
+                $y=$this->pdf->GetY();
+                $acumWidth += $arrWidthCol[$i];
+                $this->pdf->SetXY($x+$acumWidth,$y-8);
+            }else{
+              $this->pdf->Cell($arrWidthCol[$i],8,utf8_decode($arrHeaderText[$i]),1,0,$arrHeaderAligns[$i],TRUE);
+              $acumWidth += $arrWidthCol[$i];
+            }
+
+        }
+        $this->pdf->Ln(8);
+         $this->pdf->SetWidths($arrWidthCol);
+        $this->pdf->SetAligns($arrDataAligns);
+        $this->pdf->SetFillColor(230, 240, 250);
+
+        $this->pdf->SetFont('Arial','',8);
+        $fill = TRUE;
+        $this->pdf->SetDrawColor(31,31,31); // gris oscuro
+        // $this->pdf->SetDrawColor(204,204,204); // gris
+        $this->pdf->SetLineWidth(.2);
+        $i = 1;
+        foreach ($lista as $row) {
+        	$fill = !$fill;
+        	$this->pdf->Row(
+                array(
+                    $i++,
+                    utf8_decode(trim($row['codigo'])),
+                    $row['fecha_excursion'],
+                    $row['descripcion'],
+                    $row['monedero'],
+                    $row['monto'],
+                    utf8_decode(trim($row['procesado'])),
+                ),
+            	$fill,1
+            );
+        }
+
+		$timestamp = date('YmdHis');
+		$result = $this->pdf->Output( 'F','admin/assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+
+		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+	    // $arrData = array(
+	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
+	    // );
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

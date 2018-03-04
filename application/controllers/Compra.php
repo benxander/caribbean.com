@@ -48,6 +48,7 @@ class Compra extends CI_Controller {
 			$allInputs['idcliente'] = $arrListado[0]['idcliente'];
 			$allInputs['monedero'] = 0;
 			$this->model_cliente->m_actualizar_monedero($allInputs);
+			$this->model_movimiento->m_activar_movimiento($allInputs);
 		}
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido error';

@@ -25,7 +25,12 @@
         //console.log(rpta);
         vm.images = rpta.datos;
         vm.arrVideo = rpta.video;
-        vm.boolVideo = angular.isObject(vm.arrVideo)
+        if(vm.arrVideo.idexcursionvideo != null ){
+          vm.boolVideo = true;
+        }else{
+          vm.boolVideo = false;
+        }
+        console.log('vm.boolVideo',vm.boolVideo);
         if(loader){
           pageLoading.stop();
         }

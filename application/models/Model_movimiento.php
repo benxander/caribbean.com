@@ -138,6 +138,12 @@ class Model_movimiento extends CI_Model {
 	public function m_registrar_detalle_archivo($data){
 		return $this->db->insert('detalle_archivo', $data);
 	}
-
+	public function m_activar_movimiento($datos){
+		$data = array(
+			'estado' => 1
+		);
+		$this->db->where('idmovimiento',$datos['idmovimiento']);
+		return $this->db->update('movimiento', $data);
+	}
 
 }

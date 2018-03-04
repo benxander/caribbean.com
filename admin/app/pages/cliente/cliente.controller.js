@@ -6,7 +6,7 @@
     .service('ClienteServices', ClienteServices);
 
   /** @ngInject */
-  function ClienteController($scope, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading, pageLoading,
+  function ClienteController($scope, $window, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading, pageLoading,
     ClienteServices, ExcursionServices, UsuarioServices, FileUploader,i18nService) {
     var vm = this;
     vm.fBusqueda = {}
@@ -808,6 +808,16 @@
           }
         });
       }
+      vm.btnExportarListaPdf = function () {
+        pageLoading.start('Procesando...');
+        ClienteServices.sImprimirClientes(vm.fBusqueda).then(function(rpta){
+          pageLoading.stop();
+          if(rpta.flag == 1){
+            console.log('pdf...');
+            $window.open(rpta.urlTempPDF, '_blank');
+          }
+        });
+      };
   }
 
   function ClienteServices($http, $q) {
@@ -824,10 +834,11 @@
         sUploadCliente: sUploadCliente,
         sListarImagenes: sListarImagenes,
         sDelete: sDelete,
-        sRegistrarPuntuacion:sRegistrarPuntuacion,
-        sActualizarMonedero:sActualizarMonedero,
-        sOrganizarImagenes:sOrganizarImagenes,
-        sUploadPrueba:sUploadPrueba,
+        sRegistrarPuntuacion : sRegistrarPuntuacion,
+        sActualizarMonedero : sActualizarMonedero,
+        sOrganizarImagenes : sOrganizarImagenes,
+        sImprimirClientes : sImprimirClientes,
+        sUploadPrueba : sUploadPrueba,
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -969,6 +980,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/organizar_imagenes_temporales",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sImprimirClientes (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/imprimir_clientes",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
