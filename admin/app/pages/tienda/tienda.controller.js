@@ -68,7 +68,7 @@
       });
     }
     vm.cargarGaleria = function(datos){
-      pageLoading.start('Cargando archivos...');
+      pageLoading.start('Loading...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
         pageLoading.stop();
@@ -178,7 +178,7 @@
       if(!vm.isSelected){
         return;
       }
-      pageLoading.start('Procesando...');
+      pageLoading.start('Loading...');
       vm.listaImagenes = [];
       angular.forEach(vm.images, function(image) {
         if (image.selected) {
@@ -275,7 +275,7 @@
 
     vm.btnPagar = function(){
       if(!vm.selectedTerminos){
-        alert("Debe aceptar los Términos y Condiciones");
+        alert("You must accept the Terms and Conditions");
         return false;
       }
       vm.pedido = false;
@@ -359,7 +359,7 @@
         imagenes : vm.images,
         procesado : vm.esPack
       }
-      pageLoading.start('Procesando descarga...');
+      pageLoading.start('Loading...');
       TiendaServices.sDescargarArchivosPagados(datos).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;

@@ -28,7 +28,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['key_grupo'] = $loggedUser['key_grupo'];
 					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$arrPerfilUsuario['monedero'] = NULL;
-					$arrPerfilUsuario['ididioma'] = 'es';
+					$arrPerfilUsuario['ididioma'] = $loggedUser['ididioma'];;
 					$arrPerfilUsuario['logged'] = true;
 					$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 
@@ -73,8 +73,9 @@ class Acceso extends CI_Controller {
 			$arrPerfilUsuario['idcliente'] = $loggedUser['idcliente'];
 			$arrPerfilUsuario['idgrupo'] = 3;
 			$arrPerfilUsuario['key_grupo'] = 'key_cliente';
+			$arrPerfilUsuario['ididioma'] = $loggedUser['ididioma'];
 			$arrPerfilUsuario['username'] = NULL;
-			$arrPerfilUsuario['monedero'] = strtoupper($loggedUser['monedero']);
+			$arrPerfilUsuario['monedero'] = $loggedUser['monedero'];
 			$arrPerfilUsuario['logged'] = true;
 			$arrPerfilUsuario['cliente'] = empty($loggedUser['nombres'])?$loggedUser['codigo'] : strtoupper_total($cliente['nombres']);
 			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $cliente['email'];

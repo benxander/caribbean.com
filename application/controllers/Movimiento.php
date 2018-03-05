@@ -164,7 +164,7 @@ class Movimiento extends CI_Controller {
 				}
 			}
 
-			$arrData['message'] = 'Se registraron los datos correctamente ';
+			$arrData['message'] = 'The data was recorded correctly ';
     		$arrData['flag'] = 1;
 		}
 		if($this->model_cliente->m_actualizar_monedero($allInputs)){
@@ -275,7 +275,7 @@ class Movimiento extends CI_Controller {
 
 			}
 
-			$arrData['message'] = 'Se registraron los datos correctamente ';
+			$arrData['message'] = 'The data was recorded correctly ';
     		$arrData['flag'] = 1;
 		}
 		if($allInputs['porConfirmar']){

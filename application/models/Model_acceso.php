@@ -19,7 +19,7 @@ class Model_acceso extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_logging_cliente($data){
-		$this->db->select('cli.idcliente, cli.monedero, cli.codigo, cli.nombres, cli.email',FALSE);
+		$this->db->select('cli.idcliente, cli.monedero, cli.codigo, cli.nombres, cli.email, cli.ididioma',FALSE);
 		$this->db->from('cliente cli');
 		$this->db->where('cli.codigo',$data['codigo']);
 		$this->db->where('cli.estado_cl', 1);

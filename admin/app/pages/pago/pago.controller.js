@@ -69,7 +69,7 @@
         imagenes : vm.images,
         idmovimiento : id
       }
-      pageLoading.start('Procesando descarga...');
+      pageLoading.start('Loading...');
       TiendaServices.sDescargarArchivosPagados(datos).then(function(rpta){
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
@@ -78,7 +78,7 @@
           var type = 'success';
           toastr.success(rpta.message, title);
         }else if(rpta.flag == 0){
-          var title = 'Advertencia';
+          var title = 'Warning';
           var type = 'warning';
           toastr.warning(rpta.message, title);
         }else{
@@ -100,7 +100,7 @@
             $window.location.href = $scope.dirBase+'admin/#/app/mi-galeria';
           },2000);
         }else if(rpta.flag == 0){
-          var title = 'Advertencia';
+          var title = 'Warning';
           var type = 'warning';
           toastr.warning(rpta.message, title);
         }else{

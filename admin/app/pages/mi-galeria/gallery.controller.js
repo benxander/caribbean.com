@@ -19,7 +19,7 @@
     vm.cargarGaleria = function(datos,loader){
       var loader = loader || false;
       if(loader){
-        pageLoading.start('Procesando...');
+        pageLoading.start('Loading...');
       }
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
@@ -45,7 +45,7 @@
       });
     }
     /*vm.cargarProductos = function(){
-      pageLoading.start('Procesando...');
+      pageLoading.start('Loading...');
       ProductoServices.sListarProductoPedido().then(function (rpta) {
         vm.listaProductos = angular.copy(rpta.datos);
         console.log('data',vm.listaProductos);
@@ -201,7 +201,7 @@
     }
     vm.selectFotografia = function(item){
       if(item.tipo_seleccion == '2' && !angular.isObject(vm.temporal.size)){
-        toastr.warning('Seleccione primero un tamaño', 'Advertencia');
+        toastr.warning('Seleccione primero un tamaño', 'Warning');
         return false;
       }
       var modalInstance = $uibModal.open({
@@ -280,21 +280,21 @@
       ];
     vm.agregarItem = function(temp){
       if( !vm.temporal.idcolor && vm.temporal.si_color == 1){
-        toastr.warning('Seleccione un color', 'Advertencia');
+        toastr.warning('Seleccione un color', 'Warning');
         return false;
       }
       if( vm.temporal.si_genero == 1 && !vm.temporal.genero ){
-        toastr.warning('Seleccione un género', 'Advertencia');
+        toastr.warning('Seleccione un género', 'Warning');
         return false;
       }
       if( !angular.isObject(vm.temporal.size) ){
-        toastr.warning('Seleccione un tamaño', 'Advertencia');
+        toastr.warning('Seleccione un tamaño', 'Warning');
         return false;
       }
       if( vm.temporal.tipo_seleccion == 1 ){
         console.log('unica');
         if( !angular.isObject(vm.temporal.imagen) ){
-          toastr.warning('Seleccione una fotografía', 'Advertencia');
+          toastr.warning('Seleccione una fotografía', 'Warning');
           return false;
         }
       }else{
@@ -306,7 +306,7 @@
           }
         });
         if(vm.temporal.imagen.length <= 0){
-          toastr.warning('Seleccione fotografías', 'Advertencia');
+          toastr.warning('Seleccione fotografías', 'Warning');
           return false;
         }
       }
@@ -407,7 +407,7 @@
           console.log('vm.fData',vm.fData);
           vm.modalTitle = 'Datos Adicionales';
           vm.aceptar = function () {
-            pageLoading.start('Procesando...');
+            pageLoading.start('Loading...');
             ClienteServices.sEditarDatosAdicionalesCliente(vm.fData).then(function (rpta) {
               pageLoading.stop();
               if(rpta.flag == 1){
@@ -416,7 +416,7 @@
                 var type = 'success';
                 toastr.success(rpta.message, title);
               }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
+                var title = 'Warning';
                 var type = 'warning';
                 toastr.warning(rpta.message, title);
               }else{
@@ -443,7 +443,7 @@
       }
       vm.pagarOk();
       /*vm.fData.detalle = vm.gridOptions.data;
-      pageLoading.start('Procesando...');
+      pageLoading.start('Loading...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){
         pageLoading.stop();
         if(rpta.flag == 1){
@@ -460,7 +460,7 @@
           toastr.success(rpta.message, title);
           // $state.reload();
         }else if(rpta.flag == 0){
-          var title = 'Advertencia';
+          var title = 'Warning';
           var type = 'warning';
           toastr.warning(rpta.message, title);
           $scope.getValidateSession();
@@ -472,7 +472,7 @@
     }
     vm.pagarOk = function(){
       vm.fData.detalle = vm.gridOptions.data;
-      pageLoading.start('Procesando...');
+      pageLoading.start('Loading...');
       TiendaServices.sRegistrarMovimiento(vm.fData).then(function(rpta){
         pageLoading.stop();
         if(rpta.flag == 1){
@@ -489,7 +489,7 @@
           toastr.success(rpta.message, title);
           // $state.reload();
         }else if(rpta.flag == 0){
-          var title = 'Advertencia';
+          var title = 'Warning';
           var type = 'warning';
           toastr.warning(rpta.message, title);
           $scope.getValidateSession();
@@ -543,7 +543,7 @@
           var type = 'success';
           toastr.success(rpta.message, title);
         }else if(rpta.flag == 0){
-          var title = 'Advertencia';
+          var title = 'Warning';
           var type = 'warning';
           toastr.warning(rpta.message, title);
         }else{

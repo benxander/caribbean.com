@@ -16,7 +16,7 @@ class Compra extends CI_Controller {
 		$cliente  = $this->model_cliente->m_cargar_cliente_por_sesion();
 		if(empty($cliente)){
 			$arrData['flag'] = 0;
-			$arrData['message'] = 'Se ha perdido la sesíón';
+			$arrData['message'] = 'Session closed';
 		}else{
 			$arrData['flag'] = 1;
 			$arrData['message'] = '';
@@ -52,7 +52,7 @@ class Compra extends CI_Controller {
 			$this->model_movimiento->m_activar_movimiento($allInputs);
 		}
 		$arrData['flag'] = 0;
-		$arrData['message'] = 'Ha ocurrido error';
+		$arrData['message'] = 'Error has occurred';
 		$error = FALSE;
 		foreach ($allInputs['imagenes'] as $key => $image) {
 			if($image['selected']){
@@ -87,7 +87,7 @@ class Compra extends CI_Controller {
 		}
 		unset($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token']);
 		if(!$error){
-			$arrData['message'] = 'Archivos descargados exitosamente.';
+			$arrData['message'] = 'Successfully downloaded files.';
     		$arrData['flag'] = 1;
 		}
 

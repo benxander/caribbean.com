@@ -539,7 +539,7 @@ class Cliente extends CI_Controller {
     	//print_r($allInputs); exit();
 
     	if($this->model_puntuacion->m_registrar_puntuacion($allInputs)){
-    		$arrData['message'] = 'Calificacion registrada exitosamente.';
+    		$arrData['message'] = 'Qualification registered successfully.';
     		$arrData['flag'] = 1;
     	}
 
@@ -549,12 +549,12 @@ class Cliente extends CI_Controller {
 	}
 	public function actualizar_monedero(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['message'] = 'Error al actualizar los datos, inténtelo nuevamente';
+		$arrData['message'] = 'Error updating data, try again';
     	$arrData['flag'] = 0;
 
     	$monedero = $this->model_cliente->m_monedero_cliente_cbo($allInputs);
     	if($monedero != $allInputs['saldo']){
-    		$arrData['message'] = 'El saldo no coincide';
+    		$arrData['message'] = 'The balance does not match';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -563,7 +563,7 @@ class Cliente extends CI_Controller {
 
 		if($this->model_cliente->m_actualizar_monedero($allInputs)){
 			$cliente = $this->model_cliente->m_cargar_cliente_cbo($allInputs);
-			$arrData['message'] = 'Se actualizaron los datos correctamente';
+			$arrData['message'] = 'The data was updated correctly';
     		$arrData['cliente'] = $cliente;
     		$arrData['flag'] = 1;
 		}

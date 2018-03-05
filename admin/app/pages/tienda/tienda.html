@@ -70,7 +70,6 @@
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
 
@@ -127,7 +126,7 @@
           </div>
         </div>
         <div class="row waterMarkEmptyData" ng-show="!ctrl.images.length" style="position: relative; top: 0;">
-          NO SE ENCONTRARON PRODUCTOS
+          NO PICTURES
         </div>
         <ul class="mix-controls">
           <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
@@ -138,14 +137,14 @@
 
       <div class="tile p-15" ng-if="ctrl.modoPagar">
         <section class="tile-header pl-0">
-          <h1 class="heading">Resumen</h1>
+          <h1 class="heading">Resume</h1>
           <div class="row">
             <div class="col-sm-12" ng-bind-html="ctrl.mensajes[1].contenido">
           </div>
           <div class="controls">
             <div class="form-group pull-right" >
                 <button class="btn btn-warning" style="font-size:14px;color:#fff;" ng-click="ctrl.btnVolver()">
-                  <i class="halcyon-icon-back"></i> Regresar
+                  <i class="halcyon-icon-back"></i> {{ 'Form.PREVIOUS' | translate }}
                 </button>
                 <!-- <div class="pull-right mt-10 ml-10" style="font-size: 15px;font-weight: 600">
                   <i class="fa fa-shopping-cart" ></i> <span style="color:#1199d3;">{{ctrl.monto_total}}</span>
@@ -190,7 +189,7 @@
             </div>
           </div>
           <div class="col-md-12 mt">
-            <label class="checkbox minotaur-checkbox inline-block m-0 pull-right">He leído y acepto los <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >Términos y Condiciones</a>
+            <label class="checkbox minotaur-checkbox inline-block m-0 pull-right">I have read and accept <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >the terms and conditions</a>
               <input type="checkbox" ng-model="ctrl.selectedTerminos"><div class="input-indicator"></div>
             </label>
           </div>
