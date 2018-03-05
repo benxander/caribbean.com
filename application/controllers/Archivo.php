@@ -47,9 +47,19 @@ class Archivo extends CI_Controller {
 				)
 			);
 		}
-
+		if(!empty($rowVideo['nombre_video'])){
+			array_push($arrListado,
+				array(
+					'nombre_archivo' => $rowVideo['nombre_video'],
+					'tipo_archivo' => 2,
+					'selected' => FALSE,
+					'src_thumb' => '../uploads/clientes/videos/'.$rowVideo['nombre_video'],
+					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/videos/'.$rowVideo['nombre_video'],
+				)
+			);
+		}
     	$arrData['datos'] = $arrListado;
-    	$arrData['video'] = $rowVideo;
+    	// $arrData['video'] = $rowVideo;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($lista)){

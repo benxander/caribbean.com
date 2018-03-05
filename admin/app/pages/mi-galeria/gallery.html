@@ -55,27 +55,10 @@
          }"
         >
           <div class="masonry-brick col-md-3 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
-            <div class="img-container">
+            <div class="img-container" ng-if="image.tipo_archivo == 1">
               <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="">
               <div class="img-details-hover" style="float: right;">
                 <div>
-                  <!-- <a href="" socialshare
-                    socialshare-provider="facebook"
-                    socialshare-type="feed"
-                    socialshare-via="145634995501895"
-                    socialshare-media="http://720kb.net/assets/img/720kb-fb.png"
-                    socialshare-text="720kb"
-                    socialshare-caption="720kb is enough"
-                    socialshare-url="http://720kb.net"
-                    socialshare-quote="720kb Angular-Social-Share"
-                    socialshare-hashtags="#720kb"
-                    socialshare-popup-height="300"
-                    socialshare-popup-width="400"
-                    socialshare-trigger="click"
-                    class="icon icon-primary icon-ef-2 icon-ef-2b hover-color">
-                    <i class="fa fa-facebook"></i>
-                  </a>-->
-
                   <a href="" socialshare
                   socialshare-provider="facebook"
                   socialshare-type="feed"
@@ -122,16 +105,52 @@
               </div>
 
             </div>
+            <div class="img-container" ng-if="image.tipo_archivo == 2">
+              <video style="width: 100%; height: auto;" controls>
+                <source src="{{image.src_thumb}}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <div class="img-details-hover" style="float: right;">
+                <div>
+                  <a href="" socialshare
+                  socialshare-provider="facebook"
+                  socialshare-type="feed"
+                  socialshare-via="145634995501895"
+                  socialshare-url="{{image.src_share}}"
+                  socialshare-text="Mira mi foto"
+                  socialshare-hashtags="Caribbean"
+                  socialshare-popup-height="300"
+                  socialshare-popup-width="400"
+                  socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                  <a href="" socialshare
+                    socialshare-provider="twitter"
+                    socialshare-type="sharer"
+                    socialshare-text="Mira mi foto en"
+                    socialshare-via="caribbean.com"
+                    socialshare-hashtags="Caribbean"
+                    socialshare-url="{{image.src_share}}"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="img-details-static" style="float: left; position: relative; top: 5px;">
+                <div class="img-controls">
+                  <a href="javascript:;" class="img-select" ng-click="ga.selectImage($index)">
+                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
-      </div>
-      <div class="row" ng-if="ga.boolVideo">
-        <div class="col-sm-12">
-          <video width="320" height="240" controls>
-            <!-- <source src="http://www.unaisangamer.com/uploads/clientes/videos/02032018-03.mp4" type="video/mp4"> -->
-            <source src="{{ga.arrVideo.ruta}}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
         </div>
       </div>
     </div>

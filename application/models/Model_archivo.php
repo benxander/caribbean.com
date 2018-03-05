@@ -18,10 +18,11 @@ class Model_archivo extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_video_cliente($pDatos){
-		$this->db->select('cl.idcliente, ev.nombre_video, ev.size, ev.fecha, ev.idexcursionvideo');
+		$this->db->select('ev.nombre_video, ev.size, ev.fecha, ev.idexcursionvideo');
 		$this->db->from('cliente cl');
 		$this->db->join('excursion_video ev', 'cl.idexcursion = ev.idexcursion AND cl.fecha_excursion = ev.fecha', 'left');
 		$this->db->where('cl.idcliente', $pDatos['idcliente']);
+		$this->db->where('cl.procesado', 4);
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}

@@ -24,13 +24,13 @@
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
         //console.log(rpta);
         vm.images = rpta.datos;
-        vm.arrVideo = rpta.video;
+        /*vm.arrVideo = rpta.video;
         if(vm.arrVideo.idexcursionvideo != null ){
           vm.boolVideo = true;
         }else{
           vm.boolVideo = false;
         }
-        console.log('vm.boolVideo',vm.boolVideo);
+        console.log('vm.boolVideo',vm.boolVideo);*/
         if(loader){
           pageLoading.stop();
         }
