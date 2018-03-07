@@ -23,7 +23,7 @@
       var paginationOptions = {
         pageNumber: 1,
         firstRow: 0,
-        pageSize: 10,
+        pageSize: 50,
         sort: uiGridConstants.DESC,
         sortName: null,
         search: null
@@ -32,7 +32,7 @@
       vm.mySelectionGrid = [];
       vm.gridOptions = {
         paginationPageSizes: [10, 25, 50],
-        paginationPageSize: 10,
+        paginationPageSize: 50,
         enableFiltering: true,
         enableSorting: true,
         useExternalPagination: true,

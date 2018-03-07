@@ -81,7 +81,9 @@
     // console.log('$translate',$translate);
     $scope.dirWeb = angular.patchURL;
     $scope.pageInicio = true;
-
+    $scope.$on('$routeChangeSuccess', function() {
+       console.log('rP',$routeParams);
+    });
     // $scope.fSessionCI = {};
     // $scope.items1 = [
     //   {

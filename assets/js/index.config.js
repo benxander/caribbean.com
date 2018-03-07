@@ -16,7 +16,7 @@
   function config($routeProvider, $locationProvider){
     $locationProvider.html5Mode(true);
     // remove ! hash prefix
-    $locationProvider.hashPrefix('');
+    // $locationProvider.hashPrefix('');
     $routeProvider
     .when('/', {
       // templateUrl: angular.dirViews . '/main.php',
@@ -24,11 +24,11 @@
           return angular.dirViews + 'main.php';
         },
       controller: 'MainController',
-      // resolve:{
-      //   loadAsset: ['$ocLazyLoad', function($ocLazyLoad){
-      //     return $ocLazyLoad.load(['assets/js/controllers/HomeCtrl.js'])
-      //   }]
-      // }
+      /*resolve:{
+        loadAsset: ['$ocLazyLoad', function($ocLazyLoad){
+          return $ocLazyLoad.load(['assets/js/controllers/Home.js'])
+        }]
+      }*/
     })
     .when('/zona-privada', {
       // templateUrl: 'templates/blog.php',
@@ -36,6 +36,19 @@
       console.log('param',param);
           return angular.dirViews +  'login_view.php';
           // return angular.dirViews + param.templateFile + '.php';
+        },
+      controller: 'LoginController',
+      controllerAs: 'l',
+
+    })
+    .when("/a?", {
+      // title: 'Editar usuario',
+      // templateUrl : angular.dirViews +  'login_view.php',
+      // controller : "LoginController",
+      // controllerAs: 'l',
+      // templateUrl: angular.dirViews + 'login_view.php',
+      templateUrl: function(param) {
+          return angular.dirViews +  'login_view.php';
         },
       controller: 'LoginController',
       controllerAs: 'l',

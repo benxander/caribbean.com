@@ -5,13 +5,27 @@
     .module('caribbean')
     .controller('LoginController', LoginController)
     .service('loginServices', loginServices);
-  function LoginController($scope, $window, loginServices, empresaNombre) {
+  function LoginController($scope, $window, loginServices, empresaNombre, $routeParams,$timeout,$location,) {
     var vm = this;
     vm.empresaNombre = empresaNombre;
-    console.log(empresaNombre);
     vm.fLogin = {};
     vm.error = false;
+    console.log('loc',$location);
+    if($routeParams.c){
+      console.log('route',$routeParams.c);
+      vm.fLogin.codigo = $routeParams.c;
+      loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
+        if(rpta.flag == 1){
+          $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+          // $scope.goToUrl('/admin');
+        }else if(rpta.flag == 0){
+          vm.error = true;
+          vm.fLogin.codigo = null;
+        }
+      });
+    }
     // $scope.getValidateSession();
+
     vm.btnLoginToSystem = function () {
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
