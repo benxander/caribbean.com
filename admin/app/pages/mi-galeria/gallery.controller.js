@@ -22,15 +22,19 @@
         pageLoading.start('Loading...');
       }
       PagesGalleryServices.sListarGaleriaDescargados(datos).then(function(rpta){
-        //console.log(rpta);
-        vm.images = rpta.datos;
-        /*vm.arrVideo = rpta.video;
-        if(vm.arrVideo.idexcursionvideo != null ){
-          vm.boolVideo = true;
+        // vm.images = rpta.datos;
+        vm.imgs = rpta.datos;
+        var num = 10;
+        vm.length_images = vm.imgs.length;
+        if (vm.length_images == 0) { vm.uploadBtn = true; };
+
+        if(vm.imgs.length>=num){
+          for (var i = 0; i < num; i++) {
+            vm.images.push(vm.imgs[i]);
+          }
         }else{
-          vm.boolVideo = false;
+          vm.images = rpta.datos;
         }
-        console.log('vm.boolVideo',vm.boolVideo);*/
         if(loader){
           pageLoading.stop();
         }
@@ -38,6 +42,23 @@
           image.selected = vm.selectedAll;
         });
       });
+    }
+    vm.loadMore = function(){
+      if(angular.isObject(vm.imgs) && (vm.imgs.length != vm.images.length)){
+        console.log('cargando mas...');
+        var last = vm.images.length;
+        var dif = vm.imgs.length - vm.images.length;
+        var num = 5;
+        if( dif >= num ){
+          for (var i = 0; i < num; i++) {
+            vm.images.push(vm.imgs[last+i]);
+          }
+        }else{
+          for (var i = 0; i < dif; i++) {
+            vm.images.push(vm.imgs[last+i]);
+          }
+        }
+      }
     }
     vm.cargarMensajes = function(){
       MensajeServices.sListarMensajes().then(function(rpta){

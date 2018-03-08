@@ -239,21 +239,6 @@ class Model_cliente extends CI_Model {
 
 		return $this->db->update('cliente', $datos);
 	}
-	public function m_anula_actividad_cliente($data){
-		$datos = array(
-			'estado_ac' => 0,
-		);
-		$this->db->where('idcliente',$data['idcliente']);
-
-		return $this->db->update('actividad_cliente', $datos);
-	}
-	public function m_registrar_actividad_cliente($data){
-		// $datos = array(
-		// 	'idcliente' => $data['idcliente'],
-		// 	'idexcursion' => $data['idexcursion'],
-		// );
-		return $this->db->insert('actividad_cliente', $data);
-	}
 
 	public function m_actualizar_cliente_usuario($data){
 
@@ -297,5 +282,4 @@ class Model_cliente extends CI_Model {
 		$result = $this->db->get()->row_array();
 		return $result['monedero'];
 	}
-
 }

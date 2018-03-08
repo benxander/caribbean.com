@@ -320,6 +320,13 @@ class Cliente extends CI_Controller {
 			    $file_type=$_FILES['file']['type'];
 			    $file_error=$_FILES['file']['error'];
 
+			    $allInputs = array(
+					'idcliente' 	=> $idcliente,
+					'nombre_archivo'=> $file_name,
+					'size'			=> $file_size,
+					'tipo_archivo'=> 1
+				);
+
 			    if($file_error > 0){
 			    	$arrData['message'] = $errors[$file_error];
 		    		$this->output
@@ -327,6 +334,14 @@ class Cliente extends CI_Controller {
 					    ->set_output(json_encode($arrData));
 					return;
 			    }
+			    if($this->model_archivo->m_verificar_archivo_cliente($allInputs)){
+			    	$arrData['message'] = 'La fotografía: ' . $file_name . ' ya existe.';
+		    		$this->output
+					    ->set_content_type('application/json')
+					    ->set_output(json_encode($arrData));
+					return;
+			    }
+
 			    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 			    $extensions_image = array("jpeg","jpg");
 			    $extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
@@ -351,12 +366,7 @@ class Cliente extends CI_Controller {
 				        }
 				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
-						$allInputs = array(
-							'idcliente' 	=> $idcliente,
-							'nombre_archivo'=> $file_name,
-							'size'			=> $file_size,
-							'tipo_archivo'=> 1
-						);
+
 						array_push($allInputs,array('tipo_archivo'=> 1));
 				        if($this->model_archivo->m_registrar_archivo($allInputs)){
 							$arrData['message'] = 'La imagen se subió correctamente. ';
@@ -370,36 +380,8 @@ class Cliente extends CI_Controller {
 						return;
 			    	}
 
-				//VIDEOS
-			    }elseif(in_array($file_ext,$extensions_video)){
-			    	if($file_size < 104857600){
-
-
-						move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
-						imagenVideo($carpeta_destino . DIRECTORY_SEPARATOR . $file_name, $random, $carpeta_destino. DIRECTORY_SEPARATOR);
-
-						$allInputs = array(
-							'idcliente' 	=> $idcliente,
-							'idusuario' 	=> $idusuario,
-							'idactividadcliente' 	=> $idactividadcliente,
-							'nombre_archivo'=> $file_name,
-							'size'			=> $file_size,
-							'tipo_archivo'=> 2
-						);
-						if($this->model_archivo->m_registrar_archivo($allInputs)){
-							$arrData['message'] = 'Se subieron videos correctamente. ';
-				    		$arrData['flag'] = 1;
-						}
-					}else{
-			    		$arrData['message'] = 'El tamaño es mayor a 100Mb';
-			    		$this->output
-						    ->set_content_type('application/json')
-						    ->set_output(json_encode($arrData));
-						return;
-			    	}
-
-			    }else{
-			    	$arrData['message'] = 'No es el formato correcto';
+				}else{
+			    	$arrData['message'] = 'No es el formato correcto, sólo se admiten jpeg y jpg';
 		    		$this->output
 					    ->set_content_type('application/json')
 					    ->set_output(json_encode($arrData));
@@ -462,75 +444,6 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-    /*public function subir_imagenes_carpeta(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['message'] = 'No se pudieron cargar las imagen/videos correctamente';
-    	$arrData['flag'] = 0;
-
-        $this->load->helper('file');
-        $this->load->library('image_lib');
-        $extensions_image = array("jpeg","jpg");
-		$extensions_video = array("mp4", "mkv", "avi", "dvd", "mov");
-     	$lista = $this->model_archivo->m_cargar_nombre_imagenes($allInputs);
-     	$archivos = array();
-		$carpeta = './uploads/clientes/' . $allInputs['codigo'];
-
-		if (!file_exists($carpeta)) {
-			$arrData['message'] = 'No existe el directorio';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-		}
-
-		if (!file_exists($carpeta.'/originales/')) {
-			$arrData['message'] = 'No existe el directorio';
-    		$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-		}
-
-		foreach ($lista as $key => $value) {
-			array_push($archivos,explode(".", $value['nombre_archivo'])[0]);
-		}
-
-       	foreach (get_filenames('./uploads/clientes/'.$allInputs['codigo'].'/originales/') as $archivo) {
-       		$file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-
-		    if(in_array($file_ext,$extensions_image) || in_array($file_ext,$extensions_video) ){
-            	if(!in_array(explode(".", $archivo)[0],$archivos)){
-            		$carpeta = './uploads/clientes/'.$allInputs['codigo'];
-				    $archivo_or = './uploads/clientes/'.$allInputs['codigo'].'/originales/'.$archivo;
-				    $var = filesize($carpeta);
-
-            		$allInputs['nombre_archivo'] = $archivo;
-					$allInputs['size'] = $var;
-					if(in_array($file_ext,$extensions_image)){
-						$allInputs['tipo_archivo'] = 1;
-					}else{
-						$allInputs['tipo_archivo'] = 2;
-					}
-
-				   	if(in_array($file_ext,$extensions_image)){
-		   				redimencionMarcaAgua(600, $archivo_or, $carpeta, $archivo);
-		   				redimenciona(300, $archivo_or, $carpeta .'/originales/thumbs', $archivo);
-				   	}else{
-				   		imagenVideo($archivo_or, explode(".", $archivo)[0], $carpeta.'/originales/');
-				   	}
-
-            		if($this->model_archivo->m_registrar_archivo($allInputs)){
-						$arrData['message'] = 'Se subieron las imagen/videos correctamente. ';
-			    		$arrData['flag'] = 1;
-					}
-            	}
-            }
-        }
-    	//exit();
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-	}*/
 	public function registrar_puntuacion(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'No se pudo registrar la calificacion.';
@@ -614,13 +527,7 @@ class Cliente extends CI_Controller {
 		    $file_name = 'clientes.'. $file_ext;
 		    if(in_array($file_ext,$extensions_archivo)){
 		    	move_uploaded_file($file_tmp, $carpeta . DIRECTORY_SEPARATOR . $file_name);
-		    	if($this->registrar_clientes_excel($carpeta . DIRECTORY_SEPARATOR . $file_name )){
-		    		$arrData['message'] = 'Se registraron los datos correctamente';
-	    			$arrData['flag'] = 1;
-		    	}else{
-		    		$arrData['message'] = 'Error al registrar los datos.';
-		    	}
-
+		    	$arrData = $this->registrar_clientes_excel($carpeta . DIRECTORY_SEPARATOR . $file_name );
 		    }else{
 		    	$arrData['message'] = 'No es el formato correcto';
 	    		$this->output
@@ -629,7 +536,7 @@ class Cliente extends CI_Controller {
 				return;
 		    }
 		}
-		$arrData['message'] = 'Seleccione un archivo';
+		// $arrData['message'] = 'Seleccione un archivo';
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -666,12 +573,17 @@ class Cliente extends CI_Controller {
 		// var_dump($arrListado); exit();
 		unset($arrListado[0]);
 		$registro_exitoso = TRUE;
+		foreach ($arrListado as $row) {
+			if($this->model_cliente->m_cargar_cliente_por_codigo($row['codigo'])){
+				$arrData['message'] = 'El código: ' . $row['codigo'] . ' ya existe';
+	    		$arrData['flag'] = 0;
+	    		return $arrData;
+			}
+		}
 		$this->db->trans_begin();
 		foreach ($arrListado as $row) {
 			$row['excursion']['id'] = $row['idexcursion'];
 			if($this->model_cliente->m_registrar_cliente($row)){
-				$arrData['message'] = 'Se registraron los datos correctamente';
-				$arrData['flag'] = 1;
 				$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
 	    		createCarpetas($carpeta);
 	  		}else{
@@ -684,9 +596,12 @@ class Cliente extends CI_Controller {
 	    	$arrData['flag'] = 0;
 		}else{
 			$this->db->trans_commit();
+			$arrData['message'] = 'Se registraron los datos correctamente';
+			$arrData['flag'] = 1;
 		}
 
-		return $registro_exitoso;
+		// return $registro_exitoso;
+		return $arrData;
 	}
 	public function organizar_imagenes_temporales(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -767,7 +682,14 @@ class Cliente extends CI_Controller {
 		   				redimencionMarcaAgua(600, $archivo_or, $carpeta_or, $archivo);
 		   				redimenciona(300, $archivo_or, $carpeta_or .'/originales/thumbs', $archivo);
 
-
+		   				if($this->model_archivo->m_verificar_archivo_cliente($allInputs)){
+		   					$arrData['message'] = 'Archivo: ' . $allInputs['nombre_archivo'] . ' ya existe.';
+							$arrData['flag'] = 0;
+							$this->output
+							    ->set_content_type('application/json')
+							    ->set_output(json_encode($arrData));
+							return;
+		   				}
 		        		if(!$this->model_archivo->m_registrar_archivo($allInputs)){
 							$error = TRUE;
 						}
@@ -824,7 +746,14 @@ class Cliente extends CI_Controller {
 						$allInputs['idexcursion'] = $idexcursion;
 						$allInputs['fecha'] = $fecha;
 
-
+						if($this->model_archivo->m_verificar_video_excursion($allInputs)){
+		   					$arrData['message'] = 'Video: ' . $allInputs['nombre_video'] . ' ya existe.';
+							$arrData['flag'] = 0;
+							$this->output
+							    ->set_content_type('application/json')
+							    ->set_output(json_encode($arrData));
+							return;
+		   				}
 
 		        		if(!$this->model_archivo->m_registrar_video_excursion($allInputs)){
 							$error = TRUE;
@@ -852,7 +781,7 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function upload_zip_ftp(){
+	public function upload_zip_ftp(){/*no usado*/
 		$this->load->library('ftp');
 		// $allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al subir archivo';
@@ -898,8 +827,8 @@ class Cliente extends CI_Controller {
 		    if(in_array($file_ext,$extensions_archivo)){
 
 		        $config['hostname'] = '37.252.96.44';
-		        $config['username'] = 'subida';
-		        $config['password'] = 'unai2018';
+		        $config['username'] = '';
+		        $config['password'] = '';
 		        $config['debug'] = TRUE;
 		        $config['passive'] = TRUE;
 

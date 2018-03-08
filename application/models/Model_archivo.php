@@ -43,7 +43,7 @@ class Model_archivo extends CI_Model {
 	public function m_cargar_archivo($paramPaginate=FALSE){
 		$this->db->select('a.idarchivo, a.idcliente, a.nombre_archivo, a.size, a.tipo_archivo, a.fecha_subida, a.descargado, a.fecha_descarga, a.es_bonificacion, a.estado_arc');
 		$this->db->from('archivo a');
-		$this->db->where('a.estado_ar', 1);
+		$this->db->where('a.estado_arc', 1);
 		if($paramPaginate){
 			if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 				foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -65,7 +65,7 @@ class Model_archivo extends CI_Model {
 	public function m_count_archivo($paramPaginate=FALSE){
 		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('archivo a');
-		$this->db->where('a.estado_ar', 1);
+		$this->db->where('a.estado_arc', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -147,5 +147,23 @@ class Model_archivo extends CI_Model {
 		$this->db->where('idcliente',$data['idcliente']);
 
 		return $this->db->update('archivo', $datos);
+	}
+	public function m_verificar_archivo_cliente($datos){
+		$this->db->select('idarchivo');
+		$this->db->from('archivo');
+		$this->db->where('idcliente', $datos['idcliente']);
+		$this->db->where('nombre_archivo', $datos['nombre_archivo']);
+		$this->db->where('estado_arc', '1');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
+	public function m_verificar_video_excursion($datos){
+		$this->db->select('idexcursionvideo');
+		$this->db->from('excursion_video');
+		$this->db->where('idexcursion', $datos['idexcursion']);
+		$this->db->where('nombre_archivo', $datos['nombre_video']);
+		$this->db->where('estado', '1');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
 	}
 }
