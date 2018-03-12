@@ -17,8 +17,8 @@ class Config extends CI_Controller {
 		$lista = $this->model_config->m_cargar_configuracion();
 		$lista['email_cifrado'] = safe_mailto($lista['correo']);
 		// $arrListado = array();
-		$lista['lat'] = floatval($lista['latitud_gm']);
-		$lista['lng'] = floatval($lista['longitud_gm']);
+		// $lista['lat'] = floatval($lista['latitud_gm']);
+		// $lista['lng'] = floatval($lista['longitud_gm']);
     	$arrData['datos'] = $lista;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

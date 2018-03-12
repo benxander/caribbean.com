@@ -7297,3 +7297,7 @@ body{top:0px!important;}
 .tacos_azules .service-box-content{
 	line-height: 18px;
 }
+.va-middle{vertical-align: middle;}
+#footer-top h1, #footer-top h2, #footer-top h3, #footer-top h4, #footer-top h5, #footer-top h6 {
+    color: #ababab!important;
+}

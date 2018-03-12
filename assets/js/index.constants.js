@@ -4,5 +4,5 @@
 
   angular
     .module('caribbean')
-    .constant('empresaNombre','Caribbean Photo Studio');
+    .constant('empresaNombre','Goey Pictures!');
 })();

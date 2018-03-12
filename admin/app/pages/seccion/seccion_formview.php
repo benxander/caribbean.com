@@ -7,7 +7,7 @@
 		    <div class="row">
 		    	<div class="form-group col-md-12">
 					<div class="row">
-			            <div class="form-group col-md-12" ng-if="{{ms.fData.tipo_contenido != 'BG'}}">
+			            <div class="form-group col-md-12">
 			              <label for="titulo" class="control-label minotaur-label">Título <small class="text-red">(*)</small> </label>
 			              <input type="text" name="titulo" id="titulo" class="form-control" ng-model="ms.fData.titulo" placeholder="Registre titulo" required>
 			              <div ng-messages="formSeccion.titulo.$error" ng-if="formSeccion.titulo.$dirty" role="alert" class="help-block text-red">

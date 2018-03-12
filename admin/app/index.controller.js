@@ -108,6 +108,13 @@
     $scope.monto_cesta = 0;
     $scope.dirBase = angular.patchURL;
     $scope.dirImages = angular.patchURL+'uploads/';
+    rootServices.sCargarDatosWeb().then(function (response) {
+      if(response.flag == 1){
+        $scope.dataWeb = response.datos;
+      }else{
+        console.log('no data');
+      }
+    });
     $scope.$watch('seleccionadas',function(newValue, oldValue){
       if (newValue===oldValue) {
         return;
@@ -177,7 +184,6 @@
         }
       });
     };
-
     $scope.gChangeLanguage = function(langKey){
       vm.changeLanguage(langKey);
     }
@@ -202,7 +208,7 @@
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,false,true,true,true,false,true,true,false,false,false];
+        $scope.valores = [true,true,true,false,true,true,false,false,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){
         $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
@@ -235,7 +241,7 @@
           $scope.fSessionCI = {};
           $scope.logOut();
           if(esCliente){
-            $window.location.href = $scope.dirBase+'zona-privada';
+            $window.location.href = $scope.dirBase;
           }else{
             $scope.goToUrl('/app/pages/login');
           }
@@ -251,6 +257,7 @@
     return({
         sLogoutSessionCI: sLogoutSessionCI,
         sGetSessionCI: sGetSessionCI,
+        sCargarDatosWeb: sCargarDatosWeb
     });
     function sLogoutSessionCI(pDatos) {
       var datos = pDatos || {};
@@ -266,6 +273,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Acceso/getSessionCI",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sCargarDatosWeb(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Config/listar_configuracion",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

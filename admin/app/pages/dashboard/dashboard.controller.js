@@ -4,9 +4,9 @@
   angular
     .module('minotaur')
     .controller('DashboardController', DashboardController)
-    .controller('StatisticsController', StatisticsController)
+    /*.controller('StatisticsController', StatisticsController)
     .controller('RealtimeLoadController', RealtimeLoadController)
-    .controller('ProjectsController', ProjectsController);
+    .controller('ProjectsController', ProjectsController)*/;
 
   /** @ngInject */
   function DashboardController(moment, $scope) {
@@ -33,7 +33,7 @@
     };
   }
 
-  function StatisticsController() {
+  /*function StatisticsController() {
     var vm = this;
 
     vm.colors = ['#e05d6f', '#23a9e6'];
@@ -107,7 +107,7 @@
   }
 
   function RealtimeLoadController($scope, $interval) {
-    /* eslint-disable */
+
     $scope.options = {
       renderer: 'area',
       height: 133
@@ -157,7 +157,7 @@
         }
       }
     };
-    /* eslint-enable */
+
 
   }
 
@@ -265,6 +265,6 @@
       DTColumnDefBuilder.newColumnDef(3),
       DTColumnDefBuilder.newColumnDef(4).notSortable()
     ];
-  }
+  }*/
 
 })();

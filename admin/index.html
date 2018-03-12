@@ -1,8 +1,8 @@
 <!doctype html>
-<html ng-app="minotaur" ng-class="specialClass">
+<html ng-app="minotaur" ng-class="specialClass" ng-controller="MainController as main">
   <head>
     <meta charset="utf-8">
-    <title> Caribbean Photo Studio - Admin </title>
+    <title ng-bind="dataWeb.titulo_we"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Chrome, Firefox OS, Opera and Vivaldi -->
@@ -60,7 +60,7 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body id="minotaur" class="appWrap {{main.headerStyle}} {{main.primaryColor}} {{main.navigationStyle}}" ng-class="specialClass" ng-controller="MainController as main">
+  <body id="minotaur" class="appWrap {{main.headerStyle}} {{main.primaryColor}} {{main.navigationStyle}}" ng-class="specialClass">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -99,7 +99,7 @@
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="bower_components/masonry/dist/masonry.pkgd.min.js"></script>
     <script src="bower_components/ev-emitter/ev-emitter.js"></script>

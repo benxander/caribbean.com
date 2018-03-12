@@ -3,16 +3,19 @@
 		<div class="row mb-lg">
 	      	<div class="col-sm-12 mt-lg">
 		        <h3 class="">Welcome to <b>{{l.empresaNombre}}</b></h3>
-		        <h5>Insert your code here</h5>
+		        <h5>Insert your code below</h5>
 		        <form class="row" name="formLogin" role="form" novalidate >
 		          	<div class="col-sm-6" >
-			            <div class="form-group">
+			            <div class="form-group mb-n">
 			            	<div class="input-group">
 			             	<input type="text" placeholder="Insert your code" name="code" class="form-control" ng-model="l.fLogin.codigo" ng-enter="l.btnLoginToSystem()" required>
 			             	<span class="input-group-btn m-n"><button class="btn btn-primary" style="padding-top: 5px;padding-bottom: 5px;" type="button" ng-click="l.btnLoginToSystem()" ng-disabled="formLogin.$invalid" >CLAIM YOUR PHOTOS</button></span>
 			            	</div>
 			            </div>
 			        </div>
+		          	<div class="col-sm-12" >
+		        		<p>Please note, It may take up to 1 day after your escursion for your photos and video to become available.</p>
+		          	</div>
 		        </form>
 	      	</div>
 	      	<div class="col-sm-12 mt-lg" ng-show="l.error">
