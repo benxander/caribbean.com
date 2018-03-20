@@ -2,7 +2,7 @@
 	<div class="container" id="login">
 		<div class="row mb-lg">
 	      	<div class="col-sm-12 mt-lg">
-		        <h3 class="">Welcome to <b>{{l.empresaNombre}}</b></h3>
+		        <h3 class="">Welcome to <b ng-bind="l.empresaNombre"></b></h3>
 		        <h5>Insert your code below</h5>
 		        <form class="row" name="formLogin" role="form" novalidate >
 		          	<div class="col-sm-6" >

@@ -22,6 +22,40 @@
 	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:10}" ></div>
 	            </div>
 		    </div>
+		    <div class="row">
+		    	<div class="form-group col-md-12" >
+					<label for="codigo" class="control-label minotaur-label">Códigos adicionales </label>
+					<button></button>
+			        <table class="table table-hover">
+			            <thead>
+				            <tr>
+				              <th>#</th>
+				              <th>Código</th>
+				            </tr>
+			            </thead>
+			            <tbody>
+				            <tr ng-repeat="item in mc.listaCodigos" ng-form="rowForm">
+				              <td>{{item.i}}</td>
+				              <td>
+				              	<span ng-show="!item.esEdicion">{{item.codigo}}</span>
+				              	<div class="controls" ng-show="item.esEdicion">
+				                  <input type="text" name="codigo" ng-model="item.codigo" class="editable-input form-control input-sm" required/>
+				                </div>
+				              </td>
+				              <td align="right">
+				              	<button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="mc.guardarCodigo(item, rowForm); item.esEdicion = false" ng-if="item.esEdicion" ng-disabled="rowForm.$pristine || rowForm.$invalid">Save</button>
+                				<button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="mc.cancelCodigo(row, rowForm)" ng-if="item.esEdicion">Cancel</button>
+
+				              	<button class="btn btn-nostyle text-success text-uppercase text-strong text-sm" ng-click="item.esEdicion = true" ng-if="!item.esEdicion">Edit</button>
+				              	<button class="btn btn-nostyle text-danger text-uppercase text-strong text-sm" ng-click="mc.eliminaCodigo(row)" ng-if="!item.esEdicion">Remove</button>
+				              </td>
+				            </tr>
+
+			            </tbody>
+			        </table>
+	            </div>
+
+		    </div>
 		</form>
 	</section>
 </div>

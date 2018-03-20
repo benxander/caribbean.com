@@ -178,7 +178,7 @@
         $scope.seleccionadas = 0;
         $scope.logOut();
         if(esCliente){
-          $window.location.href = $scope.dirBase+'zona-privada';
+          $window.location.href = $scope.dirBase;
         }else{
           $scope.goToUrl('/app/pages/login');
         }
@@ -233,7 +233,13 @@
           if( $location.path() == '/app/pages/login' && !esCliente ){
             $scope.goToUrl('/');
           }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard') && esCliente){
-            $scope.goToUrl('/app/tienda');
+            if($scope.fSessionCI.procesado == 4){
+              console.log('completo');
+              $scope.goToUrl('/app/mi-galeria');
+            }else{
+              $scope.goToUrl('/app/tienda');
+              console.log('incompleto');
+            }
           }
           $scope.CargaMenu();
           $scope.saldo = $scope.fSessionCI.monedero;

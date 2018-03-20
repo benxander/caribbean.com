@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="es" ng-app="caribbean" ng-controller="MainController as vm">
+<html  lang="en" ng-app="caribbean" ng-controller="MainController as vm">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,19 +16,8 @@
 	<meta name="msapplication-TileColor" content="#1574a6">
 	<meta name="theme-color" content="#1574a6">
 
-	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.css">
 
 
-	<!-- FANCYBOX -->
-	<link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.css">
-
-	<!-- CUSTOM & PAGES STYLE -->
-	<link rel="stylesheet" href="assets/css/custom.css">
-	<link rel="stylesheet" href="assets/css/pages-style.css">
-	<script>
-      document.write('<base href="' + document.location + '" />');
-    </script>
 
 </head>
 <body  id="home" class="sticky-header header-white" data-spy="scroll" data-target=".navbar_cp" data-offset="80" >
@@ -53,7 +42,7 @@
 						<div id="aviso" style="display:none;width:100%;" ng-include="'templates/seccion/aviso-legal.html'"></div>
 						<!-- MENU -->
 						<nav class="navbar_cp" data-offset-top="80">
-							<a id="mobile-menu-button" class="waves" href="#"><i class="halcyon-icon-menu"></i></a>
+							<a id="mobile-menu-button" class="waves" href="#"><i class="fa fa-bars"></i></a>
 							<ul class="menu clearfix nav navbar-nav" id="menu">
 								<li><a href="#terminos" fancybox>Terms & Conditions</a></li>
 								<li><a href="#preguntas" fancybox>FAQs</a></li>
@@ -134,24 +123,37 @@
 
 
 	</div><!-- MAIN CONTAINER -->
+
+	<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+	<!-- CUSTOM & PAGES STYLE -->
+	<link rel="stylesheet" href="assets/css/custom.css">
+	<link rel="stylesheet" href="assets/css/pages-style.css">
+
+	<!-- FANCYBOX -->
+	<link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.css">
+	<script>
+      document.write('<base href="' + document.location + '" />');
+    </script>
 	<!-- SCROLL UP -->
 	<a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>
 
 	<!-- jQUERY -->
 	<script src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 	<!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
-	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-	<script src="admin/bower_components/angular/angular.js"></script>
+	<script src="admin/bower_components/angular/angular.min.js"></script>
 	<script src="admin/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<!-- <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.1.min.js"></script> -->
-	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-route/angular-route.min.js"></script>
 	<!-- <script src="bower_components/angular-cookies/angular-cookies.js"></script> -->
 	<!-- <script src="bower_components/ng-facebook/ngFacebook.js"></script> -->
 	<script src="admin/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<!-- <script src="bower_components/angular-g-recaptcha/angular-g-recaptcha.js"></script> -->
 	<!-- <script src="bower_components/ngGallery/src/js/ngGallery.js"></script> -->
-	<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
+	<!-- <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script> -->
 
 	<!-- VIEWPORT -->
 	<script src="assets/plugins/viewport/jquery.viewport.js"></script>

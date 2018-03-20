@@ -137,6 +137,12 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_codigos_cliente($datos){
+		$this->db->select('dep.iddependiente, dep.codigo, dep.idcliente');
+		$this->db->from('dependiente dep');
+		$this->db->where('dep.idcliente', $datos['idcliente']);
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_cliente_por_email($datos){
 		$this->db->select('c.idcliente, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
 		$this->db->from('cliente c');
@@ -146,7 +152,7 @@ class Model_cliente extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_cliente_por_sesion(){
-		$this->db->select('c.idcliente, c.estado_cl, c.monedero, c.createdat as fecha_creacion, c.codigo');
+		$this->db->select('c.idcliente, c.estado_cl, c.monedero, c.createdat as fecha_creacion, c.codigo, c.procesado');
 		$this->db->from('cliente c');
 		// $this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);

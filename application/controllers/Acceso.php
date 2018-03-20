@@ -106,6 +106,7 @@ class Acceso extends CI_Controller {
 			}*/
 			if( !empty($fila) ){
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['procesado'] = $fila['procesado'];
 			}
 
 			$arrData['flag'] = 1;

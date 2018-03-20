@@ -21,8 +21,9 @@ class Model_acceso extends CI_Model {
 	public function m_logging_cliente($data){
 		$this->db->select('cli.idcliente, cli.monedero, cli.codigo, cli.nombres, cli.email, cli.ididioma',FALSE);
 		$this->db->from('cliente cli');
-		$this->db->where('cli.codigo',$data['codigo']);
+		$this->db->join('dependiente de', 'cli.idcliente = de.idcliente','left');
 		$this->db->where('cli.estado_cl', 1);
+		$this->db->where("cli.codigo = '".$data['codigo'] . "' OR de.codigo = '".$data['codigo'] . "'" );
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}

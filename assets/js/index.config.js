@@ -33,8 +33,9 @@
       controller: 'LoginController',
       controllerAs: 'l',
 
-    })
-    ;
+    }).otherwise({
+      redirectTo: '/'
+    });
   }
 
 })();

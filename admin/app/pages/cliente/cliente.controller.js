@@ -111,7 +111,7 @@
             'codigo' : grid.columns[2].filters[0].term,
             'idexcursion' : grid.columns[3].filters[0].term,
             'descripcion' : grid.columns[4].filters[0].term,
-            'fecha_excursion' : grid.columns[5].filters[0].term,
+            "DATE_FORMAT(fecha_excursion,'%d-%m-%Y')" : grid.columns[5].filters[0].term,
 
           }
           vm.getPaginationServerSide();
@@ -249,11 +249,14 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
 
-            // ExcursionServices.sListarExcursionesCliente(vm.fData).then(function(rpta){
-            //   vm.fData.idexcursion = rpta.datos;
-            // });
-            // vm.fData.idexcursion = ["1","5"];
-
+            ClienteServices.sListarCodigoDependiente(vm.fData).then(function(rpta){
+              vm.listaCodigos = rpta.datos;
+            });
+            vm.listaCodigos = [];
+            vm.guardarCodigo = function(row, rowForm){
+              console.log('row',row);
+              console.log('rowForm',rowForm);
+            }
             vm.aceptar = function () {
               pageLoading.start('Procesando...');
               ClienteServices.sEditarCliente(vm.fData).then(function (rpta) {
@@ -846,6 +849,7 @@
         sOrganizarImagenes : sOrganizarImagenes,
         sImprimirClientes : sImprimirClientes,
         sUploadPrueba : sUploadPrueba,
+        sListarCodigoDependiente: sListarCodigoDependiente
     });
     function sListarCliente(pDatos) {
       var datos = pDatos || {};
@@ -1005,6 +1009,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/upload_zip_ftp",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarCodigoDependiente (pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/listar_codigo_dependiente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

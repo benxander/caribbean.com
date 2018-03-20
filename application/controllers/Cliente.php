@@ -75,6 +75,29 @@ class Cliente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_codigo_dependiente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_cliente->m_cargar_codigos_cliente($allInputs);
+		$arrListado = array();
+		$i = 1;
+		foreach ($lista as $row) {
+			array_push($arrListado, array(
+				'i' => $i++,
+				'codigo' => $row['codigo'],
+				'esEdicion' => FALSE
+				)
+			);
+		}
+
+		$arrData['datos'] = $arrListado;
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function listar_cliente_por_idusuario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$row = $this->model_cliente->m_cargar_cliente_por_idusuario($allInputs['idusuario']);
