@@ -189,7 +189,6 @@ class Model_cliente extends CI_Model {
 		$insert_id = $this->db->insert_id();
 		return $insert_id;
 	}
-
 	public function m_editar_cliente($data){
 
 		$datos = array(
@@ -287,5 +286,26 @@ class Model_cliente extends CI_Model {
 		$this->db->where('c.idcliente', $datos['idcliente']);
 		$result = $this->db->get()->row_array();
 		return $result['monedero'];
+	}
+	/* CODIGOS DEPENDIENTES */
+	public function m_registrar_codigo_dep($data){
+		$datos = array(
+			'idcliente'	 => $data['idcliente'],
+			'codigo'	 => $data['codigo'],
+		 );
+		$this->db->insert('dependiente', $datos);
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
+	}
+	public function m_editar_codigo_dependiente($data){
+		$datos = array(
+			'codigo' => $data['codigo'],
+		);
+		$this->db->where('iddependiente',$data['iddependiente']);
+		return $this->db->update('dependiente', $datos);
+	}
+	public function m_eliminar_codigo_dependiente($data){
+		$this->db->where('iddependiente',$data['iddependiente']);
+		return $this->db->delete('dependiente');
 	}
 }

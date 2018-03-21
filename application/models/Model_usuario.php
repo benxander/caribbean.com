@@ -153,7 +153,6 @@ class Model_usuario extends CI_Model {
 
 		return $this->db->update('usuario', $datos);
 	}
-
 	public function m_anular_usuario($data){
 		$datos = array(
 			'estado_us' => 0,

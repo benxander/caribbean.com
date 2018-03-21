@@ -84,7 +84,10 @@ class Cliente extends CI_Controller {
 			array_push($arrListado, array(
 				'i' => $i++,
 				'codigo' => $row['codigo'],
-				'esEdicion' => FALSE
+				'iddependiente' => $row['iddependiente'],
+				'idcliente' => $row['idcliente'],
+				'esEdicion' => FALSE,
+				'esNuevo' => FALSE,
 				)
 			);
 		}
@@ -579,9 +582,20 @@ class Cliente extends CI_Controller {
 			$cellIterator->setIterateOnlyExistingCells(false);
 
 			$arrAux = array();
+			$arrAdicional = array();
 			foreach ($cellIterator as $cell) {
 				$arrAux[] = $cell->getValue();
 			}
+			$finalArr = count($arrAux);
+			for ($i=4; $i < $finalArr; $i++) {
+				if(!empty($arrAux[$i])){
+					array_push($arrAdicional, array(
+						'codigo' => $arrAux[$i]
+						)
+					);
+				}
+			}
+
 			if( !empty($arrAux[0]) && !empty($arrAux[1]) ){
 				array_push($arrListado, array(
 					'codigo' => $arrAux[0],
@@ -589,12 +603,17 @@ class Cliente extends CI_Controller {
 					'monedero' => empty($arrAux[2])? '0': $arrAux[2],
 					'fecha_excursion' => NULL,
 					// 'fecha_excursion' => $arrAux[3],
+					'codigos_dependientes' => $arrAdicional
 					)
 				);
 			}
 		}
-		// var_dump($arrListado); exit();
 		unset($arrListado[0]);
+		// var_dump(count($arrListado[1]['codigos_dependientes']));
+		// var_dump(count($arrListado[2]['codigos_dependientes']));
+		// var_dump($arrListado);
+		// exit();
+		// var_dump($arrListado); exit();
 		$registro_exitoso = TRUE;
 		foreach ($arrListado as $row) {
 			if($this->model_cliente->m_cargar_cliente_por_codigo($row['codigo'])){
@@ -606,7 +625,13 @@ class Cliente extends CI_Controller {
 		$this->db->trans_begin();
 		foreach ($arrListado as $row) {
 			$row['excursion']['id'] = $row['idexcursion'];
-			if($this->model_cliente->m_registrar_cliente($row)){
+			if($idcliente = $this->model_cliente->m_registrar_cliente($row)){
+				if( count($row['codigos_dependientes']) > 0 ){
+					foreach ($row['codigos_dependientes'] as $rowCod) {
+						$rowCod['idcliente'] = $idcliente;
+						$this->model_cliente->m_registrar_codigo_dep($rowCod);
+					}
+				}
 				$carpeta = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'clientes' . DIRECTORY_SEPARATOR . $row['codigo'];
 	    		createCarpetas($carpeta);
 	  		}else{
@@ -962,6 +987,49 @@ class Cliente extends CI_Controller {
 	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
 	    // );
 
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	/* CODIGOS DEPENDIENTES */
+	public function registrar_codigo_dependiente(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_cliente->m_registrar_codigo_dep($allInputs) ){
+			$arrData['message'] = 'Se registraron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_codigo_dependiente(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_cliente->m_editar_codigo_dependiente($allInputs) ){
+			$arrData['message'] = 'Se editaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function eliminar_codigo_dependiente(){
+		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+		if( $this->model_cliente->m_eliminar_codigo_dependiente($allInputs) ){
+			$arrData['message'] = 'Se eliminaron los datos correctamente ';
+    		$arrData['flag'] = 1;
+		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

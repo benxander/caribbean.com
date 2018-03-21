@@ -237,6 +237,7 @@
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             // vm.listaIdiomas = arrToModal.scope.listaIdiomas;
+            vm.listaCodigos = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.listaExcursiones = arrToModal.scope.listaExcursiones;
@@ -248,14 +249,85 @@
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Edición de Cliente';
-
-            ClienteServices.sListarCodigoDependiente(vm.fData).then(function(rpta){
-              vm.listaCodigos = rpta.datos;
-            });
-            vm.listaCodigos = [];
-            vm.guardarCodigo = function(row, rowForm){
-              console.log('row',row);
-              console.log('rowForm',rowForm);
+            vm.cargarCodigos = function(){
+              pageLoading.start('Cargando...');
+              ClienteServices.sListarCodigoDependiente(vm.fData).then(function(rpta){
+                vm.listaCodigos = rpta.datos;
+                pageLoading.stop();
+              });
+            }
+            vm.cargarCodigos();
+            vm.btnAgregarCod = function(){
+              var cant = vm.listaCodigos.length;
+              vm.listaCodigos.push(
+                { 'i':cant+1,
+                  'codigo': null,
+                  'iddependiente': null,
+                  'idcliente': vm.fData.idcliente,
+                  'esEdicion' : true,
+                  'esNuevo' : true,
+                }
+              );
+            }
+            vm.editarCodigo = function(row){
+              if(row.esNuevo){
+                pageLoading.start('Procesando...');
+                ClienteServices.sRegistrarCodigo(row).then(function (rpta) {
+                  pageLoading.stop();
+                  if(rpta.flag == 1){
+                    vm.cargarCodigos();
+                    var title = 'OK';
+                    var type = 'success';
+                    toastr.success(rpta.message, title);
+                  }else if( rpta.flag == 0 ){
+                    var title = 'Advertencia';
+                    var type = 'warning';
+                    toastr.warning(rpta.message, title);
+                  }else{
+                    alert('Ocurrió un error');
+                  }
+                });
+              }else{
+                pageLoading.start('Procesando...');
+                ClienteServices.sEditarCodigo(row).then(function (rpta) {
+                  pageLoading.stop();
+                  if(rpta.flag == 1){
+                    vm.cargarCodigos();
+                    var title = 'OK';
+                    var type = 'success';
+                    toastr.success(rpta.message, title);
+                  }else if( rpta.flag == 0 ){
+                    var title = 'Advertencia';
+                    var type = 'warning';
+                    toastr.warning(rpta.message, title);
+                  }else{
+                    alert('Ocurrió un error');
+                  }
+                });
+              }
+            }
+            vm.eliminarCodigo = function(row){
+              alertify.confirm("¿Realmente desea eliminar el código?",function(ev){
+                ev.preventDefault();
+                  ClienteServices.sEliminarCodigo(row).then(function (rpta) {
+                    pageLoading.stop();
+                    if(rpta.flag == 1){
+                      vm.cargarCodigos();
+                      var title = 'OK';
+                      var type = 'success';
+                      toastr.success(rpta.message, title);
+                    }else if( rpta.flag == 0 ){
+                      var title = 'Advertencia';
+                      var type = 'warning';
+                      toastr.warning(rpta.message, title);
+                    }else{
+                      alert('Ocurrió un error');
+                    }
+                  });
+                },
+                function(ev){
+                  ev.preventDefault();
+              });
             }
             vm.aceptar = function () {
               pageLoading.start('Procesando...');
@@ -836,6 +908,9 @@
         sListarClientePorIdusuario:sListarClientePorIdusuario,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
+        sRegistrarCodigo: sRegistrarCodigo,
+        sEditarCodigo: sEditarCodigo,
+        sEliminarCodigo: sEliminarCodigo,
         sEditarDatosAdicionalesCliente: sEditarDatosAdicionalesCliente,
         sEditarPerfilCliente: sEditarPerfilCliente,
         sAnularCliente: sAnularCliente,
@@ -892,6 +967,33 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/editar_cliente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sRegistrarCodigo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/registrar_codigo_dependiente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEditarCodigo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/editar_codigo_dependiente",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sEliminarCodigo(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Cliente/eliminar_codigo_dependiente",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
