@@ -55,7 +55,9 @@
         { field: 'idexcursion', name:'idexcursion', displayName: 'ID EXCUR.', minWidth: 90, width:90, cellClass:'text-center'},
         { field: 'excursion', name:'descripcion', displayName: 'EXCURSION', minWidth: 130, enableFiltering: false,},
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100, cellClass:'text-center'},
-        { field: 'monedero', name: 'monedero', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'deposito', name: 'deposito', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'monedero', name: 'monedero', displayName: 'SALDO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'online', name: 'online', displayName: 'ONLINE',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
         { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false, cellClass:'text-right' },
         { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
           cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'

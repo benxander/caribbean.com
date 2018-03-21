@@ -46,6 +46,7 @@ class Cliente extends CI_Controller {
 				array(
 					'idcliente' => $row['idcliente'],
 					'monedero' 	=> (int)$row['monedero'],
+					'deposito' 	=> (int)$row['deposito'],
 					'estado_cl'	=> $row['estado_cl'],
 					'codigo' 	=> $row['codigo'],
 					'ididioma' 	=> 'en',
@@ -55,6 +56,7 @@ class Cliente extends CI_Controller {
 					// 'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['total_subido'] > 0) ? TRUE:FALSE,
 					'monto'=>	$row['monto'],
+					'online'=>	$row['online'] > 0 ? $row['online'] : 0,
 					'bool_video' => empty($row['idexcursionvideo'])? FALSE: TRUE,
 					'estado_obj' => array(
 						'string' => $estado,
@@ -971,7 +973,7 @@ class Cliente extends CI_Controller {
                     utf8_decode(trim($row['codigo'])),
                     $row['fecha_excursion'],
                     $row['descripcion'],
-                    $row['monedero'],
+                    $row['deposito'],
                     $row['monto'],
                     utf8_decode(trim($row['procesado'])),
                 ),
