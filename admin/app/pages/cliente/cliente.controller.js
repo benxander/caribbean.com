@@ -6,7 +6,7 @@
     .service('ClienteServices', ClienteServices);
 
   /** @ngInject */
-  function ClienteController($scope, $window, $uibModal,$filter, uiGridConstants, toastr, alertify,tileLoading, pageLoading,
+  function ClienteController($scope, $window, $uibModal, $filter, uiGridConstants, toastr, alertify,tileLoading, pageLoading,
     ClienteServices, ExcursionServices, UsuarioServices, FileUploader,i18nService) {
     var vm = this;
     vm.fBusqueda = {}
@@ -57,17 +57,18 @@
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100, cellClass:'text-center'},
         { field: 'deposito', name: 'deposito', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
         { field: 'monedero', name: 'monedero', displayName: 'SALDO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'fecha_movimiento', name:'fecha_movimiento', displayName: 'FEC.SALDO',width:110, cellClass:'text-center'},
         { field: 'online', name: 'online', displayName: 'ONLINE',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
         { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false, cellClass:'text-right' },
-        { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120,
-          cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
-        },
         { field: 'video', name: 'video', displayName: 'VIDEO',width: 70, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false,
           cellTemplate: '<div class="text-center text-red" ng-if="row.entity.bool_video">' +
             '<i class="fa fa-video-camera"></i>' +
           '</div>'
          },
-        { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 120, enableFiltering: false,
+        { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120, pinnedRight:true,
+          cellTemplate:'<label style="box-shadow: 1px 1px 0 black; margin: 6px auto; display: block; width: 100px;" class="label {{ COL_FIELD.clase }} ">{{ COL_FIELD.string }}</label>'
+        },
+        { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 130, pinnedRight:true, enableFiltering: false,
           enableColumnMenus: false, enableColumnMenu: false, enableSorting: false,
           cellTemplate: '<div>' +
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+

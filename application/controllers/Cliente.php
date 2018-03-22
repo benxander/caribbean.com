@@ -53,6 +53,7 @@ class Cliente extends CI_Controller {
 					'idexcursion' 	=> $row['idexcursion'],
 					'excursion' 	=> $row['descripcion'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
+					'fecha_movimiento' 	=> darFormatoDMY($row['fecha_movimiento']),
 					// 'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
 					'archivo'	=> ($row['total_subido'] > 0) ? TRUE:FALSE,
 					'monto'=>	$row['monto'],

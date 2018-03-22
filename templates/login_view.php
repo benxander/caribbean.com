@@ -9,6 +9,7 @@
 			            <div class="form-group mb-n">
 			            	<div class="input-group">
 			             	<input type="text" placeholder="Insert your code" name="code" class="form-control" ng-model="l.fLogin.codigo" ng-enter="l.btnLoginToSystem()" required>
+			             	<span style="position: absolute; right: 210px; z-index: 5;"><i class="fa fa-question-circle fa-2x" style="cursor: pointer; padding-top: 3px;" ng-click="l.btnInfo();"></i></span>
 			             	<span class="input-group-btn m-n"><button class="btn btn-primary" style="padding-top: 5px;padding-bottom: 5px;" type="button" ng-click="l.btnLoginToSystem()" ng-disabled="formLogin.$invalid" >CLAIM YOUR PHOTOS</button></span>
 			            	</div>
 			            </div>
@@ -21,6 +22,7 @@
 	      	<div class="col-sm-12 mt-lg" ng-show="l.error">
 		        <h5 class="text-red">*The code does not exist or is disabled.</h5>
 		    </div>
+		    <div id="info" style="display:none;width:100%;" ng-include="'templates/popups/modal_info.php'"></div>
 	    </div>
 	</div>
 </div>

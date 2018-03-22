@@ -5,7 +5,7 @@
     .module('caribbean')
     .controller('LoginController', LoginController)
     .service('loginServices', loginServices);
-  function LoginController($scope, $window, loginServices, empresaNombre, $routeParams,$timeout,$location,) {
+  function LoginController($scope, $window, $uibModal, loginServices, empresaNombre, $routeParams,$timeout,$location,) {
     var vm = this;
     vm.empresaNombre = empresaNombre;
     vm.fLogin = {};
@@ -24,8 +24,6 @@
         }
       });
     }
-    // $scope.getValidateSession();
-
     vm.btnLoginToSystem = function () {
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
@@ -38,30 +36,32 @@
       });
 
     }
-    // vm.getValidateSession = function () {
-    //   loginServices.sGetSessionCI().then(function (response) {
-    //     if(response.flag == 1){
-    //       $scope.fSessionCI = response.datos;
-    //       $scope.logIn();
-    //       console.log('logIn ->',response);
-    //       if( $location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo != 3 ){
-    //         $scope.goToUrl('/');
-    //       }else if($location.path() == '/app/pages/login' && $scope.fSessionCI.idgrupo == 3){
-    //         $scope.goToUrl('/app/tienda');
-    //       }
-    //       $scope.CargaMenu();
-    //       $scope.saldo = $scope.fSessionCI.monedero;
-    //     }else{
-    //       $scope.fSessionCI = {};
-    //       $scope.logOut();
-    //       console.log('logOut ->',response);
-    //       //alert('Saliendo del admin');
-    //       $scope.goToUrl('/app/pages/login');
-    //     }
-    //   });
-
-    // }
-    // vm.getValidateSession();
+    vm.btnInfo = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'templates/popups/modal_info.php',
+        controllerAs: 'mi',
+        size: '',
+        // backdropClass: 'splash splash-2 splash-ef-16',
+        // windowClass: 'splash splash-2 splash-ef-16',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.modalTitle = 'Where\'s my code?';
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
   }
 
   function loginServices($http, $q) {

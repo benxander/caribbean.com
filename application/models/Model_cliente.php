@@ -11,6 +11,7 @@ class Model_cliente extends CI_Model {
 		$this->db->select('COUNT(a.idarchivo) as total_subido, exc.idexcursion, exc.descripcion, estado_cl');
 		$this->db->select("SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados",FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as monto", FALSE);
+		$this->db->select("( SELECT MAX(mo.fecha_movimiento) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as fecha_movimiento", FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) - c.deposito as online", FALSE);
 		$this->db->select('ev.idexcursionvideo');
 		$this->db->from('cliente c');
@@ -24,7 +25,7 @@ class Model_cliente extends CI_Model {
 		/*principal*/
 		$this->db->select('foo.idcliente, foo. codigo, foo.idexcursion, foo.fecha_excursion');
 		$this->db->select('foo.descripcion, foo.monedero, foo.deposito, foo.total_subido, foo.comprados');
-		$this->db->select('foo.monto, foo.online, foo.idexcursionvideo, foo.estado_cl');
+		$this->db->select('foo.monto, foo.fecha_movimiento, foo.online, foo.idexcursionvideo, foo.estado_cl');
 		$this->db->select("CASE WHEN total_subido = 0 THEN 'NO PROCESADO' ELSE (
 			CASE WHEN monedero = 0 AND comprados = 0 THEN 'NO PAGO' ELSE (
 				CASE WHEN (monedero = 0 AND comprados > 0 AND comprados < total_subido) OR

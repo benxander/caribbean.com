@@ -177,11 +177,11 @@
         $scope.fSessionCI = {};
         $scope.seleccionadas = 0;
         $scope.logOut();
-        if(esCliente){
+        // if(esCliente){
           $window.location.href = $scope.dirBase;
-        }else{
-          $scope.goToUrl('/app/pages/login');
-        }
+        // }else{
+          // $scope.goToUrl('/app/pages/login');
+        // }
       });
     };
     $scope.gChangeLanguage = function(langKey){
