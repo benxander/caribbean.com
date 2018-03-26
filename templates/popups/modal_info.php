@@ -10,5 +10,5 @@
 	</div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-default-1 waves" ng-click="mi.cancel()"> Cerrar</button>
+  <button class="btn btn-default-1 waves" ng-click="mi.cancel()"> Close</button>
 </div>

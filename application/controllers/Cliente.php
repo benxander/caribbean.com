@@ -931,11 +931,11 @@ class Cliente extends CI_Controller {
 		$this->pdf->Cell(0,7,utf8_decode('Listado de clientes'),0,7,'C');
 		$this->pdf->Ln(4);
 
-		 $arrWidthCol = array(10,20,25,65,20,20,30); // ANCHO TOTAL: 190
-        $arrHeaderText = array('Nº','CODIGO CLIENTE', 'FECHA EXCURSION', 'EXCURSION', 'DEPOSITO', 'MONTO ($)', 'PROCESADO');
-        $arrHeaderAligns = array('C','C','C','C','C','C','C');
-        $arrDataAligns = array('C','C','C','L','L','C','C');
-        $arrBoolMultiCell = array(0,0,0,0,0,0,0); // colocar 1 donde deseas utilizar multicell
+		$arrWidthCol = array(10,20,17,56,10,10,17,10,10,30); // ANCHO TOTAL: 190
+        $arrHeaderText = array('Nº','CODIGO CLIENTE', 'FECHA EXCURSION', 'EXCURSION', 'DEPOSITO ($)','SALDO ($)', 'FECHA SALDO', 'ONLINE ($)', 'MONTO ($)', 'PROCESADO');
+        $arrHeaderAligns = array('C','C','C','C','C','C','C','C','C','C');
+        $arrDataAligns = array('C','C','C','L','R','R','C','R','R','C');
+        $arrBoolMultiCell = array(0,0,1,0,1,1,1,1,1,0); // colocar 1 donde deseas utilizar multicell
         $countArray = count($arrWidthCol);
         $acumWidth = 0;
         $this->pdf->Ln(6);
@@ -975,6 +975,9 @@ class Cliente extends CI_Controller {
                     $row['fecha_excursion'],
                     $row['descripcion'],
                     $row['deposito'],
+                    $row['monedero'],
+                    $row['fecha_movimiento'],
+                    $row['online'] > 0 ? $row['online'] : 0,
                     $row['monto'],
                     utf8_decode(trim($row['procesado'])),
                 ),

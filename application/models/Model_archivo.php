@@ -161,7 +161,7 @@ class Model_archivo extends CI_Model {
 		$this->db->select('idexcursionvideo');
 		$this->db->from('excursion_video');
 		$this->db->where('idexcursion', $datos['idexcursion']);
-		$this->db->where('nombre_archivo', $datos['nombre_video']);
+		$this->db->where('nombre_video', $datos['nombre_video']);
 		$this->db->where('estado', '1');
 		$this->db->limit(1);
 		return $this->db->get()->row_array();

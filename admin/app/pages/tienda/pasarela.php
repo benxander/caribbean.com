@@ -2,7 +2,7 @@
     <img src="{{dirBase}}admin/assets/images/paypal.jpg" alt="" style="width: 100%;max-width: 250px;">
 
     <!-- <label>PEDIDO</label> -->
-    <p class="text-primary mt-lg bold f-18" >TOTAL A PAGAR: US$ {{ctrl.monto_a_pagar}}</p>
+    <p class="text-primary mt-lg bold f-18" >{{ 'Text.TOTAL_PAGAR' | translate }}: US$ {{ctrl.monto_a_pagar}}</p>
     <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" class="text-left">
         <input type="hidden" name="cmd" value="_xclick">
         <!-- <input type="hidden" name="business" value="rguevarac@hotmail.es"> -->

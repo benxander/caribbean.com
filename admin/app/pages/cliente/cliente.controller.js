@@ -115,6 +115,7 @@
             'idexcursion' : grid.columns[3].filters[0].term,
             'descripcion' : grid.columns[4].filters[0].term,
             "DATE_FORMAT(fecha_excursion,'%d-%m-%Y')" : grid.columns[5].filters[0].term,
+            "DATE_FORMAT(fecha_movimiento,'%d-%m-%Y')" : grid.columns[8].filters[0].term,
 
           }
           vm.getPaginationServerSide();
