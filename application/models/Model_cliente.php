@@ -157,10 +157,18 @@ class Model_cliente extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_cliente_por_codigo($codigo){
-		$this->db->select('c.idcliente, c.estado_cl, c.monedero, c.idexcursion, c.createdat as fecha_creacion');
+		$this->db->select('
+			c.idcliente,
+			c.codigo,
+			c.estado_cl,
+			c.monedero,
+			c.idexcursion,
+			c.createdat as fecha_creacion
+		');
 		$this->db->from('cliente c');
+		$this->db->join('dependiente d', 'c.idcliente = d.idcliente','left');
 		$this->db->where('c.estado_cl', 1);
-		$this->db->where('c.codigo', $codigo);
+		$this->db->where("(c.codigo = '". $codigo . "' OR d.codigo = '". $codigo . "')", NULL, FALSE );
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}

@@ -248,6 +248,19 @@ class Cliente extends CI_Controller {
 				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales'. DIRECTORY_SEPARATOR .'thumbs');
 				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'originales');
 				deleteArchivos($carpeta. DIRECTORY_SEPARATOR .'thumbs');
+				deleteArchivos($carpeta);
+				if (is_dir($carpeta. '/descargadas/thumbs')) {
+					rmdir($carpeta. '/descargadas/thumbs');
+					rmdir($carpeta. '/descargadas');
+				}
+				if (is_dir($carpeta. '/originales/thumbs')) {
+					rmdir($carpeta. '/originales/thumbs');
+					rmdir($carpeta. '/originales');
+				}
+				if (is_dir($carpeta. '/thumbs')) {
+					rmdir($carpeta. '/thumbs');
+					rmdir($carpeta);
+				}
 				$arrData['message'] = 'Se eliminaron los datos correctamente';
 	    		$arrData['flag'] = 1;
 			}
@@ -735,7 +748,8 @@ class Cliente extends CI_Controller {
 					++$i;
 		       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
 					$codigo = explode("-", $archivo)[0];
-
+		   			$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
+		   			$codigo = $rowCliente['codigo'];
 					$url_origen = $tmp.'/'.$archivo;
 					$url_destino = 'uploads/clientes/'.$codigo.'/originales/'.$archivo;
 
@@ -743,7 +757,6 @@ class Cliente extends CI_Controller {
 						$carpeta_or = './uploads/clientes/'.$codigo;
 					    $archivo_or = $carpeta_or.'/originales/'.$archivo;
 
-		   				$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
 		        		$allInputs['nombre_archivo'] = $archivo;
 						$allInputs['size'] = filesize($archivo_or);
 						$allInputs['tipo_archivo'] = 1;
