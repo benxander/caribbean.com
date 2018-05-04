@@ -204,17 +204,20 @@
         'opGaleria',
         'opMiGaleria'
       ];
-      if($scope.fSessionCI.idgrupo == 1){
+      if($scope.fSessionCI.idgrupo == 1){ // SU
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
-      else if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,false,true,true,false,false,true,true,false,false,false];
+      else if($scope.fSessionCI.idgrupo == 2){ // admin
+        $scope.valores = [false,true,true,false,true,true,false,false,true,true,false,false,false];
       }
-      else if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
+      else if($scope.fSessionCI.idgrupo == 5){ // supervisor
+        $scope.valores = [false,true,true,false,false,false,false,false,false,false,false,false,false];
       }
-      else if($scope.fSessionCI.idgrupo == 4){
+      else if($scope.fSessionCI.idgrupo == 4){ // operador
         $scope.valores = [false,true,false,false,false,false,false,false,false,false,false,false,false];
+      }
+      else if($scope.fSessionCI.idgrupo == 3){ // cliente
+        $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
       }
       else{
         console.log('No tiene grupo');

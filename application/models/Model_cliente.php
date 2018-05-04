@@ -7,13 +7,21 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		/*subquery*/
-		$this->db->select('c.idcliente, c.monedero, c.deposito, c.codigo, c.fecha_excursion');
+		$this->db->select('
+			c.idcliente,
+			c.monedero,
+			c.deposito,
+			c.codigo,
+			c.fecha_excursion,
+			c.paquete,
+			c.precio_paquete
+		');
 		$this->db->select('COUNT(a.idarchivo) as total_subido, exc.idexcursion, exc.descripcion, estado_cl');
 		$this->db->select("SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados",FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as monto", FALSE);
 		$this->db->select("( SELECT MAX(DATE(mo.fecha_movimiento)) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as fecha_movimiento", FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) - c.deposito as online", FALSE);
-		$this->db->select('ev.idexcursionvideo');
+		$this->db->select('ev.idexcursionvideo, ev.nombre_video');
 		$this->db->from('cliente c');
 		$this->db->join('excursion exc', 'c.idexcursion = exc.idexcursion');
 		$this->db->join('excursion_video ev', 'c.idexcursion = ev.idexcursion AND ev.fecha = c.fecha_excursion','left');
@@ -23,9 +31,25 @@ class Model_cliente extends CI_Model {
 		$subQuery1 = $this->db->get_compiled_select();
 
 		/*principal*/
-		$this->db->select('foo.idcliente, foo. codigo, foo.idexcursion, foo.fecha_excursion');
-		$this->db->select('foo.descripcion, foo.monedero, foo.deposito, foo.total_subido, foo.comprados');
-		$this->db->select('foo.monto, foo.fecha_movimiento, foo.online, foo.idexcursionvideo, foo.estado_cl');
+		$this->db->select('
+			foo.idcliente,
+			foo. codigo,
+			foo.idexcursion,
+			foo.fecha_excursion,
+			foo.paquete,
+			foo.precio_paquete,
+			foo.descripcion,
+			foo.monedero,
+			foo.deposito,
+			foo.total_subido,
+			foo.comprados,
+			foo.monto,
+			foo.fecha_movimiento,
+			foo.online,
+			foo.idexcursionvideo,
+			foo.estado_cl,
+			foo.nombre_video
+		');
 		$this->db->select("CASE WHEN total_subido = 0 THEN 'NO PROCESADO' ELSE (
 			CASE WHEN monedero = 0 AND comprados = 0 THEN 'NO PAGO' ELSE (
 				CASE WHEN (monedero = 0 AND comprados > 0 AND comprados < total_subido) OR
@@ -183,7 +207,10 @@ class Model_cliente extends CI_Model {
 			'iduser_reg'  => $this->sessionCP['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
-			'idexcursion'	 => $data['excursion']['id'],
+			'idexcursion'	=> $data['excursion']['id'],
+			'paquete'	 	=> $data['paquete'],
+			'precio_paquete' => $data['precio_paquete'],
+			'precio_adicional' 	 => empty($data['precio_adicional']) ? NULL : (float)$data['precio_adicional'],
 			'fecha_excursion'=> empty($data['fecha_excursion'])? date('Y-m-d') : date ('Y-m-d', strtotime($data['fecha_excursion'])),
 			'estado_cl'  => 1,
 

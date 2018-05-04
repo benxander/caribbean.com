@@ -95,5 +95,18 @@ class Compra extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function enviar_correo_oferta()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$allInputs['idcliente'] = md5($allInputs['imagen']['idcliente']);
+		$allInputs['idarchivo'] = md5($allInputs['imagen']['idarchivo']);
+		// var_dump($allInputs); exit();
+		$arrData['message'] = 'Un Email será enviado para su verificacion.';
+    	$arrData['flag'] = 1;
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 }

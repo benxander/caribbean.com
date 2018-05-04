@@ -55,14 +55,16 @@
         { field: 'idexcursion', name:'idexcursion', displayName: 'ID EXCUR.', minWidth: 90, width:90, cellClass:'text-center'},
         { field: 'excursion', name:'descripcion', displayName: 'EXCURSION', minWidth: 130, enableFiltering: false,},
         { field: 'fecha_excursion', name:'fecha_excursion', displayName: 'FECHA',width:100, cellClass:'text-center'},
-        { field: 'deposito', name: 'deposito', displayName: 'DEPOSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
-        { field: 'monedero', name: 'monedero', displayName: 'SALDO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
-        { field: 'fecha_movimiento', name:'fecha_movimiento', displayName: 'FEC.SALDO',width:110, cellClass:'text-center'},
+        { field: 'paquete', name: 'paquete', displayName: 'PAQUETE',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-center' },
+        { field: 'precio_paquete', name: 'precio_paquete', displayName: 'PRECIO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'deposito', name: 'deposito', displayName: 'DEPÓSITO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
+        { field: 'monedero', name: 'monedero', displayName: 'SALDO',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right', visible: false },
         { field: 'online', name: 'online', displayName: 'ONLINE',width: 90, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, cellClass:'text-right' },
-        { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false, cellClass:'text-right' },
+        { field: 'fecha_movimiento', name:'fecha_movimiento', displayName: 'FEC.PAGO',width:110, cellClass:'text-center'},
+        { field: 'monto', name: 'monto', displayName: 'MONTO ($)',width: 100, enableFiltering: false, enableColumnMenu: false, enableSorting: false, cellClass:'text-right',visible: false },
         { field: 'video', name: 'video', displayName: 'VIDEO',width: 70, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false,
-          cellTemplate: '<div class="text-center text-red" ng-if="row.entity.bool_video">' +
-            '<i class="fa fa-video-camera"></i>' +
+          cellTemplate: '<div class="text-center text-success" ng-if="row.entity.bool_video">' +
+            '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.videosView(row)" tooltip-placement="left" uib-tooltip="VER VIDEO" > <i class="fa fa-video-camera"></i> </button>' +
           '</div>'
          },
         { field: 'estado_obj', type: 'object', name: 'estado_obj', displayName: 'PROCESADO', width: 120, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false, minWidth: 120, pinnedRight:true,
@@ -115,7 +117,7 @@
             'idexcursion' : grid.columns[3].filters[0].term,
             'descripcion' : grid.columns[4].filters[0].term,
             "DATE_FORMAT(fecha_excursion,'%d-%m-%Y')" : grid.columns[5].filters[0].term,
-            "DATE_FORMAT(fecha_movimiento,'%d-%m-%Y')" : grid.columns[8].filters[0].term,
+            "DATE_FORMAT(fecha_movimiento,'%d-%m-%Y')" : grid.columns[9].filters[0].term,
 
           }
           vm.getPaginationServerSide();
@@ -171,7 +173,35 @@
         vm.listaIdiomas = rpta.datos;
         vm.listaIdiomas.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
       });*/
-
+      vm.videosView = function (row) {
+          var modalInstance = $uibModal.open({
+            templateUrl: 'app/pages/cliente/videos_view.php',
+            controllerAs: 'mcv',
+            size: 'lg',
+            backdropClass: 'splash splash-1 splash-ef-1',
+            windowClass: 'splash splash-1 splash-ef-1',
+            scope: $scope,
+            controller: function($scope, $uibModalInstance, arrToModal ){
+              console.log('video',row.entity);
+              var vm = this;
+              vm.fData = {};
+              vm.fData.src = '../uploads/clientes/videos/' + row.entity.nombre_video;
+              // vm.fData.type = 'video/' + vm.fData.nombre_archivo.split(".")[1];
+              vm.modalTitle = '';
+              console.log(vm.fData);
+              vm.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+              };
+            },
+            resolve: {
+              arrToModal: function() {
+                return {
+                  scope : vm,
+                }
+              }
+            }
+          });
+        }
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
@@ -583,34 +613,7 @@
           }
         }
 
-        vm.videosView = function (video) {
-          var modalInstance = $uibModal.open({
-            templateUrl: 'app/pages/cliente/videos_view.php',
-            controllerAs: 'mcv',
-            size: 'lg',
-            backdropClass: 'splash splash-1 splash-ef-1',
-            windowClass: 'splash splash-1 splash-ef-1',
-            scope: $scope,
-            controller: function($scope, $uibModalInstance, arrToModal ){
-              var vm = this;
-              vm.fData = {};
-              vm.fData = video;
-              vm.fData.type = 'video/' + vm.fData.nombre_archivo.split(".")[1];
-              vm.modalTitle = '';
-              console.log(vm.fData);
-              vm.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-              };
-            },
-            resolve: {
-              arrToModal: function() {
-                return {
-                  scope : vm,
-                }
-              }
-            }
-          });
-        }
+
 
       // CALLBACKS
 

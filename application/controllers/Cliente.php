@@ -4,7 +4,16 @@ class Cliente extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_cliente','model_usuario','model_archivo','model_puntuacion','model_email'));
+        $this->load->model(
+        	array(
+        		'model_cliente',
+        		'model_usuario',
+        		'model_archivo',
+        		'model_excursion',
+        		'model_puntuacion',
+        		'model_email'
+        	)
+        );
         $this->load->library('excel');
 		$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
     }
@@ -44,24 +53,26 @@ class Cliente extends CI_Controller {
 
 			array_push($arrListado,
 				array(
-					'idcliente' => $row['idcliente'],
-					'monedero' 	=> (int)$row['monedero'],
-					'deposito' 	=> (int)$row['deposito'],
-					'estado_cl'	=> $row['estado_cl'],
-					'codigo' 	=> $row['codigo'],
-					'ididioma' 	=> 'en',
-					'idexcursion' 	=> $row['idexcursion'],
-					'excursion' 	=> $row['descripcion'],
+					'idcliente' 		=> $row['idcliente'],
+					'monedero' 			=> (int)$row['monedero'],
+					'deposito' 			=> (int)$row['deposito'],
+					'estado_cl'			=> $row['estado_cl'],
+					'codigo' 			=> $row['codigo'],
+					'ididioma' 			=> 'en',
+					'idexcursion' 		=> $row['idexcursion'],
+					'nombre_video' 		=> $row['nombre_video'],
+					'paquete' 			=> $row['paquete'],
+					'precio_paquete' 	=> $row['precio_paquete'],
+					'excursion' 		=> $row['descripcion'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_movimiento' 	=> darFormatoDMY($row['fecha_movimiento']),
-					// 'fecha_salida' 	=> darFormatoDMY($row['fecha_salida']),
-					'archivo'	=> ($row['total_subido'] > 0) ? TRUE:FALSE,
-					'monto'=>	$row['monto'],
-					'online'=>	$row['online'] > 0 ? $row['online'] : 0,
-					'bool_video' => empty($row['idexcursionvideo'])? FALSE: TRUE,
-					'estado_obj' => array(
-						'string' => $estado,
-						'clase' =>$clase
+					'archivo'			=> ($row['total_subido'] > 0) ? TRUE:FALSE,
+					'monto'				=>	$row['monto'],
+					'online'			=>	$row['online'] > 0 ? $row['online'] : 0,
+					'bool_video' 		=> empty($row['idexcursionvideo'])? FALSE: TRUE,
+					'estado_obj' 		=> array(
+						'string' 		=> $estado,
+						'clase' 		=>$clase
 					),
 				)
 			);
@@ -604,7 +615,7 @@ class Cliente extends CI_Controller {
 					'codigo' => $arrAux[0],
 					'idexcursion' => $arrAux[1],
 					'monedero' => empty($arrAux[2])? '0': $arrAux[2],
-					'fecha_excursion' => NULL,
+					'paquete' => empty($arrAux[3])? '2': $arrAux[3],
 					// 'fecha_excursion' => $arrAux[3],
 					'codigos_dependientes' => $arrAdicional
 					)
@@ -628,6 +639,15 @@ class Cliente extends CI_Controller {
 		$this->db->trans_begin();
 		foreach ($arrListado as $row) {
 			$row['excursion']['id'] = $row['idexcursion'];
+			$excursion = $this->model_excursion->m_cargar_excursion_por_id($row);
+			if( $row['paquete'] == 1 ){
+				$row['precio_paquete'] = $excursion['precio_all'];
+			}elseif ( $row['paquete'] == 2 ) {
+				$row['precio_paquete'] = $excursion['precio_pack'];
+			}else{
+				$row['precio_paquete'] = $excursion['precio_primera'];
+				$row['precio_adicional'] = $excursion['precio_adicional'];
+			}
 			if($idcliente = $this->model_cliente->m_registrar_cliente($row)){
 				if( count($row['codigos_dependientes']) > 0 ){
 					foreach ($row['codigos_dependientes'] as $rowCod) {

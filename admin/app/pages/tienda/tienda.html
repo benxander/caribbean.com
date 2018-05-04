@@ -16,7 +16,7 @@
               <label class="btn btn-default pack" ng-model="ctrl.radioModel" uib-btn-radio="'Pack'" ng-class="{'bg-lightred': ctrl.esPack, 'bg-lightgray':!ctrl.esPack}" ng-click="ctrl.selPaquete()">
                 <div class="">
                   <div class="col-xs-12">
-                      <p class="text-lg line-lg text-strong">FULL PACK</p>
+                      <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].paquete_pack}}</p>
                       <p class="text-sm line-sm">{{ctrl.listaExcursiones[0].descripcion}}</p>
                   </div>
                 </div>
@@ -31,7 +31,7 @@
                   </div>
                 </div>
               </label>
-              <label class="btn btn-default pack ml-lg" ng-model="ctrl.radioModel" uib-btn-radio="'Sueltas'" ng-class="{'bg-lightred': ctrl.esIndividual, 'bg-lightgray':!ctrl.esIndividual}" ng-click="ctrl.selPaquete()">
+              <label class="btn btn-default pack ml-lg" ng-model="ctrl.radioModel" uib-btn-radio="'Sueltas'" ng-class="{'bg-lightred': ctrl.esIndividual, 'bg-lightgray':!ctrl.esIndividual}" ng-click="ctrl.selPaquete()" ng-show="ctrl.listaExcursiones[0].paquete != 1 && !ctrl.listaExcursiones[0].solo_pack">
                 <div class="">
                   <div class="col-xs-12">
                       <p class="text-lg line-lg text-strong">ONE BY ONE</p>

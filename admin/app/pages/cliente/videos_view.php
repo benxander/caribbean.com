@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <button class="btn btn-default btn-border pull-right" ng-click="mcv.cancel()">X</button>
+  <button class="btn btn-sm btn-default btn-border text-white pull-right" ng-click="mcv.cancel()">X</button>
 </div>
 <div class="modal-body">
   <div style="text-align: center;">

@@ -37,6 +37,7 @@
     vm.esPack = false;
     vm.esIndividual = false;
     vm.pasarela = false;
+    vm.fData = {}
     console.log('$stateParams.',$stateParams);
 
     rootServices.sGetSessionCI().then(function (response) {
@@ -56,7 +57,7 @@
             return;
           }
         }*/
-        vm.cargarExcursiones(vm.fDataUsuario);
+        vm.cargarExcursiones();
         vm.cargarGaleria(vm.fDataUsuario);
       }else{
         $window.location.href = $scope.dirBase+'zona-privada';
@@ -74,8 +75,8 @@
         pageLoading.stop();
       });
     }
-    vm.cargarExcursiones = function(datos){
-      ExcursionServices.sListarExcursionPaquetesCliente(datos).then(function(rpta){
+    vm.cargarExcursiones = function(){
+      ExcursionServices.sListarExcursionPaquetesSesion().then(function(rpta){
         console.log(rpta.datos);
         vm.listaExcursiones = rpta.datos;
         // vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
@@ -84,6 +85,9 @@
         vm.monto_paquete = vm.listaExcursiones[0].precio_pack;
         vm.precio_adicional = vm.listaExcursiones[0].precio_adicional;
         vm.precio_primera = vm.listaExcursiones[0].precio_primera;
+        if( vm.listaExcursiones[0].oferta ){
+          vm.btnVerOferta();
+        }
       });
     }
     vm.selPaquete = function(){
@@ -435,6 +439,90 @@
         }
       });
     }
+    vm.btnVerOferta = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/tienda/oferta.php',
+        controllerAs: 'mo',
+        size: '',
+        backdropClass: 'splash-2 splash-ef-12',
+        windowClass: 'splash-2 splash-ef-12',
+        backdrop: 'static',
+        keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.fData = arrToModal.scope.fData;
+          vm.selectFotografia = arrToModal.scope.selectFotografia;
+          var paramDatos = {
+            idseccion : 9 // oferta
+          }
+          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+            vm.modalTitle = rpta.datos.titulo;
+            vm.contenido = rpta.datos.contenido;
+          });
+          vm.aceptar = function(){
+            // console.log('fData',vm.fData);
+            TiendaServices.sEnviarEmailOferta(vm.fData).then(function(rpta){
+              if(rpta.flag == 1){
+                var title = 'OK';
+                var type = 'success';
+                toastr.success(rpta.message, title);
+                $uibModalInstance.close(vm.fData);
+              }else if(rpta.flag == 0){
+                var title = 'Advertencia';
+                var type = 'warning';
+                toastr.warning(rpta.message, title);
+              }else{
+                alert('Error inesperado');
+              }
+            });
+          }
+          vm.cancel = function (){
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
+    vm.selectFotografia = function(){
+      var modalInstance = $uibModal.open({
+        templateUrl: 'app/pages/tienda/galeria_modal_tienda.php',
+        controllerAs: 'gm',
+        size: 'lg',
+        backdropClass: 'splash splash-2 splash-info splash-ef-13',
+        windowClass: 'splash splash-2 splash-info splash-ef-13',
+        // backdrop: 'static',
+        // keyboard:false,
+        scope: $scope,
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.images = arrToModal.scope.images;
+          vm.tipo_seleccion = 1;
+          vm.modalTitle = 'Selecciona Fotografía';
+          vm.selectFoto = function(imagen, index){
+            arrToModal.scope.fData.imagen = imagen;
+            arrToModal.scope.fData.isSel = true;
+            $uibModalInstance.dismiss('cancel');
+          }
+          vm.aceptar = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
+        resolve: {
+          arrToModal: function() {
+            return {
+              scope : vm,
+            }
+          }
+        }
+      });
+    }
   }
 
   function TiendaServices($http, $q) {
@@ -443,7 +531,7 @@
         sDescargarArchivosPagados: sDescargarArchivosPagados,
         sVerificarSeleccion: sVerificarSeleccion,
         sRegistrarVenta: sRegistrarVenta,
-        // sRegistrarMovimiento: sRegistrarMovimiento,
+        sEnviarEmailOferta: sEnviarEmailOferta,
         sListarSeccion: sListarSeccion,
     });
 
@@ -486,15 +574,15 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    // function sRegistrarMovimiento(pDatos) {
-    //   var datos = pDatos || {};
-    //   var request = $http({
-    //         method : "post",
-    //         url :  angular.patchURLCI + "Movimiento/registrar_pedido",
-    //         data : datos
-    //   });
-    //   return (request.then( handleSuccess,handleError ));
-    // }
+    function sEnviarEmailOferta(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Compra/enviar_correo_oferta",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
     function sListarSeccion(pDatos) {
       var datos = pDatos || {};
       var request = $http({

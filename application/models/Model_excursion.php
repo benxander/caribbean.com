@@ -5,14 +5,30 @@ class Model_excursion extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_excursion_cbo($paramPaginate=FALSE){
-		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack, exc.precio_primera, exc.precio_adicional, estado_exc');
+		$this->db->select('
+			exc.idexcursion,
+			exc.descripcion,
+			exc.precio_all,
+			exc.precio_pack,
+			exc.precio_primera,
+			exc.precio_adicional,
+			estado_exc
+		');
 		$this->db->from('excursion exc');
 		$this->db->where_in('exc.estado_exc', array(1));
 		$this->db->order_by('descripcion','ASC');
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones($paramPaginate=FALSE){
-		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack, exc.precio_adicional, exc.precio_primera, estado_exc');
+		$this->db->select('
+			exc.idexcursion,
+			exc.descripcion,
+			exc.precio_all,
+			exc.precio_pack,
+			exc.precio_adicional,
+			exc.precio_primera,
+			estado_exc
+		');
 		$this->db->from('excursion exc');
 		$this->db->where_in('exc.estado_exc', array(1,2));
 		if($paramPaginate){
@@ -47,6 +63,26 @@ class Model_excursion extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData;
 	}
+	/**
+	 * Carga una excursion por código
+	 * @param  [array] $datos [array proveniente del excel]
+	 * @return [array]        [devuelve el paquete con el precio]
+	 */
+	public function m_cargar_excursion_por_id($datos)
+	{
+		$this->db->select('
+			exc.idexcursion,
+			exc.descripcion,
+			exc.precio_all,
+			exc.precio_pack,
+			exc.precio_adicional,
+			exc.precio_primera
+		');
+		$this->db->from('excursion exc');
+		$this->db->where('idexcursion', $datos['idexcursion']);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	/*public function m_cargar_paquetes($datos){
 		$this->db->select('pq.idpaquete, pq.idexcursion, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_exc_pq, pq.es_base, pq.titulo_pq');
 		$this->db->from('paquete pq');
@@ -62,12 +98,22 @@ class Model_excursion extends CI_Model {
 		$this->db->where('idexcursion', $datos['idexcursion']);
 		return $this->db->get()->result_array();
 	}*/
-	public function m_cargar_excursion_cliente($datos){
-		$this->db->select('exc.idexcursion, exc.descripcion, exc.precio_pack');
-		$this->db->select('exc.precio_adicional, exc.precio_primera,c.idexcursionvideo');
+	public function m_cargar_excursion_cliente_sesion(){
+		$this->db->select('
+			exc.idexcursion,
+			exc.descripcion,
+			exc.precio_all,
+			exc.precio_pack,
+			exc.precio_adicional,
+			exc.precio_primera,
+			c.idexcursionvideo,
+			c.paquete,
+			c.deposito
+		');
 		$this->db->from('excursion exc');
 		$this->db->join('cliente c', 'exc.idexcursion = c.idexcursion');
-		$this->db->where('c.idcliente', $datos['idcliente']);
+		$this->db->where('c.idcliente', $this->sessionCP['idcliente']);
+		// $this->db->where('c.idcliente', $datos['idcliente']);
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones_cliente($datos){

@@ -45,6 +45,7 @@ class Excursion extends CI_Controller {
 			array_push($arrListado, array(
 				'idexcursion' => $row['idexcursion'],
 				'descripcion' => $row['descripcion'],
+				'precio_all' => (int)$row['precio_all'],
 				'precio_pack' => (int)$row['precio_pack'],
 				'precio_primera' => (int)$row['precio_primera'],
 				'precio_adicional' => (int)$row['precio_adicional'],
@@ -102,18 +103,39 @@ class Excursion extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function listar_excursion_paquetes_cliente(){
+	public function listar_excursion_paquetes_sesion(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_excursion->m_cargar_excursion_cliente($allInputs);
+		$lista = $this->model_excursion->m_cargar_excursion_cliente_sesion();
 		$arrListado = array();
 		foreach ($lista as $row) {
+			if( $row['paquete'] == 1 ){
+				$precio_pack = (int)$row['precio_all'];
+				$paquete_pack = 'ALL INCLUSIVE';
+			}else{
+				$precio_pack = (int)$row['precio_pack'];
+				$paquete_pack = 'DIGITAL FUN PASS';
+			}
+			if( $row['paquete'] == 2 && $row['deposito'] > 0 ){
+				$solo_pack = TRUE;
+				$oferta = FALSE;
+			}elseif( $row['paquete'] == 2 && $row['deposito'] == 0 ){
+				$solo_pack = FALSE;
+				$oferta = TRUE;
+			}else{
+				$solo_pack = FALSE;
+				$oferta = FALSE;
+			}
 			array_push($arrListado, array(
-				'idexcursion' => $row['idexcursion'],
-				'descripcion' => $row['descripcion'],
-				'idexcursionvideo' => $row['idexcursionvideo'],
-				'precio_pack' => (int)$row['precio_pack'],
-				'precio_primera' => (int)$row['precio_primera'],
-				'precio_adicional' => (int)$row['precio_adicional'],
+				'idexcursion' 		=> $row['idexcursion'],
+				'descripcion' 		=> $row['descripcion'],
+				'idexcursionvideo' 	=> $row['idexcursionvideo'],
+				'precio_pack' 		=> $precio_pack,
+				'precio_primera' 	=> (int)$row['precio_primera'],
+				'precio_adicional' 	=> (int)$row['precio_adicional'],
+				'paquete'			=> (int)$row['paquete'],
+				'paquete_pack' 		=> $paquete_pack,
+				'solo_pack' 		=> $solo_pack,
+				'oferta'			=> $oferta,
 				)
 			);
 		}
