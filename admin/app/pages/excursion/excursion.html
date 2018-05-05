@@ -29,7 +29,7 @@
         <!-- tile body -->
         <section class="tile-body">
           <div class="row">
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12" ng-if="fSessionCI.key_grupo == 'key_root' || fSessionCI.key_grupo == 'key_admin'">
               <div class="form-group pull-right" style="position: relative;z-index: 10">
                 <button class="btn btn-success" ng-click='e.btnNuevo()'>Nuevo</button>
               </div>

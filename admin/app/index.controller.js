@@ -234,7 +234,7 @@
           $scope.fSessionCI = response.datos;
           $scope.logIn();
           if( $location.path() == '/app/pages/login' && !esCliente ){
-            $scope.goToUrl('/');
+            $scope.goToUrl('/app/cliente');
           }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard') && esCliente){
             if($scope.fSessionCI.procesado == 4){
               console.log('completo');

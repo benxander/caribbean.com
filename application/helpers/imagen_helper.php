@@ -193,51 +193,59 @@ function crearVistasPreviasCompletas($img,$dir, $width, $height)
     }
 
 function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
-    // el archivo o imagen
-    $filename = $file_tmp;
-    // Asignar el ancho y alto maximos
-    $width = $maxsize;
-    $height = $maxsize;
-    // mandando las cabeceras correspondientes
-    header('Content-type: image/jpeg');
+    ini_set('memory_limit', '100M');
+    try {
 
-    // obteniendo las dimensiones actuales
-    list($width_orig, $height_orig) = getimagesize($filename);
-    if ($width && ($width_orig < $height_orig)) {
-        $width = ($height / $height_orig) * $width_orig;
-    } else {
-        $height = ($width / $width_orig) * $height_orig;
+        // el archivo o imagen
+        $filename = $file_tmp;
+        // Asignar el ancho y alto maximos
+        $width = $maxsize;
+        $height = $maxsize;
+        // mandando las cabeceras correspondientes
+        header('Content-type: image/jpeg');
+
+        // obteniendo las dimensiones actuales
+        list($width_orig, $height_orig) = getimagesize($filename);
+        if ($width && ($width_orig < $height_orig)) {
+            $width = ($height / $height_orig) * $width_orig;
+        } else {
+            $height = ($width / $width_orig) * $height_orig;
+        }
+
+        // Cambiando el tamano de la imagen o resample
+        $image = imagecreatefromjpeg($filename);
+        $image_p = imagecreatetruecolor($width, $height);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+        // Marca de Agua o Watermark
+
+        $watermark_image = imagecreatefrompng('assets/images/watermark.png');
+        $wm_width = imagesx($watermark_image);
+        $wm_height = imagesy($watermark_image);
+        $watermark = imagecreatetruecolor($wm_width, $wm_height);
+
+        $dest_x = 0; //$width - $watermark_width - 10;
+        $dest_y = 0; //$height - $watermark_height - 10;
+        imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
+        // imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
+
+
+        imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 20);
+        // imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 30);
+
+        // Salida
+        imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
+        imagedestroy($image);
+        imagedestroy($image_p);
+        imagedestroy($watermark);
+    } catch (Exception $e) {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
     }
-
-    // Cambiando el tamano de la imagen o resample
-    $image = imagecreatefromjpeg($filename);
-    $image_p = imagecreatetruecolor($width, $height);
-    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-    // Marca de Agua o Watermark
-
-    $watermark_image = imagecreatefrompng('assets/images/watermark.png');
-    $wm_width = imagesx($watermark_image);
-    $wm_height = imagesy($watermark_image);
-    $watermark = imagecreatetruecolor($wm_width, $wm_height);
-
-    $dest_x = 0; //$width - $watermark_width - 10;
-    $dest_y = 0; //$height - $watermark_height - 10;
-    imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
-    // imagecopy($watermark, $watermark_image, 0, 0, 0, 0, $wm_width, $wm_height);
-
-
-    imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 20);
-    // imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 30);
-
-    // Salida
-    imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
-    imagedestroy($image);
-    imagedestroy($image_p);
-    imagedestroy($watermark);
 }
 function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
-    // ini_set('memory_limit', '100M');
+    ini_set('memory_limit', '100M');
+    try {
+
     // el archivo o imagen
     $filename = $file_tmp;
     // Asignar el ancho y alto maximos
@@ -264,6 +272,9 @@ function redimenciona($maxsize = 300, $file_tmp, $carpeta, $file_name){
     imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR . $file_name, 94);
     imagedestroy($image);
     imagedestroy($image_p);
+    } catch (Exception $e) {
+        show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+    }
 }
 
 function imagenVideo($file_name, $name, $carpeta_destino){

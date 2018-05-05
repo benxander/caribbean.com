@@ -43,7 +43,8 @@
         { field: 'precio_pack', name:'precio_pack', displayName: 'DIG. FUN PASS ($)', minWidth: 100, enableFiltering: false },
         { field: 'precio_primera', name:'precio_primera', displayName: 'SINGLE 1ª ($)', minWidth: 100, enableFiltering: false },
         { field: 'precio_adicional', name:'precio_adicional', displayName: 'SINGLE ADIC. ($)', minWidth: 100, enableFiltering: false },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 100, enableFiltering: false,
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 100,
+          enableFiltering: false, visible: false,
           cellTemplate: '<div class="text-center">' +
 
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
@@ -86,7 +87,9 @@
           vm.getPaginationServerSide();
         });
       }
-
+      if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
+        vm.gridOptions.columnDefs[6].visible = true;
+      }
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
         vm.datosGrid = {

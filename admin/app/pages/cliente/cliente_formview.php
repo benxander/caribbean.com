@@ -25,7 +25,7 @@
 		    <div class="row">
 		    	<div class="form-group col-md-12" >
 					<label for="codigo" class="control-label minotaur-label">Códigos adicionales </label>
-					<button class="btn btn-success btn-xs" uib-tooltip="Agregar código" ng-click="mc.btnAgregarCod();"><i class="fa fa-plus"></i></button>
+					<button class="btn btn-success btn-xs" uib-tooltip="Agregar código" ng-click="mc.btnAgregarCod();" ng-if="mc.fData.editar"><i class="fa fa-plus"></i></button>
 			        <table class="table table-hover">
 			            <thead>
 				            <tr>
@@ -42,7 +42,7 @@
 				                  <input type="text" name="codigo" ng-model="item.codigo" class="editable-input form-control input-sm" required/>
 				                </div>
 				              </td>
-				              <td align="right">
+				              <td align="right" ng-show="mc.fData.editar">
 				              	<button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="mc.editarCodigo(item); item.esEdicion = false" ng-if="item.esEdicion" ng-disabled="rowForm.$pristine || rowForm.$invalid">Save</button>
                 				<button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="mc.cargarCodigos()" ng-if="item.esEdicion">Cancel</button>
 
@@ -61,5 +61,5 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="mc.cancel()"><i class="fa fa-arrow-left"></i> Salir</button>
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formCliente.$invalid" ng-click="mc.aceptar()"><i class="fa fa-arrow-right"></i> Guardar y Salir</button>
+  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formCliente.$invalid" ng-click="mc.aceptar()" ng-if="mc.fData.editar"><i class="fa fa-arrow-right"></i> Guardar y Salir</button>
 </div>

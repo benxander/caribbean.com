@@ -73,9 +73,13 @@
         { field: 'accion', name:'accion', displayName: 'ACCIONES', width: 130, pinnedRight:true, enableFiltering: false,
           enableColumnMenus: false, enableColumnMenu: false, enableSorting: false,
           cellTemplate: '<div>' +
-          '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-if="row.entity.editar" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="EDITAR" > <i class="fa fa-edit"></i> </button>'+
+
+          '<button class="btn btn-default btn-sm text-green btn-action" ng-if="!row.entity.editar" ng-click="grid.appScope.btnEditar(row)" tooltip-placement="left" uib-tooltip="VER" > <i class="fa fa-eye"></i> </button>'+
+
           '<button class="btn btn-default btn-sm text-blue btn-action" ng-click="grid.appScope.btnUpload(row)" tooltip-placement="left" uib-tooltip="FOTOGRAFIAS" ng-if="row.entity.idcliente"> <i class="halcyon-icon-photo-camera"></i> </button>'+
-          '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR FOTOS" ng-if="row.entity.archivo"> <i class="fa fa-file-image-o"></i> </button>'+
+
+          '<button class="btn btn-default btn-sm text-red  btn-action" ng-click="grid.appScope.btnDelete(row)" tooltip-placement="left" uib-tooltip="ELIMINAR FOTOS" ng-if="row.entity.archivo && row.entity.editar"> <i class="fa fa-file-image-o"></i> </button>'+
           // '<button class="btn btn-default btn-sm text-blue  btn-action" ng-click="grid.appScope.btnEnviarEmail(row)" tooltip-placement="left" uib-tooltip="ENVIAR CORREO"> <i class="fa fa-envelope-o"></i> </button>'+
 
           // '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)" tooltip-placement="left" uib-tooltip="ELIMINAR"> <i class="fa fa-trash"></i> </button>' +
@@ -282,7 +286,11 @@
             console.log('vm.fData',vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Edición de Cliente';
+            if(vm.fData.editar){
+              vm.modalTitle = 'Edición de Cliente';
+            }else{
+              vm.modalTitle = 'Datos de Cliente';
+            }
             vm.cargarCodigos = function(){
               pageLoading.start('Cargando...');
               ClienteServices.sListarCodigoDependiente(vm.fData).then(function(rpta){

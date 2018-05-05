@@ -181,7 +181,7 @@
         controllerAs: 'me'
       });
 
-    $urlRouterProvider.otherwise('/app/dashboard');
+    $urlRouterProvider.otherwise('/app/cliente');
   }
 
 })();
