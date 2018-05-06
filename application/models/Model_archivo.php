@@ -123,7 +123,7 @@ class Model_archivo extends CI_Model {
 
 	public function m_editar_descarga_archivo($data){
 		$datos = array(
-			'descargado' => $data['valor'],
+			'descargado' => $data['descargado'],
 			'fecha_descarga' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idarchivo',$data['idarchivo']);

@@ -33,7 +33,16 @@
       controller: 'LoginController',
       controllerAs: 'l',
 
-    }).otherwise({
+    })
+    .when("/verification?", {
+      templateUrl: function(param) {
+          return angular.dirViews +  'verifica_view.php';
+        },
+      controller: 'VerificaController',
+      controllerAs: 've',
+
+    })
+    .otherwise({
       redirectTo: '/'
     });
   }

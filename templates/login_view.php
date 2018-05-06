@@ -1,8 +1,8 @@
-<div id="page-content"  ng-controller="LoginController" style="margin-top: 88px;">
+<div id="page-content"  style="margin-top: 88px;">
 	<div class="container" id="login">
 		<div class="row mb-lg">
 	      	<div class="col-sm-12 mt-lg">
-		        <h3 class="">Welcome to <b ng-bind="l.empresaNombre"></b></h3>
+		        <h1 class=""><small>Welcome to <b ng-bind="l.empresaNombre"></b></small></h1>
 		        <h5>Insert your code below</h5>
 		        <form class="row" name="formLogin" role="form" novalidate >
 		          	<div class="col-sm-6" >

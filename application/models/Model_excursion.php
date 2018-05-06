@@ -108,7 +108,9 @@ class Model_excursion extends CI_Model {
 			exc.precio_primera,
 			c.idexcursionvideo,
 			c.paquete,
-			c.deposito
+			c.deposito,
+			c.verifica_email,
+			c.solicita_bonificacion
 		');
 		$this->db->from('excursion exc');
 		$this->db->join('cliente c', 'exc.idexcursion = c.idexcursion');

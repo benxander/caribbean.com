@@ -78,9 +78,9 @@
 	}
 
 	h1 {
-		margin-bottom: 16px;
+		margin-bottom: 12px;
 		font-size: 60px;
-		line-height: 84px;
+		line-height: 48px;
 	}
 
 	h2 {
@@ -142,8 +142,12 @@
 	h5 small,
 	h6 small {
 		color: inherit;
-		font-size: 85%;
+		font-size: 60%;
 		font-weight: inherit;
+	}
+	h1 small{
+		margin-bottom: 12px;
+		line-height: 48px;
 	}
 
 	p {
@@ -386,6 +390,7 @@
 		.f-16{font-size: 1em;}
 		.f-18{font-size: 1.125em;}
 		.f-24{font-size: 1.5em;}
+		.f-36{font-size: 2.25em;}
 	/* OTHERS */
 		.clear {clear: both;}
 	@media (min-width: 768px) and (max-width: 991px) {
@@ -6717,7 +6722,7 @@
 		margin-bottom: 0;
 	}
 
-/* By Benxander rguevarac@hotmail.es */
+/* By Ruben Guevara rguevarac@hotmail.es */
 /* Customizations */
 	.preloader-wrapper{
 	  position: fixed;

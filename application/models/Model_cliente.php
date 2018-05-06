@@ -144,18 +144,6 @@ class Model_cliente extends CI_Model {
 		$this->db->where('c.idcliente', $datos['idcliente']);
 		return $this->db->get()->row_array();
 	}
-	public function m_cargar_cliente_por_idusuario($idusuario){
-		$this->db->select('c.idcliente, c.nombres, c.apellidos, c.email, c.whatsapp, c.estado_cl, c.monedero,c.telefono, c.fecha_salida, c.createdat as fecha_creacion');
-		$this->db->select('u.ididioma, u.solicita_bonificacion, u.estado_us, u.username, u.nombre_foto, id.nombre_id as idioma');
-		$this->db->select('c.hotel, c.habitacion');
-		$this->db->from('cliente c');
-		$this->db->join('usuario u','c.idusuario = u.idusuario');
-		$this->db->join('idioma id','u.ididioma = id.ididioma');
-		$this->db->where('c.estado_cl', 1);
-		$this->db->where('c.idusuario', $idusuario);
-		$this->db->limit(1);
-		return $this->db->get()->row_array();
-	}
 	public function m_cargar_cliente_por_codigo($codigo){
 		$this->db->select('
 			c.idcliente,
@@ -348,4 +336,41 @@ class Model_cliente extends CI_Model {
 		$this->db->where('iddependiente',$data['iddependiente']);
 		return $this->db->delete('dependiente');
 	}
+	public function m_actualizar_email($datos){
+		$data = array(
+			'email' => $datos['email'],
+			'solicita_bonificacion' => 1
+		);
+		$this->db->where('idcliente',$datos['imagen']['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+	public function m_actualizar_verificacion($datos){
+		$data = array(
+			'verifica_email' => $datos['verifica_email'],
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+	public function m_verificar_cliente($datos)
+	{
+		$this->db->select('
+			c.idcliente,
+			c.codigo,
+			c.verifica_email,
+			arc.idarchivo,
+			arc.nombre_archivo,
+			arc.descargado,
+			arc.es_bonificacion
+		');
+		$this->db->from('cliente c');
+		$this->db->join('archivo arc', 'c.idcliente = arc.idcliente');
+		$this->db->where('c.estado_cl', 1);
+		$this->db->where('MD5(c.idcliente)', $datos['idcliente_enc']);
+		$this->db->where('MD5(arc.idarchivo)', $datos['idarchivo_enc']);
+		$this->db->where('solicita_bonificacion', 1);
+		// $this->db->where('verifica_email', 2);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
+
 }

@@ -7,7 +7,14 @@ class Compra extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
-        $this->load->model(array('model_archivo','model_descuento','model_cliente','model_pedido','model_movimiento'));
+        $this->load->model(
+        	array(
+        		'model_archivo',
+        		'model_mensaje',
+        		'model_cliente',
+        		'model_movimiento'
+        	)
+        );
     }
 
 	public function verificar_archivos_seleccion(){
@@ -71,7 +78,7 @@ class Compra extends CI_Controller {
 				}
 
 				if(!$error){
-					$image['valor'] = 1;
+					$image['descargado'] = 1;
 					if(!$this->model_archivo->m_editar_descarga_archivo($image)){
 						$error = TRUE;
 					}
@@ -101,8 +108,68 @@ class Compra extends CI_Controller {
 		$allInputs['idcliente'] = md5($allInputs['imagen']['idcliente']);
 		$allInputs['idarchivo'] = md5($allInputs['imagen']['idarchivo']);
 		// var_dump($allInputs); exit();
-		$arrData['message'] = 'Un Email será enviado para su verificacion.';
-    	$arrData['flag'] = 1;
+		$url = base_url() . 'verification?c=' . $allInputs['idcliente'] . '&f=' . $allInputs['idarchivo'];
+		$rowMensaje = $this->model_mensaje->m_cargar_mensaje_por_id(6); // 6: EMAIL DE OFERTA
+		$mensaje = $rowMensaje['contenido'];
+		$mensaje .= '<br>';
+		$mensaje .= $url;
+		$mensaje .= '<br>';
+		$from = CORREO;
+		$to = $allInputs['email'];
+		$cc = CORREO;
+		$asunto = 'Free Photo Verification';
+
+		if(envio_email($to, $cc, $asunto, $mensaje, $from)){
+			if($this->model_cliente->m_actualizar_email($allInputs)){
+				$arrData['message'] = 'An email was sent for verification.';
+				$arrData['flag'] = 1;
+			}
+
+		}else{
+			$arrData['message'] = 'Error sending mail';
+			$arrData['flag'] = 0;
+		}
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function verificar_email()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$rowCliente = $this->model_cliente->m_verificar_cliente($allInputs);
+		// var_dump($rowCliente); exit();
+		if( !empty($rowCliente) ){
+			if($rowCliente['verifica_email'] == 1){
+				$arrData['message'] = 'Sorry, your email has already been verified';
+				$arrData['flag'] = 0;
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+			$rowCliente['verifica_email'] = 1;
+			$this->model_cliente->m_actualizar_verificacion($rowCliente);
+
+			$url_origen = 'uploads/clientes/'.$rowCliente['codigo'].'/originales/'.$rowCliente['nombre_archivo'];
+			$url_destino = 'uploads/clientes/'.$rowCliente['codigo'].'/descargadas/'.$rowCliente['nombre_archivo'];
+			$url_origen_thumb = 'uploads/clientes/'.$rowCliente['codigo'].'/originales/thumbs/'.$rowCliente['nombre_archivo'];
+			$url_destino_thumb = 'uploads/clientes/'.$rowCliente['codigo'].'/descargadas/thumbs/'.$rowCliente['nombre_archivo'];
+			rename($url_origen, $url_destino);
+			rename($url_origen_thumb, $url_destino_thumb);
+			$rowCliente['descargado'] = 1;
+			if($this->model_archivo->m_editar_descarga_archivo($rowCliente)){
+				$arrData['message'] = 'Verification Successful. Thank you for confirm your mail';
+				$arrData['flag'] = 1;
+			}else{
+				$arrData['message'] = 'Error updating download';
+				$arrData['flag'] = 0;
+			}
+
+		}else{
+			$arrData['message'] = 'Confirmation not work';
+			$arrData['flag'] = 0;
+		}
 
 		$this->output
 		    ->set_content_type('application/json')

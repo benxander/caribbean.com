@@ -920,7 +920,6 @@
   function ClienteServices($http, $q) {
     return({
         sListarCliente: sListarCliente,
-        sListarClientePorIdusuario:sListarClientePorIdusuario,
         sRegistrarCliente: sRegistrarCliente,
         sEditarCliente: sEditarCliente,
         sRegistrarCodigo: sRegistrarCodigo,
@@ -946,15 +945,6 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Cliente/listar_clientes",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
-    function sListarClientePorIdusuario(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Cliente/listar_cliente_por_idusuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

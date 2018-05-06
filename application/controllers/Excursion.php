@@ -108,23 +108,23 @@ class Excursion extends CI_Controller {
 		$lista = $this->model_excursion->m_cargar_excursion_cliente_sesion();
 		$arrListado = array();
 		foreach ($lista as $row) {
+			$solo_pack = FALSE;
+			$oferta = FALSE;
 			if( $row['paquete'] == 1 ){
 				$precio_pack = (int)$row['precio_all'];
 				$paquete_pack = 'ALL INCLUSIVE';
 			}else{
 				$precio_pack = (int)$row['precio_pack'];
 				$paquete_pack = 'DIGITAL FUN PASS';
+				if( $row['paquete'] == 2 && $row['deposito'] > 0 ){
+					$solo_pack = TRUE;
+				}elseif( $row['paquete'] == 2 && $row['deposito'] == 0  && $row['verifica_email'] == 2 ){
+					$oferta = TRUE;
+				}
+
 			}
-			if( $row['paquete'] == 2 && $row['deposito'] > 0 ){
-				$solo_pack = TRUE;
-				$oferta = FALSE;
-			}elseif( $row['paquete'] == 2 && $row['deposito'] == 0 ){
-				$solo_pack = FALSE;
-				$oferta = TRUE;
-			}else{
-				$solo_pack = FALSE;
-				$oferta = FALSE;
-			}
+
+
 			array_push($arrListado, array(
 				'idexcursion' 		=> $row['idexcursion'],
 				'descripcion' 		=> $row['descripcion'],

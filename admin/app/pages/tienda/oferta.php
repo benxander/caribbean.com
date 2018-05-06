@@ -11,7 +11,7 @@
 			</div>
 		    <div class="row">
     			<div class="col-md-6" >
-              		<label class="minotaur-label block">{{ 'Text.SELECCIONAR' | translate }}</label>
+              		<label class="minotaur-label block">{{ 'Text.SELECCIONAR' | translate }} <small class="text-red">(*)</small> </label>
               		<div class="row">
               			<div class="col-md-6">
     						<a href="" class="icon icon-primary icon-ef-3 icon-ef-3a hover-color" ng-click="mo.selectFotografia();"><i class="fa fa-image"></i></a>
@@ -36,5 +36,5 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-warning btn-ef btn-ef-4 btn-ef-4c" ng-click="mo.cancel()"><i class="fa fa-arrow-left"></i> Salir</button>
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formOf.$invalid" ng-click="mo.aceptar()"><i class="fa fa-arrow-right"></i> Enviar</button>
+  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formOf.$invalid || !mo.fData.isSel" ng-click="mo.aceptar()"><i class="fa fa-arrow-right"></i> Enviar</button>
 </div>

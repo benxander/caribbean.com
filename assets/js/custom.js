@@ -213,7 +213,7 @@
 	// WINDOW RESIZE //
 	$(window).resize(function() {
 		mobile_menu();
-		image_box();
+		// image_box();
 		equal_height();
 		full_screen();
 	});
