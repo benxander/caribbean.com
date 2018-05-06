@@ -6,7 +6,6 @@
 		// 'oc.lazyLoad',
 		'ui.bootstrap',
 		'ngSanitize'
-
 	]);
 
 })();

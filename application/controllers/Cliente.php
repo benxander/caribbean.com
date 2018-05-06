@@ -718,7 +718,7 @@ class Cliente extends CI_Controller {
 					    ->set_output(json_encode($arrData));
 					return;
 				}
-				//unlink('./uploads/temporal/' . $imagenesZip);
+				unlink('./uploads/temporal/' . $imagenesZip);
 				foreach (get_filenames($tmp) as $archivo) {
 					if( $archivo != 'index.html' && $archivo != 'Thumbs.db'){
 						++$i;

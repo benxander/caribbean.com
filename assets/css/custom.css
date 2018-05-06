@@ -235,7 +235,10 @@
 	select:focus {
 		outline: none;
 	}
-
+	.bg-red {
+	    background-color: #f7412c!important;
+	    color: #fff!important;
+	}
 	.checkbox input[type="checkbox"],
 	.checkbox-inline input[type="checkbox"],
 	.radio input[type="radio"],

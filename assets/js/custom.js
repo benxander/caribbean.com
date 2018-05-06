@@ -214,7 +214,7 @@
 	$(window).resize(function() {
 		mobile_menu();
 		// image_box();
-		equal_height();
+		// equal_height();
 		full_screen();
 	});
 })(window.jQuery);

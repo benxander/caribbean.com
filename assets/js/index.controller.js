@@ -57,7 +57,6 @@
       $location.path( path );
     };
 
-
     rootServices.sCargarDatosWeb().then(function (response) {
       if(response.flag == 1){
         $scope.dataWeb = response.datos;

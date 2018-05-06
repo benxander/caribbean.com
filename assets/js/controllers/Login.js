@@ -5,12 +5,11 @@
     .module('caribbean')
     .controller('LoginController', LoginController)
     .service('loginServices', loginServices);
-  function LoginController($scope, $window, $uibModal, loginServices, empresaNombre, $routeParams,$timeout,$location,) {
+  function LoginController($scope, $window, $uibModal, loginServices, empresaNombre, $routeParams,$timeout,$location) {
     var vm = this;
     vm.empresaNombre = empresaNombre;
     vm.fLogin = {};
     vm.error = false;
-    console.log('loc',$location);
     if($routeParams.c){
       console.log('route',$routeParams.c);
       vm.fLogin.codigo = $routeParams.c;
