@@ -39,30 +39,32 @@
     vm.pasarela = false;
     vm.fData = {}
     console.log('$stateParams.',$stateParams);
+    vm.init = function(){
+      rootServices.sGetSessionCI().then(function (response) {
+        if(response.flag == 1){
+          vm.fDataUsuario = response.datos;
+          vm.cargarMensajes();
+          /*if(!angular.isUndefined($stateParams.id) && !angular.isUndefined(response.datos.token)){
+            var idmovimiento = $stateParams.id;
+            var token = $stateParams.token;
 
-    rootServices.sGetSessionCI().then(function (response) {
-      if(response.flag == 1){
-        vm.fDataUsuario = response.datos;
-        vm.cargarMensajes();
-        /*if(!angular.isUndefined($stateParams.id) && !angular.isUndefined(response.datos.token)){
-          var idmovimiento = $stateParams.id;
-          var token = $stateParams.token;
-
-          if( token == response.datos.token ){
-            $scope.actualizarMonto(0);
-            $scope.fSessionCI.monedero = 0;
-            $scope.actualizarSaldo(false);
-            vm.modoSeleccionar = false;
-            vm.irCompraExitosa(idmovimiento);
-            return;
-          }
-        }*/
-        vm.cargarExcursiones();
-        vm.cargarGaleria(vm.fDataUsuario);
-      }else{
-        $window.location.href = $scope.dirBase+'zona-privada';
-      }
-    });
+            if( token == response.datos.token ){
+              $scope.actualizarMonto(0);
+              $scope.fSessionCI.monedero = 0;
+              $scope.actualizarSaldo(false);
+              vm.modoSeleccionar = false;
+              vm.irCompraExitosa(idmovimiento);
+              return;
+            }
+          }*/
+          vm.cargarExcursiones();
+          vm.cargarGaleria(vm.fDataUsuario);
+        }else{
+          $window.location.href = $scope.dirBase;
+        }
+      });
+    }
+    vm.init();
     vm.cargarMensajes = function(){
       MensajeServices.sListarMensajes().then(function(rpta){
         vm.mensajes = rpta.datos;

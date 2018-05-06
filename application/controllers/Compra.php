@@ -112,7 +112,7 @@ class Compra extends CI_Controller {
 		$rowMensaje = $this->model_mensaje->m_cargar_mensaje_por_id(6); // 6: EMAIL DE OFERTA
 		$mensaje = $rowMensaje['contenido'];
 		$mensaje .= '<br>';
-		$mensaje .= $url;
+		$mensaje .= '<a href="' . $url . '">CLICK HERE</a>' ;
 		$mensaje .= '<br>';
 		$from = CORREO;
 		$to = $allInputs['email'];

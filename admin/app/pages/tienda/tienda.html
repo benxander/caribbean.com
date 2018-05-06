@@ -7,6 +7,17 @@
     <div class="col-md-12">
       <div class="tile p-15" ng-if="ctrl.modoSeleccionar">
         <section class="tile-header">
+          <div class="controls" ng-show="ctrl.images.length">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" ng-click="ctrl.init();" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+          </div>
           <div class="row">
             <div class="col-sm-12 mb-md"><h1 class="heading">SHOP</h1></div>
             <div class="col-sm-12" ng-bind-html="ctrl.mensajes[0].contenido">
@@ -57,18 +68,6 @@
                   </div>
                 </div>
               </label>
-            </div>
-          </div>
-
-          <div class="controls" ng-show="ctrl.images.length">
-            <div class="btn-group" uib-dropdown>
-              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
-              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" ng-click="ctrl.cargarGaleria();" minotaur-tile-refresh></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
-              </ul>
             </div>
           </div>
         </section>
