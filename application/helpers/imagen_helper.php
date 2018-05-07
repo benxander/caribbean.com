@@ -234,7 +234,7 @@ function redimencionMarcaAgua($maxsize = 600, $file_tmp, $carpeta, $file_name){
         // imagecopymerge($image_p, $watermark, $dest_x, $dest_y, 0, 0, $wm_width, $wm_height, 30);
 
         // Salida
-        imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR .'thumbs'. DIRECTORY_SEPARATOR . $file_name);
+        imagejpeg($image_p, $carpeta . DIRECTORY_SEPARATOR . $file_name);
         imagedestroy($image);
         imagedestroy($image_p);
         imagedestroy($watermark);

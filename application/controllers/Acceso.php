@@ -76,13 +76,15 @@ class Acceso extends CI_Controller {
 			$arrPerfilUsuario['ididioma'] = $loggedUser['ididioma'];
 			$arrPerfilUsuario['username'] = NULL;
 			$arrPerfilUsuario['monedero'] = $loggedUser['monedero'];
+			$arrPerfilUsuario['procesado'] = $loggedUser['procesado'];
 			$arrPerfilUsuario['logged'] = true;
-			$arrPerfilUsuario['cliente'] = empty($loggedUser['nombres'])?$loggedUser['codigo'] : strtoupper_total($cliente['nombres']);
-			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $cliente['email'];
+			$arrPerfilUsuario['cliente'] = empty($loggedUser['nombres'])?$loggedUser['codigo'] : strtoupper_total($loggedUser['nombres']);
+			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $loggedUser['email'];
 			$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 			$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Usuario inició sesión correctamente';
+			$arrData['datos'] = $arrPerfilUsuario;
     	}
     	// var_dump($loggedUser); exit();
     	$this->output
@@ -98,12 +100,9 @@ class Acceso extends CI_Controller {
 			!empty($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['logged']) ){
 			if( $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idgrupo'] == 3 ){
 				$this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
-				// $idcliente = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idcliente'];
 				$fila = $this->model_cliente->m_cargar_cliente_por_sesion();
-			}/*else{
-				$idusuario = $_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['idusuario'];
-				$fila = $this->model_cliente->m_cargar_cliente_por_idusuario($idusuario);
-			}*/
+			}
+
 			if( !empty($fila) ){
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['procesado'] = $fila['procesado'];

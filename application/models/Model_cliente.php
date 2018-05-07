@@ -14,6 +14,7 @@ class Model_cliente extends CI_Model {
 			c.codigo,
 			c.fecha_excursion,
 			c.paquete,
+			c.procesado,
 			c.precio_paquete
 		');
 		$this->db->select('COUNT(a.idarchivo) as total_subido, exc.idexcursion, exc.descripcion, estado_cl');
@@ -41,6 +42,7 @@ class Model_cliente extends CI_Model {
 			foo.descripcion,
 			foo.monedero,
 			foo.deposito,
+			foo.procesado,
 			foo.total_subido,
 			foo.comprados,
 			foo.monto,
@@ -51,10 +53,10 @@ class Model_cliente extends CI_Model {
 			foo.nombre_video
 		');
 		$this->db->select("CASE WHEN total_subido = 0 THEN 'NO PROCESADO' ELSE (
-			CASE WHEN monedero = 0 AND comprados = 0 THEN 'NO PAGO' ELSE (
+			CASE WHEN deposito = 0 AND comprados = 0 THEN 'NO PAGO' ELSE (
 				CASE WHEN (monedero = 0 AND comprados > 0 AND comprados < total_subido) OR
 									(monedero > 0 AND comprados >= 0 AND comprados < total_subido) THEN 'PENDIENTE' ELSE (
-					CASE WHEN comprados = total_subido THEN 'COMPLETO' ELSE 'OTRO' END
+					CASE WHEN (comprados = total_subido) OR procesado = 4 THEN 'COMPLETO' ELSE 'OTRO' END
 				) END
 			) END
 		) END AS procesado", FALSE);
@@ -151,6 +153,10 @@ class Model_cliente extends CI_Model {
 			c.estado_cl,
 			c.monedero,
 			c.idexcursion,
+			c.paquete,
+			c.precio_paquete,
+			c.deposito,
+			c.procesado,
 			c.createdat as fecha_creacion
 		');
 		$this->db->from('cliente c');
@@ -293,7 +299,8 @@ class Model_cliente extends CI_Model {
 	}
 	public function m_actualizar_procesado($datos){
 		$data = array(
-			'procesado' => $datos['procesado']
+			'procesado' => $datos['procesado'],
+			'monedero' 	=> 0
 		);
 		$this->db->where('idcliente',$datos['idcliente']);
 		return $this->db->update('cliente', $data);

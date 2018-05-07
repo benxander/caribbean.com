@@ -10,7 +10,6 @@
     var vm = this;
     var openedToasts = [];
     vm.fData = {}
-
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -87,9 +86,7 @@
           vm.getPaginationServerSide();
         });
       }
-      if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
-        vm.gridOptions.columnDefs[6].visible = true;
-      }
+
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
         vm.datosGrid = {
@@ -99,6 +96,9 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
+            vm.gridOptions.columnDefs[6].visible = true;
+          }
         });
       }
       vm.getPaginationServerSide();
@@ -319,6 +319,30 @@
             toastr.warning(rpta.message, title);
           }else{
             alert('Ocurrió un error');
+          }
+        });
+      }
+      vm.btnSubirVideo = function(){
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/excursion/video_formview.php',
+          controllerAs: 'mv',
+          size: '',
+          backdropClass: 'splash splash-2 splash-ef-12',
+          windowClass: 'splash splash-2 splash-ef-12',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.modalTitle = 'Subida de video demo';
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                scope : vm,
+              }
+            }
           }
         });
       }

@@ -37,7 +37,7 @@
           vm.cancelaPago = true;
         }
       }else{
-        $window.location.href = $scope.dirBase+'zona-privada';
+        $window.location.href = $scope.dirBase;
       }
     });
     vm.cargarMensajes = function(){

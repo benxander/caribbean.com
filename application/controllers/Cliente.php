@@ -350,7 +350,9 @@ class Cliente extends CI_Controller {
 					'idcliente' 	=> $idcliente,
 					'nombre_archivo'=> $file_name,
 					'size'			=> $file_size,
-					'tipo_archivo'=> 1
+					'tipo_archivo'=> 1,
+					'estado_arc' => 1,
+					'fecha_subida' => date('Y-m-d H:i:s')
 				);
 
 			    if($file_error > 0){
@@ -390,10 +392,7 @@ class Cliente extends CI_Controller {
 				        }else{
 				        	move_uploaded_file($file_tmp, $carpeta_destino . DIRECTORY_SEPARATOR . $file_name);
 				        }
-				        // redimencionMarcaAgua2(500, $carpeta, $file_name);
 
-
-						array_push($allInputs,array('tipo_archivo'=> 1));
 				        if($this->model_archivo->m_registrar_archivo($allInputs)){
 							$arrData['message'] = 'La imagen se subió correctamente. ';
 				    		$arrData['flag'] = 1;
@@ -662,191 +661,214 @@ class Cliente extends CI_Controller {
 	}
 	public function organizar_imagenes_temporales(){
 		ini_set('memory_limit', '1024M');
-		ini_set('max_execution_time', 600);
+		ini_set('max_execution_time', 900);
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$this->load->helper('file');
         $this->load->library('image_lib');
         // $extensions_image = array("jpeg","jpg");
         // $archivos = array();
-        try {
-	        $arrData['flag'] = -1;
-	        $arrData['flag2'] = -1;
-	        $imagenesZip = '';
-	        $videosZip = '';
-			$tmp = './uploads/temporal/tmp';
-			$tmp_videos = './uploads/temporal/tmp_videos';
-			$carpeta_videos = './uploads/clientes/videos';
-			$imagenesZip = empty($allInputs['imagenes'])? NULL : $allInputs['imagenes'].'.zip';
-			$videosZip = empty($allInputs['videos'])? NULL : $allInputs['videos'].'.zip';
-			if(!$videosZip && !$imagenesZip){
-				$arrData['message'] = 'Debe ingresar al menos un nombre de archivo zip';
+
+        $arrData['flag'] = -1;
+        $arrData['flag2'] = -1;
+        $imagenesZip = '';
+        $videosZip = '';
+		$tmp = './uploads/temporal/tmp';
+		$tmp_videos = './uploads/temporal/tmp_videos';
+		$carpeta_videos = './uploads/clientes/videos';
+		$imagenesZip = empty($allInputs['imagenes'])? NULL : $allInputs['imagenes'].'.zip';
+		$videosZip = empty($allInputs['videos'])? NULL : $allInputs['videos'].'.zip';
+		if(!$videosZip && !$imagenesZip){
+			$arrData['message'] = 'Debe ingresar al menos un nombre de archivo zip';
+			$arrData['flag'] = 0;
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+		if (!empty($imagenesZip) && !file_exists('./uploads/temporal/' . $imagenesZip)) {
+			$arrData['message'] = 'El archivo "'. $imagenesZip . '" no existe.';
+			$arrData['flag'] = 0;
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+		if (!empty($videosZip) && !file_exists('./uploads/temporal/' . $videosZip)) {
+			$arrData['message2'] = 'El archivo "'. $videosZip . '" no existe.';
+			$arrData['flag2'] = 0;
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+		// var_dump($imagenesZip); exit();
+		if(!empty($imagenesZip)){
+			$error = FALSE;
+			$i = 0;
+			$zip = new ZipArchive;
+			if ($zip->open('./uploads/temporal/' . $imagenesZip) === TRUE) {
+			    $zip->extractTo($tmp);
+			    $zip->close();
+			} else {
+			   	$arrData['message'] = 'No se pudo abrir el archivo zip';
 				$arrData['flag'] = 0;
 	    		$this->output
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
 				return;
 			}
-			if (!empty($imagenesZip) && !file_exists('./uploads/temporal/' . $imagenesZip)) {
-				$arrData['message'] = 'El archivo "'. $imagenesZip . '" no existe.';
+			unlink('./uploads/temporal/' . $imagenesZip);
+			foreach (get_filenames($tmp) as $archivo) {
+				if( $archivo != 'index.html' && $archivo != 'Thumbs.db'){
+					++$i;
+		       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+					$codigo = explode("-", $archivo)[0];
+		   			$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
+		   			if(empty($rowCliente)){
+		   				$arrData['message'] = 'Código: ' . $codigo . ' no encontrado.';
+							$arrData['flag'] = 0;
+							$this->output
+							    ->set_content_type('application/json')
+							    ->set_output(json_encode($arrData));
+							return;
+		   			}
+		   			$codigo = $rowCliente['codigo'];
+					$url_origen = $tmp.'/'.$archivo;
+					$url_destino = 'uploads/clientes/'.$codigo.'/originales/'.$archivo;
+
+
+					$carpeta_or = './uploads/clientes/'.$codigo;
+				    $carpeta_marca_min = $carpeta_or.'/thumbs/';
+				    $carpeta_or_min = $carpeta_or.'/originales/thumbs';
+				    $archivo_or = $carpeta_or.'/originales/'.$archivo;
+				    $marca = TRUE;
+
+					$data = array(
+						'idcliente' => $rowCliente['idcliente'],
+						'nombre_archivo' => $archivo,
+						'size' => filesize($url_origen),
+						'tipo_archivo' => 1,
+						'estado_arc' => 1,
+						'fecha_subida' => date('Y-m-d H:i:s')
+					);
+
+				    // verificacion de archivo
+	   				if($this->model_archivo->m_verificar_archivo_cliente($data)){
+	   					$arrData['message'] = 'Archivo: ' . $archivo . ' ya existe.';
+						$arrData['flag'] = 0;
+						$this->output
+						    ->set_content_type('application/json')
+						    ->set_output(json_encode($arrData));
+						return;
+	   				}
+	   				// verificacion de paquete
+				    if( $rowCliente['paquete'] != 3 && $rowCliente['deposito'] == $rowCliente['precio_paquete'] ){
+				    	$url_destino = 'uploads/clientes/'.$codigo.'/descargadas/'.$archivo;
+				    	$carpeta_or_min = $carpeta_or.'/descargadas/thumbs';
+				    	$archivo_or = $carpeta_or.'/descargadas/'.$archivo;
+				    	$marca = FALSE;
+				    	$data['descargado'] = 1;
+				    	$data['fecha_descarga'] = date('Y-m-d H:i:s');
+				    }
+
+					if(rename($url_origen,$url_destino)){
+						if($marca){
+		   					redimencionMarcaAgua(600, $archivo_or, $carpeta_marca_min, $archivo);
+						}
+						// hacer miniatura
+		   				redimenciona(300, $archivo_or, $carpeta_or_min, $archivo);
+
+		        		if($this->model_archivo->m_registrar_archivo($data)){
+							if( !$marca && $rowCliente['procesado'] != 4 ){
+								// Actualizar cliente como procesado
+								$rowCliente['procesado'] = 4;
+								$this->model_cliente->m_actualizar_procesado($rowCliente);
+							}
+						}else{
+							$error = TRUE;
+						}
+					}else{
+						$error = TRUE;
+					}
+
+				}
+	       	}
+	       	if( $i == 0 ){
+	       		$arrData['message'] = 'No hay nada que organizar';
 				$arrData['flag'] = 0;
-	    		$this->output
-				    ->set_content_type('application/json')
-				    ->set_output(json_encode($arrData));
-				return;
-			}
-			if (!empty($videosZip) && !file_exists('./uploads/temporal/' . $videosZip)) {
-				$arrData['message2'] = 'El archivo "'. $videosZip . '" no existe.';
+	       	}elseif($error){
+	       		$arrData['message'] = 'Ocurrió un error';
+				$arrData['flag'] = 0;
+	       	}else{
+	       		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
+				$arrData['flag'] = 1;
+	       	}
+
+		}
+		if(!empty($videosZip)){
+			$error = FALSE;
+			$i = 0;
+			$zip = new ZipArchive;
+			if ($zip->open('./uploads/temporal/' . $videosZip) === TRUE) {
+			    $zip->extractTo($tmp_videos);
+			    $zip->close();
+			} else {
+			   	$arrData['message2'] = 'No se pudo abrir el archivo zip de videos';
 				$arrData['flag2'] = 0;
 	    		$this->output
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
 				return;
 			}
-			// var_dump($imagenesZip); exit();
-			if(!empty($imagenesZip)){
-				$error = FALSE;
-				$i = 0;
-				$zip = new ZipArchive;
-				if ($zip->open('./uploads/temporal/' . $imagenesZip) === TRUE) {
-				    $zip->extractTo($tmp);
-				    $zip->close();
-				} else {
-				   	$arrData['message'] = 'No se pudo abrir el archivo zip';
-					$arrData['flag'] = 0;
-		    		$this->output
-					    ->set_content_type('application/json')
-					    ->set_output(json_encode($arrData));
-					return;
-				}
-				unlink('./uploads/temporal/' . $imagenesZip);
-				foreach (get_filenames($tmp) as $archivo) {
-					if( $archivo != 'index.html' && $archivo != 'Thumbs.db'){
-						++$i;
-			       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-						$codigo = explode("-", $archivo)[0];
-			   			$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
-			   			if(empty($rowCliente)){
-			   				$arrData['message'] = 'Código: ' . $codigo . ' no encontrado.';
-								$arrData['flag'] = 0;
-								$this->output
-								    ->set_content_type('application/json')
-								    ->set_output(json_encode($arrData));
-								return;
-			   			}
-			   			$codigo = $rowCliente['codigo'];
-						$url_origen = $tmp.'/'.$archivo;
-						$url_destino = 'uploads/clientes/'.$codigo.'/originales/'.$archivo;
+			unlink('./uploads/temporal/' . $videosZip);
+			foreach (get_filenames($tmp_videos) as $archivo) {
+				if( $archivo != 'index.html'){
+					++$i;
+		       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+					$partes = explode("-", $archivo);
+					$fecha = substr($partes[0], -4) . '-' . substr($partes[0], 2,2) . '-' . substr($partes[0], 0,2);
+					$idexcursion = (int)$partes[1];
 
-						if(rename($url_origen,$url_destino)){
-							$carpeta_or = './uploads/clientes/'.$codigo;
-						    $archivo_or = $carpeta_or.'/originales/'.$archivo;
+					$url_origen = $tmp_videos.'/'.$archivo;
+					$url_destino = 'uploads/clientes/videos/'.$archivo;
 
-			        		$allInputs['nombre_archivo'] = $archivo;
-							$allInputs['size'] = 0;
-							// $allInputs['size'] = filesize($archivo_or);
-							$allInputs['tipo_archivo'] = 1;
-							$allInputs['idcliente'] = $rowCliente['idcliente'];
+	        		$data['nombre_video'] = $archivo;
+					$data['size'] = filesize($archivo_or);
+					$data['idexcursion'] = $idexcursion;
+					$data['fecha'] = $fecha;
+					// verificacion de archivo
+					if($this->model_archivo->m_verificar_video_excursion($data)){
+	   					$arrData['message'] = 'Video: ' . $archivo . ' ya existe.';
+						$arrData['flag'] = 0;
+						$this->output
+						    ->set_content_type('application/json')
+						    ->set_output(json_encode($arrData));
+						return;
+	   				}
 
-			   				redimencionMarcaAgua(600, $archivo_or, $carpeta_or, $archivo);
-			   				redimenciona(300, $archivo_or, $carpeta_or .'/originales/thumbs', $archivo);
-
-			   				if($this->model_archivo->m_verificar_archivo_cliente($allInputs)){
-			   					$arrData['message'] = 'Archivo: ' . $allInputs['nombre_archivo'] . ' ya existe.';
-								$arrData['flag'] = 0;
-								$this->output
-								    ->set_content_type('application/json')
-								    ->set_output(json_encode($arrData));
-								return;
-			   				}
-			        		if(!$this->model_archivo->m_registrar_archivo($allInputs)){
-								$error = TRUE;
-							}
-						}else{
+					if(rename($url_origen,$url_destino)){
+					    $archivo_or = './uploads/clientes/videos/'.$archivo;
+		        		if(!$this->model_archivo->m_registrar_video_excursion($data)){
 							$error = TRUE;
 						}
-
+					}else{
+						$error = TRUE;
 					}
-		       	}
-		       	if( $i == 0 ){
-		       		$arrData['message'] = 'No hay nada que organizar';
-					$arrData['flag'] = 0;
-		       	}elseif($error){
-		       		$arrData['message'] = 'Ocurrió un error';
-					$arrData['flag'] = 0;
-		       	}else{
-		       		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
-					$arrData['flag'] = 1;
-		       	}
 
-			}
-			if(!empty($videosZip)){
-				$error = FALSE;
-				$i = 0;
-				$zip = new ZipArchive;
-				if ($zip->open('./uploads/temporal/' . $videosZip) === TRUE) {
-				    $zip->extractTo($tmp_videos);
-				    $zip->close();
-				} else {
-				   	$arrData['message2'] = 'No se pudo abrir el archivo zip de videos';
-					$arrData['flag2'] = 0;
-		    		$this->output
-					    ->set_content_type('application/json')
-					    ->set_output(json_encode($arrData));
-					return;
 				}
-				unlink('./uploads/temporal/' . $videosZip);
-				foreach (get_filenames($tmp_videos) as $archivo) {
-					if( $archivo != 'index.html'){
-						++$i;
-			       		// $file_ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-						$partes = explode("-", $archivo);
-						$fecha = substr($partes[0], -4) . '-' . substr($partes[0], 2,2) . '-' . substr($partes[0], 0,2);
-						$idexcursion = (int)$partes[1];
-
-						$url_origen = $tmp_videos.'/'.$archivo;
-						$url_destino = 'uploads/clientes/videos/'.$archivo;
-
-						if(rename($url_origen,$url_destino)){
-						    $archivo_or = './uploads/clientes/videos/'.$archivo;
-
-			        		$allInputs['nombre_video'] = $archivo;
-							$allInputs['size'] = filesize($archivo_or);
-							$allInputs['idexcursion'] = $idexcursion;
-							$allInputs['fecha'] = $fecha;
-
-							if($this->model_archivo->m_verificar_video_excursion($allInputs)){
-			   					$arrData['message'] = 'Video: ' . $allInputs['nombre_video'] . ' ya existe.';
-								$arrData['flag'] = 0;
-								$this->output
-								    ->set_content_type('application/json')
-								    ->set_output(json_encode($arrData));
-								return;
-			   				}
-
-			        		if(!$this->model_archivo->m_registrar_video_excursion($allInputs)){
-								$error = TRUE;
-							}
-						}else{
-							$error = TRUE;
-						}
-
-					}
-		       	}
-		       	if( $i == 0 ){
-		       		$arrData['message2'] = 'No hay nada que organizar';
-					$arrData['flag2'] = 0;
-		       	}elseif($error){
-		       		$arrData['message2'] = 'Ocurrió un error';
-					$arrData['flag2'] = 0;
-		       	}else{
-		       		$arrData['message2'] = 'Se organizaron ' . $i . ' videos correctamente. ';
-					$arrData['flag2'] = 1;
-		       	}
-			}
-		} catch (Exception $e) {
-		    echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-		    var_dump($e->getMessage()); exit();
+	       	}
+	       	if( $i == 0 ){
+	       		$arrData['message2'] = 'No hay nada que organizar';
+				$arrData['flag2'] = 0;
+	       	}elseif($error){
+	       		$arrData['message2'] = 'Ocurrió un error';
+				$arrData['flag2'] = 0;
+	       	}else{
+	       		$arrData['message2'] = 'Se organizaron ' . $i . ' videos correctamente. ';
+				$arrData['flag2'] = 1;
+	       	}
 		}
+
        	// return $arrData;
  		$this->output
 		    ->set_content_type('application/json')
@@ -951,11 +973,22 @@ class Cliente extends CI_Controller {
 		$this->pdf->Cell(0,7,utf8_decode('Listado de clientes'),0,7,'C');
 		$this->pdf->Ln(4);
 
-		$arrWidthCol = array(10,20,17,56,10,10,17,10,10,30); // ANCHO TOTAL: 190
-        $arrHeaderText = array('Nº','CODIGO CLIENTE', 'FECHA EXCURSION', 'EXCURSION', 'DEPOSITO ($)','SALDO ($)', 'FECHA SALDO', 'ONLINE ($)', 'MONTO ($)', 'PROCESADO');
+		$arrWidthCol = array(10,20,17,50,14,14,14,10,17,24); // ANCHO TOTAL: 190
+        $arrHeaderText = array(
+        	'Nº',
+        	'CODIGO CLIENTE',
+        	'FECHA EXCURSION',
+        	'EXCURSION',
+        	'PAQUETE',
+        	'PRECIO PAQUETE',
+        	'DEPOSITO ($)',
+        	'ONLINE ($)',
+        	'FECHA DE PAGO',
+        	'PROCESADO'
+        );
         $arrHeaderAligns = array('C','C','C','C','C','C','C','C','C','C');
-        $arrDataAligns = array('C','C','C','L','R','R','C','R','R','C');
-        $arrBoolMultiCell = array(0,0,1,0,1,1,1,1,1,0); // colocar 1 donde deseas utilizar multicell
+        $arrDataAligns = array('C','C','C','L','C','R','R','R','C','C');
+        $arrBoolMultiCell = array(0,0,1,0,0,1,1,1,1,0); // colocar 1 donde deseas utilizar multicell
         $countArray = count($arrWidthCol);
         $acumWidth = 0;
         $this->pdf->Ln(6);
@@ -994,11 +1027,11 @@ class Cliente extends CI_Controller {
                     utf8_decode(trim($row['codigo'])),
                     $row['fecha_excursion'],
                     $row['descripcion'],
+                    $row['paquete'],
+                    $row['precio_paquete'],
                     $row['deposito'],
-                    $row['monedero'],
-                    $row['fecha_movimiento'],
                     $row['online'] > 0 ? $row['online'] : 0,
-                    $row['monto'],
+                    $row['fecha_movimiento'],
                     utf8_decode(trim($row['procesado'])),
                 ),
             	$fill,1

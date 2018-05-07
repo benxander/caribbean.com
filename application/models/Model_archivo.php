@@ -100,15 +100,7 @@ class Model_archivo extends CI_Model {
 
 	// MANTENIMIENTO
 	public function m_registrar_archivo($data){
-		$datos = array(
-			'idcliente' => $data['idcliente'],
-			'nombre_archivo' => $data['nombre_archivo'],
-			'size' => $data['size'],
-			'tipo_archivo' => $data['tipo_archivo'],
-			'estado_arc' => 1,
-			'fecha_subida' => date('Y-m-d H:i:s')
-		 );
-		return $this->db->insert('archivo', $datos);
+		return $this->db->insert('archivo', $data);
 	}
 	public function m_registrar_video_excursion($data){
 		$datos = array(

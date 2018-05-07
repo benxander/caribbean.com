@@ -15,8 +15,11 @@
       vm.fLogin.codigo = $routeParams.c;
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
-          $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
-          // $scope.goToUrl('/admin');
+          if( rpta.datos.procesado == 4 ){
+            $window.location.href = $scope.dirWeb+'admin/#/app/mi-galeria';
+          }else{
+            $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+          }
         }else if(rpta.flag == 0){
           vm.error = true;
           vm.fLogin.codigo = null;
@@ -26,7 +29,11 @@
     vm.btnLoginToSystem = function () {
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
-          $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+          if( rpta.datos.procesado == 4 ){
+            $window.location.href = $scope.dirWeb+'admin/#/app/mi-galeria';
+          }else{
+            $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+          }
           // $scope.goToUrl('/admin');
         }else if(rpta.flag == 0){
           vm.error = true;

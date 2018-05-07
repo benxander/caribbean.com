@@ -71,7 +71,7 @@
       });
     }
     vm.cargarGaleria = function(datos){
-      pageLoading.start('Loading...');
+      pageLoading.start('Loading Shop...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
         pageLoading.stop();
@@ -446,8 +446,8 @@
         templateUrl: 'app/pages/tienda/oferta.php',
         controllerAs: 'mo',
         size: '',
-        backdropClass: 'splash-2 splash-ef-12',
-        windowClass: 'splash-2 splash-ef-12',
+        backdropClass: 'splash splash-2 splash-ef-14',
+        windowClass: 'splash splash-2 splash-ef-14',
         backdrop: 'static',
         keyboard:false,
         scope: $scope,
@@ -480,6 +480,7 @@
             });
           }
           vm.cancel = function (){
+            $uibModalInstance.close('cancel');
             $uibModalInstance.dismiss('cancel');
           };
         },

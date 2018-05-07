@@ -217,7 +217,11 @@
         $scope.valores = [false,true,false,false,false,false,false,false,false,false,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 3){ // cliente
-        $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
+        if( $scope.fSessionCI.procesado == 4 ){ // completo
+          $scope.valores = [false,false,false,false,false,false,false,false,false,false,false,true,false];
+        }else{
+          $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
+        }
       }
       else{
         console.log('No tiene grupo');
