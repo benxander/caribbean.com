@@ -42,13 +42,21 @@ class Excursion extends CI_Controller {
 		$totalRows = $this->model_excursion->m_count_excursiones($paramPaginate);
 		$arrListado = array();
 		foreach ($lista as $row) {
+			$bool_video = FALSE;
+			$video = NULL;
+			if( file_exists('./uploads/temporal/videos_demo/' . $row['idexcursion'] . '-demo.mp4') ){
+				$bool_video = TRUE;
+				$video = '../uploads/temporal/videos_demo/' . $row['idexcursion'] . '-demo.mp4';
+			}
 			array_push($arrListado, array(
-				'idexcursion' => $row['idexcursion'],
-				'descripcion' => $row['descripcion'],
-				'precio_all' => (int)$row['precio_all'],
-				'precio_pack' => (int)$row['precio_pack'],
-				'precio_primera' => (int)$row['precio_primera'],
-				'precio_adicional' => (int)$row['precio_adicional'],
+				'idexcursion' 		=> $row['idexcursion'],
+				'descripcion' 		=> $row['descripcion'],
+				'precio_all' 		=> (int)$row['precio_all'],
+				'precio_pack' 		=> (int)$row['precio_pack'],
+				'precio_primera'	=> (int)$row['precio_primera'],
+				'precio_adicional'	=> (int)$row['precio_adicional'],
+				'bool_video'		=> $bool_video,
+				'video'				=> $video,
 				)
 			);
 		}
@@ -192,6 +200,7 @@ class Excursion extends CI_Controller {
     	$data = array(
     		'descripcion' => strtoupper_total($allInputs['descripcion']),
     		'precio_pack' => $allInputs['precio_pack'],
+    		'precio_all' => $allInputs['precio_all'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
     		'precio_adicional' => empty($allInputs['precio_adicional'])?NULL:$allInputs['precio_adicional'],
     		'createdat' => date('Y-m-d H:i:s'),
@@ -216,8 +225,9 @@ class Excursion extends CI_Controller {
     	// data
     	$data = array(
 
-    		'descripcion' => strtoupper_total($allInputs['descripcion']),
-    		'precio_pack' => $allInputs['precio_pack'],
+    		'descripcion' 	=> strtoupper_total($allInputs['descripcion']),
+    		'precio_all' 	=> $allInputs['precio_all'],
+    		'precio_pack'	=> $allInputs['precio_pack'],
     		'precio_primera' => empty($allInputs['precio_primera'])?NULL:$allInputs['precio_primera'],
     		'precio_adicional' => empty($allInputs['precio_adicional'])?NULL:$allInputs['precio_adicional'],
     		'updatedat' => date('Y-m-d H:i:s'),
@@ -347,6 +357,10 @@ class Excursion extends CI_Controller {
     	$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+	public function subir_video()
+	{
+
 	}
 
 }

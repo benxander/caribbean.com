@@ -28,11 +28,21 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_galeria_no_descargados($pDatos){
-		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,
-			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
-			arc.tipo_archivo, cl.codigo,cl.fecha_salida');
+		$this->db->select('
+			arc.idarchivo,
+			arc.idcliente,
+			arc.nombre_archivo,
+			arc.size,
+			arc.fecha_subida,
+			arc.descargado,
+			arc.fecha_descarga,
+			arc.es_bonificacion,
+			arc.tipo_archivo,
+			cl.codigo,
+			cl.idexcursion,
+			cl.fecha_salida
+		');
 		$this->db->from('archivo arc');
-		// $this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 2);

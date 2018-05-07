@@ -42,6 +42,11 @@
         { field: 'precio_pack', name:'precio_pack', displayName: 'DIG. FUN PASS ($)', minWidth: 100, enableFiltering: false },
         { field: 'precio_primera', name:'precio_primera', displayName: 'SINGLE 1ª ($)', minWidth: 100, enableFiltering: false },
         { field: 'precio_adicional', name:'precio_adicional', displayName: 'SINGLE ADIC. ($)', minWidth: 100, enableFiltering: false },
+        { field: 'video', name: 'video', displayName: 'VIDEO',width: 70, enableFiltering: false, enableSorting: false, enableColumnMenus: false, enableColumnMenu: false,
+          cellTemplate: '<div class="text-center text-success" ng-if="row.entity.bool_video">' +
+            '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerVideo(row)" tooltip-placement="left" uib-tooltip="VER VIDEO" > <i class="fa fa-video-camera"></i> </button>' +
+          '</div>'
+         },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 100,
           enableFiltering: false, visible: false,
           cellTemplate: '<div class="text-center">' +
@@ -96,8 +101,9 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          console.log('$scope.fSessionCI.key_grupo',$scope.fSessionCI.key_grupo);
           if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
-            vm.gridOptions.columnDefs[6].visible = true;
+            vm.gridOptions.columnDefs[7].visible = true;
           }
         });
       }
@@ -322,17 +328,17 @@
           }
         });
       }
-      vm.btnSubirVideo = function(){
+      vm.btnVerVideo = function(row){
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/excursion/video_formview.php',
+          templateUrl: 'app/pages/excursion/video_demo.php',
           controllerAs: 'mv',
-          size: '',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-12',
           windowClass: 'splash splash-2 splash-ef-12',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
-            vm.modalTitle = 'Subida de video demo';
+            vm.fData = row.entity;
             vm.cancel = function () {
               $uibModalInstance.dismiss('cancel');
             };

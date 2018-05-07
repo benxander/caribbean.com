@@ -73,6 +73,12 @@ class Archivo extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_no_descargados($allInputs);
 		$arrListado = array();
+		$bool_video = FALSE;
+		$video = NULL;
+		if( file_exists('./uploads/temporal/videos_demo/' . $lista[0]['idexcursion'] . '-demo.mp4') ){
+			$bool_video = TRUE;
+			$video = '../uploads/temporal/videos_demo/' . $lista[0]['idexcursion'] . '-demo.mp4';
+		}
 		foreach ($lista as $row) {
 			/*if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
 				$salida = TRUE;
@@ -98,6 +104,15 @@ class Archivo extends CI_Controller {
 					'title' => '',
 					'fecha_salida' => $row['fecha_salida'],
 					'es_salida' => FALSE,
+				)
+			);
+		}
+		if( $bool_video ){
+			array_push($arrListado,
+				array(
+					'nombre_archivo' => $video,
+					'tipo_archivo' => 2,
+					'selected' => FALSE,
 				)
 			);
 		}
