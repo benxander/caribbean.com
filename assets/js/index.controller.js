@@ -64,7 +64,7 @@
         console.log('no data');
       }
     });
-    rootServices.sCargarSecciones().then(function (response) {
+    rootServices.sListarMensajes().then(function (response) {
       if(response.flag == 1){
         $scope.seccionWeb = response.datos;
 
@@ -80,20 +80,20 @@
   }
   function rootServices($http, $q) {
     return({
-        // sCargarBanners: sCargarBanners,
+        sListarMensajes: sListarMensajes,
         sCargarDatosWeb: sCargarDatosWeb,
         sCargarSecciones: sCargarSecciones,
         sListarRedesWeb: sListarRedesWeb,
     });
-    /*function sCargarBanners(pDatos) {
+    function sListarMensajes(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Banner/cargar_banners_web",
+            url :  angular.patchURLCI + "Mensaje/listar_mensajes",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
-    }*/
+    }
     function sCargarDatosWeb(pDatos) {
       var datos = pDatos || {};
       var request = $http({

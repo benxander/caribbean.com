@@ -17,6 +17,7 @@
       vm.gridOptions.columnDefs = [
         { field: 'idmensaje', name:'idmensaje', displayName: 'ID', minWidth: 50, width:80, visible:true},
         { field: 'seccion', name:'seccion', displayName: 'SECCION', minWidth: 100, width: 140},
+        { field: 'titulo', name:'titulo', displayName: 'TITULO', minWidth: 100, width: 140},
         { field: 'contenido_f', name:'contenido', displayName: 'CONTENIDO', minWidth: 100, },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
           cellTemplate: '<div class="text-center">' +
@@ -90,12 +91,22 @@
     return({
         sListarMensajes: sListarMensajes,
         sEditarMensaje: sEditarMensaje,
+        sListarMensaje: sListarMensaje,
     });
     function sListarMensajes(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Mensaje/listar_mensajes",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarMensaje(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Mensaje/listar_mensaje_por_id",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

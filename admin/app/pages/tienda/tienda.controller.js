@@ -421,7 +421,7 @@
           var paramDatos = {
             idseccion : 6 // terminos y condiciones
           }
-          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+          TiendaServices.sListarMensaje(paramDatos).then(function(rpta){
             vm.modalTitle = rpta.datos.titulo;
             vm.contenido = rpta.datos.contenido;
             console.log('rpta',rpta);
@@ -456,9 +456,9 @@
           vm.fData = arrToModal.scope.fData;
           vm.selectFotografia = arrToModal.scope.selectFotografia;
           var paramDatos = {
-            idseccion : 9 // oferta
+            idmensaje : 8 // oferta
           }
-          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
+          MensajeServices.sListarMensaje(paramDatos).then(function(rpta){
             vm.modalTitle = rpta.datos.titulo;
             vm.contenido = rpta.datos.contenido;
           });
@@ -535,7 +535,7 @@
         sVerificarSeleccion: sVerificarSeleccion,
         sRegistrarVenta: sRegistrarVenta,
         sEnviarEmailOferta: sEnviarEmailOferta,
-        sListarSeccion: sListarSeccion,
+
     });
 
     function sListarNoDescargados(pDatos) {
@@ -586,14 +586,6 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sListarSeccion(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Seccion/listar_seccion",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
+
   }
 })();

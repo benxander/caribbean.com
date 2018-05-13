@@ -153,7 +153,7 @@
         }
       });
     }
-    vm.btnTerminosCondiciones = function(){
+    /*vm.btnTerminosCondiciones = function(){
       var modalInstance = $uibModal.open({
         templateUrl: 'app/pages/tienda/terminos.php',
         controllerAs: 'mt',
@@ -187,7 +187,7 @@
           }
         }
       });
-    }
+    }*/
   }
 
   function PagesGalleryServices($http, $q) {

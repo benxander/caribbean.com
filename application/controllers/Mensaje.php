@@ -17,8 +17,9 @@ class Mensaje extends CI_Controller {
 				array(
 					'idmensaje' => $row['idmensaje'],
 					'seccion' => $row['seccion'],
+					'titulo' => $row['titulo'],
 					'contenido' => $row['contenido'],
-					'contenido_f' => strip_tags($row['contenido']),
+					'contenido_f' => strip_tags($row['contenido'])
 				)
 			);
 		}
@@ -34,7 +35,20 @@ class Mensaje extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_mensaje_por_id(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$rowSec = $this->model_mensaje->m_cargar_mensaje_por_id($allInputs['idmensaje']);
 
+		$arrData['datos'] = $rowSec;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function editar_mensaje(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';

@@ -1,10 +1,10 @@
 <div class="modal-header">
-	<h4 class="modal-title"> {{seccionWeb[8].contenedor[0].titulo}}  </h4>
+	<h4 class="modal-title"> {{seccionWeb[6].titulo}}  </h4>
 </div>
 <div class="modal-body">
 	<div class="row">
 		<div class="col-sm-12" >
-			<div ng-bind-html="seccionWeb[8].contenedor[0].contenido"></div>
+			<div ng-bind-html="seccionWeb[6].contenido"></div>
 		</div>
 	</div>
 </div>

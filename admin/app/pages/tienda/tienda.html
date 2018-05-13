@@ -87,7 +87,7 @@
           </li> -->
         </ul>
 
-        <div class="row mix-grid" masonry>
+        <div class="row mix-grid">
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
             type: 'image',
@@ -100,7 +100,7 @@
             }
            }"
           >
-            <div class="masonry-brick col-md-3 col-sm-6 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
+            <div class="col-md-3 col-sm-6 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
 
               <div class="img-container" ng-if="image.tipo_archivo == 1">
                 <!-- <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div> -->
