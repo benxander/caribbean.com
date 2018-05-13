@@ -208,7 +208,7 @@
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){ // admin
-        $scope.valores = [false,true,true,false,true,true,false,false,true,true,false,false,false];
+        $scope.valores = [false,true,true,false,true,false,false,false,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 5){ // supervisor
         $scope.valores = [false,true,true,false,false,false,false,false,false,false,false,false,false];
