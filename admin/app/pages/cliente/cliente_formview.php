@@ -5,25 +5,29 @@
 	<section class="tile-body">
 		<form name="formCliente" role="form" novalidate class="form-validation">
 		    <div class="row">
-	            <div class="form-group col-md-6" >
+	            <div class="form-group col-md-6 col-sm-12" >
 					<label for="codigo" class="control-label minotaur-label">Código del Cliente <small class="text-red">(*)</small> </label>
 	              	<input type="text" name="codigo" id="codigo" class="form-control" ng-model="mc.fData.codigo" placeholder="Registre Código del Cliente" required>
 	            </div>
-	            <div class="form-group col-md-6">
+	            <div class="form-group col-md-6 col-sm-12">
 					<label class="control-label minotaur-label">Excursión <small class="text-red">(*)</small> </label>
 	              	<select class="form-control" ng-model="mc.fData.excursion" ng-options="item as item.descripcion for item in mc.listaExcursiones" required ng-disabled="mc.modoEdicion"> </select>
 	            </div>
-	            <div class="form-group col-md-6" >
+	            <div class="form-group col-md-6 col-sm-12" >
 					<label for="fecha_excursion" class="control-label minotaur-label">Fecha de Excursión <small class="text-red">(*)</small> </label>
 	                <input type="text" class="form-control" id="fecha_excursion" ng-model="mc.fData.fecha_excursion" input-mask mask-options="{alias: 'dd-mm-yyyy'}" required>
 	            </div>
-	            <div class="form-group col-md-6" >
+	            <div class="form-group col-md-6 col-sm-12" >
 					<label for="monedero" class="control-label minotaur-label">Depósito </label>
 	                <div touch-spin id="monedero" ng-model="mc.fData.monedero" options="{prefix: '$',verticalButtons: true, max: 100000, step:10}" ></div>
 	            </div>
+	            <div class="form-group col-sm-12" ng-if="mc.fData.email">
+					<label for="email" class="control-label minotaur-label">Email </label>
+	              	<input type="email" name="email" id="email" class="form-control" ng-model="mc.fData.email" ng-disabled="mc.modoEdicion">
+	            </div>
 		    </div>
 		    <div class="row">
-		    	<div class="form-group col-md-12" >
+		    	<div class="form-group col-sm-12" >
 					<label for="codigo" class="control-label minotaur-label">Códigos adicionales </label>
 					<button class="btn btn-success btn-xs" uib-tooltip="Agregar código" ng-click="mc.btnAgregarCod();" ng-if="mc.fData.editar"><i class="fa fa-plus"></i></button>
 			        <table class="table table-hover">

@@ -68,6 +68,7 @@ class Cliente extends CI_Controller {
 					'nombre_video' 		=> $row['nombre_video'],
 					'paquete' 			=> $row['paquete'],
 					'precio_paquete' 	=> $row['precio_paquete'],
+					'email' 			=> $row['email'],
 					'excursion' 		=> $row['descripcion'],
 					'fecha_excursion' 	=> darFormatoDMY($row['fecha_excursion']),
 					'fecha_movimiento' 	=> darFormatoDMY($row['fecha_movimiento']),

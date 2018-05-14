@@ -15,14 +15,17 @@ class Model_cliente extends CI_Model {
 			c.fecha_excursion,
 			c.paquete,
 			c.procesado,
-			c.precio_paquete
+			c.precio_paquete,
+			c.email,
+			ev.idexcursionvideo,
+			ev.nombre_video
 		');
 		$this->db->select('COUNT(a.idarchivo) as total_subido, exc.idexcursion, exc.descripcion, estado_cl');
 		$this->db->select("SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados",FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as monto", FALSE);
 		$this->db->select("( SELECT MAX(DATE(mo.fecha_movimiento)) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as fecha_movimiento", FALSE);
 		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) - c.deposito as online", FALSE);
-		$this->db->select('ev.idexcursionvideo, ev.nombre_video');
+
 		$this->db->from('cliente c');
 		$this->db->join('excursion exc', 'c.idexcursion = exc.idexcursion');
 		$this->db->join('excursion_video ev', 'c.idexcursion = ev.idexcursion AND ev.fecha = c.fecha_excursion','left');
@@ -39,6 +42,7 @@ class Model_cliente extends CI_Model {
 			foo.fecha_excursion,
 			foo.paquete,
 			foo.precio_paquete,
+			foo.email,
 			foo.descripcion,
 			foo.monedero,
 			foo.deposito,
