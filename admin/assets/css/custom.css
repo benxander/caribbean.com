@@ -29,7 +29,9 @@
 	.f-14{font-size: 14px;}
 	.f-16{font-size: 16px;}
 	.f-18{font-size: 18px;}
-	.f-24{font-size: 24px;}
+  .f-24{font-size: 24px;}
+  .f-28{font-size: 28px;}
+	.f-32{font-size: 32px;}
 /*BORDER RADIUS*/
   .br-10 {
     border-radius: 10px!important;

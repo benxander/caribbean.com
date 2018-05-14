@@ -78,15 +78,15 @@
             </label>
           </li> -->
 
-          <li class="btn ml-md" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
-            <a href="javascript:;" class="f-16"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
+          <li class="btn btn-lg ml-md pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
+            <a href="javascript:;" class="f-18"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
 
          <!--  <li class="pull-right select-all" style="font-size: 15px;font-weight: 600">
             <i class="fa fa-shopping-cart" ></i> <span style="color:#1199d3;">{{ctrl.monto_total}}</span></a>
           </li> -->
         </ul>
-
+        <br>
         <div class="row mix-grid">
           <div class="gallery" ng-mixitup magnific-popup="{
             delegate: 'a.img-preview',
@@ -135,8 +135,8 @@
           NO PICTURES
         </div>
         <ul class="mix-controls">
-          <li class="btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
-            <a href="javascript:;" class="f-16"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
+          <li class="btn-lg btn pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click='ctrl.verResumen();'>
+            <a href="javascript:;" class="f-18"><i class="halcyon-icon-next" ></i> {{ 'Form.NEXT' | translate }}</a>
           </li>
         </ul>
       </div>
@@ -149,7 +149,7 @@
           </div>
           <div class="controls">
             <div class="form-group pull-right" >
-                <button class="btn btn-warning" style="font-size:14px;color:#fff;" ng-click="ctrl.btnVolver()">
+                <button class="btn-lg btn btn-warning" style="font-size:18px;color:#fff;" ng-click="ctrl.btnVolver()">
                   <i class="halcyon-icon-back"></i> {{ 'Form.PREVIOUS' | translate }}
                 </button>
                 <!-- <div class="pull-right mt-10 ml-10" style="font-size: 15px;font-weight: 600">
@@ -194,13 +194,14 @@
               <span class="input-group-addon">US$</span> <input type="text" class="pull-right text-right f-18" ng-disabled="true" ng-model="ctrl.monto_a_pagar" style="width: 80px; font-weight: bolder;"/> <span class="input-group-addon">.00</span>
             </div>
           </div>
-          <div class="col-md-12 mt">
+          <div class="col-sm-12 mt">
             <label class="checkbox minotaur-checkbox inline-block m-0 pull-right">I have read and accept <a href="javascript:;" ng-click="ctrl.btnTerminosCondiciones();" >the terms and conditions</a>
               <input type="checkbox" ng-model="ctrl.selectedTerminos"><div class="input-indicator"></div>
             </label>
           </div>
-          <div class="col-md-12 mt">
-            <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ctrl.btnPagar()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
+          <br>
+          <div class="col-sm-12 mt">
+            <button class="btn-lg btn btn-success btn-ef btn-ef-5 btn-ef-5b mb-10 pull-right" ng-click="ctrl.btnPagar()"><i class="fa fa-dollar"></i> <span>{{ 'Text.PAGAR' | translate }}</span></button>
           </div>
         </div>
         <!-- GALERIA RESUMEN -->
