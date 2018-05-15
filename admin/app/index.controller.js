@@ -42,9 +42,9 @@
     .factory("handle", function(alertify){
       var handle = {
         error: function (error) {
-                      return function () {
-                        return {success: false, message: Notification.warning({message: error})};
-                      };
+          return function () {
+            return {success: false, message: Notification.warning({message: error})};
+          };
         },
         success: function (response) {
             //console.log('response.data',response.data);
@@ -62,6 +62,28 @@
         }
       }
       return handle;
+    })
+    .factory("ModalReporteFactory", function($uibModal,$http,pageLoading,rootServices,toastr,handle){
+      var interfazReporte = {
+        getPopupReporte: function(arrParams){
+         console.log('arrParams.datos.salida',arrParams.datos.salida);
+          if( arrParams.datos.salida == 'excel' ){
+            pageLoading.start('Preparando reporte');
+            $http.post(arrParams.url, arrParams.datos).then(function(rpta){
+              pageLoading.stop();
+              var data = rpta.data;
+              console.log('rpta : ',rpta);
+              if(data.flag == 1){
+                window.location = data.urlTempEXCEL;
+              }else if(data.flag == 0){
+                toastr.error('No se pudo generar el reporte', 'Error');
+              }
+
+            },handle.error);
+          }
+        }
+      }
+      return interfazReporte;
     })
     .directive('ngEnter', function() {
     return function(scope, element, attrs) {
@@ -208,7 +230,7 @@
         $scope.valores = [true,true,true,true,true,true,true,true,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 2){ // admin
-        $scope.valores = [false,true,true,false,true,false,false,false,true,true,false,false,false];
+        $scope.valores = [false,true,true,false,true,true,false,false,true,true,false,false,false];
       }
       else if($scope.fSessionCI.idgrupo == 5){ // supervisor
         $scope.valores = [false,true,true,false,false,false,false,false,false,false,false,false,false];

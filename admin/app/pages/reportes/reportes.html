@@ -1,0 +1,79 @@
+<div class="page page-ui pull-to-header">
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">{{'Menu.DASHBOARD' | translate}}</a></li>
+    <li class="active">Reportes</li>
+  </ol>
+  <div class="row">
+    <div class="col-sm-8 col-xs-12">
+      <div class="tile tile-simple">
+        <section class="tile-header bg-info">
+          <h2 class="heading">Reportes</h2>
+
+        </section>
+        <section class="tile-body">
+          <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 heightFixed120" ng-repeat="(key, objDet) in re.listaReportes">
+                <div class="block text-center item-reporte" ng-click="re.selectReport(objDet)" ng-class="{selected: objDet.id == selectedReport.id}">
+                    <div style="text-align: center; display: inline-block; height: auto;">
+                        <i class="fa text-success fa-file-text-o"></i>
+                    </div>
+                    <p class="text-center pl-xs pr-xs" style="padding-bottom: 6px; margin: 4px 0px 0px; line-height: 1;">{{ objDet.titulo }}</p>
+                </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <div class="tile tile-simple">
+        <section class="tile-header bg-info">
+          <h2 class="heading">Filtros</h2>
+
+        </section>
+        <section class="tile-body">
+          <div class="row" ng-hide="re.selectedReport.id">
+              <div class="col-md-12 col-sm-12 col-xs-12 heightFixed120">
+                  <div class="waterMarkEmptyData" style="font-size: 22px;top:42px" > Seleccione un reporte... </div>
+              </div>
+          </div>
+          <!-- <ul class="row demo-btns" ng-show="re.selectedReport.id" style="min-height: 200px;">
+            <li class="col-md-6 col-sm-12 form-group clear"
+                ng-if="re.selectedReport.id=='CLI-EM'">
+                <label> DESDE </label>
+                <div class="input-group" >
+                    <input type="text" class="form-control input-sm" ng-model="fBusqueda.desde" data-inputmask="'alias': 'dd-mm-yyyy'" tabindex="3" style="width: 80px;" />
+                   </div>
+            </li>
+          </ul> -->
+
+          <div class="row" ng-show="re.selectedReport.id" ng-class="{heightFixed330 : re.dateUIDesde.opened || re.dateUIHasta.opened }">
+            <div class="col-lg-6 col-md-12">
+              <label> DESDE </label>
+              <p class="input-group">
+                <input type="text" class="form-control input-sm" uib-datepicker-popup="{{re.dp.format}}" ng-model="re.fBusqueda.desde" is-open="re.dateUIDesde.opened" datepicker-options="re.dp.datePikerOptions" ng-required="true" close-text="Close" alt-input-formats="re.altInputFormats" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="re.dateUIDesde.openDP($event)"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+              <label> HASTA </label>
+              <p class="input-group">
+                <input type="text" class="form-control input-sm" uib-datepicker-popup="{{re.dp.format}}" ng-model="re.fBusqueda.hasta" is-open="re.dateUIHasta.opened" datepicker-options="re.dp.datePikerOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="re.dateUIHasta.openDP($event)"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
+            </div>
+          </div>
+          <div class="row" ng-show="re.selectedReport.id">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="border: 1px solid #f1f3f4;margin-left: 16px;">
+                <button type="button" class="btn btn-primary pull-right m" ng-click="re.btnProcesarReporte();"> <i class="fa fa-refresh"></i> PROCESAR </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

@@ -58,6 +58,13 @@
         controller: 'SeccionController',
         controllerAs: 'se'
       })
+      //reportes
+      .state('reportes', {
+        url: '/app/reportes',
+        templateUrl: 'app/pages/reportes/reportes.html',
+        controller: 'ReportesController',
+        controllerAs: 're'
+      })
       //blog
       .state('blog', {
         url: '/app/blog',

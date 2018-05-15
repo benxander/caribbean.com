@@ -170,6 +170,31 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_clientes_email($datos){
+		$desde = $this->db->escape(darFormatoYMD($datos['fDesde']));
+		$hasta = $this->db->escape(darFormatoYMD($datos['fHasta']));
+		$this->db->select('
+			c.idcliente,
+			c.codigo,
+			c.estado_cl,
+			c.monedero,
+			c.idexcursion,
+			c.paquete,
+			c.email,
+			c.precio_paquete,
+			c.deposito,
+			c.procesado,
+			c.fecha_excursion,
+			ex.descripcion AS excursion
+		');
+		$this->db->from('cliente c');
+		$this->db->join('excursion ex', 'c.idexcursion = ex.idexcursion');
+		$this->db->where('c.estado_cl <>', 0);
+		$this->db->where('c.email IS NOT NULL');
+		$this->db->where('c.fecha_excursion BETWEEN '. $desde.' AND ' . $hasta);
+		$this->db->order_by('c.fecha_excursion', 'ASC');
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_codigos_cliente($datos){
 		$this->db->select('dep.iddependiente, dep.codigo, dep.idcliente');
 		$this->db->from('dependiente dep');
