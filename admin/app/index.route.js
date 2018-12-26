@@ -37,6 +37,13 @@
         controller: 'ClienteController',
         controllerAs: 'c'
       })
+      //acceso-cliente
+      .state('acceso-cliente', {
+        url: '/app/acceso-cliente',
+        templateUrl: 'app/pages/acceso-cliente/acceso-cliente.html',
+        controller: 'AccesoClienteController',
+        controllerAs: 'vm'
+      })
       //excursion
       .state('excursion', {
         url: '/app/excursion',

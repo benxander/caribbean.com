@@ -88,9 +88,14 @@
           paginate : paginationOptions
         };
         UsuarioServices.sListarUsuario(vm.datosGrid).then(function (rpta) {
-          vm.gridOptions.data = rpta.datos;
-          vm.gridOptions.totalItems = rpta.paginate.totalRows;
-          vm.mySelectionGrid = [];
+          if(rpta.flag == 1){
+            vm.gridOptions.data = rpta.datos;
+            vm.gridOptions.totalItems = rpta.paginate.totalRows;
+            vm.mySelectionGrid = [];
+          }else if( rpta.flag == -1 ){
+            $scope.goToUrl('/app/pages/login');
+          }
+
         });
       }
       vm.getPaginationServerSide();

@@ -3,10 +3,11 @@
 class Movimiento extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','otros'));
         $this->load->model(array('model_movimiento','model_cliente','model_email'));
         $this->load->library('Fpdfext');
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->sessionCI = @$this->session->userdata('sess_ci_'.substr(base_url(),-14,9));
     }
 
     public function listar_pedidos(){
@@ -301,7 +302,8 @@ class Movimiento extends CI_Controller {
 		if(envio_email($to, $cc,$asunto, $mensaje, $from)){
 			echo 'Notificación de correo enviada exitosamente.';
 		}else{
-			echo 'Error en envio de correo';
+			// echo 'Error en envio de correo';
+			echo 'Mailer Error: ' . $this->email->print_debugger();
 		}
 	}
 	/* IMPRIMIR */
@@ -509,6 +511,13 @@ class Movimiento extends CI_Controller {
 	}
 	/*PUNTUACION*/
 	public function listar_puntuacion(){
+		if( empty($this->sessionCI) ){
+			$arrData['flag'] = -1;
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
 		$lista = $this->model_movimiento->m_cargar_puntuacion();
 		$arrListado = array();
 		$total = 0;

@@ -16,9 +16,9 @@
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
           if( rpta.datos.procesado == 4 ){
-            $window.location.href = $scope.dirWeb+'admin/#/app/mi-galeria';
+            $window.location.href = $scope.dirWeb+'shop/#/app/my-gallery';
           }else{
-            $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+            $window.location.href = $scope.dirWeb+'shop/#/app/shop';
           }
         }else if(rpta.flag == 0){
           vm.error = true;
@@ -30,9 +30,9 @@
       loginServices.sLoginToSystem(vm.fLogin).then(function(rpta){
         if(rpta.flag == 1){
           if( rpta.datos.procesado == 4 ){
-            $window.location.href = $scope.dirWeb+'admin/#/app/mi-galeria';
+            $window.location.href = $scope.dirWeb+'shop/#/app/my-gallery';
           }else{
-            $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
+            $window.location.href = $scope.dirWeb+'shop/#/app/shop';
           }
           // $scope.goToUrl('/admin');
         }else if(rpta.flag == 0){

@@ -75,13 +75,17 @@
 		    <div class="row">
 	    		<div class="form-group col-md-12">
 		            <label class="control-label minotaur-label">Contenido <small class="text-red">(*)</small> </label>
-		            <text-angular ng-model="mb.fData.descripcion"
-		            ta-toolbar="[
-			            ['h1','h2','h3'],
-			            ['bold','italics','underline'],
-			            ['justifyLeft','justifyCenter','justifyRight'],
-			            ['ul','ol'], ['redo', 'undo'],['html','insertVideo','wordcount', 'charcount']
-		            ]" required></text-angular>
+		            <text-angular
+		            	ng-model="mb.fData.descripcion"
+		            	ta-toolbar="[
+				            ['h1','h2','h3'],
+				            ['bold','italics','underline'],
+				            ['justifyLeft','justifyCenter','justifyRight'],
+				            ['ul','ol'], ['redo', 'undo'],
+				            ['html','insertVideo','wordcount', 'charcount']
+			            ]"
+		            	required
+		            ></text-angular>
 	            </div>
 	    	</div>
 

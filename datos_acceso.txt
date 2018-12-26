@@ -1,0 +1,14 @@
+anexo datos de acceso al servidor FTP y DB MySql para la migración del Sistema.
+
+Goey Shop FTP
+
+ftp.goeypictures.com
+username: goeyshop@goeypictures.com
+Password: Goey$hop2018sp
+
+
+DB
+Servidor: goeypictures.com
+Usuario: goeypictures_shopuser
+Password: Goey$hop2018sp
+Base de datos: goeypictures_goeyshop

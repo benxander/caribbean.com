@@ -1,0 +1,51 @@
+<div class="page page-extra pull-to-header">
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">{{ 'Menu.DASHBOARD' | translate }}</a></li>
+    <li class="active">{{ 'Menu.TIENDA' | translate }}</li>
+  </ol>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile p-15" style="min-height: 400px;" ng-if="pg.modoDescargaCompleta">
+        <section class="tile-header pl-0">
+          <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1>
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="pg.mensajes[2].contenido">
+          </div>
+          <div class="controls">
+          </div>
+        </section>
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <h2 class="text-custom text-center mb-5">{{ 'Text.GRACIAS' | translate }}</h2>
+
+            <!-- <h3 ng-if="!pg.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.CALIFICA' | translate }}</h3>
+            <h3 ng-if="pg.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.GRACIAS_CALIFICA' | translate }}</h3>
+            <div class="rating-stars" ng-if="!pg.modoCalificacionOk" >
+              <span ng-click="pg.calificar(5);" >☆</span>
+              <span ng-click="pg.calificar(4);">☆</span>
+              <span ng-click="pg.calificar(3);">☆</span>
+              <span ng-click="pg.calificar(2);">☆</span>
+              <span ng-click="pg.calificar(1);">☆</span>
+            </div>
+            <div class="rating-stars-calificado" ng-if="pg.modoCalificacionOk" >
+              <span ng-class="{'califica': 1 <= pg.calificacion}">★</span>
+              <span ng-class="{'califica': 2 <= pg.calificacion}">★</span>
+              <span ng-class="{'califica': 3 <= pg.calificacion}">★</span>
+              <span ng-class="{'califica': 4 <= pg.calificacion}">★</span>
+              <span ng-class="{'califica': 5 == pg.calificacion}">★</span>
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+      <div class="tile p-15" style="min-height: 400px;" ng-if="pg.cancelaPago">
+        <section class="tile-header pl-0">
+          <!-- <h1 class="heading">{{ 'Text.COMPRA_EXITOSA' | translate }}</h1> -->
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="pg.mensajes[4].contenido">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

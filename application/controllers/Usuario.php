@@ -4,15 +4,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Usuario extends CI_Controller {
 	public function __construct(){
         parent::__construct();
-        // Se le asigna a la informacion a la variable $sessionVP.
-        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_usuario', 'model_cliente','model_acceso','model_email'));
+        // Se le asigna a la informacion a la variable $sessionVP.
+        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->sessionCI = @$this->session->userdata('sess_ci_'.substr(base_url(),-14,9));
     }
 
     public function listar_usuarios(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
+		if( empty($this->sessionCI) ){
+			$arrData['flag'] = -1;
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
 		$lista = $this->model_usuario->m_cargar_usuario($paramPaginate);
 		$totalRows = $this->model_usuario->m_count_usuario($paramPaginate);
 		$arrListado = array();
@@ -104,7 +112,6 @@ class Usuario extends CI_Controller {
 
 	// MANTENIMIENTO
 	public function registrar_usuario(){
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
@@ -133,7 +140,6 @@ class Usuario extends CI_Controller {
 	}
 
 	public function editar_usuario(){
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;

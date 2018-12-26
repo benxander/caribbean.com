@@ -22,51 +22,55 @@
             <div class="col-sm-12" ng-bind-html="ctrl.mensajes[0].contenido">
             </div>
             <div class="col-md-12 f-18 mb text-info">{{ 'Text.SEL_PRODUCTO' | translate }}</div>
-            <div class="btn-group mb-5" ng-show="ctrl.images.length">
-              <label class="btn btn-default pack" ng-model="ctrl.radioModel" uib-btn-radio="'Pack'" ng-class="{'bg-lightred': ctrl.esPack, 'bg-lightgray':!ctrl.esPack}" ng-click="ctrl.selPaquete()">
-                <div class="">
-                  <div class="col-xs-12">
-                      <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].paquete_pack}}</p>
-                      <p class="text-sm line-sm">{{ctrl.listaExcursiones[0].descripcion}}</p>
+            <div class="row btn-group mb-5" ng-show="ctrl.images.length">
+              <div class="col-xs-6 ficha-paquete">
+                <label class="btn btn-default pack" ng-model="ctrl.radioModel" uib-btn-radio="'Pack'" ng-class="{'bg-lightred': ctrl.esPack, 'bg-lightgray':!ctrl.esPack}" ng-click="ctrl.selPaquete()">
+                  <div class="">
+                    <div class="col-xs-12">
+                        <p class="text-lg line-lg text-strong">{{ctrl.listaExcursiones[0].paquete_pack}}</p>
+                        <p class="text-sm line-sm">{{ctrl.listaExcursiones[0].descripcion}}</p>
+                    </div>
                   </div>
-                </div>
-                <div class="">
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div><i class="fa fa-camera fa-2x va-middle"></i> <i class="fa fa-plus va-middle"></i> <i class="fa fa-video-camera fa-2x va-middle"></i></div>
-                    <div>ALL PHOTOS <br> + VIDEO</div>
+                  <div class="">
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div><i class="fa fa-camera fa-2x va-middle"></i> <i class="fa fa-plus va-middle"></i> <i class="fa fa-video-camera fa-2x va-middle"></i></div>
+                      <div>ALL PHOTOS <br> + VIDEO</div>
+                    </div>
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div><i class="fa fa-usd fa-2x"></i></div>
+                      <div>US$ {{ctrl.listaExcursiones[0].precio_pack}}</div>
+                    </div>
                   </div>
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div><i class="fa fa-usd fa-2x"></i></div>
-                    <div>US$ {{ctrl.listaExcursiones[0].precio_pack}}</div>
+                </label>
+              </div>
+              <div class="col-xs-6 ficha-paquete">
+                <label class="btn btn-default pack" ng-model="ctrl.radioModel" uib-btn-radio="'Sueltas'" ng-class="{'bg-lightred': ctrl.esIndividual, 'bg-lightgray':!ctrl.esIndividual}" ng-click="ctrl.selPaquete()" ng-show="ctrl.listaExcursiones[0].paquete != 1 && !ctrl.listaExcursiones[0].solo_pack">
+                  <div class="">
+                    <div class="col-xs-12">
+                        <p class="text-lg line-lg text-strong">ONE BY ONE</p>
+                        <p class="text-sm line-sm">{{ctrl.listaExcursiones[0].descripcion}}</p>
+                    </div>
                   </div>
-                </div>
-              </label>
-              <label class="btn btn-default pack ml-lg" ng-model="ctrl.radioModel" uib-btn-radio="'Sueltas'" ng-class="{'bg-lightred': ctrl.esIndividual, 'bg-lightgray':!ctrl.esIndividual}" ng-click="ctrl.selPaquete()" ng-show="ctrl.listaExcursiones[0].paquete != 1 && !ctrl.listaExcursiones[0].solo_pack">
-                <div class="">
-                  <div class="col-xs-12">
-                      <p class="text-lg line-lg text-strong">ONE BY ONE</p>
-                      <p class="text-sm line-sm">{{ctrl.listaExcursiones[0].descripcion}}</p>
+                  <div class="">
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div><i class="fa fa-camera fa-2x"></i></div>
+                      <div>ONE PHOTO</div>
+                    </div>
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div><i class="fa fa-usd fa-2x"></i></div>
+                      <div>US$ {{ctrl.listaExcursiones[0].precio_primera}}</div>
+                    </div>
                   </div>
-                </div>
-                <div class="">
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div><i class="fa fa-camera fa-2x"></i></div>
-                    <div>ONE PHOTO</div>
+                  <div class="">
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div>ADDITIONAL</div>
+                    </div>
+                    <div class="col-xs-6 text-center pl-0 pr-0">
+                      <div>US$ {{ctrl.listaExcursiones[0].precio_adicional}}</div>
+                    </div>
                   </div>
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div><i class="fa fa-usd fa-2x"></i></div>
-                    <div>US$ {{ctrl.listaExcursiones[0].precio_primera}}</div>
-                  </div>
-                </div>
-                <div class="">
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div>ADDITIONAL</div>
-                  </div>
-                  <div class="col-xs-6 text-center pl-0 pr-0">
-                    <div>US$ {{ctrl.listaExcursiones[0].precio_adicional}}</div>
-                  </div>
-                </div>
-              </label>
+                </label>
+              </div>
             </div>
           </div>
         </section>

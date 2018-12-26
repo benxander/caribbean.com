@@ -139,8 +139,12 @@
           datos: vm.fBusqueda
         };
         ClienteServices.sListarCliente(vm.datosGrid).then(function (rpta) {
-          vm.gridOptions.data = rpta.datos;
-          vm.gridOptions.totalItems = rpta.paginate.totalRows;
+          if(rpta.flag == 1){
+            vm.gridOptions.data = rpta.datos;
+            vm.gridOptions.totalItems = rpta.paginate.totalRows;
+          }else if( rpta.flag == -1 ){
+            $scope.goToUrl('/app/pages/login');
+          }
           vm.mySelectionGrid = [];
           if(loader){
             tileLoading.stop();
@@ -637,11 +641,11 @@
         uploader.onBeforeUploadItem = function(item) {
             item.formData.push({
               idcliente: vm.fDataUpload.idcliente,
-              idusuario: vm.fDataUpload.idusuario,
-              nombres: vm.fDataUpload.nombres,
-              apellidos: vm.fDataUpload.apellidos,
+              // idusuario: vm.fDataUpload.idusuario,
+              // nombres: vm.fDataUpload.nombres,
+              // apellidos: vm.fDataUpload.apellidos,
               codigo: vm.fDataUpload.codigo,
-              idexcursioncliente: vm.fDataUpload.idexcursioncliente,
+              // idexcursioncliente: vm.fDataUpload.idexcursioncliente,
             });
             //console.info('onBeforeUploadItem', item);
         };

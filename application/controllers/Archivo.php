@@ -107,6 +107,7 @@ class Archivo extends CI_Controller {
 				)
 			);
 		}
+    	$arrData['datos_solo_fotos'] = $arrListado;
 		if( $bool_video ){
 			array_push($arrListado,
 				array(
@@ -122,6 +123,55 @@ class Archivo extends CI_Controller {
 		if(empty($lista)){
 			$arrData['flag'] = 0;
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function comprimir_seleccionados()
+	{
+		ini_set("memory_limit","2G");
+		$arrData['flag'] = 0;
+		$arrData['datos'] = NULL;
+		$arrData['message'] = 'Ocurrió un error';
+
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+
+		// var_dump($allInputs); exit();
+		$cod_usuario = $allInputs[0]['codigo_usuario'];
+		$zip = new ZipArchive();
+		$filename = './uploads/clientes/'. $cod_usuario .'/'. $cod_usuario .'.zip';
+
+		if( $zip->open($filename,ZipArchive::CREATE) === TRUE ){
+			foreach ($allInputs as $row) {
+				if( $row['selected'] ){
+					$ruta = './uploads/clientes/'. $cod_usuario .'/descargadas/'. $row['nombre_archivo'] ;
+					$zip->addFile($ruta,$row['nombre_archivo']);
+				}
+			}
+			$zip->close();
+		}else{
+			$arrData['message'] = 'Ocurrió un error';
+
+		}
+		if( file_exists($filename) ){
+			$arrData['message'] = 'Zip creado';
+			$arrData['flag'] = 1;
+			$arrData['datos'] = array(
+				'zip' => '../uploads/clientes/'. $cod_usuario .'/'. $cod_usuario .'.zip',
+				'nombre' => $cod_usuario .'.zip'
+			);
+			/*header('Content-Type: application/zip');
+			header('Content-disposition: attachment; filename='.$filename);
+			header('Content-Length: ' . filesize($filename));
+			readfile($filename);
+			return;*/
+		}else{
+			$arrData['message'] = 'No existe el zip';
+
+		}
+
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

@@ -74,6 +74,7 @@
       pageLoading.start('Loading Shop...');
       TiendaServices.sListarNoDescargados(datos).then(function(rpta){
         vm.images = rpta.datos;
+        vm.imagesFotos = rpta.datos_solo_fotos;
         pageLoading.stop();
       });
     }
@@ -463,8 +464,9 @@
             vm.contenido = rpta.datos.contenido;
           });
           vm.aceptar = function(){
-            // console.log('fData',vm.fData);
+            pageLoading.start('Sending...');
             TiendaServices.sEnviarEmailOferta(vm.fData).then(function(rpta){
+              pageLoading.stop();
               if(rpta.flag == 1){
                 var title = 'OK';
                 var type = 'success';
@@ -505,7 +507,7 @@
         scope: $scope,
         controller: function($scope, $uibModalInstance, arrToModal ){
           var vm = this;
-          vm.images = arrToModal.scope.images;
+          vm.images = arrToModal.scope.imagesFotos;
           vm.tipo_seleccion = 1;
           vm.modalTitle = 'Selecciona Fotografía';
           vm.selectFoto = function(imagen, index){

@@ -71,12 +71,16 @@
       }
       pageLoading.start('Loading...');
       TiendaServices.sDescargarArchivosPagados(datos).then(function(rpta){
+        pageLoading.stop();
         if(rpta.flag == 1){
           vm.modoDescargaCompleta=true;
           vm.limpiar();
           var title = 'OK';
           var type = 'success';
           toastr.success(rpta.message, title);
+          $timeout(function() {
+            $window.location.href = $scope.dirBase+'admin/#/app/mi-galeria';
+          },2000);
         }else if(rpta.flag == 0){
           var title = 'Warning';
           var type = 'warning';
@@ -84,7 +88,6 @@
         }else{
           alert('Error inesperado');
         }
-        pageLoading.stop();
       });
     }
     vm.calificar = function(value){

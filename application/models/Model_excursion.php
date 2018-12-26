@@ -83,21 +83,7 @@ class Model_excursion extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
-	/*public function m_cargar_paquetes($datos){
-		$this->db->select('pq.idpaquete, pq.idexcursion, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_exc_pq, pq.es_base, pq.titulo_pq');
-		$this->db->from('paquete pq');
-		$this->db->where('idexcursion', $datos['idexcursion']);
-		if($this->sessionCP['key_grupo'] != 'key_cliente'){
-			$this->db->where('es_base', 2);
-		}
-		return $this->db->get()->result_array();
-	}
-	public function m_cargar_paquetes_por_excursion($datos){
-		$this->db->select('pq.idpaquete, pq.idexcursion, pq.porc_cantidad, pq.porc_monto, pq.cantidad, pq.monto, pq.estado_exc_pq, pq.es_base, pq.titulo_pq');
-		$this->db->from('paquete pq');
-		$this->db->where('idexcursion', $datos['idexcursion']);
-		return $this->db->get()->result_array();
-	}*/
+
 	public function m_cargar_excursion_cliente_sesion(){
 		$this->db->select('
 			exc.idexcursion,
@@ -115,7 +101,6 @@ class Model_excursion extends CI_Model {
 		$this->db->from('excursion exc');
 		$this->db->join('cliente c', 'exc.idexcursion = c.idexcursion');
 		$this->db->where('c.idcliente', $this->sessionCP['idcliente']);
-		// $this->db->where('c.idcliente', $datos['idcliente']);
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_excursiones_cliente($datos){
@@ -153,7 +138,7 @@ class Model_excursion extends CI_Model {
 		$data = array(
 			'estado_exc' => 0,
 			'fecha_anula' => date('Y-m-d H:i:s'),
-			'iduser_anula' => $this->sessionCP['idusuario']
+			'iduser_anula' => $this->sessionCI['idusuario']
 		);
 		$this->db->where('idexcursion',$datos['idexcursion']);
 		return $this->db->update('excursion', $data);

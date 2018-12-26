@@ -119,7 +119,7 @@ class Model_archivo extends CI_Model {
 			'fecha' => $data['fecha'],
 			'size' => $data['size'],
 			'estado' => 1,
-		 );
+		);
 		return $this->db->insert('excursion_video', $datos);
 	}
 

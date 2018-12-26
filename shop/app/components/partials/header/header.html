@@ -1,0 +1,79 @@
+<div class="navbar-header">
+  <!-- <button type="button" class="header-nav-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false" aria-controls="header-navbar">
+    <span class="sr-only">Toggle header</span>
+    <i class="fa fa-cog"></i>
+  </button> -->
+  <a class="navbar-brand" ui-sref="dashboard">
+    <img class="mb" src="../assets/images/logo-dark.png" alt="{{empresaNombre}}">
+    <!-- <span><strong>MIN</strong>OTAUR</span> -->
+  </a>
+  <button type="button" class="navigation-toggle" id="navigation-toggle">
+    <span class="sr-only">Toggle navigation</span>
+    <i class="fa fa-bars"></i>
+  </button>
+</div>
+<div class="main-search hidden-xs" ng-if="fSessionCI.key_grupo == 'key_root'">
+  <form>
+    <input type="text" class="form-control" placeholder="Buscar cliente..." ng-model="fBusqueda">
+    <button class="btn" ng-click="buscarPaciente(fBusqueda);">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+</div>
+<div id="header-navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav navbar-right">
+
+
+    <li ng-if="fSessionCI.key_grupo == 'key_cliente'" ><div class="text-white f-18 pt-sm">{{ 'Text.SELECCIONADAS' | translate }}: {{seleccionadas}}</div></li>
+    <li ng-if="fSessionCI.key_grupo == 'key_cliente'" ><div class="text-white pt-sm"><i class="fa fa-shopping-cart fa-2x va-middle" uib-tooltip="Cart" tooltip-placement="bottom" ></i> : US$ <span class="f-18 va-middle">{{monto_cesta}}</span></div></li>
+
+    <li ng-if="fSessionCI.monedero"><div class="text-white pt-sm"><i class="fa fa-money fa-2x va-middle" uib-tooltip="Balance" tooltip-placement="bottom"></i> : US$ <span class="f-18 va-middle">{{saldo}}</span></div></li>
+
+
+    <li>
+      <div uib-dropdown>
+        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
+          <img ng-src="assets/images/dinamic/clientes/{{fSessionCI.nombre_foto}}" class="img-responsive img-circle hidden-xs" alt="" style="border: 1px solid #c6efff;">
+          <span class="nav-text"><i class="fa fa-user"></i> </span>
+        </button>
+        <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
+          <div class="media">
+            <div class="media-left">
+              <img class="media-object img-circle" ng-src="assets/images/dinamic/clientes/{{fSessionCI.nombre_foto}}" alt="">
+            </div>
+            <div class="media-body">
+              <h4 class="text-sm uppercase-bold">{{fSessionCI.cliente}}</h4>
+              <a >{{fSessionCI.email}}</a>
+              <ul class="list-unstyled">
+                <!-- <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
+                <li><a href="javascript:;"><i class="fa fa-check"></i> Tasks</a></li>
+                <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="footer">
+            <button class="btn btn-theme minotaur-btn" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> {{ 'Text.LOGOUT' | translate }} </button>
+            <!-- <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button> -->
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- <li>
+      <div>
+        <button id="rightbar" type="button" class="btn">
+          <i class="fa fa-outdent"></i>
+          <span class="nav-text">Toggle Rightbar</span>
+        </button>
+      </div>
+    </li> -->
+  </ul>
+</div>
+<div class="header-cliente">
+    <ul class="">
+      <li ng-if="fSessionCI.key_grupo == 'key_cliente'" ><div class="text-white f-18 mr">{{ 'Text.SELECCIONADAS' | translate }}: {{seleccionadas}}</div></li>
+      <li ng-if="fSessionCI.key_grupo == 'key_cliente'" ><div class="text-white mr"><i class="fa fa-shopping-cart fa-2x va-middle" uib-tooltip="Cart" tooltip-placement="bottom" ></i> : US$ <span class="f-18 va-middle">{{monto_cesta}}</span></div></li>
+
+      <li ng-if="fSessionCI.monedero"><div class="text-white mr"><i class="fa fa-money fa-2x va-middle" uib-tooltip="Balance" tooltip-placement="bottom"></i> : US$ <span class="f-18 va-middle">{{saldo}}</span></div></li>
+    </ul>
+</div>

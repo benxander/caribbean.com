@@ -107,10 +107,11 @@ class Compra extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$allInputs['idcliente'] = md5($allInputs['imagen']['idcliente']);
 		$allInputs['idarchivo'] = md5($allInputs['imagen']['idarchivo']);
-		// var_dump($allInputs); exit();
 		$url = base_url() . 'verification?c=' . $allInputs['idcliente'] . '&f=' . $allInputs['idarchivo'];
 		$rowMensaje = $this->model_mensaje->m_cargar_mensaje_por_id(6); // 6: EMAIL DE OFERTA
 		$mensaje = $rowMensaje['contenido'];
+		// var_dump($allInputs); var_dump($url);
+		// exit();
 		$mensaje .= '<br>';
 		$mensaje .= '<a href="' . $url . '">CLICK HERE</a>' ;
 		$mensaje .= '<br>';
@@ -118,11 +119,15 @@ class Compra extends CI_Controller {
 		$to = $allInputs['email'];
 		$cc = CORREO;
 		$asunto = 'Free Photo Verification';
-
-		if(envio_email($to, $cc, $asunto, $mensaje, $from)){
+		$envio = envio_email($to, $cc, $asunto, $mensaje, $from);
+		// var_dump($envio); exit();
+		if($envio){
 			if($this->model_cliente->m_actualizar_email($allInputs)){
 				$arrData['message'] = 'An email was sent for verification.';
 				$arrData['flag'] = 1;
+			}else{
+				$arrData['message'] = 'Error update';
+				$arrData['flag'] = 0;
 			}
 
 		}else{

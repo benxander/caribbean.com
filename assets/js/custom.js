@@ -57,7 +57,7 @@
                         id: "mobile-menu",
                         class: ""
                     }).insertAfter("#header");
-					$("#mobile-menu > li > a").addClass("waves");
+					$("#mobile-menu > li > a").addClass("waves fancybox");
                     $("#mobile-menu li").each(function() {
                         if ($(this).hasClass('dropdown') || $(this).hasClass('megamenu')) {
                             $(this).append('<span class="arrow"></span>');
@@ -215,6 +215,6 @@
 		mobile_menu();
 		// image_box();
 		// equal_height();
-		full_screen();
+		// full_screen();
 	});
 })(window.jQuery);

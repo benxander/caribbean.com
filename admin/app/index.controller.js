@@ -194,15 +194,15 @@
     };
 
     $scope.btnLogoutToSystem = function () {
-      var esCliente = ($scope.fSessionCI.idgrupo == 3)? true : false;
+      // var esCliente = ($scope.fSessionCI.idgrupo == 3)? true : false;
       rootServices.sLogoutSessionCI().then(function () {
         $scope.fSessionCI = {};
-        $scope.seleccionadas = 0;
+        // $scope.seleccionadas = 0;
         $scope.logOut();
         // if(esCliente){
-          $window.location.href = $scope.dirBase;
+          // $window.location.href = $scope.dirBase;
         // }else{
-          // $scope.goToUrl('/app/pages/login');
+          $scope.goToUrl('/app/pages/login');
         // }
       });
     };
@@ -238,48 +238,36 @@
       else if($scope.fSessionCI.idgrupo == 4){ // operador
         $scope.valores = [false,true,false,false,false,false,false,false,false,false,false,false,false];
       }
-      else if($scope.fSessionCI.idgrupo == 3){ // cliente
+      /*else if($scope.fSessionCI.idgrupo == 3){ // cliente
         if( $scope.fSessionCI.procesado == 4 ){ // completo
           $scope.valores = [false,false,false,false,false,false,false,false,false,false,false,true,false];
         }else{
           $scope.valores = [false,false,false,false,false,false,false,false,false,false,true,true,false];
         }
-      }
+      }*/
       else{
         console.log('No tiene grupo');
         $scope.valores = [false,false,false,false,false,false,false,false,false,false];
       }
     }
     $scope.getValidateSession = function () {
-      var esCliente = false;
-      if(angular.isObject($scope.fSessionCI)){
-        esCliente = ($scope.fSessionCI.idgrupo == 3)? true : false;
-      }
       rootServices.sGetSessionCI().then(function (response) {
         if(response.flag == 1){
           $scope.fSessionCI = response.datos;
           $scope.logIn();
-          if( $location.path() == '/app/pages/login' && !esCliente ){
+          if( $location.path() == '/app/pages/login' ){
+            console.log('me dirijo a cliente');
             $scope.goToUrl('/app/cliente');
-          }else if(($location.path() == '/app/pages/login' || $location.path() == '/app/dashboard') && esCliente){
-            if($scope.fSessionCI.procesado == 4){
-              console.log('completo');
-              $scope.goToUrl('/app/mi-galeria');
-            }else{
-              $scope.goToUrl('/app/tienda');
-              console.log('incompleto');
-            }
+          }else{
+            console.log('no entro ');
           }
           $scope.CargaMenu();
           $scope.saldo = $scope.fSessionCI.monedero;
         }else{
           $scope.fSessionCI = {};
           $scope.logOut();
-          if(esCliente){
-            $window.location.href = $scope.dirBase;
-          }else{
-            $scope.goToUrl('/app/pages/login');
-          }
+          $scope.goToUrl('/app/pages/login');
+
         }
       });
 
@@ -298,7 +286,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Acceso/logoutSessionCI",
+            url :  angular.patchURLCI + "Acceso/logoutSessionAdmCI",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -307,7 +295,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Acceso/getSessionCI",
+            url :  angular.patchURLCI + "Acceso/getSessionAdmCI",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

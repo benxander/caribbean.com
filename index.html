@@ -2,20 +2,22 @@
 <html  lang="en" ng-app="caribbean" ng-controller="MainController as vm">
 <head>
 	<meta charset="utf-8">
+	<meta name="title" content="GOEY PICTURES">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
 	<meta name="keywords" content="{{dataWeb.keywords}}">
 	<!-- <meta name="description" content="{{dataWeb.descripcion_we}}"> -->
-	<meta name="description" content="Goey Studios Punta Cana">
+	<meta name="description" content="Goey Studio Emotions Catchers - Punta Cana">
 	<!-- <base href="{{dirWeb}}"> -->
-	<title ng-bind="dataWeb.titulo_we"></title>
+	<title>GOEY PICTURES - Emotions Catchers - Punta Cana</title>
+	<!-- <title ng-bind="dataWeb.titulo_we"></title> -->
 	<!-- FAVICON AND APPLE TOUCH -->
 	<link rel="shortcut icon" href="assets/images/favicon.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-180x180.png">
 	<meta name="msapplication-TileImage" content="assets/images/mstile.png">
 	<meta name="msapplication-TileColor" content="#1574a6">
 	<meta name="theme-color" content="#1574a6">
-
+	<link rel="canonical" href="https://www.goeypictures.com/goeyshop/" />
 	<style type="text/css">
 		.preloader-wrapper{
 		  position: fixed;
@@ -77,13 +79,21 @@
 		    background-color: none;
 		}
 	</style>
+	<!-- jQUERY -->
+	<script src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+	<!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<script src="admin/bower_components/angular/angular.min.js"></script>
+	<script src="admin/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
 
 </head>
 <body  id="home" class="sticky-header header-white" data-spy="scroll" data-target=".navbar_cp" data-offset="80" >
-	<div class="preloader-wrapper">
+	<!-- <div class="preloader-wrapper">
       <div class="loader"></div>
-    </div>
+		<h1 style="color: white"><small>Goey Pictures Emotions Catchers at Punta Cana</small></h1>
+    </div> -->
 	<div id="main-container">
 		<!-- HEADER -->
 		<header id="header">
@@ -96,9 +106,6 @@
 						</div><!-- LOGO -->
 					</div><!-- col -->
 					<div class="col-sm-7">
-						<div id="terminos" style="display:none;width:100%;" ng-include="'templates/seccion/terminos.html'"></div>
-						<div id="preguntas" style="display:none;width:100%;" ng-include="'templates/seccion/preguntas.html'"></div>
-						<div id="aviso" style="display:none;width:100%;" ng-include="'templates/seccion/aviso-legal.html'"></div>
 						<!-- MENU -->
 						<nav class="navbar_cp" data-offset-top="80">
 							<a id="mobile-menu-button" class="waves" href="#"><i class="fa fa-bars"></i></a>
@@ -121,8 +128,12 @@
 				</div>
 			</div>
 		</header>
+		<div id="terminos" style="display:none;width:100%;" ng-include="'templates/seccion/terminos.html'"></div>
+		<div id="preguntas" style="display:none;width:100%;" ng-include="'templates/seccion/preguntas.html'"></div>
+		<div id="aviso" style="display:none;width:100%;" ng-include="'templates/seccion/aviso-legal.html'"></div>
 		<!-- PAGE CONTENT -->
 		<!-- <div ng-show="!pageInicio" ng-include="ruta"></div> -->
+		<h1 style="color: white"><small>Goey Pictures Emotions Catchers at Punta Cana</small></h1>
 		<div ng-view></div>
 
 
@@ -186,8 +197,9 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 
 	<!-- CUSTOM & PAGES STYLE -->
-	<link rel="stylesheet" href="assets/css/custom.css">
-	<link rel="stylesheet" href="assets/css/pages-style.css">
+	<link rel="stylesheet" href="assets/css/custom.min.css">
+	<!-- <link rel="stylesheet" href="assets/css/custom.min.css"> -->
+	<link rel="stylesheet" href="assets/css/pages-style.min.css">
 
 	<!-- FANCYBOX -->
 	<link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.css">
@@ -197,13 +209,7 @@
 	<!-- SCROLL UP -->
 	<a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>
 
-	<!-- jQUERY -->
-	<script src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-	<!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
-	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-	<script src="admin/bower_components/angular/angular.min.js"></script>
-	<script src="admin/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<!-- <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.1.min.js"></script> -->
 	<script src="bower_components/angular-route/angular-route.min.js"></script>
 	<!-- <script src="bower_components/angular-cookies/angular-cookies.js"></script> -->
@@ -214,10 +220,10 @@
 	<!-- <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script> -->
 
 	<!-- VIEWPORT -->
-	<script src="assets/plugins/viewport/jquery.viewport.js"></script>
+	<script src="assets/plugins/viewport/jquery.viewport.min.js"></script>
 
 	<!-- MENU -->
-	<script src="assets/plugins/menu/hoverIntent.js"></script>
+	<script src="assets/plugins/menu/hoverIntent.min.js"></script>
 	<script src="assets/plugins/menu/superfish.js"></script>
 
 	<!-- FANCYBOX -->
@@ -225,16 +231,17 @@
 
 	<!-- CUSTOM JS -->
 
-	<script src="assets/js/custom.js"></script>
+	<!-- <script src="assets/js/custom.js"></script> -->
+	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/config.js"></script>
 	<script src="assets/js/index.module.js"></script>
-	<script src="assets/js/index.config.js"></script>
-	<script src="assets/js/index.controller.js"></script>
+	<script src="assets/js/index.config.min.js"></script>
+	<script src="assets/js/index.controller.min.js"></script>
 	<script src="assets/js/index.constants.js"></script>
 
 
-	<script src="assets/js/controllers/Login.js"></script>
-	<script src="assets/js/controllers/Verifica.js"></script>
+	<script src="assets/js/controllers/Login.min.js"></script>
+	<script src="assets/js/controllers/Verifica.min.js"></script>
 
 </body>
 </html>

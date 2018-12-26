@@ -5,11 +5,10 @@ class Excursion extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        // Se le asigna a la informacion a la variable $sessionCP.
-        $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->load->helper(array('fechas','imagen','otros'));
         $this->load->model(array('model_excursion'));
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
+        $this->sessionCI = @$this->session->userdata('sess_ci_'.substr(base_url(),-14,9));
     }
     public function listar_excursion_cbo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -38,6 +37,14 @@ class Excursion extends CI_Controller {
 	public function listar_excursiones(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
+		if( empty($this->sessionCI) ){
+			$arrData['flag'] = -1;
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
 		$lista = $this->model_excursion->m_cargar_excursiones($paramPaginate);
 		$totalRows = $this->model_excursion->m_count_excursiones($paramPaginate);
 		$arrListado = array();
@@ -177,7 +184,6 @@ class Excursion extends CI_Controller {
 
 	// MANTENIMIENTO
 	public function registrar_excursion()	{
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
@@ -205,7 +211,7 @@ class Excursion extends CI_Controller {
     		'precio_adicional' => empty($allInputs['precio_adicional'])?NULL:$allInputs['precio_adicional'],
     		'createdat' => date('Y-m-d H:i:s'),
     		'updatedat' => date('Y-m-d H:i:s'),
-    		'iduser_reg' => $this->sessionCP['idusuario']
+    		'iduser_reg' => $this->sessionCI['idusuario']
     	);
     	// print_r($data); exit();
     	$idexcursion = $this->model_excursion->m_registrar($data);
@@ -218,7 +224,6 @@ class Excursion extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 	public function editar_excursion()	{
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
@@ -265,7 +270,6 @@ class Excursion extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 	public function registrar_paquetes()	{
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
@@ -299,7 +303,6 @@ class Excursion extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 	public function editar_paquete()	{
-		// $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;

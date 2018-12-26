@@ -6723,6 +6723,7 @@
 
 	.widget-social .social-media {
 		margin-bottom: 0;
+		position: relative!important;
 	}
 
 /* By Ruben Guevara rguevarac@hotmail.es */
@@ -7311,4 +7312,11 @@ body{top:0px!important;}
 }
 .modal-dialog{
 	margin: 130px auto!important;
+}
+@media screen and (min-height: 900px) {
+	#footer-container{
+		position: absolute;
+	    width: 100%;
+	    bottom: 0;
+	}
 }

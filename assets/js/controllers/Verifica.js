@@ -10,7 +10,7 @@
     vm.empresaNombre = empresaNombre;
     vm.fData = {};
     vm.error = false;
-    vm.uri = 'tienda';
+    vm.uri = 'shop';
     vm.counter = 10;
     // console.log('loc',$location);
     if($routeParams.c && $routeParams.f ){
@@ -19,14 +19,14 @@
       verificaServices.sVerificaEmail(vm.fData).then(function(rpta){
         if(rpta.flag == 1){
           vm.fData.mensaje = rpta.message;
-          vm.uri = 'mi-galeria';
+          vm.uri = 'my-gallery';
           vm.class = 'success';
           // $window.location.href = $scope.dirWeb+'admin/#/app/tienda';
           // $scope.goToUrl('/admin');
         }else if(rpta.flag == 0){
           vm.error = true;
           vm.fData.mensaje = rpta.message;
-          vm.uri = 'tienda';
+          vm.uri = 'shop';
           vm.class = 'danger';
         }else{
           alert('Sistema detenido');
@@ -36,14 +36,14 @@
             mytimeout = $timeout($scope.onTimeout,1000);
             if( vm.counter <= 0 ){
               $timeout.cancel(mytimeout);
-              $window.location.href = $scope.dirWeb + 'admin/#/app/' + vm.uri;
+              $window.location.href = $scope.dirWeb + 'shop/#/app/' + vm.uri;
             }
         }
         var mytimeout = $timeout($scope.onTimeout,1000);
 
         vm.redirige = function(){
             $timeout.cancel(mytimeout);
-            $window.location.href = $scope.dirWeb + 'admin/#/app/' + vm.uri;
+            $window.location.href = $scope.dirWeb + 'shop/#/app/' + vm.uri;
         }
       });
     }

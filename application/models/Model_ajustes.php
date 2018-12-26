@@ -24,4 +24,10 @@ class Model_ajustes extends CI_Model {
 		$this->db->order_by('dias ASC');
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_ajuste_dias(){
+		$this->db->select("idajuste, dias");
+		$this->db->from('ajuste');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 }

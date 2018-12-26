@@ -538,13 +538,13 @@
 	#mobile-menu-button {
 		float: right;
 		display: none;
-		width: 42px;
-		height: 42px;
+		width: 32px;
+		height: 32px;
 		border-radius: 5px;
-		background-color: #1574a6;
+		background-color: #27baff;
 		color: #fff;
-		font-size: 24px;
-		line-height: 46px;
+		font-size: 20px;
+		line-height: 30px;
 		text-align: center;
 		text-decoration: none;
 	}
@@ -554,7 +554,7 @@
 		list-style: none;
 		display: none;
 		margin: 0;
-		background-color: #1574a6;
+		background-color: #27baff;
 		color: #fff;
 	}
 

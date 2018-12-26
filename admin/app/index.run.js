@@ -9,7 +9,6 @@
   function runBlock($log, $rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-
     var unregister = $rootScope.$on('$stateChangeSuccess', function(event, toState) {
       event.targetScope.$watch('$viewContentLoaded', function () {
         angular.element('html, body, #content').animate({ scrollTop: 0 }, 200);

@@ -18,7 +18,7 @@ class Model_usuario extends CI_Model {
 		// $this->db->join('idioma id','id.ididioma = u.ididioma');
 		$this->db->from('usuario u');
 		$this->db->where('u.estado_us <>', 0);
-		if($this->sessionCP['key_grupo'] != 'key_root'){
+		if($this->sessionCI['key_grupo'] != 'key_root'){
 			$this->db->where_not_in('u.idgrupo', array(1,3));
 		}
 		if($paramPaginate){

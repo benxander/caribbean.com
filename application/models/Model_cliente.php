@@ -210,7 +210,15 @@ class Model_cliente extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_cliente_por_sesion(){
-		$this->db->select('c.idcliente, c.estado_cl, c.monedero, c.createdat as fecha_creacion, c.codigo, c.procesado');
+		$this->db->select('
+			c.idcliente,
+			c.estado_cl,
+			c.monedero,
+			c.createdat as fecha_creacion,
+			c.codigo,
+			c.procesado,
+			c.verifica_email
+		');
 		$this->db->from('cliente c');
 		// $this->db->join('usuario u','u.idusuario = c.idusuario');
 		$this->db->where('c.estado_cl', 1);
@@ -235,7 +243,7 @@ class Model_cliente extends CI_Model {
 			'codigo'	 => $data['codigo'],
 			'monedero' 	 => empty($data['monedero']) ? '0' : (float)$data['monedero'],
 			'deposito' 	 => empty($data['monedero']) ? '0' : (float)$data['monedero'],
-			'iduser_reg'  => $this->sessionCP['idusuario'],
+			'iduser_reg'  => $this->sessionCI['idusuario'],
 			'createdat'  => date('Y-m-d H:i:s'),
 			'updatedat'  => date('Y-m-d H:i:s'),
 			'idexcursion'	=> $data['excursion']['id'],
@@ -408,5 +416,144 @@ class Model_cliente extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	/**
+	 * Lista los clientes cuya fecha de excursion fue hace $dias dias y
+	 * que ya no deberian estar en el sistema.
+	 *
+	 * @param  string $dias
+	 * @return array
+	 */
+	public function m_clientes_para_eliminar($dias)
+	{
+		$this->db->select('
+			c.idcliente,
+			c.codigo,
+			c.fecha_excursion
+		');
+		$this->db->from('cliente c');
+		$this->db->where('DATEDIFF(CURDATE(), c.fecha_excursion) > '. $dias);
+		$this->db->where('estado_cl', '1');
+		return $this->db->get()->result_array();
+	}
+	/**
+	 * Lista de clientes con la cantidad de sesiones realizadas y la ultima fecha de acceso
+	 *
+	 * @return [type] [description]
+	 */
+	public function m_listar_sesiones_cliente($paramPaginate,$paramDatos)
+	{
+		$this->db->select("
+			cli.idcliente,
+			cli.codigo,
+			cli.email,
+			cli.fecha_excursion,
+			cli.idexcursion,
+			ex.descripcion AS excursion,
+			MAX(cs.fecha_hora) AS fecha,
+			count(*) cantidad
+		",FALSE);
+		$this->db->from('cliente cli');
+		$this->db->join('cliente_sesion cs', 'cli.idcliente = cs.idcliente');
+		$this->db->join('excursion ex', 'cli.idexcursion = ex.idexcursion');
+		if( $paramDatos['filtroExcursiones']['id'] != 0 ){
+			$this->db->where('cli.idexcursion', $paramDatos['filtroExcursiones']['id']);
+		}
 
+		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
+			foreach ($paramPaginate['searchColumn'] as $key => $value) {
+				if(! empty($value)){
+					$this->db->like($key ,strtoupper($value) ,FALSE);
+				}
+			}
+		}
+		$this->db->group_by('cli.idcliente');
+		$this->db->group_by('ex.idexcursion');
+
+		if( $paramPaginate['sortName'] ){
+			$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
+		}
+
+		if( $paramPaginate['firstRow'] || $paramPaginate['pageSize'] ){
+			$this->db->limit($paramPaginate['pageSize'],$paramPaginate['firstRow'] );
+		}
+
+
+
+		return $this->db->get()->result_array();
+	}
+	public function m_count_sesiones_cliente($paramPaginate,$paramDatos)
+	{
+		$this->db->select("
+			cli.idcliente,
+			cli.codigo,
+			cli.email,
+			cli.fecha_excursion,
+			cli.idexcursion,
+			ex.descripcion AS excursion,
+			MAX(cs.fecha_hora) AS fecha,
+			count(*) cantidad
+		",FALSE);
+		$this->db->from('cliente cli');
+		$this->db->join('cliente_sesion cs', 'cli.idcliente = cs.idcliente');
+		$this->db->join('excursion ex', 'cli.idexcursion = ex.idexcursion');
+		if( $paramDatos['filtroExcursiones']['id'] != 0 ){
+			$this->db->where('cli.idexcursion', $paramDatos['filtroExcursiones']['id']);
+		}
+
+		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
+			foreach ($paramPaginate['searchColumn'] as $key => $value) {
+				if(! empty($value)){
+					$this->db->like($key ,strtoupper($value) ,FALSE);
+				}
+			}
+		}
+		$this->db->group_by('cli.idcliente');
+		$this->db->group_by('ex.idexcursion');
+		$subQuery = $this->db->get_compiled_select();
+
+		$this->db->select('COUNT(*) AS contador');
+		$this->db->from('('.$subQuery .') as foo');
+
+
+		$this->db->limit(1);
+		$fData = $this->db->get()->row_array();
+		return $fData;
+	}
+
+	public function m_listar_detalle_sesiones($paramPaginate, $paramDatos)
+	{
+		$this->db->select("
+			idclientesesion,
+			idcliente,
+			DATE_FORMAT(fecha_hora,'%d-%m-%Y') AS fecha,
+			DATE_FORMAT(fecha_hora,'%H:%i:%s') AS hora,
+			ip
+		",FALSE);
+		$this->db->from('cliente_sesion');
+		$this->db->where('idcliente', $paramDatos['idcliente']);
+		if( $paramPaginate['sortName'] ){
+			$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
+		}
+		return $this->db->get()->result_array();
+	}
+
+	public function m_listar_detalle_descarga($paramPaginate, $paramDatos)
+	{
+		$this->db->select("
+			idarchivo,
+			nombre_archivo,
+			DATE_FORMAT(fecha_descarga,'%d-%m-%Y') AS fecha_descarga,
+			DATE_FORMAT(fecha_descarga,'%H:%i:%s') AS hora_descarga,
+			es_bonificacion,
+			size
+		",FALSE);
+		$this->db->from('archivo');
+		$this->db->where('idcliente', $paramDatos['idcliente']);
+		$this->db->where('estado_arc', 1);
+		$this->db->where('descargado', 1);
+		if( $paramPaginate['sortName'] ){
+			$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
+		}
+		return $this->db->get()->result_array();
+	}
 }

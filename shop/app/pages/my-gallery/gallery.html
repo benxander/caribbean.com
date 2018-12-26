@@ -1,0 +1,229 @@
+<style type="text/css">
+  .modal-backdrop{display: none!important;}
+  .modal-open{overflow: inherit;}
+</style>
+
+<div class="page page-extra pull-to-header">
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">{{ 'Menu.DASHBOARD' | translate }}</a></li>
+    <li class="active">{{ 'Menu.GALERIA' | translate }}</li>
+  </ol>
+
+
+  <center>
+   <div class="modal-dialog" role="document">
+
+
+
+<div class="alert alert-danger">
+    <strong>Dear Customer!</strong> Your photos will be available on the platform for 30 days. We recommend you download them before that period.<br>
+    <strong>If you dont see the pictures, it maybe in proccess and will be available soon.</strong>
+  </div>
+
+
+
+
+   </div>
+ <!--  <font color="#acacac"><strong>If you dont see the pictures, it maybe in proccess and will be available soon.</strong></font> -->
+</center>
+
+
+
+  <div class="row" ng-show="!ga.calificaBool">
+    <div class="tile p-15">
+      <section class="tile-header row">
+        <div class="col-sm-12">
+          <h1 class="heading mb-md">{{ 'Menu.GALERIA' | translate }}</h1>
+
+          <div class="row">
+            <div class="col-sm-12" ng-bind-html="ga.mensajes[3].contenido">
+          </div>
+          <!-- <p ng-if="!image.es_salida">Haga un pedido de producto.</p> -->
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" ng-click="ga.cargarGaleria(ga.fDataUsuario,true);" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ul class="mix-controls pl-lg">
+        <!-- <li class="select-all">
+          <label class="checkbox minotaur-checkbox inline-block m-0">{{ 'Text.TODOS' | translate }}
+            <input type="checkbox" ng-model="ga.fData.sel" ng-checked="ga.selectedAll" ng-click="ga.selectAll()"><div class="input-indicator"></div>
+          </label>
+        </li>
+
+        <li ng-class="{'disabled': !ga.isSelected, 'active': ga.isSelected}" ng-click='ga.btnDescargarFiles();'>
+          <a href="javascript:;"><i class="fa fa-download" ></i> {{ 'Text.DESCARGAR' | translate }}</a>
+        </li> -->
+        <li class="active-zip" ng-click='ga.btnDescargarZip();'>
+          <a href="javascript:;"><i class="fa fa-download" ></i> ZIP & Download</a>
+        </li>
+        <!-- <li ng-click='ga.btnPedidos();' ng-if="!fSessionCI.es_salida">
+          <a href="javascript:;"><i class="fa fa-gift" ></i> {{ 'Text.MERCHANDISING' | translate }}</a>
+        </li> -->
+      </ul>
+      <div class="row mix-grid">
+        <div class="gallery" ng-mixitup magnific-popup="{
+            delegate: 'a.img-preview',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+              enabled: true,
+              navigateByImgClick: true,
+              preload: [0,1]
+            }
+          }"
+        >
+          <div class="col-md-3 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
+            <div class="img-container" ng-if="image.tipo_archivo == 1">
+              <img class="img-responsive" ng-src="{{image.src_thumb}}" alt="">
+              <div class="img-details-hover" style="float: left;">
+                <div>
+                  <a href="" socialshare
+                  socialshare-provider="facebook"
+                  socialshare-type="feed"
+                  socialshare-via="145634995501895"
+                  socialshare-url="{{image.src_share}}"
+                  socialshare-text="Vacaciones en Punta Cana"
+                  socialshare-hashtags="Caribbean"
+                  socialshare-popup-height="300"
+                  socialshare-popup-width="400"
+                  socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                  <a href="" socialshare
+                    socialshare-provider="twitter"
+                    socialshare-type="sharer"
+                    socialshare-text="Vacaciones en Punta Cana"
+                    socialshare-via="caribbean.com"
+                    socialshare-hashtags="Caribbean"
+                    socialshare-url="{{image.src_share}}"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="img-details-static" style="float: right; position: relative; top: 5px;">
+                <!-- <h4>{{image.title}}</h4> -->
+                <div class="img-controls">
+                  <!-- <a href="javascript:;" class="img-select" ng-click="ga.selectImage($index)">
+                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
+                  </a> -->
+                  <a class="img-preview" href="{{image.src}}" title="View">
+                    <i class="fa fa-search"></i>
+                  </a>
+
+                  <a href="javascript:;" title="Download" ng-click="ga.btnDescargarFile(image)">
+                    <i class="fa fa-download"></i>
+                  </a>
+
+                  <!-- <a class="img-select" ng-if="image.descargado == 1 && !image.es_salida" href="javascript:;" ng-click="ga.btnPedidos(image)" uib-tooltip="Merchandising" tooltip-placement="top">
+                    <i class="fa fa-gift"></i>
+                  </a> -->
+                </div>
+              </div>
+
+            </div>
+            <div class="img-container" ng-if="image.tipo_archivo == 2">
+              <video style="width: 100%; height: auto;" controls>
+                <source src="{{image.src_thumb}}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <div class="img-details-hover" style="float: left;">
+                <div>
+                  <a href="" socialshare
+                  socialshare-provider="facebook"
+                  socialshare-type="url"
+                  socialshare-via="145634995501895"
+                  socialshare-url="{{image.src_share}}"
+                  socialshare-text="Vacaciones en Punta Cana"
+                  socialshare-hashtags="Caribbean"
+                  socialshare-popup-height="300"
+                  socialshare-popup-width="400"
+                  socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                  <a href="" socialshare
+                    socialshare-provider="twitter"
+                    socialshare-type="sharer"
+                    socialshare-text="Vacaciones en Punta Cana"
+                    socialshare-via="caribbean.com"
+                    socialshare-hashtags="Caribbean"
+                    socialshare-url="{{image.src_share}}"
+                    socialshare-popup-height="300"
+                    socialshare-popup-width="400"
+                    socialshare-trigger="click"
+                    class="icon icon-share icon-primary icon-ef-2 icon-ef-2b hover-color">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="img-details-static" style="float: right; position: relative; top: 5px;">
+                <div class="img-controls">
+                  <a href="javascript:;" class="img-select" ng-click="ga.selectImage($index)">
+                    <i class="fa fa-square-o" ng-show="!image.selected"></i>
+                    <i class="fa fa-check-square-o" ng-show="image.selected"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-show="ga.calificaBool">
+    <div class="col-md-12 col-sm-12">
+      <h2 class="text-custom text-center mb-5">{{ 'Text.DESCARGA_EXITOSA' | translate }}</h2>
+      <h3 ng-if="!ga.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.CALIFICA' | translate }}</h3>
+      <h3 ng-if="ga.modoCalificacionOk" class="text-custom text-center text-cyan mt-0">{{ 'Text.GRACIAS_CALIFICA' | translate }}</h3>
+      <div class="rating-stars" ng-if="ga.boolCalificaDisabled" >
+        <span ng-click="ga.calificar(5);" >☆</span>
+        <span ng-click="ga.calificar(4);">☆</span>
+        <span ng-click="ga.calificar(3);">☆</span>
+        <span ng-click="ga.calificar(2);">☆</span>
+        <span ng-click="ga.calificar(1);">☆</span>
+      </div>
+      <div class="rating-stars-calificado" ng-if="!ga.boolCalificaDisabled" >
+        <span ng-class="{'califica': 1 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 2 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 3 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 4 <= ga.calificacion}">★</span>
+        <span ng-class="{'califica': 5 == ga.calificacion}">★</span>
+      </div>
+      <div class="form-group col-sm-12">
+        <label class="text-custom control-label minotaur-label text-cyan">Comments</label>
+        <!-- <textarea ng-model="ga.fData.comentarios" rows="3"></textarea> -->
+        <text-angular
+          ng-model="ga.fDataUsuario.comentarios"
+          ta-toolbar="[
+            ['bold','italics','underline'],
+            ['justifyLeft','justifyCenter','justifyRight'],
+            ['ul','ol'], ['redo', 'undo']
+          ]"
+
+        ></text-angular>
+      </div>
+      <div class="form-group col-sm-12 text-center">
+        <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="ga.boolCalificaDisabled" ng-click="ga.guardarCalificacion()"><i class="fa fa-arrow-right"></i> Send</button>
+      </div>
+    </div>
+  </div>
+</div>

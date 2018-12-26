@@ -98,12 +98,15 @@
           paginate : paginationOptions
         };
         ExcursionServices.sListarExcursiones(vm.datosGrid).then(function (rpta) {
-          vm.gridOptions.data = rpta.datos;
-          vm.gridOptions.totalItems = rpta.paginate.totalRows;
-          vm.mySelectionGrid = [];
-          console.log('$scope.fSessionCI.key_grupo',$scope.fSessionCI.key_grupo);
-          if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
-            vm.gridOptions.columnDefs[7].visible = true;
+          if(rpta.flag == 1){
+            vm.gridOptions.data = rpta.datos;
+            vm.gridOptions.totalItems = rpta.paginate.totalRows;
+            vm.mySelectionGrid = [];
+            if( $scope.fSessionCI.key_grupo == 'key_root' || $scope.fSessionCI.key_grupo == 'key_admin'){
+              vm.gridOptions.columnDefs[7].visible = true;
+            }
+          }else if( rpta.flag == -1 ){
+            $scope.goToUrl('/app/pages/login');
           }
         });
       }

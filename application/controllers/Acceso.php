@@ -10,7 +10,9 @@ class Acceso extends CI_Controller {
 		$this->output->set_header("Pragma: no-cache");
 		// date_default_timezone_set("America/Lima");
 	}
-
+	function info(){
+		return phpinfo();
+	}
 	public function index(){
 		//$this->load->library('encrypt');
 		$allInputs = json_decode(trim(file_get_contents('php://input')),true);
@@ -34,7 +36,7 @@ class Acceso extends CI_Controller {
 
 						$arrPerfilUsuario['cliente'] = $arrPerfilUsuario['username'];
 						$arrPerfilUsuario['email'] = $arrPerfilUsuario['key_grupo'] =='key_admin' ? 'Administrador':'Supremo';
-						$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
+						$this->session->set_userdata('sess_ci_'.substr(base_url(),-14,9),$arrPerfilUsuario);
 						$arrData['flag'] = 1;
 						$arrData['message'] = 'Usuario inició sesión correctamente';
 
@@ -55,6 +57,13 @@ class Acceso extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	/**
+	 * Método que toma el código del cliente ingresado en el login
+	 * y verifica si existe o está activo.
+	 * Si lo encuentra setea la variable de sesion.
+	 *
+	 * @return [type] [description]
+	 */
 	public function acceder_cliente(){
 		$allInputs = json_decode(trim(file_get_contents('php://input')),true);
 		$arrData['flag'] = 0;
@@ -82,6 +91,16 @@ class Acceso extends CI_Controller {
 			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $loggedUser['email'];
 			$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];
 			$this->session->set_userdata('sess_cp_'.substr(base_url(),-14,9),$arrPerfilUsuario);
+
+			// Registramos en la tabla cliente_sesion el acceso del cliente
+			// Agregado 09-08-2018
+			$data = array(
+				'idcliente' => $loggedUser['idcliente'],
+				'fecha_hora'=> date('Y-m-d H:i:s'),
+				'ip'		=> $this->input->ip_address()
+			);
+
+			$this->model_acceso->m_registrar_sesion($data);
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Usuario inició sesión correctamente';
 			$arrData['datos'] = $arrPerfilUsuario;
@@ -106,6 +125,7 @@ class Acceso extends CI_Controller {
 			if( !empty($fila) ){
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['monedero'] = $fila['monedero'];
 				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['procesado'] = $fila['procesado'];
+				$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['verificado'] = $fila['verifica_email'];
 			}
 
 			$arrData['flag'] = 1;
@@ -116,7 +136,38 @@ class Acceso extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	/**
+	 * Metodo para ontener la sesion de un ADMINISTRADOR
+	 *
+	 * @return [type] [description]
+	 */
+	public function getSessionAdmCI(){
+		$arrData['flag'] = 0;
+		$arrData['datos'] = array();
 
+		if( $this->session->has_userdata( 'sess_ci_'.substr(base_url(),-14,9) ) &&
+			!empty($_SESSION['sess_ci_'.substr(base_url(),-14,9) ]['logged']) ){
+
+
+			$arrData['flag'] = 1;
+			$arrData['datos'] = $_SESSION['sess_ci_'.substr(base_url(),-14,9) ];
+		}
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+
+	public function logoutSessionAdmCI(){
+		$this->session->unset_userdata('sess_ci_'.substr(base_url(),-14,9));
+        //$this->cache->clean();
+        $arrData['flag'] = 1;
+		$arrData['datos'] = 'Salida OK';
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function logoutSessionCI(){
 		$this->session->unset_userdata('sess_cp_'.substr(base_url(),-14,9));
         //$this->cache->clean();

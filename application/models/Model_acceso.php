@@ -18,6 +18,13 @@ class Model_acceso extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	/**
+	 * Obtiene los datos del cliente asociado a su código de pulsera
+	 * o al código de la pulsera de un amigo o familiar asociado.
+	 *
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	public function m_logging_cliente($data){
 		$this->db->select('
 			cli.idcliente,
@@ -32,9 +39,14 @@ class Model_acceso extends CI_Model {
 		$this->db->from('cliente cli');
 		$this->db->join('dependiente de', 'cli.idcliente = de.idcliente','left');
 		$this->db->where('cli.estado_cl', 1);
-		$this->db->where("cli.codigo = '".$data['codigo'] . "' OR de.codigo = '".$data['codigo'] . "'" );
+		$this->db->where("(cli.codigo = '".$data['codigo'] . "' OR de.codigo = '".$data['codigo'] . "')" );
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
+	}
+
+	public function m_registrar_sesion($data)
+	{
+		return $this->db->insert('cliente_sesion', $data);
 	}
 }
 ?>
