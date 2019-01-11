@@ -193,7 +193,7 @@
               console.log('video',row.entity);
               var vm = this;
               vm.fData = {};
-              vm.fData.src = '../uploads/clientes/videos/' + row.entity.nombre_video;
+              vm.fData.src = row.entity.nombre_video;
               // vm.fData.type = 'video/' + vm.fData.nombre_archivo.split(".")[1];
               vm.modalTitle = '';
               console.log(vm.fData);

@@ -7,7 +7,7 @@
     .service('PagoServices', PagoServices);
 
   /** @ngInject */
-  function PagoController($scope,$timeout,$window, $uibModal, $stateParams, PagoServices, TiendaServices, ClienteServices, MensajeServices, rootServices, toastr, pageLoading, alertify) {
+  function PagoController($scope,$timeout,$window, $stateParams, PagoServices, TiendaServices,  MensajeServices, rootServices, toastr, pageLoading) {
 
     var vm = this;
     var scope = $scope;
@@ -90,30 +90,6 @@
         pageLoading.stop();
       });
     }
-    // LA CALIFICACION SE HARÁ DESPUES DE DESCARGAR LAS FOTOS DESDE MY GALLERY
-    /*vm.calificar = function(value){
-      vm.calificacion = value;
-      vm.fDataUsuario.puntos = value;
-      ClienteServices.sRegistrarPuntuacion(vm.fDataUsuario).then(function(rpta){
-        if(rpta.flag == 1){
-          vm.modoCalificacionOk=true;
-          var title = 'OK';
-          var type = 'success';
-          toastr.success(rpta.message, title);
-          $timeout(function() {
-            $window.location.href = $scope.dirBase+'shop/#/app/my-gallery';
-          },2000);
-        }else if(rpta.flag == 0){
-          var title = 'Warning';
-          var type = 'warning';
-          toastr.warning(rpta.message, title);
-        }else{
-          alert('Error inesperado');
-
-        }
-      });
-    }*/
-
   }
 
   function PagoServices($http, $q) {

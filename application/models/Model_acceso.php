@@ -32,6 +32,7 @@ class Model_acceso extends CI_Model {
 			cli.procesado,
 			cli.paquete,
 			cli.codigo,
+			cli.precio_paquete,
 			cli.nombres,
 			cli.email,
 			cli.ididioma

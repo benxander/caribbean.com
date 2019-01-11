@@ -80,6 +80,8 @@ class Acceso extends CI_Controller {
     		$arrPerfilUsuario = array();
 			// $arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
 			$arrPerfilUsuario['idcliente'] = $loggedUser['idcliente'];
+			$arrPerfilUsuario['codigo'] = $loggedUser['codigo'];
+			$arrPerfilUsuario['precio_paquete'] = $loggedUser['precio_paquete'];
 			$arrPerfilUsuario['idgrupo'] = 3;
 			$arrPerfilUsuario['key_grupo'] = 'key_cliente';
 			$arrPerfilUsuario['ididioma'] = $loggedUser['ididioma'];
@@ -87,6 +89,8 @@ class Acceso extends CI_Controller {
 			$arrPerfilUsuario['monedero'] = $loggedUser['monedero'];
 			$arrPerfilUsuario['procesado'] = $loggedUser['procesado'];
 			$arrPerfilUsuario['logged'] = true;
+			$arrPerfilUsuario['descargaSingle'] = false;
+			$arrPerfilUsuario['descargaZip'] = false;
 			$arrPerfilUsuario['cliente'] = empty($loggedUser['nombres'])?$loggedUser['codigo'] : strtoupper_total($loggedUser['nombres']);
 			$arrPerfilUsuario['email'] = empty($loggedUser['email'])?$loggedUser['codigo'] : $loggedUser['email'];
 			$arrPerfilUsuario['nombre_foto'] = empty($loggedUser['nombre_foto']) ? 'sin-imagen.png' : $loggedUser['nombre_foto'];

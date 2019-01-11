@@ -85,7 +85,8 @@
         // vm.listaPaquetes = vm.listaExcursiones[0].paquetes;
         // vm.paqueteSeleccionado = vm.listaPaquetes[0];
         vm.monto = vm.listaExcursiones[0].precio_pack;
-        vm.monto_paquete = vm.listaExcursiones[0].precio_pack;
+        vm.monto_paquete = $scope.fSessionCI.precio_paquete;
+        //vm.monto_paquete = vm.listaExcursiones[0].precio_pack;
         vm.precio_adicional = vm.listaExcursiones[0].precio_adicional;
         vm.precio_primera = vm.listaExcursiones[0].precio_primera;
         if( vm.listaExcursiones[0].oferta ){

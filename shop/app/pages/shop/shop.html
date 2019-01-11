@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-xs-6 text-center pl-0 pr-0">
                       <div><i class="fa fa-usd fa-2x"></i></div>
-                      <div>US$ {{ctrl.listaExcursiones[0].precio_pack}}</div>
+                      <div>US$ {{fSessionCI.precio_paquete}}</div>
                     </div>
                   </div>
                 </label>
@@ -102,7 +102,7 @@
             }
            }"
           >
-            <div class="col-md-3 col-sm-6 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
+           <div class="col-md-3 col-sm-6 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ctrl.images">
 
               <div class="img-container" ng-if="image.tipo_archivo == 1">
                 <!-- <div class="ribbon-wrapper-green" ng-if="image.descargado == 1"><div class="ribbon-green">SOLD!</div></div> -->
@@ -133,9 +133,18 @@
             </div>
           </div>
         </div>
-        <div class="row waterMarkEmptyData" ng-show="!ctrl.images.length" style="position: relative; top: 0;">
-          NO PICTURES
+        
+       <div class="row waterMarkEmptyData" ng-show="!ctrl.images.length" style="position: relative; top: 0;">
+           <center>
+         <div class="modal-dialog" role="document">
+        <div class="alert alert-success">
+        <strong>Dear Customer!</strong> Your photos are in process and will be available soon.
         </div>
+        </div>
+        </center>
+        </div> 
+        
+        
         <div class="row controls">
           <div class="form-group col-sm-12" >
               <button class="btn-lg btn btn-info f-24 pull-right" ng-class="{'disabled': !ctrl.isSelected, 'active': ctrl.isSelected}" ng-click="ctrl.verResumen();">

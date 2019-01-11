@@ -114,10 +114,25 @@ class Model_movimiento extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+	/**
+	 * Carga todos los archivos (fotografias y videos)
+	 *
+	 * @param [type] $datos
+	 * @return void
+	 */
 	public function m_cargar_imagenes_por_idmovimiento($datos){
-		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size,
-			arc.fecha_subida, arc.descargado, arc.fecha_descarga, arc.es_bonificacion,
-			arc.tipo_archivo, cl.codigo');
+		$this->db->select("
+			arc.idarchivo,
+			arc.idcliente,
+			arc.nombre_archivo,
+			arc.size,
+			arc.fecha_subida,
+			arc.descargado,
+			arc.fecha_descarga,
+			arc.es_bonificacion,
+			arc.tipo_archivo,
+			cl.codigo
+		",FALSE);
 		$this->db->from('detalle_archivo da');
 		$this->db->join('archivo arc', 'da.idarchivo = arc.idarchivo');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
@@ -152,5 +167,18 @@ class Model_movimiento extends CI_Model {
 		$this->db->where('idmovimiento',$datos['idmovimiento']);
 		return $this->db->update('movimiento', $data);
 	}
-
+	public function m_cargar_comentarios()
+	{
+		$this->db->select("
+			pu.idcliente,
+			pu.comentarios,
+			pu.fecha_registro,
+			cl.codigo
+		", FALSE);
+		$this->db->from('puntuacion pu');
+		$this->db->join('cliente cl', 'pu.idcliente = cl.idcliente');
+		$this->db->where('pu.comentarios IS NOT NULL');
+		$this->db->order_by('pu.idpuntuacion', 'DESC');
+		return $this->db->get()->result_array();
+	}
 }

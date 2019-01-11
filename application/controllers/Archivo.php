@@ -13,14 +13,19 @@ class Archivo extends CI_Controller {
     public function listar_galeria_descargados(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_archivo->m_cargar_galeria_descargados($allInputs);
-		$rowVideo = $this->model_archivo->m_cargar_video_cliente($allInputs);
-		$rowVideo['ruta'] = empty($rowVideo['nombre_video'])? NULL : '../uploads/clientes/videos/'.$rowVideo['nombre_video'];
+		/* $rowVideo = $this->model_archivo->m_cargar_video_cliente($allInputs);
+		$rowVideo['ruta'] = empty($rowVideo['nombre_video'])? NULL : '../uploads/clientes/videos/'.$rowVideo['nombre_video']; */
 		$arrListado = array();
 		foreach ($lista as $row) {
-			if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
+			/* if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
 				$salida = TRUE;
 			}else{
 				$salida = FALSE;
+			} */
+			$file = '/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'];
+			$th = '/uploads/clientes/'.$row['codigo'].'/descargadas/thumbs/'.$row['nombre_archivo'];
+			if( $row['tipo_archivo'] == 2 ){
+				$th = $file;
 			}
 			array_push($arrListado,
 				array(
@@ -37,16 +42,16 @@ class Archivo extends CI_Controller {
 					// 'producto' => $row['producto'],
 					'codigo_usuario' => $row['codigo'],
 					'selected' => FALSE,
-					'src' => '../uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
-					'src_thumb' => '../uploads/clientes/'.$row['codigo'].'/descargadas/thumbs/'.$row['nombre_archivo'],
-					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/'.$row['codigo'].'/descargadas/'.$row['nombre_archivo'],
+					'src' => '..' . $file,
+					'src_thumb' => '..' . $th,
+					'src_share' => dirname($_SERVER['HTTP_REFERER']) . $file,
 					'title' => '',
 					'fecha_salida' => $row['fecha_salida'],
-					'es_salida' => $salida,
+					// 'es_salida' => $salida,
 				)
 			);
 		}
-		if(!empty($rowVideo['nombre_video'])){
+		/* if(!empty($rowVideo['nombre_video'])){
 			array_push($arrListado,
 				array(
 					'nombre_archivo' => $rowVideo['nombre_video'],
@@ -56,7 +61,7 @@ class Archivo extends CI_Controller {
 					'src_share' => dirname($_SERVER['HTTP_REFERER']).'/uploads/clientes/videos/'.$rowVideo['nombre_video'],
 				)
 			);
-		}
+		} */
     	$arrData['datos'] = $arrListado;
     	// $arrData['video'] = $rowVideo;
     	$arrData['message'] = '';
@@ -80,32 +85,30 @@ class Archivo extends CI_Controller {
 			$video = '../uploads/temporal/videos_demo/' . $lista[0]['idexcursion'] . '-demo.mp4';
 		}
 		foreach ($lista as $row) {
-			/*if( strtotime($row['fecha_salida'])<strtotime(date('Y-m-d')) ){
-				$salida = TRUE;
-			}else{
-				$salida = FALSE;
-			}*/
-			$src = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
-			array_push($arrListado,
-				array(
-					'idarchivo' => $row['idarchivo'],
-					'idusuario' => NULL,
-					'idcliente' => $row['idcliente'],
-					'nombre_archivo' => $row['nombre_archivo'],
-					'size' => $row['size'],
-					'fecha_subida' => $row['fecha_subida'],
-					'descargado' => $row['descargado'],
-					'fecha_descarga' => $row['fecha_descarga'],
-					'es_bonificacion' => $row['es_bonificacion'],
-					'tipo_archivo' => $row['tipo_archivo'],
-					'codigo_usuario' => $row['codigo'],
-					'selected' => FALSE,
-					'src' => $src,
-					'title' => '',
-					'fecha_salida' => $row['fecha_salida'],
-					'es_salida' => FALSE,
-				)
-			);
+			// solo fotos, si hay video del cliente no se mostrará
+			if( $row['tipo_archivo'] == 1 ){
+				$src = '../uploads/clientes/'.$row['codigo'].'/thumbs/'.$row['nombre_archivo'];
+				array_push($arrListado,
+					array(
+						'idarchivo' => $row['idarchivo'],
+						'idusuario' => NULL,
+						'idcliente' => $row['idcliente'],
+						'nombre_archivo' => $row['nombre_archivo'],
+						'size' => $row['size'],
+						'fecha_subida' => $row['fecha_subida'],
+						'descargado' => $row['descargado'],
+						'fecha_descarga' => $row['fecha_descarga'],
+						'es_bonificacion' => $row['es_bonificacion'],
+						'tipo_archivo' => $row['tipo_archivo'],
+						'codigo_usuario' => $row['codigo'],
+						'selected' => FALSE,
+						'src' => $src,
+						'title' => '',
+						'fecha_salida' => $row['fecha_salida'],
+						'es_salida' => FALSE,
+					)
+				);
+			}
 		}
     	$arrData['datos_solo_fotos'] = $arrListado;
 		if( $bool_video ){

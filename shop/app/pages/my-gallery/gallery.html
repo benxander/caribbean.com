@@ -8,27 +8,16 @@
     <li><a ui-sref="dashboard">{{ 'Menu.DASHBOARD' | translate }}</a></li>
     <li class="active">{{ 'Menu.GALERIA' | translate }}</li>
   </ol>
-
-
   <center>
-   <div class="modal-dialog" role="document">
-
-
-
-<div class="alert alert-danger">
-    <strong>Dear Customer!</strong> Your photos will be available on the platform for 30 days. We recommend you download them before that period.<br>
-    <strong>If you dont see the pictures, it maybe in proccess and will be available soon.</strong>
-  </div>
-
-
-
-
-   </div>
- <!--  <font color="#acacac"><strong>If you dont see the pictures, it maybe in proccess and will be available soon.</strong></font> -->
-</center>
-
-
-
+    <div class="modal-dialog" role="document">
+      <div class="alert alert-danger">
+        <strong>Dear Customer!</strong> It may take up to 24 hours after you link your bracelet or ticket number to enable photo and/or video downloads.<br>
+        <strong>Photos in your account will expire 30 days from the date the photo was taken.</strong><br>
+        If you would like to extend the expiration date to 60 days from the date the photo was taken, you may purchase an Expiration Code for 5.00 US. Expired photos and other digital content will no longer be available.
+      </div>
+    </div>
+    <!--  <font color="#acacac"><strong>If you dont see the pictures, it maybe in proccess and will be available soon.</strong></font> -->
+  </center>
   <div class="row" ng-show="!ga.calificaBool">
     <div class="tile p-15">
       <section class="tile-header row">
@@ -72,16 +61,16 @@
       </ul>
       <div class="row mix-grid">
         <div class="gallery" ng-mixitup magnific-popup="{
-            delegate: 'a.img-preview',
-            type: 'image',
-            tLoading: 'Loading image #%curr%...',
-            mainClass: 'mfp-img-mobile',
-            gallery: {
-              enabled: true,
-              navigateByImgClick: true,
-              preload: [0,1]
-            }
-          }"
+          delegate: 'a.img-preview',
+          type: 'image',
+          tLoading: 'Loading image #%curr%...',
+          mainClass: 'mfp-img-mobile',
+          gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1]
+          }
+         }"
         >
           <div class="col-md-3 m-20 mix {{image.category}}" ng-class="{'selected': image.selected}" ng-repeat="image in ga.images">
             <div class="img-container" ng-if="image.tipo_archivo == 1">

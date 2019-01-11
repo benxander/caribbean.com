@@ -7,7 +7,7 @@ class Model_cliente extends CI_Model {
 
 	public function m_cargar_cliente($paramPaginate=FALSE, $paramDatos){
 		/*subquery*/
-		$this->db->select('
+		$this->db->select("
 			c.idcliente,
 			c.monedero,
 			c.deposito,
@@ -17,19 +17,23 @@ class Model_cliente extends CI_Model {
 			c.procesado,
 			c.precio_paquete,
 			c.email,
-			ev.idexcursionvideo,
-			ev.nombre_video
-		');
-		$this->db->select('COUNT(a.idarchivo) as total_subido, exc.idexcursion, exc.descripcion, estado_cl');
-		$this->db->select("SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados",FALSE);
-		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as monto", FALSE);
-		$this->db->select("( SELECT MAX(DATE(mo.fecha_movimiento)) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as fecha_movimiento", FALSE);
-		$this->db->select("( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) - c.deposito as online", FALSE);
+			c.estado_cl,
+			exc.idexcursion,
+			exc.descripcion,
+			COUNT(a.idarchivo) as total_subido,
+			(SELECT nombre_archivo FROM archivo arc WHERE arc.idcliente = c.idcliente AND arc.tipo_archivo = 2 AND arc.estado_arc = 1 LIMIT 1) AS nombre_video,
+			SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) AS comprados,
+			( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) AS monto,
+			( SELECT MAX(DATE(mo.fecha_movimiento)) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) AS fecha_movimiento,
+			( SELECT sum(mo.total) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) - c.deposito AS online
+
+		",FALSE);
+
 
 		$this->db->from('cliente c');
 		$this->db->join('excursion exc', 'c.idexcursion = exc.idexcursion');
-		$this->db->join('excursion_video ev', 'c.idexcursion = ev.idexcursion AND ev.fecha = c.fecha_excursion','left');
-		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
+		// $this->db->join('excursion_video ev', 'c.idexcursion = ev.idexcursion AND ev.fecha = c.fecha_excursion','left');
+		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1 AND a.tipo_archivo = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		$this->db->group_by('c.idcliente');
 		$subQuery1 = $this->db->get_compiled_select();
@@ -52,7 +56,6 @@ class Model_cliente extends CI_Model {
 			foo.monto,
 			foo.fecha_movimiento,
 			foo.online,
-			foo.idexcursionvideo,
 			foo.estado_cl,
 			foo.nombre_video
 		');
@@ -112,7 +115,7 @@ class Model_cliente extends CI_Model {
 		$this->db->select("( SELECT MAX(DATE(mo.fecha_movimiento)) FROM movimiento mo WHERE mo.estado = 1 AND mo.idcliente = c.idcliente ) as fecha_movimiento", FALSE);
 		$this->db->from('cliente c');
 		$this->db->join('excursion exc', 'c.idexcursion = exc.idexcursion');
-		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
+		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1 AND a.tipo_archivo = 1', 'left');
 		$this->db->where('c.estado_cl', 1);
 		$this->db->group_by('c.idcliente');
 		$subQuery1 = $this->db->get_compiled_select();
@@ -144,9 +147,12 @@ class Model_cliente extends CI_Model {
 		return $fData;
 	}
 	public function m_listar_cliente_procesado($datos){
-		$this->db->select('SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) comprados, COUNT(a.idarchivo) as total_subido', FALSE);
+		$this->db->select('
+			SUM(CASE WHEN a.descargado = 1 THEN 1 ELSE 0 END) AS comprados,
+			COUNT(a.idarchivo) AS total_subido
+		', FALSE);
 		$this->db->from('cliente c');
-		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1', 'left');
+		$this->db->join('archivo a','a.idcliente = c.idcliente AND a.estado_arc = 1 AND a.tipo_archivo = 1', 'left');// solo imagenes
 		$this->db->where('c.idcliente', $datos['idcliente']);
 		return $this->db->get()->row_array();
 	}

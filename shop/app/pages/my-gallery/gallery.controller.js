@@ -7,7 +7,14 @@
     .service('PagesGalleryServices', PagesGalleryServices);
 
   /** @ngInject */
-  function PagesGalleryController($scope,$timeout, $window, $uibModal, $state,$stateParams, PagesGalleryServices, rootServices, MensajeServices, TiendaServices, ClienteServices, pageLoading, Socialshare,toastr) {
+  function PagesGalleryController($scope,$timeout,
+    PagesGalleryServices,
+    rootServices,
+    MensajeServices,
+    ClienteServices,
+    pageLoading,
+    toastr
+  ) {
     var vm = this;
     vm.dirImagesProducto = $scope.dirImages + "producto/";
     $scope.actualizarSeleccion(0,0);
@@ -116,7 +123,7 @@
       $scope.actualizarSeleccion(0);
       $scope.actualizarSaldo(false);
     }
-    vm.btnDescargarFiles = function(){
+    /* vm.btnDescargarFiles = function(){
       if(!vm.isSelected){
         console.log('no hay seleccionados');
         return;
@@ -136,7 +143,7 @@
       });
       vm.calificaBool = true;
       vm.fDataUsuario.comentarios = null;
-    }
+    } */
     vm.btnDescargarFile = function(image){
       var enlace = document.createElement('a');
       enlace.style.display = "none";
@@ -146,8 +153,11 @@
       enlace.click();
       enlace.parentNode.removeChild(enlace);
 
-      /*vm.calificaBool = true;
-      vm.fDataUsuario.comentarios = null;*/
+      if ( !vm.fDataUsuario.descargaSingle ){
+        vm.fDataUsuario.descargaSingle = true;
+        vm.calificaBool = true;
+        vm.fDataUsuario.comentarios = null;
+      }
     }
     vm.btnDescargarZip =function(){
       pageLoading.start('Processing...');
@@ -162,8 +172,11 @@
           enlace.click();
           enlace.parentNode.removeChild(enlace);
 
-          vm.calificaBool = true;
-          vm.fDataUsuario.comentarios = null;
+          if (!vm.fDataUsuario.descargaZip) { // si es primera vez q descarga el zip en la sesion
+            vm.fDataUsuario.descargaZip = true;
+            vm.calificaBool = true;
+            vm.fDataUsuario.comentarios = null;
+          }
         }else{
           console.log('rpta',rpta);
           var title = 'Warning';
@@ -202,41 +215,6 @@
         }
       });
     }
-    /*vm.btnTerminosCondiciones = function(){
-      var modalInstance = $uibModal.open({
-        templateUrl: 'app/pages/tienda/terminos.php',
-        controllerAs: 'mt',
-        size: 'lg',
-        backdropClass: 'splash-2 splash-ef-12',
-        windowClass: 'splash-2 splash-ef-12',
-        // backdrop: 'static',
-        // keyboard:false,
-        scope: $scope,
-        controller: function($scope, $uibModalInstance, arrToModal ){
-          var vm = this;
-          var paramDatos = {
-            idseccion : 6 // terminos y condiciones
-          }
-          TiendaServices.sListarSeccion(paramDatos).then(function(rpta){
-            vm.modalTitle = rpta.datos.titulo;
-            vm.contenido = rpta.datos.contenido;
-            console.log('rpta',rpta);
-
-
-          });
-          vm.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-          };
-        },
-        resolve: {
-          arrToModal: function() {
-            return {
-              scope : vm,
-            }
-          }
-        }
-      });
-    }*/
   }
 
   function PagesGalleryServices($http, $q) {

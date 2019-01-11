@@ -510,6 +510,11 @@ class Movimiento extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 	/*PUNTUACION*/
+	/**
+	 * Carga la lista de puntajes para la vista de ENCUESTA
+	 *
+	 * @return [type] [description]
+	 */
 	public function listar_puntuacion(){
 		if( empty($this->sessionCI) ){
 			$arrData['flag'] = -1;
@@ -543,7 +548,6 @@ class Movimiento extends CI_Controller {
 		foreach ($arrListado as $key => $row) {
 			$arrListado[$key]['porcentaje'] = round(($row['puntaje'] / $total)*100);
 		}
-		// var_dump($arrListado); exit();
 		$promedio = $peso / $total;
 		$porcentaje = round($promedio*20);
 		$promedio = round(($peso / $total),1);
@@ -561,5 +565,36 @@ class Movimiento extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 
+	}
+
+	public function listar_comentarios()
+	{
+		$lista = $this->model_movimiento->m_cargar_comentarios();
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'No hay comentarios.';
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'codigo'	=> $row['codigo'],
+					'idcliente'	=> $row['idcliente'],
+					'fecha'		=> darFormatoDMY($row['fecha_registro']),
+					'comentarios' => $row['comentarios']
+				)
+			);
+		}
+		$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
 	}
 }

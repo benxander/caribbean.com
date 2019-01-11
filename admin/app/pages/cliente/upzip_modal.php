@@ -7,17 +7,20 @@
 
 		    <div class="row">
 		    	<div class="form-group col-sm-12">
-		    		<p>Los archivos zip deberán subirse previamente por ftp.</p>
+		    		<p>El archivo zip deberá subirse previamente por ftp a la carpeta /uploads/temporal/</p>
 		    	</div>
 		    </div>
 		    <div class="row">
 		    	<div class="form-group col-sm-12">
-		            <label class="control-label minotaur-label">Imagenes Zip</label>
-	            	<input class="form-control" type="text" ng-model="mz.rutaArchivo" placeholder="Ingrese el nombre del archivo zip de imagenes">
+						<label class="control-label minotaur-label">Archivo Zip</label>
+						<div class="input-group">
+							<input class="form-control" type="text" ng-model="mz.rutaArchivo" placeholder="Ingrese el nombre del archivo zip de imágenes y/o videos" style="text-align:left!important">
+							<span class="input-group-addon">.zip</span>
+						</div>
 		    	</div>
-		    	<div class="form-group col-sm-12">
-		            <label class="control-label minotaur-label">Videos Zip</label>
-	            	<input class="form-control" type="text" ng-model="mz.rutaVideo" placeholder="Ingrese el nombre del archivo zip de videos">
+		    	<div class="form-group col-sm-12" style="display:none">
+						<label class="control-label minotaur-label">Videos Zip</label>
+						<input class="form-control" type="text" ng-model="mz.rutaVideo" placeholder="Ingrese el nombre del archivo zip de videos">
 		    	</div>
 		    </div>
 		</form>

@@ -91,6 +91,19 @@ class Compra extends CI_Controller {
 		if($rowProc['total_subido'] == $rowProc['comprados']){
 			$allInputs['procesado'] = 4; // marcamos como completado
 			$this->model_cliente->m_actualizar_procesado($allInputs);
+
+			// cargar video
+			$arrVideo = $this->model_archivo->m_cargar_video_cliente($allInputs);
+			if( !empty($arrVideo) ){
+				$url_origen = 'uploads/clientes/'.$arrVideo['codigo'].'/originales/'.$arrVideo['nombre_archivo'];
+
+				$url_destino = 'uploads/clientes/'.$arrVideo['codigo'].'/descargadas/'.$arrVideo['nombre_archivo'];
+
+				if(rename($url_origen,$url_destino)){
+					$arrVideo['descargado'] = 1;
+					$this->model_archivo->m_editar_descarga_archivo($arrVideo);
+				}
+			}
 		}
 		unset($_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['token']);
 		if(!$error){

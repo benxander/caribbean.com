@@ -6,23 +6,59 @@ class Model_archivo extends CI_Model {
 	}
 
 	public function m_cargar_galeria_descargados($pDatos){
-		$this->db->select('arc.idarchivo, arc.idcliente, arc.nombre_archivo, arc.size, arc.fecha_subida,
-			arc.descargado, arc.fecha_descarga, arc.es_bonificacion, arc.tipo_archivo,
-			cl.codigo, cl.fecha_salida, cl.idexcursion');
+		$this->db->select('
+			arc.idarchivo,
+			arc.idcliente,
+			arc.nombre_archivo,
+			arc.size,
+			arc.fecha_subida,
+			arc.descargado,
+			arc.fecha_descarga,
+			arc.es_bonificacion,
+			arc.tipo_archivo,
+			cl.codigo,
+			cl.fecha_salida,
+			cl.idexcursion
+		');
 		$this->db->from('archivo arc');
 		// $this->db->join('usuario us','us.idusuario = arc.idusuario');
 		$this->db->join('cliente cl', 'arc.idcliente = cl.idcliente');
 		$this->db->where('arc.estado_arc', 1);
 		$this->db->where('arc.descargado', 1);
 		$this->db->where('arc.idcliente', $pDatos['idcliente']);
+		$this->db->order_by('arc.tipo_archivo', 'ASC');
 		return $this->db->get()->result_array();
 	}
-	public function m_cargar_video_cliente($pDatos){
+	public function m_cargar_video_cliente_old($pDatos){
 		$this->db->select('ev.nombre_video, ev.size, ev.fecha, ev.idexcursionvideo');
 		$this->db->from('cliente cl');
 		$this->db->join('excursion_video ev', 'cl.idexcursion = ev.idexcursion AND cl.fecha_excursion = ev.fecha', 'left');
 		$this->db->where('cl.idcliente', $pDatos['idcliente']);
 		$this->db->where('cl.procesado', 4);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
+	/**
+	 * Carga el video correspodiente a un cliente
+	 *
+	 * @param [type] $pDatos
+	 * @return void
+	 */
+	public function m_cargar_video_cliente($pDatos){
+		$this->db->select('
+			arc.idarchivo,
+			arc.nombre_archivo,
+			arc.size,
+			arc.fecha_subida,
+			cl.codigo,
+			cl.idexcursion
+		');
+		$this->db->from('cliente cl');
+		$this->db->join('archivo arc', 'cl.idcliente = arc.idcliente');
+		$this->db->where('cl.idcliente', $pDatos['idcliente']);
+		$this->db->where('cl.procesado', 4);
+		$this->db->where('arc.estado_arc', 1);
+		$this->db->where('arc.tipo_archivo', 2); // video
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}

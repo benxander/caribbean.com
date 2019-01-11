@@ -36,6 +36,7 @@ class Cliente extends CI_Controller {
 		$arrListado = array();
 		//var_dump($lista); exit();
 		foreach ($lista as $row) {
+			$ruta_video = '../uploads/clientes/' . $row['codigo'] . '/originales/';
 			$objEstado = array();
 			switch ($row['procesado']) {
 				case 'NO PROCESADO':
@@ -53,6 +54,9 @@ class Cliente extends CI_Controller {
 				case 'COMPLETO':
 					$estado = 'COMPLETO';
 					$clase = 'label-success';
+					if(!empty($row['nombre_video'])){
+						$ruta_video = '../uploads/clientes/' . $row['codigo'] . '/descargadas/';
+					}
 					break;
 				default:
 					$estado = '-';
@@ -74,7 +78,7 @@ class Cliente extends CI_Controller {
 					'codigo' 			=> $row['codigo'],
 					'ididioma' 			=> 'en',
 					'idexcursion' 		=> $row['idexcursion'],
-					'nombre_video' 		=> $row['nombre_video'],
+					'nombre_video' 		=> $ruta_video . $row['nombre_video'],
 					'paquete' 			=> $row['paquete'],
 					'precio_paquete' 	=> $row['precio_paquete'],
 					'email' 			=> $row['email'],
@@ -85,7 +89,7 @@ class Cliente extends CI_Controller {
 					'monto'				=>	$row['monto'],
 					'editar'			=>	$editar,
 					'online'			=>	$row['online'] > 0 ? $row['online'] : 0,
-					'bool_video' 		=> empty($row['idexcursionvideo'])? FALSE: TRUE,
+					'bool_video' 		=> empty($row['nombre_video'])? FALSE: TRUE,
 					'estado_obj' 		=> array(
 						'string' 		=> $estado,
 						'clase' 		=>$clase
@@ -489,7 +493,10 @@ class Cliente extends CI_Controller {
 		$arrData['message'] = 'The qualification could not be registered.';
     	$arrData['flag'] = 0;
 
-    	// print_r($allInputs); exit();
+		// print_r($allInputs); exit();
+
+		$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['descargaSingle'] = $allInputs['descargaSingle'];
+		$_SESSION['sess_cp_'.substr(base_url(),-14,9) ]['descargaZip'] = $allInputs['descargaZip'];
 
     	if($this->model_puntuacion->m_registrar_puntuacion($allInputs)){
     		$arrData['message'] = 'Qualification registered successfully.';
@@ -733,6 +740,7 @@ class Cliente extends CI_Controller {
 		if(!empty($imagenesZip)){
 			$error = FALSE;
 			$i = 0;
+			$j = 0;
 			$zip = new ZipArchive;
 			if ($zip->open('./uploads/temporal/' . $imagenesZip) === TRUE) {
 			    $zip->extractTo($tmp);
@@ -746,23 +754,39 @@ class Cliente extends CI_Controller {
 				return;
 			}
 			$arrPrincipal = array();
+			$tipo_archivo = NULL;
 			//VALIDACION DE QUE EL CODIGO DEL CLIENTE EXISTA ANTES DE PROCESAR LAS IMAGENES
 			foreach (get_filenames($tmp) as $archivo) {
-				if( $archivo != 'index.html' && $archivo != 'Thumbs.db'){
+				$extension = get_extension($archivo);
+				if( $extension == 'jpg' || $extension == 'jpeg' ){
+					$tipo_archivo = 1; // IMAGENES
 					++$i;
+				}elseif( $extension == 'mp4' ){
+					$tipo_archivo = 2; // VIDEOS
+					++$j;
+				}else{
+					$arrData['message'] = 'El archivo tiene un formato no válido';
+					$arrData['flag'] = 0;
+					$this->output
+						->set_content_type('application/json')
+						->set_output(json_encode($arrData));
+					return;
+				}
+				if( $archivo != 'index.html' && $archivo != 'Thumbs.db' ){
 					$codigo = explode("-", $archivo)[0];
 					$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
-		   			if(empty($rowCliente)){
+		   			/* if(empty($rowCliente)){
 		   				$arrData['message'] = 'Código: ' . $codigo . ' no encontrado. Por favor crea el cliente e inténtalo nuevamente';
 							$arrData['flag'] = 0;
 							$this->output
 							    ->set_content_type('application/json')
 							    ->set_output(json_encode($arrData));
 							return;
-		   			}
+		   			} */
 		   			array_push($arrPrincipal,
 		   				array(
 		   					'nombre_archivo' => $archivo,
+		   					'tipo_archivo' => $tipo_archivo,
 		   					'idcliente' => $rowCliente['idcliente'],
 		   					'codigo' => $rowCliente['codigo'],
 		   					'paquete' => $rowCliente['paquete'],
@@ -777,6 +801,7 @@ class Cliente extends CI_Controller {
 			foreach ($arrPrincipal as $rowCliente) {
 				$codigo = $rowCliente['codigo'];
 				$archivo = $rowCliente['nombre_archivo'];
+				$tipo_archivo = $rowCliente['tipo_archivo'];
 				$url_origen = $tmp.'/'.$archivo;
 				$url_destino = 'uploads/clientes/'.$codigo.'/originales/'.$archivo;
 
@@ -791,7 +816,7 @@ class Cliente extends CI_Controller {
 					'idcliente' => $rowCliente['idcliente'],
 					'nombre_archivo' => $archivo,
 					'size' => filesize($url_origen),
-					'tipo_archivo' => 1,
+					'tipo_archivo' => $tipo_archivo,
 					'estado_arc' => 1,
 					'fecha_subida' => date('Y-m-d H:i:s')
 				);
@@ -816,11 +841,14 @@ class Cliente extends CI_Controller {
 			    }
 
 				if(rename($url_origen,$url_destino)){
-					if($marca){
-	   					redimencionMarcaAgua(600, $archivo_or, $carpeta_marca_min, $archivo);
+					// solo se realiza miniaturas si son imagenes
+					if( $tipo_archivo == 1 ){
+						if( $marca ){
+							   redimencionMarcaAgua(600, $archivo_or, $carpeta_marca_min, $archivo);
+						}
+						// hacer miniatura
+						   redimenciona(300, $archivo_or, $carpeta_or_min, $archivo);
 					}
-					// hacer miniatura
-	   				redimenciona(300, $archivo_or, $carpeta_or_min, $archivo);
 
 	        		if($this->model_archivo->m_registrar_archivo($data)){
 						if( !$marca && $rowCliente['procesado'] != 4 ){
@@ -837,14 +865,23 @@ class Cliente extends CI_Controller {
 			}
 
 
-	       	if( $i == 0 ){
+	       	if( $i == 0 && $j == 0 ){
 	       		$arrData['message'] = 'No hay nada que organizar';
 				$arrData['flag'] = 0;
 	       	}elseif($error){
 	       		$arrData['message'] = 'Ocurrió un error';
 				$arrData['flag'] = 0;
 	       	}else{
-	       		$arrData['message'] = 'Se organizaron ' . $i . ' imágenes correctamente. ';
+				$msg = 'Se organizaron ';
+				if( $i > 0 && $j > 0 ){ // hay imagenes y videos
+					$msg .= $i . ' imágen(es) y ' . $j . 'video(s) ';
+				}elseif( $j == 0 ){ // solo hay imagenes
+					$msg .= $i . ' imágen(es) ';
+				}else{
+					$msg .= $j . ' video(s) ';
+				}
+				$msg .= 'correctamente.';
+				$arrData['message'] = $msg;
 				$arrData['flag'] = 1;
 				unlink('./uploads/temporal/' . $imagenesZip);
 	       	}
