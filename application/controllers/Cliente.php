@@ -775,14 +775,28 @@ class Cliente extends CI_Controller {
 				if( $archivo != 'index.html' && $archivo != 'Thumbs.db' ){
 					$codigo = explode("-", $archivo)[0];
 					$rowCliente = $this->model_cliente->m_cargar_cliente_por_codigo($codigo);
-		   			/* if(empty($rowCliente)){
-		   				$arrData['message'] = 'Código: ' . $codigo . ' no encontrado. Por favor crea el cliente e inténtalo nuevamente';
-							$arrData['flag'] = 0;
-							$this->output
-							    ->set_content_type('application/json')
-							    ->set_output(json_encode($arrData));
-							return;
-		   			} */
+		   			if(empty($rowCliente)){
+		   				$arrData['message'] = 'Código: ' . $codigo . ' no encontrado. Por favor crea el cliente e inténtalo nuevamente. Asegurate de limpiar la carpeta temporal/tmp/';
+						$arrData['flag'] = 0;
+						$this->output
+							->set_content_type('application/json')
+							->set_output(json_encode($arrData));
+						return;
+					}
+
+					list($width_orig, $height_orig) = getimagesize($tmp.'/'.$archivo);
+
+					if( $width_orig > 5000 || $height_orig > 5000 ){
+						$lm = 'Img: ' .$archivo . ' | width : ' . $width_orig . ' | height : ' .  $height_orig;
+						log_message('custom',$lm);
+						$arrData['message'] = 'La fotografia: ' . $archivo . ' no debe superar los 5000 px de alto o ancho';
+						$arrData['flag'] = 0;
+						$this->output
+							->set_content_type('application/json')
+							->set_output(json_encode($arrData));
+						return;
+					}
+
 		   			array_push($arrPrincipal,
 		   				array(
 		   					'nombre_archivo' => $archivo,

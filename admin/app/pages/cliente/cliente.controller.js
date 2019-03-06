@@ -853,7 +853,7 @@
                       var type = 'warning';
                       toastr.warning(rpta.message2, title);
                     }else{
-                      alert('Ocurrió un error');
+                      alert('Ocurrió un error al subir video');
                     }
                   }
                   vm.getPaginationServerSide();

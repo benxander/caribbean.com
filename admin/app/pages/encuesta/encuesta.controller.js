@@ -24,7 +24,13 @@
         { field: 'puntos', name:'puntos', displayName: 'PUNTOS', minWidth: 50, width:80, visible:true},
         { field: 'puntaje', name:'puntaje', displayName: 'PUNTAJE', minWidth: 100 ,enableFiltering:false},
         { field: 'porcentaje', name:'porcentaje', displayName: '%', minWidth: 100, width:80 },
-
+        { field: 'accion', name: 'accion', displayName: 'ACCIONES', width: 90, pinnedRight: true,
+          enableFiltering: false,
+          enableColumnMenus: false, enableColumnMenu: false, enableSorting: false,
+          cellTemplate: '<div class="text-center">' +
+            '<button class="btn btn-default btn-sm text-green btn-action"  ng-click="grid.appScope.verDetalle(row)" tooltip-placement="left" uib-tooltip="VER DETALLE" > <i class="fa fa-eye"></i> </button>' +
+            '</div>'
+        }
       ];
       vm.gridOptions.onRegisterApi = function(gridApi) {
         vm.gridApi = gridApi;
@@ -53,34 +59,84 @@
       vm.getPaginationServerSide();
       // vm.fBusqueda = {}
     vm.verDetalle = function(row){
+      console.log(row);
       var modalInstance = $uibModal.open({
-        templateUrl: 'app/pages/encuesta/detalle_encuesta_view.php',
-        controllerAs: 'mp',
-        size: 'lg',
+        templateUrl: 'app/pages/encuesta/detalle_enc_view.php',
+        controllerAs: 'dm',
+        size: '',
         backdropClass: 'splash splash-2 splash-ef-16',
         windowClass: 'splash splash-2 splash-ef-16',
-        backdrop: 'static',
-        keyboard: false,
         scope: $scope,
-        controller: function($scope, $uibModalInstance, arrToModal ){
+        controller: function ($scope,$uibModalInstance) {
           var vm = this;
-          vm.fData = {};
-          vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-          vm.modalTitle = 'Detalle de encuesta';
-          vm.fData = row.entity;
-          // cargar imagenes del pedido
+          vm.modalTitle = "Detalle de Puntuación de " + row.entity.puntos + '★';
+
+          var paginationOptions = {
+            pageNumber: 1,
+            firstRow: 0,
+            pageSize: 50,
+            sort: uiGridConstants.DESC,
+            sortName: null,
+            search: null
+          };
+          vm.gridOptionsDetalle = {
+            paginationPageSizes: [10, 25, 50],
+            paginationPageSize: 50,
+            enableSorting: true,
+            useExternalPagination: true,
+            useExternalSorting: true,
+            appScopeProvider: vm
+          }
+          vm.gridOptionsDetalle.columnDefs = [
+            { field: 'idpuntuacion', name: 'idpuntuacion', displayName: 'ID', minWidth: 50, width: 80, visible: true, sort: { direction: uiGridConstants.DESC } },
+            { field: 'codigo', name: 'codigo', displayName: 'CODIGO', minWidth: 50, visible: true },
+            { field: 'fecha_registro', name: 'fecha_registro', displayName: 'FECHA', minWidth: 120, width: 150, visible: true },
+
+
+          ];
+          vm.gridOptionsDetalle.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+
+            gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
+              //console.log(sortColumns);
+              if (sortColumns.length == 0) {
+                paginationOptions.sort = null;
+                paginationOptions.sortName = null;
+              } else {
+                paginationOptions.sort = sortColumns[0].sort.direction;
+                paginationOptions.sortName = sortColumns[0].name;
+              }
+              vm.getPaginationServerSide();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+              paginationOptions.pageNumber = newPage;
+              paginationOptions.pageSize = pageSize;
+              paginationOptions.firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
+              vm.getPaginationServerSide();
+            });
+          }
+          paginationOptions.sortName = vm.gridOptionsDetalle.columnDefs[0].name;
+          vm.getPaginationServerSide = function () {
+            vm.datosGrid = {
+              paginate: paginationOptions,
+              datos: row.entity
+            };
+            EncuestaServices.sListarDetalle(vm.datosGrid).then(function (rpta) {
+              if (rpta.flag == 1) {
+                vm.gridOptionsDetalle.data = rpta.datos;
+                vm.gridOptionsDetalle.totalItems = rpta.paginate.totalRows;
+              }
+
+            });
+          }
+
+          vm.getPaginationServerSide();
+
           vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
-          };
-        },
-        resolve: {
-          arrToModal: function() {
-            return {
-              getPaginationServerSide : vm.getPaginationServerSide,
-              scope : vm,
-            }
           }
         }
+
       });
     }
 
@@ -131,6 +187,7 @@
     return({
       sListarPuntuacion: sListarPuntuacion,
       sListarComentarios: sListarComentarios,
+      sListarDetalle: sListarDetalle,
     });
     function sListarPuntuacion(pDatos) {
       var datos = pDatos || {};
@@ -146,6 +203,15 @@
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Movimiento/listar_comentarios",
+            data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }
+    function sListarDetalle(pDatos) {
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Movimiento/listar_detalle_puntuacion",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

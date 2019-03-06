@@ -142,7 +142,8 @@ class Model_movimiento extends CI_Model {
 	}
 	public function m_cargar_puntuacion(){
 		$this->db->select('puntos, COUNT(*) puntaje',FALSE);
-		$this->db->from('puntuacion');
+		$this->db->from('puntuacion pu');
+		$this->db->join('cliente cl', 'pu.idcliente = cl.idcliente');
 		$this->db->group_by('puntos');
 		$this->db->order_by('puntos','DESC');
 		return $this->db->get()->result_array();

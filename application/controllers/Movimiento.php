@@ -4,7 +4,14 @@ class Movimiento extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->helper(array('fechas','otros'));
-        $this->load->model(array('model_movimiento','model_cliente','model_email'));
+        $this->load->model(
+			array(
+				'model_movimiento',
+				'model_cliente',
+				'model_email',
+				'model_puntuacion'
+			)
+		);
         $this->load->library('Fpdfext');
         $this->sessionCP = @$this->session->userdata('sess_cp_'.substr(base_url(),-14,9));
         $this->sessionCI = @$this->session->userdata('sess_ci_'.substr(base_url(),-14,9));
@@ -593,6 +600,39 @@ class Movimiento extends CI_Controller {
 		$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function listar_detalle_puntuacion()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+
+		$paramPaginate = $allInputs['paginate'];
+		$paramDatos = $allInputs['datos'];
+		$lista = $this->model_puntuacion->m_cargar_detalle_puntuacion($paramPaginate, $paramDatos);
+		if(!empty($lista)){
+			$totalRows = $this->model_puntuacion->m_count_detalle_puntuacion($paramPaginate, $paramDatos);
+		}
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idpuntuacion' => $row['idpuntuacion'],
+					'codigo' => $row['codigo'],
+					'fecha_registro' => darFormatoDMYHora($row['fecha_registro']),
+				)
+			);
+		}
+
+		$arrData['datos'] = $arrListado;
+    	$arrData['paginate']['totalRows'] = $totalRows['contador'];
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
